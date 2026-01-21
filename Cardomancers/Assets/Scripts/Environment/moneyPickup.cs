@@ -27,10 +27,18 @@ public class moneyPickup : MonoBehaviour
     }
     // i dont remember how unity events actually work bruh
 
-    void OnCollisionEnter(Collision collision)
+    // void OnCollisionEnter(Collision collision)
+    // {
+    //     if (!collision.collider.CompareTag("Player")) return;
+    //     print (collision);
+    //     money++;
+    //     Debug.Log ($"money: {money}");
+    //     respawn = true;
+    //     OnCollect.Invoke();
+    // }
+
+    public void GetMoney()
     {
-        if (!collision.collider.CompareTag("Player")) return;
-        print (collision);
         money++;
         Debug.Log ($"money: {money}");
         respawn = true;
