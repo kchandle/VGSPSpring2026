@@ -15,7 +15,7 @@ public class GameStateScript : MonoBehaviour
 
     GameState currentState = GameState.NULL;
 
-   void FixedUpdate(){
+   void
 
 switch(currentState)
     {
