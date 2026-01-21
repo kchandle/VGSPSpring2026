@@ -12,6 +12,6 @@ public class PlayerController : MonoBehaviour
 
 	public void OnJumping(InputAction.CallbackContext context)
 	{
-			_characterControllerMovement.jumping = true;
+			_characterControllerMovement.jumping = true; // makes the player jump
 	}
 }
