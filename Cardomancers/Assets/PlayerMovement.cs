@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         capsule = GetComponent<CapsuleCollider>();
-        Debug.Log("thing");
+        //Debug.Log("thing");
         //speed = entity.GetSpeed() * 8;
     }
     void FixedUpdate()
