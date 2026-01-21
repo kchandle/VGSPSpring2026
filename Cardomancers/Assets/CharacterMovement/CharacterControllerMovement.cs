@@ -12,8 +12,9 @@ public class CharacterControllerMovement : MonoBehaviour
 	public bool jumping;
     private CharacterController _characterController;
 
-    private void Start()
+    private void Awake()
     {
+	  //Set the character controller reference automatically
 	  _characterController = GetComponent<CharacterController>();
     }
 
