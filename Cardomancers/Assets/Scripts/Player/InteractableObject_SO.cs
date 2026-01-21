@@ -5,5 +5,5 @@ using UnityEngine.Events;
 public class InteractableObject_SO : ScriptableObject
 {
     public new string name;
-    public UnityEvent<PlayerInteractionSO> interactable;
+    public UnityEvent<MonoBehaviour> interactable;
 }
