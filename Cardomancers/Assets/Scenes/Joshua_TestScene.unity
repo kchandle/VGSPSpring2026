@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 234573425}
   - component: {fileID: 234573424}
   - component: {fileID: 234573423}
-  - component: {fileID: 234573431}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -323,19 +322,6 @@ Transform:
   - {fileID: 926886995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &234573431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 234573422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
-  range: 5
 --- !u!1 &277396592
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +461,6 @@ GameObject:
   - component: {fileID: 529865919}
   - component: {fileID: 529865918}
   - component: {fileID: 529865917}
-  - component: {fileID: 529865921}
   m_Layer: 0
   m_Name: test
   m_TagString: Untagged
@@ -569,24 +554,12 @@ Transform:
   m_GameObject: {fileID: 529865916}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.6, y: 2.09, z: 1.30496}
+  m_LocalPosition: {x: 9.73, y: 2.09, z: 6.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &529865921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 529865916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 625f95d58453a6f478d4aa7741c67408, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
 --- !u!1 &576005947
 GameObject:
   m_ObjectHideFlags: 0
