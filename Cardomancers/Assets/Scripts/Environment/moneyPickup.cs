@@ -9,10 +9,11 @@ public class moneyPickup : MonoBehaviour
     public float respawnTime = 15f;
     public UnityEvent Respawn = new UnityEvent();
     public UnityEvent OnCollect = new UnityEvent();
+    public InteractableObject_SO is_so;
 
     // money on here for testing put on SO or sum later
     
-    void Update()
+    public void Update()
     {
         if (respawn)
         {
@@ -27,10 +28,18 @@ public class moneyPickup : MonoBehaviour
     }
     // i dont remember how unity events actually work bruh
 
-    void OnCollisionEnter(Collision collision)
+    /* void OnCollisionEnter(Collision collision)
     {
         if (!collision.collider.CompareTag("Player")) return;
         print (collision);
+        money++;
+        Debug.Log ($"money: {money}");
+        respawn = true;
+        OnCollect.Invoke();
+    } */
+
+    public void getMoney()
+    {
         money++;
         Debug.Log ($"money: {money}");
         respawn = true;
