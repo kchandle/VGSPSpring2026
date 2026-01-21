@@ -1,17 +1,17 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class PlayerInteractionSO : MonoBehaviour
+public class PlayerInteraction : MonoBehaviour
 {
-    [SerializeField]InteractableObject_SO inter;
+    [SerializeField] InteractableObject inter;
 
     // public InteractableObject interactableObject;
     public InputActionReference interact;
 
     void Awake()
     {
-        inter = GetComponent<InteractableObject_SO>();
+        inter = GetComponent<InteractableObject>();
     }
 
     public void InteractKey(InputAction.CallbackContext obj)
@@ -23,5 +23,5 @@ public class PlayerInteractionSO : MonoBehaviour
     // {
 
     // }
-}
+}*/
 

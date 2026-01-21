@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 48474812}
   - component: {fileID: 48474811}
   - component: {fileID: 48474815}
-  - component: {fileID: 48474816}
+  - component: {fileID: 48474817}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -228,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 48474810}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.77, y: 0.40893, z: -4.26}
+  m_LocalPosition: {x: 2.5, y: 0, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -278,7 +278,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &48474816
+--- !u!114 &48474817
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,39 +287,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 48474810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 136d45e620239de4ebc3a42bbbbaa5b8, type: 3}
+  m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject_SO
-  name: 
-  interactable:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48474815}
-        m_TargetAssemblyTypeName: moneyPickup, Assembly-CSharp
-        m_MethodName: GetMoney
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &447383763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: InteractAction/InteractKey
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_ActionId: 4a8358c3-a038-4491-b787-2dde87d20d61
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
+  inter: {fileID: 0}
+  interact: {fileID: 0}
+  range: 5
 --- !u!1 &473442482
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,7 +649,7 @@ Transform:
   m_GameObject: {fileID: 2027733594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.46325, y: 0, z: -1.66522}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -691,11 +664,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2027733594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 856baa56d250aaa40bb61ba6f92b4119, type: 3}
+  m_Script: {fileID: 11500000, guid: 136d45e620239de4ebc3a42bbbbaa5b8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionSO
-  inter: {fileID: 11400000, guid: 23a958b031253e249a85dd821e02f7d5, type: 2}
-  interact: {fileID: 447383763}
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  name: 
+  interactable:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2027733597}
+        m_TargetAssemblyTypeName: UnityEngine.MeshRenderer, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
