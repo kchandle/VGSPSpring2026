@@ -23,7 +23,7 @@ public class CharacterControllerMovement : MonoBehaviour
 	  }
 	  if(_characterController.isGrounded && jumping)
 	  {
-			  inputDirection.y = jumpIntensity;
+			  inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity);
 	  }
 
 	  Vector3 finalMovement = (inputDirection * characterSpeed); // combines all factors

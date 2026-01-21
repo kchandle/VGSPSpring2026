@@ -4,8 +4,10 @@ using UnityEngine;
 public class CharacterControllerMovement : MonoBehaviour
 {
     public float characterSpeed = 1f; 
-    public Vector3 inputDirection; //Vector3 from another script that gives the direction the character will move in 
-    [SerializeField] private float gravity = 9.8f; // intensity of gravity
+	//Vector3 from another script that gives the direction the character will move in 
+    public Vector3 inputDirection; 
+    // intensity of gravity MUST be 9.8f so it is realistic
+    [SerializeField] private float gravity = 9.8f; 
 	[SerializeField] private float jumpIntensity = 5f;
 	public bool jumping;
     private CharacterController _characterController;
@@ -19,18 +21,23 @@ public class CharacterControllerMovement : MonoBehaviour
     {
 	  if(!_characterController.isGrounded)
 	  {
-			  inputDirection.y -= gravity * Time.deltaTime; //accelerate the player downward when they are not on the ground;
+              //accelerate the player downward when they are not on the ground;
+			  inputDirection.y -= gravity * Time.deltaTime; 
 	  }
 	  if(_characterController.isGrounded && jumping)
 	  {
-			  inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity);
+              //evil physics equation
+			  inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
 	  }
 
-	  Vector3 finalMovement = (inputDirection * characterSpeed); // combines all factors
+	  // combines all factors
+	  Vector3 finalMovement = (inputDirection * characterSpeed);
 
-	  _characterController.Move(finalMovement * Time.deltaTime); // moves the player
+	  // moves the player
+	  _characterController.Move(finalMovement * Time.deltaTime); 
 
-	  jumping = false;
+      //don't fly away
+	  jumping = false; 
     }
 	  
 }
