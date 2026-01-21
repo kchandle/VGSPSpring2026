@@ -26,7 +26,7 @@ public class CharacterControllerMovement : MonoBehaviour
 	  }
 	  if(_characterController.isGrounded && jumping)
 	  {
-              //evil physics equation
+              //sets the velocity such that it goes up as high as the jump intensity is set
 			  inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
 	  }
 
