@@ -1,4 +1,4 @@
-//start time: 8:46
+/*//start time: 8:46
 //end time: 9:25
 
 using System.Collections;
@@ -58,4 +58,4 @@ public class PlayerMovement : MonoBehaviour
     {
         return jumpForce;
     }
-}
+}*/

@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         if(value.isPressed && movement.grounded)
         {
+            //Debug.Log("jumping");
             //reset vertical velocity for better jumps
             movement.GetComponent<Rigidbody>().linearVelocity = new Vector3(movement.GetComponent<Rigidbody>().linearVelocity.x, 0, movement.GetComponent<Rigidbody>().linearVelocity.z);
 
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
-        //Debug.Log(moveOutput);
+        //Debug.Log("moving");
     }
 
 
@@ -64,4 +65,4 @@ public class PlayerController : MonoBehaviour
         Vector3 right = Camera.main.transform.right * moveInput.x; 
         movement.moveDirection = forward + right;
     }
-}
+}*/
