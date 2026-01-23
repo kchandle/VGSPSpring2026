@@ -16,29 +16,29 @@ public class Inventory : MonoBehaviour
 	// cards that can be used when in battle
 	[SerializeField] private List<InventoryCard> deck;
 	// total size of inventory
-	[SerializeField] private int inventorySize;
+	[SerializeField] private int inventoryLength;
 	// amount of cards the player is alowed to have in their deck at one time
-	[SerializeField] private int deckSize;
+	[SerializeField] private int deckLength;
 
 	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
 
 	public bool AddCardToInventory(Card card)
 	{
 		// stops the method and returns false if the inventory is full
-		if(inventory.Count >= deckSize) return false;
+		if(inventory.Count >= inventoryLength) return false;
 		// very temporary
 		newInventoryCard = new InventoryCard(card);
 		// add new card to deck
 		inventory.Add(newInventoryCard);
 		// automatically add to deck if possible
-		if(deck.Count >= deckSize) AddCardToDeck(newInventoryCard);
+		if(deck.Count >= deckLength) AddCardToDeck(newInventoryCard);
 		return true;
 	}
 
 	public bool AddCardToDeck(InventoryCard card)
 	{
 		//don't add a card to the deck if the deck is full
-		if(deck.Count >= deckSize) return false;
+		if(deck.Count >= deckLength) return false;
 		// stop if the inventory doesn't contain the card
 		if(!inventory.Contains(card)) return false;
 		deck.Add(card);
@@ -47,11 +47,11 @@ public class Inventory : MonoBehaviour
 
 	public void RemoveCardFromInventory(InventoryCard card)
 	{
-			deck.Remove(card);
+		deck.Remove(card);
 	}
 
 	public void RemoveCardFromDeck(InventoryCard card)
 	{
-			deck.Remove(card);
+		deck.Remove(card);
 	}
 }
