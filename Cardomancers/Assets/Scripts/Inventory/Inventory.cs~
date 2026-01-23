@@ -1,0 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Inventory : MonoBehaviour
+{
+	// the amount of money the player has
+    private int money;
+	// canvas for the inventory ui
+	[SerializeField] private Canvas canvas;
+	// prefab of the card
+	[SerializeField] private GameObject inventoryCardPrefab;
+
+}
