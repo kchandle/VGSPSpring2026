@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI titleElement; // the current text box the dialogue is being loaded into
     public Image talkspriteImage; // the image element where the talksprite will be loaded
 
-    public InputActionAsset inputActions;
+    public InputActionAsset inputActions; //The set of actions the player can perform, reference used to react to player input
     InputAction nextAction;
 
     public DialogueSO dialogue; // current dialogue SO
@@ -69,11 +69,8 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // private void OnTriggerEnter2D(Collider2D collision)
-    // {
-    //     canvas.SetActive(true);
-    //     StartDialogue();
-    // }
+    
+
 
     // Starts a Dialogue scene based 
     public void StartDialogue(DialogueSO newDialogue)
@@ -146,6 +143,16 @@ public class DialogueManager : MonoBehaviour
         }
         return closestObject;
     }
-}
+
+        #region Depriecated Methods
+
+        // private void OnTriggerEnter2D(Collider2D collision)
+        // {
+        //     canvas.SetActive(true);
+        //     StartDialogue();
+        // }
+
+        #endregion
+    }
 
 }
