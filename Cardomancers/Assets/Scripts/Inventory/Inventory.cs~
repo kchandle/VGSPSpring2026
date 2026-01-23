@@ -39,8 +39,8 @@ public class Inventory : MonoBehaviour
 	{
 		//don't add a card to the deck if the deck is full
 		if(deck.Count >= deckSize) return false;
-		// does a binary search to see if the card is in the inventory
-		if(inventory.BinarySearch(card) < 0) return false;
+		// stop if the inventory doesn't contain the card
+		if(!inventory.Contains(card)) return false;
 		deck.Add(card);
 		return true;
 	}

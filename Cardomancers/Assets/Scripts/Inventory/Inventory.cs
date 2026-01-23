@@ -45,4 +45,13 @@ public class Inventory : MonoBehaviour
 		return true;
 	}
 
+	public void RemoveCardFromInventory(InventoryCard card)
+	{
+			deck.Remove(card);
+	}
+
+	public void RemoveCardFromDeck(InventoryCard card)
+	{
+			deck.Remove(card);
+	}
 }
