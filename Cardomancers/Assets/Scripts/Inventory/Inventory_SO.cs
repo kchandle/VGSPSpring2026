@@ -14,7 +14,7 @@ public class Inventory_SO : ScriptableObject
 			get => inventory;
 	}
 
-	public List<InventoryCard> Deck;
+	public List<InventoryCard> Deck
 	{
 			get => deck;
 	}
