@@ -6,13 +6,15 @@ using UnityEngine.InputSystem;
 //This script is attached to an Empty GameObject called CameraBase which is a child of the player.
 //The Main Camera is a child of the CameraBase placed at x: 0 y: 0 z: -0.6
 
+
+//This script controls movement of the camera
 public class PlayerCamera : MonoBehaviour
 {   //Controls the rotation of the Camerabase
     Vector3 rotation;
 
     //Values are changeable in editor, not during gameplay
-    public float pitchRate = 90f;
-    public float yawRate = 90f;
+    public float pitchRate = 45f;
+    public float yawRate = 45f;
 
     //Getter/setters that are separate from the above two variables. These are changed by mouse input.
     public float PitchInput{get;set;}
@@ -62,6 +64,5 @@ public class PlayerCamera : MonoBehaviour
         PitchInput = lookInput.y;
         YawInput = lookInput.x;
     }
-
     
 }
