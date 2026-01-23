@@ -13,7 +13,7 @@ public class Card_SO : ScriptableObject
     // Flavor text used for descriping the card
     
     BattleEffect[] hackEffects;
-    // Needs battle effect to be done first (im such a fat fucking chud)
+    // Needs battle effect to be done first
     public ParticleSystem particleSystem;
     // Used by damage scripts to play effect upon hit
 }
