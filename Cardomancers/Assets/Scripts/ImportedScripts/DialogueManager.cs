@@ -16,7 +16,7 @@ namespace DialogueScripts
 
 public class DialogueManager : MonoBehaviour
 {
-
+    public static DialogueManager instance; // singleton instance
     public Animator animator; // the current animator changing the talksprite
 
 
@@ -44,12 +44,25 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     { 
         nextAction = inputActions.FindActionMap("Keyboard").FindAction("UIInteract");  
+        // Check if an instance already exists
+        if (instance != null && instance != this)
+        {
+            // If so, destroy this new object to ensure only one instance remains
+            Destroy(this.gameObject);
+            return;
+        }
+
+        // Otherwise, set the instance to this object
+        instance = this;
+
+        // Optional: Keep the object alive when loading new scenes
+        DontDestroyOnLoad(this.gameObject);
     }
 
-    void Start()
-    {
-        StartDialogue(dialogue);
-    }
+    //void Start()
+    //{
+    //    StartDialogue(dialogue);
+    //}
 
     // Update is called once per frame
     void Update()

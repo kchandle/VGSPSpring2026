@@ -137,60 +137,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &977904019931341420
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2665116213303583794}
-  - component: {fileID: 5125676717737982235}
-  m_Layer: 0
-  m_Name: DialogueManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2665116213303583794
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 977904019931341420}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 376257827382704939}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5125676717737982235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 977904019931341420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c4599b1ed72c64685ce9102ad42c0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueScripts.DialogueManager
-  animator: {fileID: 7279146431357542517}
-  textDelay: 0
-  reactive: 0
-  canvas: {fileID: 4217250003304706003}
-  textElement: {fileID: 5084784337856552544}
-  titleElement: {fileID: 8283461280315372233}
-  talkspriteImage: {fileID: 2848244003762869042}
-  inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
-  dialogue: {fileID: 11400000, guid: ae00827df36e3aa49a22e5cb7526d353, type: 2}
-  playerTransform: {fileID: 0}
 --- !u!1 &1547551461668451504
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 376257827382704939}
+  - component: {fileID: 1713888691432740484}
   m_Layer: 0
   m_Name: DialogueScreen
   m_TagString: Untagged
@@ -712,6 +659,27 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8638353856685356708}
-  - {fileID: 2665116213303583794}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1713888691432740484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673622593982134315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c4599b1ed72c64685ce9102ad42c0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueScripts.DialogueManager
+  animator: {fileID: 7279146431357542517}
+  textDelay: 0
+  reactive: 0
+  canvas: {fileID: 4217250003304706003}
+  textElement: {fileID: 5084784337856552544}
+  titleElement: {fileID: 8283461280315372233}
+  talkspriteImage: {fileID: 2848244003762869042}
+  inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
+  dialogue: {fileID: 11400000, guid: ae00827df36e3aa49a22e5cb7526d353, type: 2}
+  playerTransform: {fileID: 0}
