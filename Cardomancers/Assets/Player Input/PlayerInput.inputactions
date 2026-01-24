@@ -3,7 +3,7 @@
     "name": "PlayerInput",
     "maps": [
         {
-            "name": "Keyboard",
+            "name": "MapWalking",
             "id": "ecc30e59-1f62-4a9a-bebb-e1c5e8df6897",
             "actions": [
                 {
@@ -113,7 +113,72 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Battle",
+            "id": "e5392a8b-511f-4198-82e2-3cfae75964b2",
+            "actions": [
+                {
+                    "name": "DragEnd",
+                    "type": "Button",
+                    "id": "0a7f7b27-a60f-4523-92e7-b05a04256833",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DragStart",
+                    "type": "Button",
+                    "id": "fa46a464-9273-4820-b1ef-b126764387f6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bd543867-5bad-49d1-a437-401d9964a47c",
+                    "path": "<Pointer>/press",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2c73726-b21e-49e2-b8ca-880ad48aa782",
+                    "path": "<Pointer>/press",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Keyboard and Mouse",
+            "bindingGroup": "Keyboard and Mouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

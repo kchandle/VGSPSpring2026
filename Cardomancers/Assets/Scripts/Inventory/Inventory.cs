@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
@@ -17,17 +19,31 @@ public class Inventory : MonoBehaviour
 	[SerializeField] private List<InventoryCard> deck;
 	// total size of inventory
 	[SerializeField] private int inventoryLength;
-	// amount of cards the player is alowed to have in their deck at one time
+	// amount of cards the player is allowed to have in their deck at one time
 	[SerializeField] private int deckLength;
 
 	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
 
+	// passing in a Card gameobject
 	public bool AddCardToInventory(Card card)
 	{
 		// stops the method and returns false if the inventory is full
 		if(inventory.Count >= inventoryLength) return false;
 		// very temporary
-		newInventoryCard = new InventoryCard(card);
+		InventoryCard newInventoryCard = new InventoryCard(card);
+		// add new card to deck
+		inventory.Add(newInventoryCard);
+		// automatically add to deck if possible
+		if(deck.Count >= deckLength) AddCardToDeck(newInventoryCard);
+		return true;
+	}
+
+		public bool AddCardToInventory(Card_SO card)
+	{
+		// stops the method and returns false if the inventory is full
+		if(inventory.Count >= inventoryLength) return false;
+		// very temporary
+		InventoryCard newInventoryCard = new InventoryCard(card);
 		// add new card to deck
 		inventory.Add(newInventoryCard);
 		// automatically add to deck if possible
@@ -47,7 +63,8 @@ public class Inventory : MonoBehaviour
 
 	public void RemoveCardFromInventory(InventoryCard card)
 	{
-		deck.Remove(card);
+		if (deck.Contains(card)) RemoveCardFromDeck(card);
+		inventory.Remove(card);
 	}
 
 	public void RemoveCardFromDeck(InventoryCard card)
