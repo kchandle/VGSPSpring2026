@@ -1,11 +1,28 @@
 using UnityEngine;
 
+public enum DamageType
+{
+    
+Ice,
+Fire,
+Water,
+Earth,
+Wind,
+Light,
+Lightning,
+Poison,
+Dark,
+DamageBlock,
+Psychic,
+None
+}
+
 public class BattleEffect : MonoBehaviour 
 {
     // The amount of damage/heal/stun/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
-//    public DamageType damageType;  NOT IMPLEMENTED YET
+    public DamageType damageType; 
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
  

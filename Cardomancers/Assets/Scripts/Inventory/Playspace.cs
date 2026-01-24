@@ -84,7 +84,7 @@ public class Playspace : MonoBehaviour
             playItems[i].position = position;
             }
 
-    }
+    } 
     
     // checks if a Vector3 positions it within the PlayArea's bounds
     public bool InPlayArea(Vector3 position)

@@ -20,7 +20,7 @@ public class PlayItem : MonoBehaviour
     }
     void Start(){
         position = transform.position;
-    }
+    } 
 
     // Move the PlayItem towards its target position at all times
     void Update()
