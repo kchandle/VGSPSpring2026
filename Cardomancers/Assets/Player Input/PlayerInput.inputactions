@@ -119,18 +119,9 @@
             "id": "e5392a8b-511f-4198-82e2-3cfae75964b2",
             "actions": [
                 {
-                    "name": "DragEnd",
+                    "name": "Drag",
                     "type": "Button",
                     "id": "0a7f7b27-a60f-4523-92e7-b05a04256833",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "DragStart",
-                    "type": "Button",
-                    "id": "fa46a464-9273-4820-b1ef-b126764387f6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -142,21 +133,38 @@
                     "name": "",
                     "id": "bd543867-5bad-49d1-a437-401d9964a47c",
                     "path": "<Pointer>/press",
-                    "interactions": "Press(behavior=1)",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "DragEnd",
+                    "groups": ";Keyboard and Mouse",
+                    "action": "Drag",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Inventory",
+            "id": "87fbec17-dd65-443c-b710-2ec5d1d49915",
+            "actions": [
+                {
+                    "name": "Drag",
+                    "type": "Button",
+                    "id": "25ae1478-7eea-415e-a3ff-5e9ddff99b42",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "d2c73726-b21e-49e2-b8ca-880ad48aa782",
+                    "id": "1875cd90-cb32-47d6-910c-9179db996002",
                     "path": "<Pointer>/press",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "DragStart",
+                    "groups": ";Keyboard and Mouse",
+                    "action": "Drag",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

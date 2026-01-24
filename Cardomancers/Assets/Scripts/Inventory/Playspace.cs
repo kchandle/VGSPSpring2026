@@ -4,20 +4,20 @@ using System.Collections.Generic;
 public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
-    public float focusOffset = 0.1f; // how much the focusTarget will be offset from non-focused PlayItem's
+    public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
 
     List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
 
 //PlaySpaces that this PlaySpace can accept PlayItems from
 // For a PlayItem to move into this playspace, it must be FROM a PlaySpace in this list
-    List<PlaySpace> allowedDonors = new List<PlaySpace>; 
+    public List<Playspace> allowedDonors = new List<Playspace>(); 
 
 
 
     // Width and padding for the horizontal layout
     // alters how the PlayItems are spaced out
-    public float width = 1f;
-    public float padding = 0.5f;
+    public float width = 30f;
+    public float padding = 15f;
 
     BoxCollider2D playArea;
 
