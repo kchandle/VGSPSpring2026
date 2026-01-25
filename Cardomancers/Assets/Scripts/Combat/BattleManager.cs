@@ -23,6 +23,7 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region UI Elements
+    public Canvas battleUI; // the canvas for battle UI elements
     public Canvas winScreen; // the canvas displayed when the player wins
     public Canvas loseScreen; // the canvas displayed when the player loses
     #endregion
@@ -31,6 +32,7 @@ public class BattleManager : MonoBehaviour
     public BattleState battleState; // current state of the battle
 
     public InputActionAsset inputActions; // reference to the input system
+    public CardDragInput cardDragInput; // reference to the card drag input script
 
     public enum BattleState
     {
@@ -84,9 +86,22 @@ public class BattleManager : MonoBehaviour
 
         //Shuffle and arrange both player and enemy decks
 
+        SetPlayspaces();
+
 
         StartCoroutine(TurnManager());
         battleState = BattleState.PLAYER_TURN;
+    }
+
+    void SetPlayspaces()
+    {
+        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float enemySpacing = canvasWidth / (battle.enemies.Length);
+
+        foreach (Enemy_SO e in battle.enemies)
+        {
+            //e.
+        }
     }
 
 
@@ -111,7 +126,7 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public void StartPlayerTurn()
+    public IEnumerable StartPlayerTurn()
     {
         OnBattleStart.Invoke();
         PlayerTurn.Invoke();
@@ -119,11 +134,10 @@ public class BattleManager : MonoBehaviour
 
         //Display cards
 
-        // // Enables player drage and drop input if not already enabled
-        //if (!inputActions.FindActionMap("DragAndDrop").enabled)
-        //{
-        //    inputActions.FindActionMap("DragAndDrop").Enable();
-        //}
+        // // Enables player drage and drop script koxskc
+        cardDragInput.enabled = true;
+        yield return StartCoroutine(cardDragInput.DragDrop());
+
 
         // Start Player turn coroutine to handle playing cards
 
