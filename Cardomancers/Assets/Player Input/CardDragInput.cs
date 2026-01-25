@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using System.Collections;
 
 public class CardDragInput : MonoBehaviour
 {
@@ -41,16 +43,16 @@ public class CardDragInput : MonoBehaviour
 
     void Start()
     {
-        //  TEST STUFF BEGIN - WILL BE REMOVED LATER
-        GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
-        AddActivePlayspace(testPlayspace1);
-        AddActivePlayspace(testPlayspace2);
-        AddActivePlayspace(testPlayspace3);
+        ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
+        //GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
+        //AddActivePlayspace(testPlayspace1);
+        //AddActivePlayspace(testPlayspace2);
+        //AddActivePlayspace(testPlayspace3);
 
-        testPlayspace1.NewPlayItem(testPlayItemPrefab);
-        testPlayspace2.NewPlayItem(testPlayItemPrefab);
-        testPlayspace2.NewPlayItem(testPlayItemPrefab);
-        // TEST END
+        //testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        //testPlayspace2.NewPlayItem(testPlayItemPrefab);
+        //testPlayspace2.NewPlayItem(testPlayItemPrefab);
+        //// TEST END
 
 
     }
@@ -72,86 +74,89 @@ public class CardDragInput : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public IEnumerator DragDrop()
     {
-        // get player mousePosition;
-        Vector3 mousePosition = Pointer.current.position.ReadValue();   
-        //mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         
-        mousePosition.z = 0f;
-        //print(mousePosition);
+            // get player mousePosition;
+            Vector3 mousePosition = Pointer.current.position.ReadValue();
+            //mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        // get the current focusTarget (Playitem closests to the mouse INSIDE the playspace they are hovering over)
-        PlayItem focusTarget;
-        if (isDragging == false)
-        {
-                 foreach(Playspace p in activePlayspaces)
+            mousePosition.z = 0f;
+            //print(mousePosition);
+
+            // get the current focusTarget (Playitem closests to the mouse INSIDE the playspace they are hovering over)
+            PlayItem focusTarget;
+            if (isDragging == false)
             {
-                // try to get focusTarget in Playspace p
-                focusTarget = p.GetNearestPlayItem(mousePosition);
-                p.focusTarget = focusTarget;
-                // For there to be a valid focusTarget, the player must be hovering over p and p must contain Playitems
-                // if there is a valid focusTarget in Playspace p, stop looking for a focusTarget and set dragplaySpace to p
-                if(focusTarget != null)
-                {
-                    dragPlayspace = p;
-                    break;
-                } else // if no valid focusTarget, check the new active Playspace 
-                {
-                    continue;
-                }
-            }
-        }
-   
-
-        if (Pointer.current.press.IsPressed() && isDragging == true && dragPlayspace)
-        {
-            dragPlayspace.SetDragTarget(dragTarget, mousePosition);
-        }
-
-        if (Pointer.current.press.wasPressedThisFrame)
-        { 
-            print("you clicked");
-           
-            if (isDragging == false && dragPlayspace != null)
-            {
-                 // get a DragTarget
-                dragTarget = dragPlayspace.GetNearestPlayItem(mousePosition);
-                isDragging = true;
-                dragPlayspace.SetDragTarget(dragTarget, mousePosition);
-            } 
-        }
-
-        if (Pointer.current.press.wasReleasedThisFrame)
-        {
-            // if the player was dragging a PlayItem, attempt to move it to a new playSpace
-            if (dragTarget)
-            {
-                // Gets the Playspace component of the dragTargets parent Playspace
-
-                GameObject dragTargetParent = dragTarget.gameObject.transform.parent.gameObject;
-                // checking to see which playSpace, if any, the player released the drag target into
                 foreach (Playspace p in activePlayspaces)
                 {
-                    
-                    // Conditions to successfully move a dragtarget to a new playspace
-                    // Player must be hovering their mouse over the New Playspace
-                    // New Playspace must not be the current parent of the dragTarget
-                    if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
+                    // try to get focusTarget in Playspace p
+                    focusTarget = p.GetNearestPlayItem(mousePosition);
+                    p.focusTarget = focusTarget;
+                    // For there to be a valid focusTarget, the player must be hovering over p and p must contain Playitems
+                    // if there is a valid focusTarget in Playspace p, stop looking for a focusTarget and set dragplaySpace to p
+                    if (focusTarget != null)
                     {
-                        // move dragTarget from it's parent to Playspace p
-                        MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                        dragPlayspace = p;
+                        break;
+                    } else // if no valid focusTarget, check the new active Playspace 
+                    {
+                        continue;
                     }
                 }
-            
-                dragTarget = null;
+            }
 
+
+            if (Pointer.current.press.IsPressed() && isDragging == true && dragPlayspace)
+            {
+                dragPlayspace.SetDragTarget(dragTarget, mousePosition);
+            }
+
+            if (Pointer.current.press.wasPressedThisFrame)
+            {
+                print("you clicked");
+
+                if (isDragging == false && dragPlayspace != null)
+                {
+                    // get a DragTarget
+                    dragTarget = dragPlayspace.GetNearestPlayItem(mousePosition);
+                    isDragging = true;
+                    dragPlayspace.SetDragTarget(dragTarget, mousePosition);
+                }
+            }
+
+            if (Pointer.current.press.wasReleasedThisFrame)
+            {
+                // if the player was dragging a PlayItem, attempt to move it to a new playSpace
+                if (dragTarget)
+                {
+                    // Gets the Playspace component of the dragTargets parent Playspace
+
+                    GameObject dragTargetParent = dragTarget.gameObject.transform.parent.gameObject;
+                    // checking to see which playSpace, if any, the player released the drag target into
+                    foreach (Playspace p in activePlayspaces)
+                    {
+
+                        // Conditions to successfully move a dragtarget to a new playspace
+                        // Player must be hovering their mouse over the New Playspace
+                        // New Playspace must not be the current parent of the dragTarget
+                        if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
+                        {
+                            // move dragTarget from it's parent to Playspace p
+                            MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                            yield break;
+                    }
+                    }
+
+                    dragTarget = null;
+
+                }
+
+                isDragging = false;
+                dragPlayspace = null;
             }
         
-            isDragging = false;
-            dragPlayspace = null;
-        }
-
+        yield return null;
     }
 
 // Empties the activePlayspaces list  
