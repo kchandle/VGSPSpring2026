@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class Playspace : MonoBehaviour
 {
@@ -21,14 +23,17 @@ public class Playspace : MonoBehaviour
 
 
     // wide each spot for a playitem is
-    public float width = 30f;
+    public float width = 10f;
 
     // how tall each spot for playitem is (only used by GridLayout)
-    public float height = 70f;
+    public float height = 10f;
 
     // how much space between spots
-    public float paddingX = 15f;
-    public float paddingY = 10f;
+    public float paddingX = 1f;
+    public float paddingY = 1f;
+
+    public float zOffset = .1f; // how much the playItems are offset from the Playspace on the z axis
+
 
     BoxCollider2D playArea;
 
@@ -37,11 +42,6 @@ public class Playspace : MonoBehaviour
     
 
     void Awake() => playArea = GetComponent<BoxCollider2D>();
-
-    void Start()
-    {
-
-    }
 
     void Update()
     {
@@ -54,22 +54,43 @@ public class Playspace : MonoBehaviour
             case false: GridLayout(targetIndex); break;
         }
 
-        if (dragTarget) dragTarget.position = dragTargetPosition;
+        if (dragTarget) dragTarget.position = new Vector3 (dragTargetPosition.x, dragTargetPosition.y, dragTarget.position.z);
 
         focusTarget = null;
         dragTarget = null;
     }
 
     // Create a new PlayItem in this playspace
+
+    Vector3 defaultPosition = new Vector3(0,0,0);
+
+    // default
     public GameObject NewPlayItem(GameObject prefab)
     {
-        print("wasup");
         GameObject newPlayItem = Instantiate(prefab);
         newPlayItem.transform.SetParent(transform);
 
         playItems.Add(newPlayItem.GetComponent<PlayItem>());
         return newPlayItem;
     }
+
+
+        // without position
+        public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO){
+
+        print("Spawning this Card: " + cardSO.name);
+        GameObject newPlayItem = Instantiate(prefab);
+        newPlayItem.transform.SetParent(transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<Card>().CardSO = cardSO;
+
+        return newPlayItem;
+    }
+
 
     // Destroys a specific PlayItem in this PlaySpace
     public void DestroyPlayItem(PlayItem playItem)
@@ -98,7 +119,7 @@ public class Playspace : MonoBehaviour
                     else if (i == targetIndex + 1) position += Vector3.right * focusOffset;
                     else if (i == targetIndex) position += Vector3.up * focusOffset;
                 }
-                
+            position.z += zOffset;
             playItems[i].position = position;
             }
 
@@ -113,6 +134,7 @@ public class Playspace : MonoBehaviour
         // 1. Calculate how many rows we need
         // We cast to float ensures we get a decimal (e.g., 10/3 = 3.33)
         // CeilToInt rounds 3.33 up to 4.
+
         int rowCount = Mathf.CeilToInt((float)playItems.Count / columns);
         
 
@@ -142,7 +164,7 @@ public class Playspace : MonoBehaviour
             // Apply position
             if (playItems[i] != null)
             {
-                playItems[i].position = new Vector3(xPos, yPos, 0);
+                playItems[i].position = new Vector3(xPos, yPos, transform.position.z - (zOffset * i));
             }
         }
     }
@@ -155,23 +177,48 @@ public class Playspace : MonoBehaviour
 
 // If the player is hovering over this playspace, get the playItem closest to the player's cursor
 // and highlight it
-    public PlayItem GetNearestPlayItem(Vector3 position)
-    {
-        if (!InPlayArea(position)) return null;
-        PlayItem target = null;
-        float minDistance = 1000f;
+private PlayItem currentTarget = null;
+public float selectionBuffer = 0.4f; // Adjust this "stickiness" value as needed
 
-        foreach (PlayItem p in playItems)
+// Function edits generated with Gemini
+public PlayItem GetNearestPlayItem(Vector3 position)
+{
+    if (!InPlayArea(position)) return null;
+
+    PlayItem nearest = null;
+    // Use sqrMagnitude for better performance (avoids expensive square root)
+    float minSqrDistance = float.MaxValue;
+
+    // 1. Find the absolute closest item
+    foreach (PlayItem p in playItems)
+    {
+        float sqrDistance = (position - p.transform.position).sqrMagnitude;
+        if (sqrDistance < minSqrDistance)
         {
-            float distance = (position - p.transform.position).magnitude;
-            if (distance <= minDistance)
-            {
-                minDistance = distance;
-                target = p;
-            }
+            minSqrDistance = sqrDistance;
+            nearest = p;
         }
-        return target;
     }
+
+    // Sticky Target: Function favors previously selected target to stop visual jittering
+    if (currentTarget != null && nearest != null && currentTarget != nearest)
+    {
+        float distToCurrent = (position - currentTarget.transform.position).magnitude;
+        float distToNew = (position - nearest.transform.position).magnitude;
+
+        // Only switch if the new item is significantly closer than the current one
+        if (distToNew < distToCurrent - selectionBuffer)
+        {
+            currentTarget = nearest;
+        }
+    }
+    else
+    {
+        currentTarget = nearest;
+    }
+
+    return currentTarget;
+}
 
     // Sets the DragTarget. Can be used by other scripts for drag functionality
     public void SetDragTarget(PlayItem dragTarget, Vector3 dragTargetPosition)
@@ -179,5 +226,6 @@ public class Playspace : MonoBehaviour
         this.dragTarget = dragTarget;
         this.dragTargetPosition = dragTargetPosition;
     }
+
 
 }

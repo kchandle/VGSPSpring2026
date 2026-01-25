@@ -16,7 +16,8 @@ public class PlayItem : MonoBehaviour
     // scaling
     void Awake()
     {
-        //transform.localScale = new Vector3(1, 1, 1);
+        transform.localScale = new Vector3(1, 1, 1);
+        //transform.position = new Vector3(0,0,0);
     }
     void Start(){
         position = transform.position;
@@ -26,6 +27,7 @@ public class PlayItem : MonoBehaviour
     void Update()
     {
         Vector3 targetPosition = position + offset;
+        //targetPosition.z = 0f;
         float distance = (targetPosition - transform.position).magnitude;
         float moveDistance = moveSpeed * distance * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveDistance);
