@@ -31,6 +31,9 @@ public class BattleManager : MonoBehaviour
     public Battle_SO battle; // current battle SO passed in when battlestart is called
     public BattleState battleState; // current state of the battle
 
+    public PlayerController playerController; // reference to the player controller
+    public GameObject playerspacePrefab; // prefab for the player's playspace
+
     public InputActionAsset inputActions; // reference to the input system
     public CardDragInput cardDragInput; // reference to the card drag input script
 
@@ -96,12 +99,19 @@ public class BattleManager : MonoBehaviour
     void SetPlayspaces()
     {
         float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
         float enemySpacing = canvasWidth / (battle.enemies.Length);
+        int i = 0;
 
         foreach (Enemy_SO e in battle.enemies)
         {
-            //e.
+            //GameObject enemyPrefab = e.prefab
+            //enemyPrefab = Instantiate(e.prefab, new Vector3(0+ (enemySpacing*i), (canvasHeight * 3/4) , 0), Quaternion.identity);
+            //enemyPrefab.transform.SetParent(battleUI.Gameobject, false);
+            i++;
         }
+
+        playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), (canvasHeight / 4), 0), Quaternion.identity);
     }
 
 
@@ -126,7 +136,7 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public IEnumerable StartPlayerTurn()
+    public void StartPlayerTurn()
     {
         OnBattleStart.Invoke();
         PlayerTurn.Invoke();
@@ -136,7 +146,8 @@ public class BattleManager : MonoBehaviour
 
         // // Enables player drage and drop script koxskc
         cardDragInput.enabled = true;
-        yield return StartCoroutine(cardDragInput.DragDrop());
+
+        //cardDragInput.DragDropActive = true;
 
 
         // Start Player turn coroutine to handle playing cards
@@ -150,13 +161,15 @@ public class BattleManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
-        // // Disables player drag and drop input if not already disabled
-        //if (inputActions.FindActionMap("DragAndDrop").enabled)
-        //{
-        //    inputActions.FindActionMap("DragAndDrop").Disable();
-        //}
+        // Disables player drag and drop input if not already disabled
+        
+        //cardDragInput.DragDropActive = false;
 
         //Check if enemy is out of cards
+        foreach (Enemy_SO enemy in battle.enemies)
+        {
+            //enemy.GameObject.GetComponent<Enemy>().ShuffleDeck();
+        }
 
         //Display cards
 
@@ -168,6 +181,21 @@ public class BattleManager : MonoBehaviour
 
         //On card raises played event: battleState = BattleState.PLAYER_TURN;
 
+    }
+
+    public void checkEndConditions()
+    {
+        //If player health <= 0, battleState = BattleState.LOST
+        //If all enemies health <= 0, battleState = BattleState.WON
+
+        //Change below functions to iterate through active enemies
+        foreach (Enemy_SO enemy in battle.enemies)
+        {
+            //if (enemy.currentHealth <= 0)
+            //{
+            //    battleState = BattleState.WON;
+            //}
+        }
     }
 
     public void EndBattle()
