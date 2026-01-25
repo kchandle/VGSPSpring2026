@@ -43,11 +43,21 @@ public class CardDragInput : MonoBehaviour
     {
         //  TEST STUFF BEGIN - WILL BE REMOVED LATER
         GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
+        
         AddActivePlayspace(testPlayspace1);
         AddActivePlayspace(testPlayspace2);
         AddActivePlayspace(testPlayspace3);
 
         testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+        testPlayspace1.NewPlayItem(testPlayItemPrefab);
+
         testPlayspace2.NewPlayItem(testPlayItemPrefab);
         testPlayspace2.NewPlayItem(testPlayItemPrefab);
         // TEST END

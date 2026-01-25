@@ -155,8 +155,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 532, y: -491}
-  m_SizeDelta: {x: 1000, y: 184.8}
+  m_AnchoredPosition: {x: 857.6, y: -491}
+  m_SizeDelta: {x: 389.4, y: 184.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &65447561
 BoxCollider2D:
@@ -221,8 +221,11 @@ MonoBehaviour:
   allowedDonors:
   - {fileID: 1583348570}
   - {fileID: 322077360}
+  horizontalLayout: 0
   width: 115
-  padding: 45
+  height: 10
+  paddingX: 15
+  paddingY: 10
 --- !u!114 &65447563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,11 +297,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Playspace
   focusTarget: {fileID: 0}
-  focusOffset: 0.1
+  focusOffset: 15
   allowedDonors:
   - {fileID: 1583348570}
-  width: 115
-  padding: 45
+  horizontalLayout: 0
+  width: 130
+  height: 90
+  paddingX: 15
+  paddingY: 20
 --- !u!61 &322077361
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -343,7 +349,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 567.6, y: 287}
+  m_Size: {x: 535, y: 514.2}
   m_EdgeRadius: 0
 --- !u!114 &322077362
 MonoBehaviour:
@@ -399,8 +405,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 309, y: -173}
-  m_SizeDelta: {x: 575.65, y: 300}
+  m_AnchoredPosition: {x: 314.7, y: -303.8}
+  m_SizeDelta: {x: 575.65, y: 546.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &325245328 stripped
 RectTransform:
@@ -615,7 +621,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534394300}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9161bc64208f37c47b8cec0560459aea, type: 3}
   m_Name: 
@@ -679,8 +685,11 @@ MonoBehaviour:
   allowedDonors:
   - {fileID: 65447562}
   - {fileID: 322077360}
+  horizontalLayout: 1
   width: 115
-  padding: 45
+  height: 10
+  paddingX: 15
+  paddingY: 10
 --- !u!61 &1583348571
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1082,7 +1091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2864986340668246043, guid: f016592c52cb61d4c9f24ce34d6528d5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 10.5
+      value: -23.19
       objectReference: {fileID: 0}
     - target: {fileID: 2864986340668246043, guid: f016592c52cb61d4c9f24ce34d6528d5, type: 3}
       propertyPath: m_SizeDelta.y
