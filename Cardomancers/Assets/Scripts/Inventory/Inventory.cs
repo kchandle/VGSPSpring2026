@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
-    [SerializeField] private int money;
+      [SerializeField] private int money;
 	// canvas for the inventory ui
 	[SerializeField] private Canvas canvas;
 	// prefab of the card
@@ -20,6 +20,18 @@ public class Inventory : MonoBehaviour
 	// amount of cards the player is alowed to have in their deck at one time
 	[SerializeField] private int deckLength;
 
+	//inventory_so reference
+	[SerializeField] private Inventory_SO inventorySO;
+
+	//Use inventory_so variables for the variables in here
+	private void Awake()
+	{
+	    inventory = inventorySO.inventory;
+	    deck = inventorySO.deck;
+	    inventoryLength = inventorySO.inventoryLength;
+	    deckLength = inventorySO.deckLength;
+	}
+
 	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
 
 	public bool AddCardToInventory(Card card)
@@ -32,6 +44,8 @@ public class Inventory : MonoBehaviour
 		inventory.Add(newInventoryCard);
 		// automatically add to deck if possible
 		if(deck.Count >= deckLength) AddCardToDeck(newInventoryCard);
+		// sync inventory with the SO
+		inventorySO.inventory = inventory;
 		return true;
 	}
 
@@ -42,16 +56,22 @@ public class Inventory : MonoBehaviour
 		// stop if the inventory doesn't contain the card
 		if(!inventory.Contains(card)) return false;
 		deck.Add(card);
+		// sync deck with the SO
+		inventorySO.deck = deck;
 		return true;
 	}
 
 	public void RemoveCardFromInventory(InventoryCard card)
 	{
 		deck.Remove(card);
+		// sync with SO
+		inventorySO.inventory = inventory;
 	}
 
 	public void RemoveCardFromDeck(InventoryCard card)
 	{
 		deck.Remove(card);
+		// sync with the SO
+		inventorySO.deck = deck;
 	}
 }
