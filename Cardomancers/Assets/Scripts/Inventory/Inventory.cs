@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
-      [SerializeField] private int money;
+    [SerializeField] private int money;
 	// canvas for the inventory ui
 	[SerializeField] private Canvas canvas;
 	// prefab of the card
@@ -26,10 +26,10 @@ public class Inventory : MonoBehaviour
 	//Use inventory_so variables for the variables in here
 	private void Awake()
 	{
-	    inventory = inventorySO.inventory;
-	    deck = inventorySO.deck;
-	    inventoryLength = inventorySO.inventoryLength;
-	    deckLength = inventorySO.deckLength;
+	    inventory = inventorySO.Inventory;
+	    deck = inventorySO.Deck;
+	    inventoryLength = inventorySO.InventoryLength;
+	    deckLength = inventorySO.DeckLength;
 	}
 
 	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
@@ -39,13 +39,13 @@ public class Inventory : MonoBehaviour
 		// stops the method and returns false if the inventory is full
 		if(inventory.Count >= inventoryLength) return false;
 		// very temporary
-		newInventoryCard = new InventoryCard(card);
+		InventoryCard newInventoryCard = new InventoryCard(card);
 		// add new card to deck
 		inventory.Add(newInventoryCard);
 		// automatically add to deck if possible
 		if(deck.Count >= deckLength) AddCardToDeck(newInventoryCard);
 		// sync inventory with the SO
-		inventorySO.inventory = inventory;
+		inventorySO.Inventory = inventory;
 		return true;
 	}
 
@@ -57,7 +57,7 @@ public class Inventory : MonoBehaviour
 		if(!inventory.Contains(card)) return false;
 		deck.Add(card);
 		// sync deck with the SO
-		inventorySO.deck = deck;
+		inventorySO.Deck = deck;
 		return true;
 	}
 
@@ -65,13 +65,13 @@ public class Inventory : MonoBehaviour
 	{
 		deck.Remove(card);
 		// sync with SO
-		inventorySO.inventory = inventory;
+		inventorySO.Inventory = inventory;
 	}
 
 	public void RemoveCardFromDeck(InventoryCard card)
 	{
 		deck.Remove(card);
 		// sync with the SO
-		inventorySO.deck = deck;
+		inventorySO.Deck = deck;
 	}
 }
