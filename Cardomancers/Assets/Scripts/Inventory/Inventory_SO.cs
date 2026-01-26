@@ -12,11 +12,19 @@ public class Inventory_SO : ScriptableObject
 	public List<InventoryCard> Inventory
 	{
 			get => inventory;
+			set
+			{
+			    inventory = value;
+			}
 	}
 
 	public List<InventoryCard> Deck
 	{
 			get => deck;
+			set
+			{
+			    deck = value;
+			}
 	}
 
 	public int DeckLength
