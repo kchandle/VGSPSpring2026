@@ -9,7 +9,7 @@ public class InventoryCard
 
     public InventoryCard(Card card)
     {
-        cardSO = card.cardSO;
+        cardSO = card.CardSO;
         hacks = card.hacks;
     }
 
