@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -31,11 +33,25 @@ public class BattleManager : MonoBehaviour
     public Battle_SO battle; // current battle SO passed in when battlestart is called
     public BattleState battleState; // current state of the battle
 
+    #region All the player scripts
+    public GameObject player; // reference to the player game object
     public PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
+    public Inventory playerInventory; // reference to the player's inventory
+    public float playerMaxHealth; // reference to the player's max health
+    public float playerCurrentHealth; // reference to the player's current health
+    #endregion
 
     public InputActionAsset inputActions; // reference to the input system
     public CardDragInput cardDragInput; // reference to the card drag input script
+
+    public List<InventoryCard> playerDeckCopyI; // copy of the player's deck at start of battle
+    public List<InventoryCard> playerDeckCopy; // copy of the player's deck for shuffling and use in battle
+
+    public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
+
+
+    public bool isBattling = false; // flag to indicate if a battle is currently ongoing
 
     public enum BattleState
     {
@@ -65,6 +81,15 @@ public class BattleManager : MonoBehaviour
 
         battleCamera.GetComponent<Camera>();
         mainCamera.GetComponent<Camera>();
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerController = player.GetComponent<PlayerController>();
+        playerInventory = player.GetComponent<Inventory>();
+        playerDeckCopyI = playerInventory.Deck;
+        playerDeckCopy = playerInventory.Shuffle(playerDeckCopyI);
+        playerMaxHealth = playerController.maxPlayerHealth;
+        playerCurrentHealth = playerMaxHealth;
+
     }
 
     private void OnEnable()
@@ -94,6 +119,7 @@ public class BattleManager : MonoBehaviour
 
         StartCoroutine(TurnManager());
         battleState = BattleState.PLAYER_TURN;
+        isBattling = true;
     }
 
     void SetPlayspaces()
@@ -105,9 +131,10 @@ public class BattleManager : MonoBehaviour
 
         foreach (Enemy_SO e in battle.enemies)
         {
-            //GameObject enemyPrefab = e.prefab
-            //enemyPrefab = Instantiate(e.prefab, new Vector3(0+ (enemySpacing*i), (canvasHeight * 3/4) , 0), Quaternion.identity);
-            //enemyPrefab.transform.SetParent(battleUI.Gameobject, false);
+            GameObject enemyPrefab = e.enemyPrefab;
+            enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*i), (canvasHeight * 3/4) , 0), Quaternion.identity);
+            enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
+            currentEnemies.Add(enemyPrefab);
             i++;
         }
 
@@ -136,27 +163,27 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public void StartPlayerTurn()
+    public IEnumerable StartPlayerTurn()
     {
         OnBattleStart.Invoke();
         PlayerTurn.Invoke();
         //Check if player is out of cards
-
+        if (playerDeckCopy.Count <= 0)
+        {
+            playerDeckCopy = playerInventory.Shuffle(playerDeckCopyI);
+        }
         //Display cards
 
-        // // Enables player drage and drop script koxskc
-        cardDragInput.enabled = true;
-
-        //cardDragInput.DragDropActive = true;
-
-
-        // Start Player turn coroutine to handle playing cards
+        // Start Player turn coroutine to handle playing cards 
+        yield return cardDragInput.DragDropActive = true;
 
         //On card raises played event: Start iterating through status effects and apply, leaving space to add an animation as the status's iterate
 
         // If player or enemy is out of health, change battleState to WON or LOST
+        checkEndConditions();
 
-        //After player turn: battleState = BattleState.ENEMY_TURN;
+        //Changes battlesstate to start enemy turn
+        battleState = BattleState.ENEMY_TURN;
     }
 
     public void StartEnemyTurn()
@@ -186,15 +213,26 @@ public class BattleManager : MonoBehaviour
     public void checkEndConditions()
     {
         //If player health <= 0, battleState = BattleState.LOST
+        if (playerCurrentHealth <= 0)
+        {
+            battleState = BattleState.LOST;
+            isBattling = false;
+        }
         //If all enemies health <= 0, battleState = BattleState.WON
 
-        //Change below functions to iterate through active enemies
-        foreach (Enemy_SO enemy in battle.enemies)
+        //Loops through list of all active enemies to check if their health is <= 0
+        foreach (GameObject enemy in currentEnemies)
         {
-            //if (enemy.currentHealth <= 0)
-            //{
-            //    battleState = BattleState.WON;
-            //}
+            //loop through all enemies
+            foreach (GameObject e in currentEnemies)
+            {
+                if (!(e.GetComponent<Enemy>().currentHealth <= 0)) 
+                {
+                    break;
+                }
+                battleState = BattleState.WON;
+                isBattling = false;
+            }
         }
     }
 

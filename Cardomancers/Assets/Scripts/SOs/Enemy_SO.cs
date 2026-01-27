@@ -12,6 +12,8 @@ public class Enemy_SO : ScriptableObject
     public int moneyDrops; //The base amount of money the enemy drops when defeated 
     public float xpDrops;  //The base amount of XP the enemy drops when defeated
 
+    public GameObject enemyPrefab; //Prefab of the enemy to be spawned in battle.
+
     //public Dictionary<CardSO, float> cardDrops; //dictionary of possible cards, the enemy and the probability that the card will be dropped.
     public Dictionary <Hack_SO, float> hackDrops; //dictionary of possible hacks, the enemy and the probability that the card will be dropped.
 }

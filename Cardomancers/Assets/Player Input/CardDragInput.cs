@@ -25,7 +25,6 @@ public class CardDragInput : MonoBehaviour
 
             if (value == true)
             {
-                StartCoroutine(TestCo());
                 StartCoroutine(DragDrop());
                 
             } else if (value == false)
@@ -110,11 +109,11 @@ public class CardDragInput : MonoBehaviour
 
     }
 
-    public IEnumerator TestCo()
-    {
-        print ("test co started");
-        yield return null;
-    }
+    //public IEnumerator TestCo()
+    //{
+    //    print ("test co started");
+    //    yield return null;
+    //}
     public IEnumerator DragDrop()
     {
         print("coroutine started");
@@ -206,7 +205,13 @@ public class CardDragInput : MonoBehaviour
                             MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
 
                             // make it so this is only true if in battle mode
-                            //dragDropActive = false;
+                            if (Object.FindFirstObjectByType<BattleManager>() != null)
+                            {
+                                if (Object.FindFirstObjectByType<BattleManager>().isBattling)
+                                {
+                                    dragDropActive = false;
+                                }
+                            }
                             //yield break;
                         }
                     }
