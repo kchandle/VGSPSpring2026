@@ -10,6 +10,12 @@ public class Enemy : MonoBehaviour
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
     bool isStunned; // f the enemy is stunned, they cannot take actions.
+
+    public List<StatusEffect> statusEffects = new List<StatusEffect>();
+
+    public List<DamageType> resistances;
+    public List<DamageType> weaknesses;
+
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
     public List<InventoryCard> deck;
@@ -24,6 +30,9 @@ public class Enemy : MonoBehaviour
             maxHealth = enemySO.maxHealth;
             currentHealth = maxHealth;
             deck = new List<InventoryCard>(enemySO.deck);
+            resistances = new List<DamageType>(enemySO.resistances);
+            weaknesses = new List<DamageType>(enemySO.weaknesses);
+
         }
         else
         {

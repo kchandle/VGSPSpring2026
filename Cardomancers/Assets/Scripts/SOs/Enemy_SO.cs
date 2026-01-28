@@ -14,6 +14,9 @@ public class Enemy_SO : ScriptableObject
 
     public GameObject enemyPrefab; //Prefab of the enemy to be spawned in battle.
 
+    public List<DamageType> resistances; //List of damage types the enemy is resistant to.
+    public List<DamageType> weaknesses; //List of damage types the enemy is weak to.
+
     public Dictionary<Card_SO, float> cardDrops; //dictionary of possible cards, the enemy and the probability that the card will be dropped.
     public Dictionary <Hack_SO, float> hackDrops; //dictionary of possible hacks, the enemy and the probability that the card will be dropped.
 }

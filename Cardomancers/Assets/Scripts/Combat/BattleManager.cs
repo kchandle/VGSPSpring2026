@@ -268,7 +268,11 @@ public class BattleManager : MonoBehaviour
 
         //Stops the turn manager coroutine
         StopCoroutine(TurnManager());
-        
+
+        //Sets player back to defualt state
+        playerController.statusEffects.Clear();
+        playerController.currentHealth = playerMaxHealth;
+
         //Switches Camera back to Main camera
         battleCamera.enabled = false;
         mainCamera.enabled = true;

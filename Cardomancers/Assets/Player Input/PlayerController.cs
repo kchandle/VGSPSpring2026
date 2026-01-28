@@ -1,9 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
 	public float maxPlayerHealth = 100f;
+    public float currentHealth;
+
+    public List<StatusEffect> statusEffects = new List<StatusEffect>();
+
+
+    public void Awake()
+    {
+        currentHealth = maxPlayerHealth;
+    }
 
     // reference to character controller movement
     [SerializeField] private CharacterControllerMovement _characterControllerMovement; 
