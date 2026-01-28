@@ -3,7 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	// reference to character controller movement
+	public float maxPlayerHealth = 100f;
+
+    // reference to character controller movement
     [SerializeField] private CharacterControllerMovement _characterControllerMovement; 
    
 	//Player Input component should have invoke unity events behavior, then make the unity event call this method
