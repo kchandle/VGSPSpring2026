@@ -203,6 +203,7 @@ public class CardDragInput : MonoBehaviour
                         {
                             // move dragTarget from it's parent to Playspace p
                             MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                            AttemptPlay(dragTargetParent, p);
 
                             // make it so this is only true if in battle mode
                             if (Object.FindFirstObjectByType<BattleManager>() != null)
@@ -229,7 +230,18 @@ public class CardDragInput : MonoBehaviour
         yield return null;
     }
 
-// Empties the activePlayspaces list  
+    //Tries to play card
+    public void AttemptPlay(GameObject dragTarget, Playspace p)
+    {
+        if (dragTarget.GetComponent<Card>() != null)
+        {
+            //tries to play card against the playscpace's parent gameobject enemy component
+            dragTarget.GetComponent<Card>().TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+        }
+
+    }
+
+    // Empties the activePlayspaces list  
     public void ClearActivePlayspaces()
     {
         activePlayspaces.Clear();

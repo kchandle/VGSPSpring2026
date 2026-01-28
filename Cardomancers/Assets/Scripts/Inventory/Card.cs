@@ -30,6 +30,7 @@ public class Card : PlayItem
 
     [SerializeField] public SpriteRenderer battleEffectSpriteRenderer; // set in editor
 
+    #region Sprites
     private Sprite cardSprite; 
     public Sprite CardSprite
     {
@@ -62,6 +63,7 @@ public class Card : PlayItem
             battleEffectSpriteRenderer.sprite = value;
         }
     }
+    #endregion
 
     public Animator animator; // set in editor
 
@@ -72,7 +74,17 @@ public class Card : PlayItem
         position = transform.position;
         CardSprite = cardSO.sprite;
         cardNameDisplay.text = cardSO.displayName;
+    }
 
+    public void TryPlayCard(Enemy target)
+    {
+        //Try to play the card on the target enemy
+        BattleEffect[] effects = cardSO.cardEffects;
+        foreach (BattleEffect effect in effects)
+        {
+            //Apply each effect to the target
+            effect.TriggerEffect();
+        }
     }
 
 
