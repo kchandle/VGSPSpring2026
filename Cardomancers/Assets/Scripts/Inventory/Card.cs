@@ -9,6 +9,8 @@ public class Card : PlayItem
 {
 
     private Card_SO cardSO;
+
+    public InventoryCard inventoryCard; // reference to it's own inventory card
     public Card_SO CardSO
     {
         get {return cardSO;}
