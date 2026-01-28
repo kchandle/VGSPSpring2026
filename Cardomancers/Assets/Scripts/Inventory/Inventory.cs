@@ -92,4 +92,15 @@ public class Inventory : MonoBehaviour
 		}
         return deck;
     }
+
+	//Currently a function that will not be called, but is here in a case that would require the player to pick a random card
+	public InventoryCard DrawCards()
+    {
+        // Pick random card from deck then remove from deck
+        InventoryCard card = deck[Random.Range(0, deck.Count)];
+        deck.Remove(card);
+        //Temp line to show what card was picked
+        Debug.Log(card);
+        return card;
+    }
 }

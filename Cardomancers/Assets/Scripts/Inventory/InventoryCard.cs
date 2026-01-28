@@ -13,8 +13,10 @@ public class InventoryCard
         hacks = card.hacks;
     }
 
-        public InventoryCard(Card_SO card)
+    public InventoryCard(Card_SO card)
     {
         cardSO = card;
     }
+
+
 }

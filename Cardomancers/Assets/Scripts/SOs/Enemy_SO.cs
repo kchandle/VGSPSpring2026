@@ -5,7 +5,7 @@ public class Enemy_SO : ScriptableObject
 {
     //  The list of cards that the enemy has in their battle.
 
-    // InventoryCard[] deck;
+    public InventoryCard[] deck;
     
    public int maxHealth; //Max health of the enemy.
    public string displayName; //The name of the enemy.
@@ -14,6 +14,6 @@ public class Enemy_SO : ScriptableObject
 
     public GameObject enemyPrefab; //Prefab of the enemy to be spawned in battle.
 
-    //public Dictionary<CardSO, float> cardDrops; //dictionary of possible cards, the enemy and the probability that the card will be dropped.
+    public Dictionary<Card_SO, float> cardDrops; //dictionary of possible cards, the enemy and the probability that the card will be dropped.
     public Dictionary <Hack_SO, float> hackDrops; //dictionary of possible hacks, the enemy and the probability that the card will be dropped.
 }

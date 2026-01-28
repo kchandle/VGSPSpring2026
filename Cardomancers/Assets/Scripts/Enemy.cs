@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     bool isStunned; // f the enemy is stunned, they cannot take actions.
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
+    public List<InventoryCard> deck;
+
 
     void Awake()
     {
@@ -21,6 +23,7 @@ public class Enemy : MonoBehaviour
             // sets Max Health from the SO and sets the current health to max health
             maxHealth = enemySO.maxHealth;
             currentHealth = maxHealth;
+            deck = new List<InventoryCard>(enemySO.deck);
         }
         else
         {
@@ -33,18 +36,21 @@ public class Enemy : MonoBehaviour
     public void ShuffleDeck()
     {
         // If deck has less than or equal to zero cards, shuffle the deck
-        //if (deck.Count <= 0)
-        //{
-        //  deck = new List<InventoryCard>(enemySO.deck);
-        //  hand.Clear();
-        //  hand = DrawCards(5); // Draw 5 cards
-        //}
+        if (deck.Count <= 0)
+        {
+            deck = new List<InventoryCard>(enemySO.deck);
+        }
     }
 
-    public void DrawCards()
+    //Draws a random card from deck then removes it
+    public InventoryCard DrawCard()
     {
-        // Draw cards from the deck to the hand
-        // Display card in playspace
+        // Pick random card from deck then remove from deck
+        InventoryCard card = deck[Random.Range(0, deck.Count)];
+        deck.Remove(card);
+        //Temp line to show what card was picked
+        Debug.Log(card);
+        return card;
     }
 
 }

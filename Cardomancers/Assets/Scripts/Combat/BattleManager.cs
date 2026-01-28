@@ -50,6 +50,8 @@ public class BattleManager : MonoBehaviour
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
 
+    public int turnCount = 0; // counter for the number of turns taken in the battle
+
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
 
@@ -116,10 +118,10 @@ public class BattleManager : MonoBehaviour
 
         SetPlayspaces();
 
-
-        StartCoroutine(TurnManager());
+        turnCount = 0;
         battleState = BattleState.PLAYER_TURN;
         isBattling = true;
+        StartCoroutine(TurnManager());
     }
 
     void SetPlayspaces()
@@ -157,6 +159,7 @@ public class BattleManager : MonoBehaviour
             {
                 yield return null;
             }
+            turnCount++;
         }
         EndBattle();
         yield return null;
@@ -188,25 +191,27 @@ public class BattleManager : MonoBehaviour
 
     public void StartEnemyTurn()
     {
-        // Disables player drag and drop input if not already disabled
-        
-        //cardDragInput.DragDropActive = false;
-
         //Check if enemy is out of cards
-        foreach (Enemy_SO enemy in battle.enemies)
+        foreach (GameObject enemy in currentEnemies)
         {
-            //enemy.GameObject.GetComponent<Enemy>().ShuffleDeck();
+            if (enemy.GetComponent<Enemy>().deck.Count <= 0)
+            {
+                enemy.GetComponent<Enemy>().ShuffleDeck();
+            }  
         }
-
-        //Display cards
 
         EnemyTurn.Invoke();
 
         //Enemy picks card from card list
+        foreach (GameObject enemy in currentEnemies)
+        {
+            InventoryCard card = enemy.GetComponent<Enemy>().DrawCard();
+            //card.Play();
+        }
+
 
         // If player or enemy is out of health, change battleState to WON or LOST
-
-        //On card raises played event: battleState = BattleState.PLAYER_TURN;
+        checkEndConditions();
 
     }
 
@@ -267,16 +272,5 @@ public class BattleManager : MonoBehaviour
         //Switches Camera back to Main camera
         battleCamera.enabled = false;
         mainCamera.enabled = true;
-
-        //Hides win/lose screen after battle ends
-        if (loseScreen.enabled == true)
-        {
-            loseScreen.enabled = false;
-        } else if (winScreen.enabled == true)
-        {
-            winScreen.enabled = false;
-        }
-
-
     }
 }
