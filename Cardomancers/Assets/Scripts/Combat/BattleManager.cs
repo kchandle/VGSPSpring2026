@@ -150,14 +150,14 @@ public class BattleManager : MonoBehaviour
         foreach (Enemy_SO e in battle.enemies)
         {
             GameObject enemyPrefab = e.enemyPrefab;
-            enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*i), (canvasHeight * 3/4) , 0), Quaternion.identity);
+            enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*(i-1)), (canvasHeight * 1/4) , 0), Quaternion.identity);
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
             currentEnemies.Add(enemyPrefab);
             i++;
         }
 
-        playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), (canvasHeight / 4), 0), Quaternion.identity);
+        playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), -(canvasHeight* 3/4), 0), Quaternion.identity);
         playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
         //Put Deck in player playerspace
     }
