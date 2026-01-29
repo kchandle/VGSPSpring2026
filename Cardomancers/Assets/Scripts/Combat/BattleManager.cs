@@ -136,6 +136,7 @@ public class BattleManager : MonoBehaviour
             GameObject enemyPrefab = e.enemyPrefab;
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*i), (canvasHeight * 3/4) , 0), Quaternion.identity);
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
+            enemyPrefab.GetComponent<Enemy>().EnemySO = e;
             currentEnemies.Add(enemyPrefab);
             i++;
         }

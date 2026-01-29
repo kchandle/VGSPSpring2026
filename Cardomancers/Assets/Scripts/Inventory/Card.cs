@@ -23,6 +23,8 @@ public class Card : PlayItem
     
     public List<Hack_SO> hacks;
 
+    public int maxHacks; //Int containing the maximum number of hacks that can be applied to this card.
+
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
 
     [SerializeField] public SpriteRenderer cardSpriteRenderer; // set in editor

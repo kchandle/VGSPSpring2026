@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
 		// stops the method and returns false if the inventory is full
 		if (inventory.Count >= inventoryLength) return false;
 		// very temporary
-		InventoryCard newInventoryCard = new InventoryCard(card);
+		InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
 		// add new card to deck
 		inventory.Add(newInventoryCard);
 		// automatically add to deck if possible
