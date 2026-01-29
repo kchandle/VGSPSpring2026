@@ -25,7 +25,6 @@ public class CardDragInput : MonoBehaviour
 
             if (value == true)
             {
-                StartCoroutine(TestCo());
                 StartCoroutine(DragDrop());
                 
             } else if (value == false)
@@ -69,30 +68,30 @@ public class CardDragInput : MonoBehaviour
         GameStateScript.OnGameStateChanged -= ChangeActionMap;
     }
 
-    void Start()
-    {
-        ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
-        /// 
+    //void Start()
+    //{
+    //    ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
+    //    /// 
         
-        GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
-        AddActivePlayspace(testPlayspace1);
-        AddActivePlayspace(testPlayspace2);
-        AddActivePlayspace(testPlayspace3);
+    //    GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
+    //    AddActivePlayspace(testPlayspace1);
+    //    AddActivePlayspace(testPlayspace2);
+    //    AddActivePlayspace(testPlayspace3);
 
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
-        testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO2);
-        testPlayspace3.NewPlayItem(testPlayItemPrefab, testSO2);
-        //// TEST END
-        DragDropActive = true;
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    testPlayspace3.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    //// TEST END
+    //    DragDropActive = true;
 
-        //StartCoroutine(DragDrop());
+    //    //StartCoroutine(DragDrop());
 
-    }
+    //}
     
     public void ChangeActionMap(GameStateScript.GameState gameState)
     {   
@@ -110,15 +109,15 @@ public class CardDragInput : MonoBehaviour
 
     }
 
-    public IEnumerator TestCo()
-    {
-        print ("test co started");
-        yield return null;
-    }
+    //public IEnumerator TestCo()
+    //{
+    //    print ("test co started");
+    //    yield return null;
+    //}
     public IEnumerator DragDrop()
     {
         print("coroutine started");
-        while (DragDropActive == true)
+        while (true)
         {
             
         
@@ -150,6 +149,7 @@ public class CardDragInput : MonoBehaviour
                     // if there is a valid focusTarget in Playspace p, stop looking for a focusTarget and set dragplaySpace to p
                     if (focusTarget != null)
                     {
+                        print("focus target found in " + p.name);
                         dragPlayspace = p;
                         
                         break;
@@ -204,9 +204,16 @@ public class CardDragInput : MonoBehaviour
                         {
                             // move dragTarget from it's parent to Playspace p
                             MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                            AttemptPlay(dragTargetParent, p);
 
                             // make it so this is only true if in battle mode
-                            //dragDropActive = false;
+                            if (Object.FindFirstObjectByType<BattleManager>() != null)
+                            {
+                                if (Object.FindFirstObjectByType<BattleManager>().isBattling)
+                                {
+                                    dragDropActive = false;
+                                }
+                            }
                             //yield break;
                         }
                     }
@@ -224,7 +231,18 @@ public class CardDragInput : MonoBehaviour
         yield return null;
     }
 
-// Empties the activePlayspaces list  
+    //Tries to play card
+    public void AttemptPlay(GameObject dragTarget, Playspace p)
+    {
+        if (dragTarget.GetComponent<Card>() != null)
+        {
+            //tries to play card against the playscpace's parent gameobject enemy component
+            dragTarget.GetComponent<Card>().TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+        }
+
+    }
+
+    // Empties the activePlayspaces list  
     public void ClearActivePlayspaces()
     {
         activePlayspaces.Clear();

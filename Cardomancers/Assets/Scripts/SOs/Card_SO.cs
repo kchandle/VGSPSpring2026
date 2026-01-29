@@ -9,6 +9,6 @@ public class Card_SO : ScriptableObject
     public string description; // Flavor text used for descriping the card
     
     public Sprite sprite; // sprite to be displayed when the card is instanced
-    BattleEffect[] cardEffects; // Needs battle effect to be done first
+    public BattleEffect[] cardEffects; // Needs battle effect to be done first
     public ParticleSystem particleSystem; // Used by damage scripts to play effect upon hit
 }

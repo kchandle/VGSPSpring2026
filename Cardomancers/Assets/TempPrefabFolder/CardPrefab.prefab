@@ -70,8 +70,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 73ee254cd1b757d45887afd477eac368, type: 2}
-  m_sharedMaterial: {fileID: -2394331908558024763, guid: 73ee254cd1b757d45887afd477eac368, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -361,6 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2864986340668246043}
   - component: {fileID: 920689333642222826}
+  - component: {fileID: 3352397770504297656}
   m_Layer: 5
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -385,8 +386,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 9.07, y: 11.93}
+  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_SizeDelta: {x: 9.070007, y: 12.929993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &920689333642222826
 MonoBehaviour:
@@ -402,13 +403,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Card
   moveSpeed: 15
   position: {x: 0, y: 0, z: 0}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0, z: -10}
   hacks: []
+  maxHacks: 0
   cardNameDisplay: {fileID: 5590248118382911355}
   cardSpriteRenderer: {fileID: 4577990497087235390}
   damageSpriteRenderer: {fileID: 4063600341637583511}
   battleEffectSpriteRenderer: {fileID: 5155175141974847560}
   animator: {fileID: 0}
+--- !u!61 &3352397770504297656
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7278841492920612246}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 20, y: 30}
+  m_EdgeRadius: 0
 --- !u!1 &7489125229256807414
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +543,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3141f3f49cc73454ea4976ada6fdd710, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 24390100a4fcc5a43ba7cef9f0abf5c3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

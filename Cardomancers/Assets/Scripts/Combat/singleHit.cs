@@ -1,20 +1,15 @@
-using UnityEngine;
+//using UnityEngine;
 
-public class singleHit : BattleEffect
-{
-    
+//public class singleHit : BattleEffect
+//{
+//    // Example method to demonstrate functionality
+//    public void DamageTarget(PlayerController player)
+//    {
+//        TriggerEffect(player.gameObject, transform.position);
+//    }
 
-    /*void damageTarget(Player player)
-    {
-        player.health -= StatusAmount;
-        PlayParticles(player.transform.position);
-    }
-    Needs script that deals with HP first
-
-    void damageTarget(Enemy enemy)
-    {
-        enemy.health -= StatusAmount;
-        PlayParticles(enemy.transform.position);
-    }
-    Needs script with enemy HP first*/
-}
+//    public void DamageTarget(Enemy enemy)
+//    {
+//        TriggerEffect(enemy.gameObject, transform.position);
+//    }
+//}
