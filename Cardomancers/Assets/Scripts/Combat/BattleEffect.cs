@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum DamageType
@@ -22,12 +23,15 @@ public class BattleEffect : MonoBehaviour
     // The amount of damage/heal/stun/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
-    public DamageType damageType; 
+    public DamageType damageType;
+
+    // Status effect related variables, only used if isStatusEffect is true
+    public bool isStatusEffect = false; // Whether this BattleEffect is a status effect
+    public bool isPerishable = false; //If status effect is perishable
+    public int turnsActive = 0; //Amount of turns active at start of effect    
+
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
-
-    public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
-    public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
 
     public void PlayParticles(Vector3 pos)
     {
@@ -38,7 +42,7 @@ public class BattleEffect : MonoBehaviour
     }
 
     //The function that is called when the card is played
-    public void TriggerEffect(GameObject target)
+    public void TriggerEffect(GameObject target, Vector3 pos)
     {
         bool isEnemy = target.CompareTag("Enemy");
         bool isPlayer = target.CompareTag("Player");
@@ -48,11 +52,18 @@ public class BattleEffect : MonoBehaviour
         if (isEnemy)
         {
             Enemy enemy = target.GetComponent<Enemy>();
+
+            if (isStatusEffect)
+            {
+                enemy.statusEffects.Add(new StatusEffectContainer(damageType,StatusAmount , isPerishable,turnsActive,particles));
+                return;
+            }
+
             foreach (DamageType resistance in enemy.resistances)
             {
                 if (resistance == damageType)
                 {
-                    DamageDealt = Mathf.RoundToInt(StatusAmount * DamageReduct);
+                    DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageReduct);
                     break;
                 }
             }
@@ -60,17 +71,23 @@ public class BattleEffect : MonoBehaviour
             {
                 if (weakness == damageType)
                 {
-                    DamageDealt = Mathf.RoundToInt(StatusAmount * DamageMult);
+                    DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageMult);
                     break;
                 }
             }
+            PlayParticles(pos);
             enemy.currentHealth -= DamageDealt;
         }
         else if (isPlayer)
         {
-            target.GetComponent<PlayerController>().currentHealth -= StatusAmount;
+            PlayerController player = target.GetComponent<PlayerController>();
+            if (isStatusEffect)
+            {
+                player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
+                return;
+            }
+            PlayParticles(pos);
+            player.currentHealth -= StatusAmount;
         }
-
-        //NOT IMPLEMENTED dont have other dependent scripts
     }
 }

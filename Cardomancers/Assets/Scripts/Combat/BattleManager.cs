@@ -180,7 +180,8 @@ public class BattleManager : MonoBehaviour
         // Start Player turn coroutine to handle playing cards 
         yield return cardDragInput.DragDropActive = true;
 
-        //On card raises played event: Start iterating through status effects and apply, leaving space to add an animation as the status's iterate
+        //Status Effects get activated
+        yield return StartCoroutine(playerController.StatusEffects());
 
         // If player or enemy is out of health, change battleState to WON or LOST
         checkEndConditions();
@@ -189,7 +190,7 @@ public class BattleManager : MonoBehaviour
         battleState = BattleState.ENEMY_TURN;
     }
 
-    public void StartEnemyTurn()
+    public IEnumerable StartEnemyTurn()
     {
         //Check if enemy is out of cards
         foreach (GameObject enemy in currentEnemies)
@@ -205,10 +206,20 @@ public class BattleManager : MonoBehaviour
         //Enemy picks card from card list
         foreach (GameObject enemy in currentEnemies)
         {
-            InventoryCard card = enemy.GetComponent<Enemy>().DrawCard();
-            //card.Play();
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            InventoryCard card = enemyScript.DrawCard();
+            
+            //Plays Card
+            foreach (BattleEffect effect in card.cardSO.cardEffects)
+            {
+                effect.TriggerEffect(player, player.transform.position);
+            }
+
+            //Status Effects get activated
+            yield return StartCoroutine(enemyScript.StatusEffects());
         }
 
+        
 
         // If player or enemy is out of health, change battleState to WON or LOST
         checkEndConditions();
@@ -244,6 +255,7 @@ public class BattleManager : MonoBehaviour
     public void EndBattle()
     {
         // Depending on battleState, invoke win or lose events
+        //Potential bug where battlecam gets disabled before win/lose screen shows up
         switch (battleState)
         {
             case BattleState.WON:

@@ -1,13 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerController : MonoBehaviour
 {
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
 
-    public List<StatusEffect> statusEffects = new List<StatusEffect>();
+    public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
 
     public void Awake()
@@ -30,4 +33,27 @@ public class PlayerController : MonoBehaviour
 			// makes the player jump
 			_characterControllerMovement.jumping = true; 
 	}
+
+    public IEnumerator StatusEffects()
+    {
+        foreach(StatusEffectContainer statusEffect in statusEffects)
+        {
+            // Apply the status effect to the player
+            foreach (ParticleSystem particle in (statusEffect.particles))
+            {
+                Instantiate(particle, transform.position, Quaternion.identity);
+            }
+            currentHealth -= statusEffect.statusAmount;
+
+            // Decrement the turn count for perishable effects
+            if (statusEffect.DecrementTurn() <= 0)
+            {
+                // Remove the status effect if it has expired
+                statusEffects.Remove(statusEffect);
+                Debug.Log("A status effect has expired.");
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return null;
+    }
 }

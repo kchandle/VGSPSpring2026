@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Enemy : MonoBehaviour
     public int currentHealth; //  MaxHealth by default
     bool isStunned; // f the enemy is stunned, they cannot take actions.
 
-    public List<StatusEffect> statusEffects = new List<StatusEffect>();
+    public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public List<DamageType> resistances;
     public List<DamageType> weaknesses;
@@ -19,6 +20,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
     public List<InventoryCard> deck;
+
+    public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
+    public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
 
 
     void Awake()
@@ -60,6 +64,38 @@ public class Enemy : MonoBehaviour
         //Temp line to show what card was picked
         Debug.Log(card);
         return card;
+    }
+
+    public IEnumerator StatusEffects()
+    {
+        foreach (StatusEffectContainer statusEffect in statusEffects)
+        {
+            // Apply the status effect to the player
+            foreach (ParticleSystem particle in (statusEffect.particles))
+            {
+                Instantiate(particle, transform.position, Quaternion.identity);
+            }
+
+            if (weaknesses.Contains(statusEffect.damageType) )
+            {
+                currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount*DamageMult);  
+            }
+            else if (resistances.Contains(statusEffect.damageType))
+            {
+                currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount * DamageReduct);
+            }
+
+
+            // Decrement the turn count for perishable effects
+            if (statusEffect.DecrementTurn() <= 0)
+            {
+                // Remove the status effect if it has expired
+                statusEffects.Remove(statusEffect);
+                Debug.Log("A status effect has expired.");
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return null;
     }
 
 }
