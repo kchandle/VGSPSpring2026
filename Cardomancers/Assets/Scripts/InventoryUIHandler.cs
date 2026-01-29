@@ -8,20 +8,17 @@ public class InventoryUIHandler : MonoBehaviour
 
     CardDragInput cardDragInput; //set in editor
 
-    Playspace invPlayspace;
-    Playspace deckPlayspace;
+    Playspace invPlayspace;  //set in editor
+    Playspace deckPlayspace;  //set in editor
 
-    Playspace hackPlayspace;
+    Playspace hackPlayspace;  //set in editor
 
     GameObject cardPrefab;
     GameObject hackPrefab;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+
 
 // CREATE UI
     public void DisplayUI(Playspace playspace, List<InventoryCard> list)
