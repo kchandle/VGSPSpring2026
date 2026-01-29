@@ -214,12 +214,19 @@ public class BattleManager : MonoBehaviour
             {
                 effect.TriggerEffect(player, player.transform.position);
             }
-
-            //Status Effects get activated
-            yield return StartCoroutine(enemyScript.StatusEffects());
         }
 
+        //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
+        foreach (GameObject enemy in currentEnemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            InventoryCard card = enemyScript.DrawCard();
+            yield return StartCoroutine(enemyScript.StatusEffects());
+        }
         
+        
+
+
 
         // If player or enemy is out of health, change battleState to WON or LOST
         checkEndConditions();
