@@ -17,7 +17,7 @@ public class Card : PlayItem
         set
         {
             cardSO = value;
-            CardSprite = cardSO.sprite;
+            CardSprite = cardSO.image;
             cardNameDisplay.text = cardSO.displayName;
         }
     }
@@ -29,20 +29,21 @@ public class Card : PlayItem
 
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
 
-    [SerializeField] public SpriteRenderer cardSpriteRenderer; // set in editor
-    [SerializeField] public SpriteRenderer damageSpriteRenderer; // set in editor
+    [SerializeField] public Image cardImage; // set in editor
+    [SerializeField] public Image damageImage; // set in editor
 
-    [SerializeField] public SpriteRenderer battleEffectSpriteRenderer; // set in editor
+    [SerializeField] public Image battleImage; // set in editor
 
     #region Sprites
     private Sprite cardSprite; 
     public Sprite CardSprite
     {
         get{return cardSprite;}
-        set // when CardSprite is changed, also change it in the spriteRenderer
+        set // when CardSprite is changed, also change it in the Image
         {
             cardSprite = value;
-            cardSpriteRenderer.sprite = value;
+            cardImage.sprite = value;
+            print(cardImage.sprite);
         }
     }
 
@@ -54,7 +55,7 @@ public class Card : PlayItem
         set // when CardSprite is changed, also change it in the spriteRenderer
         {
             damageTypeSprite = value;
-            damageSpriteRenderer.sprite = value;
+            damageImage.sprite = value;
         }
     }
     private Sprite battleEffectSprite; // sprite for displaying the type of BattleEffect the card is (ex. single hit, DOT)
@@ -64,7 +65,7 @@ public class Card : PlayItem
         set // when CardSprite is changed, also change it in the spriteRenderer
         {
             battleEffectSprite = value;
-            battleEffectSpriteRenderer.sprite = value;
+            battleImage.sprite = value;
         }
     }
     #endregion
@@ -76,7 +77,7 @@ public class Card : PlayItem
     void Start()
     {
         position = transform.position;
-        CardSprite = cardSO.sprite;
+        CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
     }
 

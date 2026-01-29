@@ -56,6 +56,7 @@ public struct BattleEffect
     //The function that is called when the card is played: Change into Overload function for player and enemy respectively
     public void TriggerEffect(GameObject target, Vector3 pos)
     {
+        
         bool isEnemy = target.CompareTag("Enemy");
         bool isPlayer = target.CompareTag("Player");
 

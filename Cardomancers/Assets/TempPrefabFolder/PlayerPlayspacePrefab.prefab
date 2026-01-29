@@ -91,16 +91,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Playspace
   focusTarget: {fileID: 0}
   focusOffset: 3
-  allowedDonors:
-  - {fileID: 0}
-  - {fileID: 0}
+  playItems: []
+  allowedDonors: []
   horizontalLayout: 1
-  width: 5
-  height: 5
-  paddingX: 1
+  width: 30
+  height: 10
+  paddingX: 20
   paddingY: 1
   zOffset: 0.02
-  selectionBuffer: 0.5
+  playArea: {fileID: 0}
+  selectionBuffer: 0.1
 --- !u!61 &7421658606348581970
 BoxCollider2D:
   m_ObjectHideFlags: 0

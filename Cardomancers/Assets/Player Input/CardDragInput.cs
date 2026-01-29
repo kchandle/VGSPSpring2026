@@ -117,7 +117,8 @@ public class CardDragInput : MonoBehaviour
     public IEnumerator DragDrop()
     {
         print("coroutine started");
-        while (true)
+        dragDropActive = true;
+        while (dragDropActive == true)
         {
             
         
@@ -137,9 +138,9 @@ public class CardDragInput : MonoBehaviour
                 {
                     // try to get focusTarget in Playspace p
 
-                    Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
+                    //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
 
-                    focusTarget = p.GetNearestPlayItem(mousePositionWorld);
+                    focusTarget = p.GetNearestPlayItem(mousePosition);
 
                     //if(p.InPlayArea(mousePositionWorld) == true) print(p.name+" is being hovered over");
     
@@ -163,8 +164,8 @@ public class CardDragInput : MonoBehaviour
 
             if (Pointer.current.press.IsPressed() && isDragging == true && dragPlayspace)
             {
-                Vector3 mousePositionWorldDragPlayspace = MouseToWorldWithDistance(mousePosition, dragPlayspace.gameObject);
-                dragPlayspace.SetDragTarget(dragTarget, mousePositionWorldDragPlayspace);
+                //Vector3 mousePositionWorldDragPlayspace = MouseToWorldWithDistance(mousePosition, dragPlayspace.gameObject);
+                dragPlayspace.SetDragTarget(dragTarget, mousePosition);
             }
 
             if (Pointer.current.press.wasPressedThisFrame)
@@ -175,10 +176,10 @@ public class CardDragInput : MonoBehaviour
                 {
                     
                     // get a DragTarget
-                    Vector3 mousePositionWorldDragPlayspace = MouseToWorldWithDistance(mousePosition, dragPlayspace.gameObject);
-                    dragTarget = dragPlayspace.GetNearestPlayItem(mousePositionWorldDragPlayspace);
+                    //Vector3 mousePositionWorldDragPlayspace = MouseToWorldWithDistance(mousePosition, dragPlayspace.gameObject);
+                    dragTarget = dragPlayspace.GetNearestPlayItem(mousePosition);
                     isDragging = true;
-                    dragPlayspace.SetDragTarget(dragTarget, mousePositionWorldDragPlayspace);
+                    dragPlayspace.SetDragTarget(dragTarget, mousePosition);
                 }
             }
 
@@ -193,25 +194,34 @@ public class CardDragInput : MonoBehaviour
                     // checking to see which playSpace, if any, the player released the drag target into
                     foreach (Playspace p in activePlayspaces)
                     {
-                        float distanceToPlane = Mathf.Abs(p.transform.position.z - Camera.main.transform.position.z);
-                        mousePosition.z = distanceToPlane;
-                        Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
+                        //float distanceToPlane = Mathf.Abs(p.transform.position.z - Camera.main.transform.position.z);
+                        //mousePosition.z = distanceToPlane;
+                        //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
 
                         // Conditions to successfully move a dragtarget to a new playspace
                         // Player must be hovering their mouse over the New Playspace
                         // New Playspace must not be the current parent of the dragTarget
-                        if (p.InPlayArea(mousePositionWorld) && dragTargetParent != p.gameObject)
+                        if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
                         {
+                            print("allowed to move to new playspace");
                             // move dragTarget from it's parent to Playspace p
-                            MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
-                            AttemptPlay(dragTargetParent, p);
+                           
+                            
 
                             // make it so this is only true if in battle mode
                             if (Object.FindFirstObjectByType<BattleManager>() != null)
                             {
                                 if (Object.FindFirstObjectByType<BattleManager>().isBattling)
                                 {
-                                    dragDropActive = false;
+                                    print("we battlin");
+                                    if(AttemptPlay((Card)dragTarget, p) == true) {
+                                        print("stop the dragdrop");
+                                        dragPlayspace.DestroyPlayItem(dragTarget);
+                                        dragDropActive = false;
+                                        }
+                                } else
+                                {
+                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
                                 }
                             }
                             //yield break;
@@ -228,16 +238,22 @@ public class CardDragInput : MonoBehaviour
         
         yield return null;
         }
-        yield return null;
+       
     }
 
     //Tries to play card
-    public void AttemptPlay(GameObject dragTarget, Playspace p)
+    public bool AttemptPlay(Card dragTarget, Playspace p)
     {
-        if (dragTarget.GetComponent<Card>() != null)
+        print("play be attempting");
+        if (dragTarget != null)
         {
+            print("dragtarget has a card component");
             //tries to play card against the playscpace's parent gameobject enemy component
-            dragTarget.GetComponent<Card>().TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+            dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+            return true;
+        }
+        else{
+            return false;
         }
 
     }
@@ -265,7 +281,10 @@ public class CardDragInput : MonoBehaviour
     public void MoveToNewPlayspace(PlayItem moveTarget, Playspace to, Playspace from)
     {
         // only move the item if the "to" PlaySpace can receive PlayItems from the "from" PlaySpace
+        print(to);
+        print(from);
         if (to.allowedDonors.Contains(from)){
+            print("in allowed donors");
             to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO);
             from.DestroyPlayItem(moveTarget);
         }

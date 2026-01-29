@@ -44,13 +44,14 @@ public class InventoryUIHandler : MonoBehaviour
 
 
 // IN PROGRESS, DO NOT USE
-    public void DisplayUI(Playspace playspace, List<Hack_SO> list)
-    {
-        foreach(Hack_SO hack in list)
-        {
-            playspace.NewPlayItem(hackPrefab);
-        }
-    }
+
+    // public void DisplayUI(Playspace playspace, List<Hack_SO> list)
+    // {
+    //     foreach(Hack_SO hack in list)
+    //     {
+    //         playspace.NewPlayItem(hackPrefab);
+    //     }
+    // }
 
 
     public void DestroyUI(Playspace playspace)

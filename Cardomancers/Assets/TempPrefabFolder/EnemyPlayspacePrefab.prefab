@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2922960849851619561}
   m_Layer: 5
   m_Name: EnemyPlayspacePrefab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,15 +91,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Playspace
   focusTarget: {fileID: 0}
   focusOffset: 3
-  allowedDonors:
-  - {fileID: 0}
-  - {fileID: 0}
-  horizontalLayout: 1
+  playItems: []
+  allowedDonors: []
+  horizontalLayout: 0
   width: 5
   height: 5
   paddingX: 1
   paddingY: 1
   zOffset: 0.02
+  playArea: {fileID: 0}
   selectionBuffer: 0.5
 --- !u!61 &2922960849851619561
 BoxCollider2D:

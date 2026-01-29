@@ -152,19 +152,24 @@ public class BattleManager : MonoBehaviour
         float enemySpacing = canvasWidth / (battle.enemies.Length);
         int i = 0;
 
+        playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), -(canvasHeight* 3/4), 0), Quaternion.identity);
+        playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
+        cardDragInput.AddActivePlayspace(playerspacePrefab.GetComponent<Playspace>());
+        //Put Deck in player playerspace
+
         foreach (Enemy_SO e in battle.enemies)
         {
             GameObject enemyPrefab = e.enemyPrefab;
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*(i-1)), (canvasHeight * 1/4) , 0), Quaternion.identity);
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+            enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
         }
 
-        playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), -(canvasHeight* 3/4), 0), Quaternion.identity);
-        playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
-        //Put Deck in player playerspace
+
     }
 
 
