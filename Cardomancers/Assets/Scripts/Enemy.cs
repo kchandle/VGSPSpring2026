@@ -24,6 +24,8 @@ public class Enemy : MonoBehaviour
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
 
+    public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
+
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager

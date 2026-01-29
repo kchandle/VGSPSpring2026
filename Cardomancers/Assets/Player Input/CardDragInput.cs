@@ -117,7 +117,7 @@ public class CardDragInput : MonoBehaviour
     public IEnumerator DragDrop()
     {
         print("coroutine started");
-        while (DragDropActive == true)
+        while (true)
         {
             
         
@@ -149,6 +149,7 @@ public class CardDragInput : MonoBehaviour
                     // if there is a valid focusTarget in Playspace p, stop looking for a focusTarget and set dragplaySpace to p
                     if (focusTarget != null)
                     {
+                        print("focus target found in " + p.name);
                         dragPlayspace = p;
                         
                         break;

@@ -16,7 +16,7 @@ public class PlayItem : MonoBehaviour
     // scaling
     void Awake()
     {
-        transform.localScale = new Vector3(1, 1, 1);
+        //transform.localScale = new Vector3(1, 1, 1);
         //transform.position = new Vector3(0,0,0);
     }
     void Start(){

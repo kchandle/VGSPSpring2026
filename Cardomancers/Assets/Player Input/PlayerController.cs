@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
+    public bool isShielded = false; //If the player is shielded, they take no damage this turn.
 
     public void Awake()
     {

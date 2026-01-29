@@ -39,6 +39,7 @@ public class Playspace : MonoBehaviour
 
     private PlayItem dragTarget; // the currently PlayItem being dragged
     private Vector3 dragTargetPosition; // position of the dragTarget PlayItem
+
     
 
     void Awake() => playArea = GetComponent<BoxCollider2D>();
@@ -65,14 +66,14 @@ public class Playspace : MonoBehaviour
     Vector3 defaultPosition = new Vector3(0,0,0);
 
     // default
-    public GameObject NewPlayItem(GameObject prefab)
-    {
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
+    //public GameObject NewPlayItem(GameObject prefab)
+    //{
+    //    GameObject newPlayItem = Instantiate(prefab);
+    //    newPlayItem.transform.SetParent(transform);
 
-        playItems.Add(newPlayItem.GetComponent<PlayItem>());
-        return newPlayItem;
-    }
+    //    playItems.Add(newPlayItem.GetComponent<PlayItem>());
+    //    return newPlayItem;
+    //}
 
 
         // without position

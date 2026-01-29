@@ -47,12 +47,14 @@ public class BattleManager : MonoBehaviour
     public InputActionAsset inputActions; // reference to the input system
     public CardDragInput cardDragInput; // reference to the card drag input script
 
-    public List<InventoryCard> playerDeckCopyI; // copy of the player's deck at start of battle
-    public List<InventoryCard> playerDeckCopy; // copy of the player's deck for shuffling and use in battle
+    [SerializeField] private List<InventoryCard> playerDeckCopyI; // copy of the player's deck at start of battle
+    [SerializeField] private List<InventoryCard> playerDeckCopy; // copy of the player's deck for shuffling and use in battle
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
 
     public int turnCount = 0; // counter for the number of turns taken in the battle
+
+    public GameObject cardPrefab; // Generic prefab for the cards used in battle
 
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
@@ -103,11 +105,6 @@ public class BattleManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
         playerInventory = player.GetComponent<Inventory>();
-        playerDeckCopyI = playerInventory.Deck;
-        playerDeckCopy = playerInventory.Shuffle(playerDeckCopyI);
-        playerMaxHealth = playerController.maxPlayerHealth;
-        playerCurrentHealth = playerMaxHealth;
-
     }
 
     private void OnEnable()
@@ -130,14 +127,22 @@ public class BattleManager : MonoBehaviour
         mainCamera.enabled = false;
         battleCamera.enabled = true;
 
-        //Shuffle and arrange both player and enemy decks
+        //Get the player set up (not in awake cause it ran before the player Inventory was set
+        playerDeckCopyI = playerInventory.Deck;
+
+        playerMaxHealth = playerController.maxPlayerHealth;
+        playerCurrentHealth = playerMaxHealth;
+
+        //Get the enemy set up
 
         SetPlayspaces();
 
         turnCount = 0;
         battleState = BattleState.PLAYER_TURN;
         isBattling = true;
+        OnBattleStart.Invoke();
         StartCoroutine(TurnManager());
+        
     }
 
     void SetPlayspaces()
@@ -166,38 +171,37 @@ public class BattleManager : MonoBehaviour
     IEnumerator TurnManager()
     {
         while (battleState != BattleState.WON || battleState != BattleState.LOST) {
-            StartPlayerTurn();
-            //Wait for player to finish turn
-            while (battleState == BattleState.PLAYER_TURN)
-            {
-                yield return null;
-            }
-            StartEnemyTurn();
-            //Wait for enemy to finish turn
-            while (battleState == BattleState.ENEMY_TURN)
-            {
-                yield return null;
-            }
-            turnCount++;
+            yield return StartCoroutine(StartPlayerTurn()); //Wait for player to finish turn
+
+
+            yield return StartCoroutine(StartEnemyTurn()); //Wait for enemy to finish turn
+
+            turnCount++; //Adds the turn to turn count
         }
         EndBattle();
         yield return null;
     }
 
 
-    public IEnumerable StartPlayerTurn()
+    public IEnumerator StartPlayerTurn()
     {
-        OnBattleStart.Invoke();
+        
         PlayerTurn.Invoke();
         //Check if player is out of cards
         if (playerDeckCopy.Count <= 0)
         {
             playerDeckCopy = playerInventory.Shuffle(playerDeckCopyI);
+            
+            //Add NewPlayItem from playsapce for each card in deck copy
+            foreach (InventoryCard card in playerDeckCopy)
+            {
+                playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
+            }
         }
         //Display cards
 
         // Start Player turn coroutine to handle playing cards 
-        yield return cardDragInput.DragDropActive = true;
+        yield return StartCoroutine(cardDragInput.DragDrop());
 
         //Status Effects get activated
         yield return StartCoroutine(playerController.StatusEffects());
@@ -207,10 +211,12 @@ public class BattleManager : MonoBehaviour
 
         //Changes battlesstate to start enemy turn
         battleState = BattleState.ENEMY_TURN;
+        yield return null;
     }
 
-    public IEnumerable StartEnemyTurn()
+    public IEnumerator StartEnemyTurn()
     {
+        print("Enemy Turn Started");
         //Check if enemy is out of cards
         foreach (GameObject enemy in currentEnemies)
         {
@@ -243,13 +249,10 @@ public class BattleManager : MonoBehaviour
             yield return StartCoroutine(enemyScript.StatusEffects());
         }
         
-        
-
-
 
         // If player or enemy is out of health, change battleState to WON or LOST
         checkEndConditions();
-
+        yield return null;
     }
 
     public void checkEndConditions()

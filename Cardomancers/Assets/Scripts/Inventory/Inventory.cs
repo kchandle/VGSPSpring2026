@@ -34,7 +34,7 @@ public class Inventory : MonoBehaviour
 	{
 		inventory = inventorySO.Inventory;
 		deck = inventorySO.Deck;
-		inventoryLength = inventorySO.InventoryLength;
+        inventoryLength = inventorySO.InventoryLength;
 		deckLength = inventorySO.DeckLength;
 	}
 

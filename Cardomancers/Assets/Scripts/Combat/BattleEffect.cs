@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum DamageType
 {
-    
+    None,
 Ice,
 Fire,
 Water,
@@ -15,10 +15,11 @@ Poison,
 Dark,
 DamageBlock,
 Psychic,
-None
+
 }
 
-public class BattleEffect : MonoBehaviour 
+[ System.Serializable ]
+public struct BattleEffect 
 {
     // The amount of damage/heal/stun/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
@@ -26,22 +27,33 @@ public class BattleEffect : MonoBehaviour
     public DamageType damageType;
 
     // Status effect related variables, only used if isStatusEffect is true
-    public bool isStatusEffect = false; // Whether this BattleEffect is a status effect
-    public bool isPerishable = false; //If status effect is perishable
-    public int turnsActive = 0; //Amount of turns active at start of effect    
+    public bool isStatusEffect; // Whether this BattleEffect is a status effect
+    public bool isPerishable; //If status effect is perishable
+    public int turnsActive; //Amount of turns active at start of effect    
 
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
 
-    public void PlayParticles(Vector3 pos)
+    //public void PlayParticles(Vector3 pos)
+    //{
+    //    foreach (ParticleSystem particle in particles)
+    //    {
+    //        Instantiate(particle, pos, Quaternion.identity);
+    //    }
+    //}
+
+    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, ParticleSystem[] particles)
     {
-        foreach (ParticleSystem particle in particles)
-        {
-            Instantiate(particle, pos, Quaternion.identity);
-        }
+        this.StatusAmount = statusAmount;
+        this.damageType = damageType;
+        this.isStatusEffect = isStatusEffect;
+        this.isPerishable = isPerishable;
+        this.turnsActive = turnsActive;
+        this.particles = particles;
     }
 
-    //The function that is called when the card is played
+
+    //The function that is called when the card is played: Change into Overload function for player and enemy respectively
     public void TriggerEffect(GameObject target, Vector3 pos)
     {
         bool isEnemy = target.CompareTag("Enemy");
@@ -52,6 +64,7 @@ public class BattleEffect : MonoBehaviour
         if (isEnemy)
         {
             Enemy enemy = target.GetComponent<Enemy>();
+            if (enemy.isShielded) return;
 
             if (isStatusEffect)
             {
@@ -75,18 +88,19 @@ public class BattleEffect : MonoBehaviour
                     break;
                 }
             }
-            PlayParticles(pos);
+            //PlayParticles(pos);
             enemy.currentHealth -= DamageDealt;
         }
         else if (isPlayer)
         {
             PlayerController player = target.GetComponent<PlayerController>();
+            if (player.isShielded) return;
             if (isStatusEffect)
             {
                 player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
                 return;
             }
-            PlayParticles(pos);
+            //PlayParticles(pos);
             player.currentHealth -= StatusAmount;
         }
     }
