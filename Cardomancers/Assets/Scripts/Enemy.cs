@@ -26,24 +26,16 @@ public class Enemy : MonoBehaviour
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
-
-    void Awake()
+    //Changed Awake to a seperate function in order to set enemySO in the battlemanager
+    public void SetUp(Enemy_SO enemy_SO)
     {
-        // Check if the SO exists to avoid NullReferenceExceptions
-        if (enemySO != null)
-        {
-            // sets Max Health from the SO and sets the current health to max health
-            maxHealth = enemySO.maxHealth;
-            currentHealth = maxHealth;
-            deck = new List<InventoryCard>(enemySO.deck);
-            resistances = new List<DamageType>(enemySO.resistances);
-            weaknesses = new List<DamageType>(enemySO.weaknesses);
-
-        }
-        else
-        {
-            Debug.LogError("Enemy_SO is missing on " + gameObject.name);
-        }
+        // sets Max Health from the SO and sets the current health to max health
+        enemySO = enemy_SO;
+        maxHealth = enemySO.maxHealth;
+        currentHealth = maxHealth;
+        deck = new List<InventoryCard>(enemySO.deck);
+        resistances = new List<DamageType>(enemySO.resistances);
+        weaknesses = new List<DamageType>(enemySO.weaknesses);
 
         animator = GetComponent<Animator>();
     }

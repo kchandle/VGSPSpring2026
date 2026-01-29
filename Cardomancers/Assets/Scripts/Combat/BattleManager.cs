@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
@@ -30,16 +31,17 @@ public class BattleManager : MonoBehaviour
     public Canvas loseScreen; // the canvas displayed when the player loses
     #endregion
 
+    [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
     public Battle_SO battle; // current battle SO passed in when battlestart is called
     public BattleState battleState; // current state of the battle
 
     #region All the player scripts
-    public GameObject player; // reference to the player game object
-    public PlayerController playerController; // reference to the player controller
+    private GameObject player; // reference to the player game object
+    private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
-    public Inventory playerInventory; // reference to the player's inventory
-    public float playerMaxHealth; // reference to the player's max health
-    public float playerCurrentHealth; // reference to the player's current health
+    private Inventory playerInventory; // reference to the player's inventory
+    private float playerMaxHealth; // reference to the player's max health
+    private float playerCurrentHealth; // reference to the player's current health
     #endregion
 
     public InputActionAsset inputActions; // reference to the input system
@@ -65,6 +67,21 @@ public class BattleManager : MonoBehaviour
     }
 
     #region Setup
+
+    //Curently Switching Cameras doesn't work, but the code is here for future reference and hopefully implementation
+    public void SwitchCam()
+    {
+        if (mainCamera.enabled)
+        {
+            battleCamera.enabled = true;
+            mainCamera.enabled = false;
+        }
+        else
+        {
+            mainCamera.enabled = true;
+            battleCamera.enabled = false;
+        }
+    }
     private void Awake()
     {
         // Check if an instance already exists
@@ -81,8 +98,7 @@ public class BattleManager : MonoBehaviour
         // Optional: Keep the object alive when loading new scenes
         DontDestroyOnLoad(this.gameObject);
 
-        battleCamera.GetComponent<Camera>();
-        mainCamera.GetComponent<Camera>();
+        SwitchCam();
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
@@ -136,12 +152,14 @@ public class BattleManager : MonoBehaviour
             GameObject enemyPrefab = e.enemyPrefab;
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*i), (canvasHeight * 3/4) , 0), Quaternion.identity);
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
-            enemyPrefab.GetComponent<Enemy>().EnemySO = e;
+            enemyPrefab.GetComponent<Enemy>().SetUp(e);
             currentEnemies.Add(enemyPrefab);
             i++;
         }
 
         playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), (canvasHeight / 4), 0), Quaternion.identity);
+        playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
+        //Put Deck in player playerspace
     }
 
 
@@ -294,7 +312,7 @@ public class BattleManager : MonoBehaviour
         playerController.currentHealth = playerMaxHealth;
 
         //Switches Camera back to Main camera
-        battleCamera.enabled = false;
-        mainCamera.enabled = true;
+        SwitchCam();
+
     }
 }

@@ -68,30 +68,30 @@ public class CardDragInput : MonoBehaviour
         GameStateScript.OnGameStateChanged -= ChangeActionMap;
     }
 
-    void Start()
-    {
-        ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
-        /// 
+    //void Start()
+    //{
+    //    ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
+    //    /// 
         
-        GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
-        AddActivePlayspace(testPlayspace1);
-        AddActivePlayspace(testPlayspace2);
-        AddActivePlayspace(testPlayspace3);
+    //    GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
+    //    AddActivePlayspace(testPlayspace1);
+    //    AddActivePlayspace(testPlayspace2);
+    //    AddActivePlayspace(testPlayspace3);
 
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
-        testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
-        testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO);
-        testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO2);
-        testPlayspace3.NewPlayItem(testPlayItemPrefab, testSO2);
-        //// TEST END
-        DragDropActive = true;
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    testPlayspace1.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO);
+    //    testPlayspace2.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    testPlayspace3.NewPlayItem(testPlayItemPrefab, testSO2);
+    //    //// TEST END
+    //    DragDropActive = true;
 
-        //StartCoroutine(DragDrop());
+    //    //StartCoroutine(DragDrop());
 
-    }
+    //}
     
     public void ChangeActionMap(GameStateScript.GameState gameState)
     {   

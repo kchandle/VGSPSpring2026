@@ -21,12 +21,6 @@ public class PlayerController : MonoBehaviour
     // reference to character controller movement
     [SerializeField] private CharacterControllerMovement _characterControllerMovement;
 
-    public void Update()
-    {
-        OnWalking(new InputAction.CallbackContext());
-        OnJumping(new InputAction.CallbackContext());
-    }
-
     //Player Input component should have invoke unity events behavior, then make the unity event call this method
     public void OnWalking(InputAction.CallbackContext context) 
     {
