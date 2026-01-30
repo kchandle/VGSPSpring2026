@@ -1,6 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.UI;
 public enum DamageType
 {
     None,
@@ -91,6 +91,12 @@ public struct BattleEffect
             }
             //PlayParticles(pos);
             enemy.currentHealth -= DamageDealt;
+            if (enemy.currentHealth <= 0)
+            {
+                //Stops the player from interacting with the enemy once dead
+                enemy.gameObject.GetComponentInChildren<Image>().enabled = false;
+                enemy.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            }
         }
         else if (isPlayer)
         {

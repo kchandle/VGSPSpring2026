@@ -104,9 +104,7 @@ public class Playspace : MonoBehaviour
     // Destroys a specific PlayItem in this PlaySpace
     public void DestroyPlayItem(PlayItem playItem)
     {
-        print("attempting destroy");
         if (playItems.Contains(playItem)){
-            print("d3estroying");
             playItems.Remove(playItem);
             Destroy(playItem.gameObject);
         }

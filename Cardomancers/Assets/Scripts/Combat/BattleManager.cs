@@ -50,6 +50,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private List<InventoryCard> playerDeckCopyI; // copy of the player's deck at start of battle
     [SerializeField] private List<InventoryCard> playerDeckCopy; // copy of the player's deck for shuffling and use in battle
 
+    public List<InventoryCard> PlayerDeckCopy
+    {
+        get { return playerDeckCopy; }
+        set { playerDeckCopy = value; }
+    }
+
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
 
     public int turnCount = 0; // counter for the number of turns taken in the battle
@@ -128,7 +134,7 @@ public class BattleManager : MonoBehaviour
         battleCamera.enabled = true;
 
         //Get the player set up (not in awake cause it ran before the player Inventory was set
-        playerDeckCopyI = playerInventory.Deck;
+        playerDeckCopyI = new List<InventoryCard>(playerInventory.Deck);
 
         playerMaxHealth = playerController.maxPlayerHealth;
         playerCurrentHealth = playerMaxHealth;
@@ -163,6 +169,8 @@ public class BattleManager : MonoBehaviour
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*(i-1)), (canvasHeight * 1/4) , 0), Quaternion.identity);
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
+
+            //Player playspace allowed donors
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
@@ -195,12 +203,15 @@ public class BattleManager : MonoBehaviour
         //Check if player is out of cards
         if (playerDeckCopy.Count <= 0)
         {
-            playerDeckCopy = playerInventory.Shuffle(playerDeckCopyI);
+            playerDeckCopy = playerInventory.Shuffle(new List<InventoryCard>(playerInventory.Deck));
             
             //Add NewPlayItem from playsapce for each card in deck copy
             foreach (InventoryCard card in playerDeckCopy)
             {
-                playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
+                UnityEngine.GameObject playerCard = playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
+                playerCard.GetComponent<Card>().inventoryCard = card;
+                playerCard.GetComponent<Card>().hacks = card.hacks;
+                playerCard.GetComponent<Card>().CardSO = card.cardSO;
             }
         }
         //Display cards
@@ -271,19 +282,18 @@ public class BattleManager : MonoBehaviour
         //If all enemies health <= 0, battleState = BattleState.WON
 
         //Loops through list of all active enemies to check if their health is <= 0
-        foreach (GameObject enemy in currentEnemies)
+        //loop through all enemies
+        foreach (GameObject e in currentEnemies)
         {
-            //loop through all enemies
-            foreach (GameObject e in currentEnemies)
+            if (!(e.GetComponent<Enemy>().currentHealth <= 0))
             {
-                if (!(e.GetComponent<Enemy>().currentHealth <= 0)) 
-                {
-                    break;
-                }
-                battleState = BattleState.WON;
-                isBattling = false;
+                break;
             }
+            battleState = BattleState.WON;
+            isBattling = false;
         }
+
+
     }
 
     public void EndBattle()

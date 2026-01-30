@@ -203,7 +203,6 @@ public class CardDragInput : MonoBehaviour
                         // New Playspace must not be the current parent of the dragTarget
                         if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
                         {
-                            print("allowed to move to new playspace");
                             // move dragTarget from it's parent to Playspace p
                            
                             
@@ -211,14 +210,20 @@ public class CardDragInput : MonoBehaviour
                             // make it so this is only true if in battle mode
                             if (Object.FindFirstObjectByType<BattleManager>() != null)
                             {
+                                BattleManager bm = Object.FindFirstObjectByType<BattleManager>();
                                 if (Object.FindFirstObjectByType<BattleManager>().isBattling)
                                 {
-                                    print("we battlin");
-                                    if(AttemptPlay((Card)dragTarget, p) == true) {
-                                        print("stop the dragdrop");
+                                    if(AttemptPlay((Card)dragTarget, p) == true) 
+                                    {
+                                        print(dragTarget.GetComponent<Card>().inventoryCard);
+                                        if (bm.PlayerDeckCopy.Contains(dragTarget.GetComponent<Card>().inventoryCard))
+                                        {
+                                            print("running remove from player deck copy");
+                                            bm.PlayerDeckCopy.Remove(dragTarget.GetComponent<Card>().inventoryCard);
+                                        }
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
-                                        }
+                                    }
                                 } else
                                 {
                                     MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
@@ -244,10 +249,8 @@ public class CardDragInput : MonoBehaviour
     //Tries to play card
     public bool AttemptPlay(Card dragTarget, Playspace p)
     {
-        print("play be attempting");
         if (dragTarget != null)
         {
-            print("dragtarget has a card component");
             //tries to play card against the playscpace's parent gameobject enemy component
             dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
             return true;
