@@ -116,7 +116,6 @@ public class CardDragInput : MonoBehaviour
     //}
     public IEnumerator DragDrop()
     {
-        print("coroutine started");
         dragDropActive = true;
         while (dragDropActive == true)
         {
@@ -150,7 +149,6 @@ public class CardDragInput : MonoBehaviour
                     // if there is a valid focusTarget in Playspace p, stop looking for a focusTarget and set dragplaySpace to p
                     if (focusTarget != null)
                     {
-                        print("focus target found in " + p.name);
                         dragPlayspace = p;
                         
                         break;
@@ -170,7 +168,6 @@ public class CardDragInput : MonoBehaviour
 
             if (Pointer.current.press.wasPressedThisFrame)
             {
-                print("you clicked");
 
                 if (isDragging == false && dragPlayspace != null)
                 {
@@ -215,10 +212,8 @@ public class CardDragInput : MonoBehaviour
                                 {
                                     if(AttemptPlay((Card)dragTarget, p) == true) 
                                     {
-                                        print(dragTarget.GetComponent<Card>().inventoryCard);
                                         if (bm.PlayerDeckCopy.Contains(dragTarget.GetComponent<Card>().inventoryCard))
                                         {
-                                            print("running remove from player deck copy");
                                             bm.PlayerDeckCopy.Remove(dragTarget.GetComponent<Card>().inventoryCard);
                                         }
                                         dragPlayspace.DestroyPlayItem(dragTarget);
@@ -287,7 +282,6 @@ public class CardDragInput : MonoBehaviour
         print(to);
         print(from);
         if (to.allowedDonors.Contains(from)){
-            print("in allowed donors");
             to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO);
             from.DestroyPlayItem(moveTarget);
         }

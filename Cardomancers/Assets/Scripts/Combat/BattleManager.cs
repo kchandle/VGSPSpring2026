@@ -27,8 +27,8 @@ public class BattleManager : MonoBehaviour
 
     #region UI Elements
     public Canvas battleUI; // the canvas for battle UI elements
-    public Canvas winScreen; // the canvas displayed when the player wins
-    public Canvas loseScreen; // the canvas displayed when the player loses
+    public GameObject winScreen; // the canvas displayed when the player wins
+    public GameObject loseScreen; // the canvas displayed when the player loses
     #endregion
 
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
@@ -137,7 +137,7 @@ public class BattleManager : MonoBehaviour
         playerDeckCopyI = new List<InventoryCard>(playerInventory.Deck);
 
         playerMaxHealth = playerController.maxPlayerHealth;
-        playerCurrentHealth = playerMaxHealth;
+        playerCurrentHealth = playerController.currentHealth;
 
         //Get the enemy set up
 
@@ -183,12 +183,15 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator TurnManager()
     {
-        while (battleState != BattleState.WON || battleState != BattleState.LOST) {
+        while (battleState != BattleState.WON && battleState != BattleState.LOST) {
             yield return StartCoroutine(StartPlayerTurn()); //Wait for player to finish turn
 
-
-            yield return StartCoroutine(StartEnemyTurn()); //Wait for enemy to finish turn
-
+            //Testing line to skip enemy turn every other turn
+            if (turnCount % 2 == 0) {
+                yield return StartCoroutine(StartEnemyTurn()); //Wait for enemy to finish turn
+            }
+            
+            
             turnCount++; //Adds the turn to turn count
         }
         EndBattle();
@@ -232,7 +235,6 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator StartEnemyTurn()
     {
-        print("Enemy Turn Started");
         //Check if enemy is out of cards
         foreach (GameObject enemy in currentEnemies)
         {
@@ -248,12 +250,13 @@ public class BattleManager : MonoBehaviour
         foreach (GameObject enemy in currentEnemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript.currentHealth <= 0) continue; //Skip turn if enemy is dead
             InventoryCard card = enemyScript.DrawCard();
             
             //Plays Card
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
-                effect.TriggerEffect(player, player.transform.position);
+                effect.TriggerEffect(playerController, player.transform.position);
             }
         }
 
@@ -261,7 +264,7 @@ public class BattleManager : MonoBehaviour
         foreach (GameObject enemy in currentEnemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
-            InventoryCard card = enemyScript.DrawCard();
+            //InventoryCard card = enemyScript.DrawCard();
             yield return StartCoroutine(enemyScript.StatusEffects());
         }
         
@@ -274,7 +277,7 @@ public class BattleManager : MonoBehaviour
     public void checkEndConditions()
     {
         //If player health <= 0, battleState = BattleState.LOST
-        if (playerCurrentHealth <= 0)
+        if (playerController.currentHealth <= 0)
         {
             battleState = BattleState.LOST;
             isBattling = false;
@@ -283,12 +286,17 @@ public class BattleManager : MonoBehaviour
 
         //Loops through list of all active enemies to check if their health is <= 0
         //loop through all enemies
+        bool allDead = true;
         foreach (GameObject e in currentEnemies)
         {
+            //print("Enemy: "+e.GetComponent<Enemy>().currentHealth);
             if (!(e.GetComponent<Enemy>().currentHealth <= 0))
             {
-                break;
+                allDead = false;
             }
+        }
+        if (allDead)
+        {
             battleState = BattleState.WON;
             isBattling = false;
         }
@@ -299,13 +307,13 @@ public class BattleManager : MonoBehaviour
     public void EndBattle()
     {
         // Depending on battleState, invoke win or lose events
-        //Potential bug where battlecam gets disabled before win/lose screen shows up
+        // Potential bug where battlecam gets disabled before win/lose screen shows up
         switch (battleState)
         {
             case BattleState.WON:
                 OnWin.Invoke();
                 // Display win screen
-                winScreen.enabled = true;
+                winScreen.SetActive(true);
 
                 //Start win coroutine
                 //Get rewards from SO and display
@@ -314,7 +322,7 @@ public class BattleManager : MonoBehaviour
             case BattleState.LOST:
                 OnLose.Invoke();
                 // Display lose screen
-                loseScreen.enabled = true;
+                loseScreen.SetActive(true);
 
                 //start loss coroutine
                 //If player lost, return to last checkpoint or main menu
