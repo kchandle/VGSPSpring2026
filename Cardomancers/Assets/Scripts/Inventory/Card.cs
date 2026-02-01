@@ -88,7 +88,7 @@ public class Card : PlayItem
         foreach (BattleEffect effect in effects)
         {
             //Apply each effect to the target
-            effect.TriggerEffect(target.gameObject, target.gameObject.transform.position);
+            effect.TriggerEffect(target, target.gameObject.transform.position);
         }
     }
 

@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-
+using UnityEngine.UI;
 public enum DamageType
 {
     None,
@@ -54,55 +55,55 @@ public struct BattleEffect
 
 
     //The function that is called when the card is played: Change into Overload function for player and enemy respectively
-    public void TriggerEffect(GameObject target, Vector3 pos)
+    public void TriggerEffect(PlayerController target, Vector3 pos)
     {
-        
-        bool isEnemy = target.CompareTag("Enemy");
-        bool isPlayer = target.CompareTag("Player");
+        PlayerController player = target.GetComponent<PlayerController>();
+        if (player.isShielded) return;
+        if (isStatusEffect)
+        {
+            player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
+            return;
+        }
+        //PlayParticles(pos);
+        player.currentHealth -= StatusAmount;
+    }
 
+    public void TriggerEffect(Enemy target, Vector3 pos)
+    {
         int DamageDealt = StatusAmount;
+        Enemy enemy = target.GetComponent<Enemy>();
+        if (enemy.isShielded) return;
 
-        if (isEnemy)
+        if (isStatusEffect)
         {
-            Enemy enemy = target.GetComponent<Enemy>();
-            if (enemy.isShielded) return;
-
-            if (isStatusEffect)
-            {
-                enemy.statusEffects.Add(new StatusEffectContainer(damageType,StatusAmount , isPerishable,turnsActive,particles));
-                return;
-            }
-
-            foreach (DamageType resistance in enemy.resistances)
-            {
-                if (resistance == damageType)
-                {
-                    DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageReduct);
-                    break;
-                }
-            }
-            foreach (DamageType weakness in enemy.weaknesses)
-            {
-                if (weakness == damageType)
-                {
-                    DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageMult);
-                    break;
-                }
-            }
-            //PlayParticles(pos);
-            enemy.currentHealth -= DamageDealt;
+            enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
+            return;
         }
-        else if (isPlayer)
+
+        foreach (DamageType resistance in enemy.resistances)
         {
-            PlayerController player = target.GetComponent<PlayerController>();
-            if (player.isShielded) return;
-            if (isStatusEffect)
+            if (resistance == damageType)
             {
-                player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
-                return;
+                DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageReduct);
+                break;
             }
-            //PlayParticles(pos);
-            player.currentHealth -= StatusAmount;
         }
+        foreach (DamageType weakness in enemy.weaknesses)
+        {
+            if (weakness == damageType)
+            {
+                DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageMult);
+                break;
+            }
+        }
+        //PlayParticles(pos);
+        enemy.currentHealth -= DamageDealt;
+        if (enemy.currentHealth <= 0)
+        {
+            //Stops the player from interacting with the enemy once dead
+            enemy.gameObject.GetComponentInChildren<Image>().enabled = false;
+            enemy.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+        }
+
     }
 }
