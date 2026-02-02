@@ -9,7 +9,7 @@ public class moneyPickup : MonoBehaviour
     public float respawnTime = 15f;
     public UnityEvent Respawn = new UnityEvent();
     public UnityEvent OnCollect = new UnityEvent();
-    public InteractableObject_SO is_so;
+
 
     // money on here for testing put on SO or sum later
     
