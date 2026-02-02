@@ -7,11 +7,6 @@ public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
 	[SerializeField] private int money;
-	// canvas for the inventory ui
-	[SerializeField] private Canvas canvas;
-	// prefab of the card
-	[SerializeField] private GameObject inventoryCardPrefab;
-
 	// all the cards the player has
 	[SerializeField] private List<InventoryCard> inventory;
 	// cards that can be used when in battle
