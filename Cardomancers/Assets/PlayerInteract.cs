@@ -5,53 +5,38 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteract : MonoBehaviour
 {
-    // List<GameObject> hits;
 
-
-
-    [SerializeField] InteractableObject inter;
-    public InputActionReference interact;
+    //gets interact key reference from the input system:
+    public InputActionReference UIInteract;
 
   
 
-    CapsuleCollider capsule;
-    public int range = 5;
+    // the range of the area player can interact with things in:
+     public int range = 5;
 
-    void Awake()
+   
+    //get the interact referance and set it to another variable, if the player presses:
+     void OnEnable()
     {
-        capsule = GetComponent<CapsuleCollider>();
-        inter = GetComponent<InteractableObject>();
-        // hits = new List<GameObject>();
+        UIInteract.action.started += InteractKey;
     }
 
-
-
-    public void InteractKey(InputAction.CallbackContext obj)
+    //if the interactkey is set to being interacted or whatever, basically if u press the key:
+     void InteractKey(InputAction.CallbackContext obj)
     {
-       Debug.Log("Yayy, u inteactedd with mee!");
-    }
-
-
-
-    void FixedUpdate()
-    {
-        RaycastHit hit;
-
-        //Radius in which objects can be interacted with
+        // sends an array thing to get all objects:
         Collider[] col = Physics.OverlapSphere(transform.position, range);
         {
-            //If object is interactable, do stuff
-            print(col);
-
-
-
-
-
-            /*if(hit.transform.gameObject.TryGetComponent<>(out  interactable))
+            //If object is interactable, so basically if it has the interactable object script, do what it needs to do:
+            foreach (Collider c in col)
             {
-                
-            }*/
-        }
+                if (c.TryGetComponent(out InteractableObject inter))
+                {
+                    inter.interactable.Invoke();
+                }
+            }  
+        }   
+
 
     }
 
