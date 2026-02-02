@@ -578,9 +578,21 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 3ba2e992-6f73-464e-b057-9f0363771180
     m_ActionName: 'Keyboard/CardFire[/Keyboard/f]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fb9e8ca4-c0ac-477b-b82e-897bd345152b
+    m_ActionName: 'MapWalking/UIInteract[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0a7f7b27-a60f-4523-92e7-b05a04256833
+    m_ActionName: 'Battle/Drag[/Mouse/press]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 25ae1478-7eea-415e-a3ff-5e9ddff99b42
+    m_ActionName: 'Inventory/Drag[/Mouse/press]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Keyboard
+  m_DefaultControlScheme: Keyboard and Mouse
+  m_DefaultActionMap: MapWalking
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!136 &1483877860
@@ -731,6 +743,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd89ae37295f3cf291c34a47294e18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  maxPlayerHealth: 100
+  currentHealth: 0
+  isShielded: 0
   _characterControllerMovement: {fileID: 1483877864}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
