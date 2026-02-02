@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +13,7 @@ public class PlayerInteract : MonoBehaviour
         capsule = GetComponent<CapsuleCollider>();
     }
 
-    /*void FixedUpdate()
+    void FixedUpdate()
     {
         RaycastHit hit;
 
@@ -27,6 +27,6 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-    }*/
+    }
 
-}
+}*/

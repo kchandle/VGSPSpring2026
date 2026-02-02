@@ -6,6 +6,13 @@ public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
 	[SerializeField] private int money;
+
+	//The player's level and the amount of exp they have
+	[SerializeField] private float xp;
+	[SerializeField] private int level;
+	//The amount of xp needed for the player to level up
+	[SerializeField] private float levelUpXp;
+
 	// canvas for the inventory ui
 	[SerializeField] private Canvas canvas;
 	// prefab of the card
@@ -103,4 +110,22 @@ public class Inventory : MonoBehaviour
         Debug.Log(card);
         return card;
     }
+
+
+	//Functions to gain money, xp, and level
+	public void GainMoney(int amount)
+	{
+		money += amount;
+	}
+	public void GainXP(float amount)
+	{
+		xp += amount;
+		//Leveling up if xp exceeds the amount needed to level up
+		if(xp >= levelUpXp)
+		{
+			xp -= levelUpXp;
+			level += 1;
+			Debug.Log("Leveled up");
+		}
+	}
 }

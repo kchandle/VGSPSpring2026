@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterControllerMovement : MonoBehaviour
-{
+{	
     public float characterSpeed = 1f; 
+	private float baseSpeed;
+	public bool sprinting;
+
+
 	//Vector3 from another script that gives the direction the character will move in 
     public Vector3 inputDirection; 
     // intensity of gravity MUST be 9.8f so it is realistic
@@ -16,19 +21,35 @@ public class CharacterControllerMovement : MonoBehaviour
     {
 	  //Set the character controller reference automatically
 	  _characterController = GetComponent<CharacterController>();
+	  baseSpeed = characterSpeed;
     }
+
+
+
+	//Press left shift to toggle sprint on or off.
+	public void OnSprint(InputValue value)
+	{
+		if(value.isPressed)
+		{
+			sprinting = !sprinting;
+			if(sprinting){characterSpeed = baseSpeed * 2;}
+			else{characterSpeed = baseSpeed;}
+		}
+	}
+
+
 
     private void Update()
     {
 	  if(!_characterController.isGrounded)
 	  {
-              //accelerate the player downward when they are not on the ground;
-			  inputDirection.y -= gravity * Time.deltaTime; 
+		//accelerate the player downward when they are not on the ground;
+		inputDirection.y -= gravity * Time.deltaTime; 
 	  }
 	  if(_characterController.isGrounded && jumping)
 	  {
-              //sets the velocity such that it goes up as high as the jump intensity is set
-			  inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
+		//sets the velocity such that it goes up as high as the jump intensity is set
+		inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
 	  }
 
 	  // combines all factors

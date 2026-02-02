@@ -58,6 +58,9 @@ public class BattleManager : MonoBehaviour
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
 
+    public int moneyWon = 0; //Sum of money to be won from all enemies in battle
+    public float xpWon = 0; //Sum of xp to be won from all enemies in battle
+
     public int turnCount = 0; // counter for the number of turns taken in the battle
 
     public GameObject cardPrefab; // Generic prefab for the cards used in battle
@@ -158,6 +161,9 @@ public class BattleManager : MonoBehaviour
         float enemySpacing = canvasWidth / (battle.enemies.Length);
         int i = 0;
 
+        moneyWon = 0;
+        xpWon = 0;
+
         playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), -(canvasHeight* 3/4), 0), Quaternion.identity);
         playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
         cardDragInput.AddActivePlayspace(playerspacePrefab.GetComponent<Playspace>());
@@ -169,6 +175,10 @@ public class BattleManager : MonoBehaviour
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0+ (enemySpacing*(i-1)), (canvasHeight * 1/4) , 0), Quaternion.identity);
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform , false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
+
+            //Store total money and xp to be won after victory
+            moneyWon += e.moneyDrops;
+            xpWon += e.xpDrops;
 
             //Player playspace allowed donors
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
@@ -317,7 +327,10 @@ public class BattleManager : MonoBehaviour
 
                 //Start win coroutine
                 //Get rewards from SO and display
-
+                playerInventory.GainMoney(moneyWon);
+                playerInventory.GainXP(xpWon);
+                Debug.Log("Gained money and xp");
+                
                 break;
             case BattleState.LOST:
                 OnLose.Invoke();
