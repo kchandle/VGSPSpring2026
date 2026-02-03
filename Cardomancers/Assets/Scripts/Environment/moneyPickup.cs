@@ -30,10 +30,13 @@ public class moneyPickup : MonoBehaviour
 
     public void getMoney()
     {
-        money++;
-        Debug.Log ($"money: {money}");
-        respawn = true;
-        OnCollect.Invoke();
+        if(!respawn)
+        {
+            money++;
+            Debug.Log ($"money: {money}");
+            respawn = true;
+            OnCollect.Invoke();
+        }
     }
     // getMoney called by interaction scripts
 }
