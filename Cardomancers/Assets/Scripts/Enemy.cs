@@ -28,6 +28,30 @@ public class Enemy : MonoBehaviour
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
+    
+    // different sprites needed and change depending on state
+    public SpriteRenderer spriteRenderer;
+    public Sprite IdleSprite;
+    public Sprite DamagedSprite;
+    public Sprite AttackedSprite;
+    public Sprite StunnedSprite;
+    public Sprite DefeatedSprite;
+
+
+
+// variable for enum switch state
+    bool currentValue;
+    int State = 5;
+//the different enemy states
+    public enum EnemyState
+    {
+        Idle,
+        Damaged,
+        Attacked,
+        Stunned,
+        Defeated,
+    }
+
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
     {
@@ -42,6 +66,49 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     
+    //enemy state enum changes here 
+    void EnemyAnimatorState()
+    {
+        switch(State)
+        {
+            case 5:
+            {
+                currentValue = animator.GetBool("Idle");
+                animator.SetBool("Idle", true);
+                spriteRenderer.sprite = IdleSprite;
+                break;
+            }
+            case 4:
+            {
+                currentValue = animator.GetBool("Defeated");
+                animator.SetBool("Defeated", true);
+                spriteRenderer.sprite = DefeatedSprite;
+                break;
+            }
+            case 3:
+            {
+                currentValue = animator.GetBool("Stunned");
+                animator.SetBool("Stunned", true);
+                spriteRenderer.sprite = StunnedSprite;
+                break;
+            }
+            case 2:
+            {
+                currentValue = animator.GetBool("Attack");
+                animator.SetBool("Attack", true);
+                spriteRenderer.sprite = AttackedSprite;
+                break;
+            }
+            case 1:
+            {
+                currentValue = animator.GetBool("Damaged");
+                animator.SetBool("Damaged", true);
+                spriteRenderer.sprite = DamagedSprite;
+                break;
+            }
+        }
+    }
+
     public void ShuffleDeck()
     {
         // If deck has less than or equal to zero cards, shuffle the deck
