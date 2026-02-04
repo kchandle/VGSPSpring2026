@@ -29,6 +29,12 @@ public class Inventory : MonoBehaviour
         get { return deck; }
     }
 
+	public int Money
+	{
+		get {return money;}
+		set {money = Money;}
+	}
+
 
 	//Use inventory_so variables for the variables in here
 	private void Awake()
