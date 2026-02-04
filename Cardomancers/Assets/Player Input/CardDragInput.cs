@@ -228,6 +228,11 @@ public class CardDragInput : MonoBehaviour
                         }
                     }
 
+                    //add a hack to a card if it is an inventory hack
+                    if (dragTarget is InventoryHack)
+                    {
+                        dragTarget.gameObject.GetComponent<InventoryHack>().AddHackToCard();
+                    }
                     dragTarget = null;
 
                 }
