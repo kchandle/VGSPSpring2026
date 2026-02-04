@@ -7,7 +7,7 @@ public class StartBattle : MonoBehaviour
 {
     public Battle_SO battleToStart;
     // The only reason this exists is to test the battle system quickly  
-    void Start()
+    public void StartBattleNow()
     {
         // Updated to use the recommended method for finding objects  
         var battleSystem = Object.FindFirstObjectByType<BattleManager>();
