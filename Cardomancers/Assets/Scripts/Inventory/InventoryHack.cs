@@ -59,6 +59,9 @@ public class InventoryHack : PlayItem
 
     private void Update()
     {
-        cardToAddHack = FindCard();
+        if (FindCard() != null)
+        {
+            cardToAddHack = FindCard();
+        }
     }
 }
