@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 433787120}
   - component: {fileID: 433787119}
   m_Layer: 0
-  m_Name: cardpool
+  m_Name: CardObjectPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,11 +641,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerMovement
   characterSpeed: 5
-  inputDirection: {x: 0, y: 0, z: 0}
   inputDirectionInput: {x: 0, y: 0, z: 0}
   gravity: 9.8
-  jumpIntensity: 5
+  jumpIntensity: 1
   jumping: 0
+  footstepClips:
+  - {fileID: 8300000, guid: 9d179faca6ac38c40b0b0b3bf631aaf0, type: 3}
+  jumpClips:
+  - {fileID: 8300000, guid: a9b85f251c1c2c14aa6d3c4d784b601d, type: 3}
+  - {fileID: 8300000, guid: b01a239940a185a41974f11849a864d8, type: 3}
+  - {fileID: 8300000, guid: 4065c8fe437c181498f88cf78e45b861, type: 3}
+  - {fileID: 8300000, guid: ad1adc643de79de4e87cee3ff6bb9820, type: 3}
+  - {fileID: 8300000, guid: 00c4601736c9d294a8c5e930a47d13a8, type: 3}
+  - {fileID: 8300000, guid: a2300cbd9d7ef7e43a22ec22ced80162, type: 3}
 --- !u!143 &607925428
 CharacterController:
   m_ObjectHideFlags: 0
