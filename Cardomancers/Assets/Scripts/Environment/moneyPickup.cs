@@ -3,13 +3,15 @@ using UnityEngine.Events;
 
 public class moneyPickup : MonoBehaviour
 {
-
-    public static int money = 0;
     public bool respawn = false;
+    // respawn bool causes respawn countdown
     public float respawnTime = 15f;
+    // time until respawn occurs
     public UnityEvent Respawn = new UnityEvent();
+    // respawns the moneys
     public UnityEvent OnCollect = new UnityEvent();
-
+    // collects the moneys
+    public Inventory inventory;
 
     // money on here for testing put on SO or sum later
     
@@ -32,8 +34,8 @@ public class moneyPickup : MonoBehaviour
     {
         if(!respawn)
         {
-            money++;
-            Debug.Log ($"money: {money}");
+            inventory.Money++;
+            Debug.Log ($"money: {inventory.Money}");
             respawn = true;
             OnCollect.Invoke();
         }

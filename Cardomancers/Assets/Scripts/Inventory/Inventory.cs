@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
-	[SerializeField] private int money;
+	[SerializeField] private float money;
 	// canvas for the inventory ui
 	[SerializeField] private Canvas canvas;
 	// prefab of the card
@@ -22,6 +22,12 @@ public class Inventory : MonoBehaviour
 
 	//inventory_so reference
 	[SerializeField] private Inventory_SO inventorySO;
+
+	public float Money
+	{
+		get {return money;}
+		set {money = value;}
+	}
 
     public List<InventoryCard> Deck
     {

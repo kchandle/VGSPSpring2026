@@ -1,12 +1,23 @@
 using UnityEngine;
-
+using UnityEngine.Events;
 public class cardPickup : MonoBehaviour
 {
-    // public InventoryCard card;
-    void getCard()
+     public InventoryCard card;
+     public UnityEvent GetCard = new UnityEvent();
+     public Inventory inventory;
+
+    public void Awake()
     {
-      //  Inventory.Inventory.add(card);
+      inventory = GameObject.Find("Player").GetComponent<Inventory>();
     }
 
-    // Puts card in inventroy :)
+    void getCard()
+    {
+        inventory.AddCardToDeck(card);
+        GetCard.Invoke();
+    }
+
+    // Puts card in inventroy and deletes :)
+    // getCard is called by playerInteract
+
 }
