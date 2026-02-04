@@ -15,6 +15,11 @@ public class PlayItem : MonoBehaviour
     public Vector3 offset;
     [SerializeField] private BoxCollider2D boxCollider;
 
+    public BoxCollider2D BoxCollider
+    {
+        get => boxCollider;
+    }
+
     // scaling
     void Awake()
     {
