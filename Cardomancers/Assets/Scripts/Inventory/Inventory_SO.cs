@@ -9,6 +9,7 @@ public class Inventory_SO : ScriptableObject
 	[SerializeField] private int deckLength;
 	[SerializeField] private int inventoryLength;
 
+	// ALL cards currently in the player's inventory, including those in the Deck
 	public List<InventoryCard> Inventory
 	{
 			get => inventory;
@@ -18,6 +19,7 @@ public class Inventory_SO : ScriptableObject
 			}
 	}
 
+	// Cards inside of the player's deck only
 	public List<InventoryCard> Deck
 	{
 			get => deck;
@@ -27,6 +29,7 @@ public class Inventory_SO : ScriptableObject
 			}
 	}
 
+	// Max amount of cards you can have in your dck
 	public int DeckLength
 	{
 			get => deckLength;
@@ -35,7 +38,7 @@ public class Inventory_SO : ScriptableObject
 				deckLength = value;
 			}
 	}
-
+	// Max amount of cards you can have in your inventory
 	public int InventoryLength
 	{
 			get => inventoryLength;

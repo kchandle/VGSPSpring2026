@@ -19,21 +19,38 @@ public class PlayerController : MonoBehaviour
         currentHealth = maxPlayerHealth;
     }
 
+    [SerializeField] GameObject inventoryUI;
+
     // reference to character controller movement
     [SerializeField] private CharacterControllerMovement _characterControllerMovement;
 
     //Player Input component should have invoke unity events behavior, then make the unity event call this method
     public void OnWalking(InputAction.CallbackContext context) 
     {
-	  // assigns the input direction value of the movement script to the actual players input
-	  _characterControllerMovement.inputDirection = context.ReadValue<Vector3>();
+	    // assigns the input direction value of the movement script to the actual players input
+	     _characterControllerMovement.inputDirectionInput = context.ReadValue<Vector3>();
     }
 
 	public void OnJumping(InputAction.CallbackContext context)
 	{
-			// makes the player jump
-			_characterControllerMovement.jumping = true; 
+		// makes the player jump
+	    _characterControllerMovement.jumping = true; 
 	}
+
+    public void OnToggleInventory(InputAction.CallbackContext context)
+    {
+        //can only open the inventory when in free movement and alive
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
+        {
+            inventoryUI.SetActive(true);
+            GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+        }
+        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY)
+        {
+            inventoryUI.SetActive(false);
+            GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+        }
+    }
 
     public IEnumerator StatusEffects()
     {
