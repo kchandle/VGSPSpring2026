@@ -11,10 +11,15 @@ public class moneyPickup : MonoBehaviour
     // respawns the moneys
     public UnityEvent OnCollect = new UnityEvent();
     // collects the moneys
-    public Inventory inventory;
+    private Inventory inventory;
 
     // money on here for testing put on SO or sum later
     
+    void Awake()
+    {
+        inventory = GameObject.Find("Player").GetComponent<Inventory>();
+    }
+
     public void Update()
     {
         if (respawn)

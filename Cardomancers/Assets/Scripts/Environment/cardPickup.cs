@@ -4,17 +4,21 @@ public class cardPickup : MonoBehaviour
 {
      public InventoryCard card;
      public UnityEvent GetCard = new UnityEvent();
-     public Inventory inventory;
+     private Inventory inventory;
 
     public void Awake()
     {
       inventory = GameObject.Find("Player").GetComponent<Inventory>();
     }
+    // Gets playerInventory.
 
-    void getCard()
+    public void getCard()
     {
         inventory.AddCardToDeck(card);
+        // Adds card to deck
         GetCard.Invoke();
+        // Deletes the object because you only get the card ONCE!!!!!!!
+        Debug.Log ("Card Got!");
     }
 
     // Puts card in inventroy and deletes :)
