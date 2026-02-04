@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterControllerMovement : MonoBehaviour
@@ -22,14 +23,15 @@ public class CharacterControllerMovement : MonoBehaviour
     {
 	  if(!_characterController.isGrounded)
 	  {
-              //accelerate the player downward when they are not on the ground;
-			  inputDirection.y -= gravity * Time.deltaTime; 
+		//accelerate the player downward when they are not on the ground;
+		inputDirection.y -= gravity * Time.deltaTime; 
 	  }
 	  if(_characterController.isGrounded && jumping)
 	  {
-              //sets the velocity such that it goes up as high as the jump intensity is set
-			  inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
+		//sets the velocity such that it goes up as high as the jump intensity is set
+		inputDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
 	  }
+
 
 	  // combines all factors
 	  Vector3 finalMovement = (inputDirection * characterSpeed);
