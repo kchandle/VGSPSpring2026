@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     public List<Card_SO> hand = new List<Card_SO>();
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
-    bool isStunned; // f the enemy is stunned, they cannot take actions.
+    public bool isStunned; // f the enemy is stunned, they cannot take actions.
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -84,6 +84,7 @@ public class Enemy : MonoBehaviour
             if (statusEffect.DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
+                if (statusEffect.damageType == DamageType.Stun) isStunned = false;
                 statusEffects.Remove(statusEffect);
                 Debug.Log("A status effect has expired.");
             }

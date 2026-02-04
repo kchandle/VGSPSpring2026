@@ -197,7 +197,7 @@ public class BattleManager : MonoBehaviour
             yield return StartCoroutine(StartPlayerTurn()); //Wait for player to finish turn
 
             //Testing line to skip enemy turn every other turn
-            if (turnCount % 2 == 0) {
+            if (true) {
                 yield return StartCoroutine(StartEnemyTurn()); //Wait for enemy to finish turn
             }
             
@@ -248,6 +248,7 @@ public class BattleManager : MonoBehaviour
         //Check if enemy is out of cards
         foreach (GameObject enemy in currentEnemies)
         {
+            
             if (enemy.GetComponent<Enemy>().deck.Count <= 0)
             {
                 enemy.GetComponent<Enemy>().ShuffleDeck();
@@ -264,8 +265,10 @@ public class BattleManager : MonoBehaviour
             InventoryCard card = enemyScript.DrawCard();
             
             //Plays Card
+
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
+                if (enemy.GetComponent<Enemy>().isStunned) continue;
                 effect.TriggerEffect(playerController, player.transform.position);
             }
         }
