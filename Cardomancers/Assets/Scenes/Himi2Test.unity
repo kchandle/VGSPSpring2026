@@ -467,6 +467,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1317998562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1317998564}
+  - component: {fileID: 1317998563}
+  m_Layer: 0
+  m_Name: Cid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1317998563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317998562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0054cff2bc23d9d45ac7569ab0353caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartBattle
+  battleToStart: {fileID: 11400000, guid: 3d628ddb67619e141bcb04b0f6b00f31, type: 2}
+--- !u!4 &1317998564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317998562}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.05024, y: 0, z: 5.50742}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1390790720
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,13 +543,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   money: 0
-  canvas: {fileID: 88705896}
-  inventoryCardPrefab: {fileID: 0}
   inventory: []
   deck: []
   inventoryLength: 0
   deckLength: 0
-  inventorySO: {fileID: 11400000, guid: ae1c55241edb1bc4b93f9ff454908abc, type: 2}
+  inventorySO: {fileID: 11400000, guid: bd0aa686dbcb14f48812470527e1f5ff, type: 2}
 --- !u!114 &1390790722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,6 +906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CombatManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5881118672196670138, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1390790721}
     - target: {fileID: 6862682295009153447, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
       propertyPath: mainCamera
       value: 
@@ -933,7 +980,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5425967882724066044, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
@@ -949,3 +997,4 @@ SceneRoots:
   - {fileID: 1003526847770829356}
   - {fileID: 894976089}
   - {fileID: 1390790723}
+  - {fileID: 1317998564}
