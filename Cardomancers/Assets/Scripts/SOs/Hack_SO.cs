@@ -8,8 +8,11 @@ public class Hack_SO : ScriptableObject
     // The base price for this card if the player buys it from the black market.
    public int Price;
    public string displayName; //The name of the Hack as it appears to the player
-   public string description; //The flavor text for the description
 
-   // public BattleEffect[] hackEffects; //The list of effects that occur when this hack is played
+   public string description; //The flavor text for the description
+   public string battleDescription; //The informational description of what the battleEffect of the card does
+
+   public BattleEffect[] hackEffects; //The list of effects that occur when this hack is played
+   
 
 }
