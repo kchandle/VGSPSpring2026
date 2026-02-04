@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public void OnWalking(InputAction.CallbackContext context) 
     {
 	    // assigns the input direction value of the movement script to the actual players input
-	     _characterControllerMovement.inputDirection = context.ReadValue<Vector3>();
+	     _characterControllerMovement.inputDirectionInput = context.ReadValue<Vector3>();
     }
 
 	public void OnJumping(InputAction.CallbackContext context)
