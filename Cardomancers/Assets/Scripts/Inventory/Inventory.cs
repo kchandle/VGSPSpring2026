@@ -7,6 +7,13 @@ public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
 	[SerializeField] private int money;
+	//The amount of xp the player has
+	[SerializeField] private float xp;
+	//The player's level
+	[SerializeField] private int level;
+	//The amount of xp the player needs to level up
+	[SerializeField] private float levelUpXp;
+
 	// all the cards the player has
 	[SerializeField] private List<InventoryCard> inventory;
 	// cards that can be used when in battle
@@ -129,5 +136,22 @@ public class Inventory : MonoBehaviour
 				.ToList();
 		inventorySO.Inventory = inventory;
 		return inventory;
+	}
+
+
+
+	//Methods to change money and xp
+	public void GainMoney(int amount)
+	{
+		money += amount;
+	}
+	public void GainXp(float amount)
+	{
+		xp += amount;
+		if(xp >= levelUpXp)
+		{
+			xp -= levelUpXp;
+			level += 1;
+		}
 	}
 }

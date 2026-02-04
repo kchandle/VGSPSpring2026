@@ -328,7 +328,7 @@ public class BattleManager : MonoBehaviour
                 //Start win coroutine
                 //Get rewards from SO and display
                 playerInventory.GainMoney(moneyWon);
-                playerInventory.GainXP(xpWon);
+                playerInventory.GainXp(xpWon);
                 Debug.Log("Gained money and xp");
                 
                 break;
