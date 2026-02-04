@@ -10,7 +10,9 @@ public class Card : PlayItem
 
     private Card_SO cardSO;
 
-    public InventoryCard inventoryCard; // reference to it's own inventory card
+    public InventoryCard inventoryCard; // reference to it's own inventory card\
+
+    // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
         get {return cardSO;}
@@ -25,8 +27,9 @@ public class Card : PlayItem
     
     public List<Hack_SO> hacks;
 
-    public int maxHacks; //Int containing the maximum number of hacks that can be applied to this card.
+    public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
 
+    [Header("UI Components")]
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
 
     [SerializeField] public Image cardImage; // set in editor
@@ -39,7 +42,7 @@ public class Card : PlayItem
     public Sprite CardSprite
     {
         get{return cardSprite;}
-        set // when CardSprite is changed, also change it in the Image
+        set // when CardSprite is changed, also change it in the UI Image
         {
             cardSprite = value;
             cardImage.sprite = value;
@@ -51,7 +54,7 @@ public class Card : PlayItem
     public Sprite DamageTypeSprite
     {
         get{return damageTypeSprite;}
-        set // when CardSprite is changed, also change it in the spriteRenderer
+        set // when CardSprite is changed, also change it in the UI Image
         {
             damageTypeSprite = value;
             damageImage.sprite = value;
@@ -61,7 +64,7 @@ public class Card : PlayItem
     public Sprite BattleEffectSprite
     {
         get{return battleEffectSprite;}
-        set // when CardSprite is changed, also change it in the spriteRenderer
+        set // when CardSprite is changed, also change it in the UI Image
         {
             battleEffectSprite = value;
             battleImage.sprite = value;
@@ -69,9 +72,7 @@ public class Card : PlayItem
     }
     #endregion
 
-    public Animator animator; // set in editor
 
-    // Once we have the animated cards, we can use the Animator field to start it's animation
 
     void Start()
     {
