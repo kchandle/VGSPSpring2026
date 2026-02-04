@@ -1,38 +1,77 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	// reference to character controller movement
-    [SerializeField] private CharacterControllerMovement _characterControllerMovement; 
-	private float baseSpeed;
-	private bool sprinting;
-   
-	//Player Input component should have invoke unity events behavior, then make the unity event call this method
-    public void OnWalking(InputValue value) 
+	public float maxPlayerHealth = 100f;
+    public float currentHealth;
+
+    public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
+
+    public bool isShielded = false; //If the player is shielded, they take no damage this turn.
+
+    public void Awake()
     {
-	  // assigns the input direction value of the movement script to the actual players input
-	  _characterControllerMovement.inputDirection = value.Get<Vector3>(); 
-	  baseSpeed  = _characterControllerMovement.characterSpeed;
+        currentHealth = maxPlayerHealth;
     }
 
-	public void OnJumping(InputValue value)
+    [SerializeField] GameObject inventoryUI;
+
+    // reference to character controller movement
+    [SerializeField] private CharacterControllerMovement _characterControllerMovement;
+
+    //Player Input component should have invoke unity events behavior, then make the unity event call this method
+    public void OnWalking(InputAction.CallbackContext context) 
+    {
+	    // assigns the input direction value of the movement script to the actual players input
+	     _characterControllerMovement.inputDirectionInput = context.ReadValue<Vector3>();
+    }
+
+	public void OnJumping(InputAction.CallbackContext context)
 	{
 		// makes the player jump
-		_characterControllerMovement.jumping = true; 
+	    _characterControllerMovement.jumping = true; 
 	}
 
+    public void OnToggleInventory(InputAction.CallbackContext context)
+    {
+        //can only open the inventory when in free movement and alive
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
+        {
+            inventoryUI.SetActive(true);
+            GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+        }
+        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY)
+        {
+            inventoryUI.SetActive(false);
+            GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+        }
+    }
 
+    public IEnumerator StatusEffects()
+    {
+        foreach(StatusEffectContainer statusEffect in statusEffects)
+        {
+            // Apply the status effect to the player
+            foreach (ParticleSystem particle in (statusEffect.particles))
+            {
+                Instantiate(particle, transform.position, Quaternion.identity);
+            }
+            currentHealth -= statusEffect.statusAmount;
 
-	//Left shift to toggle sprint by either starting to sprint or by returning to base speed
-	public void OnSprint(InputValue value)
-	{
-		if(value.isPressed)
-		{
-			sprinting = !sprinting;
-			if(sprinting) _characterControllerMovement.characterSpeed = baseSpeed * 2;
-			else _characterControllerMovement.characterSpeed = baseSpeed;	
-		}
-	}
-
+            // Decrement the turn count for perishable effects
+            if (statusEffect.DecrementTurn() <= 0)
+            {
+                // Remove the status effect if it has expired
+                statusEffects.Remove(statusEffect);
+                Debug.Log("A status effect has expired.");
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return null;
+    }
 }
