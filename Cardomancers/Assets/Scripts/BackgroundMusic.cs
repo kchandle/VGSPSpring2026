@@ -28,6 +28,9 @@ public class BackgroundMusic : MonoBehaviour
         {
             // This sets the settings for the AudioSource.
 
+            // Even though this line is not necessary, we might have audio preloading in the future so its left here for compatibility reasons.
+            this.audioClip.LoadAudioData();
+
             this.audioSource = GetComponent<AudioSource>();
             this.audioSource.volume = Volume;
             this.audioSource.clip = this.audioClip;
@@ -47,7 +50,11 @@ public class BackgroundMusic : MonoBehaviour
 
     void OnDestroy()
     {   
-        // stop playing on destroy
+        if(this.audioClip != null)
+        {
+            // stop playing on destroy
+            this.audioClip.UnloadAudioData();
+        }
         this.audioSource.Stop();
     }
 }
