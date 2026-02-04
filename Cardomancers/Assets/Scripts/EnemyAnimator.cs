@@ -1,43 +1,53 @@
-using UnityEngine;
+// using UnityEngine;
 
-public class EnemyAnimator : MonoBehaviour
-{
+// public class EnemyAnimator : MonoBehaviour
+// {
 
-    [SerializeField] Animator animator;
+//     [SerializeField] Animator animator;
 
-    bool defeated;
-    bool idle;
-    bool stunned;
-    bool attack;
-    bool damaged;
+//     int State = 5;
+//     bool currentValue;
 
-    void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
+//     // bool defeated;
+//     // bool idle;
+//     // bool stunned;
+//     // bool attack;
+//     // bool damaged;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(idle)
-        {
-            animator.GetBool("Idle");
-        }
-        else if(defeated)
-        {
-            animator.GetBool("Defeated");
-        }
-        else if(stunned)
-        {
-            animator.GetBool("Stunned");
-        }
-        else if(attack)
-        {
-            animator.GetBool("Attack");
-        }
-        else if(damaged)
-        {
-            animator.GetBool("Damaged");
-        }
-    }
-}
+//     void Awake()
+//     {
+//         animator = GetComponent<Animator>();
+//     }
+
+//     // Update is called once per frame
+//     // void Update()
+//     // {
+//     //     if(idle)
+//     //     {
+//     //         bool currentValue = animator.GetBool("Idle");
+//     //         animator.SetBool("Idle", true);
+//     //     }
+//     //     else if(defeated)
+//     //     {
+//     //         bool currentValue = animator.GetBool("Defeated");
+//     //         animator.SetBool("Defeated", true);
+//     //     }
+//     //     else if(stunned)
+//     //     {
+//     //       bool currentValue = animator.GetBool("Stunned");
+//     //       animator.SetBool("Stunned", true);
+//     //     }
+//     //     else if(attack)
+//     //     {
+//     //        bool currentValue = animator.GetBool("Attack");
+//     //        animator.SetBool("Attack", true);
+//     //     }
+//     //     else if(damaged)
+//     //     {
+//     //        bool currentValue =animator.GetBool("Damaged");
+//     //        animator.SetBool("Damaged", true);
+//     //     }
+//     // }
+
+    
+// }

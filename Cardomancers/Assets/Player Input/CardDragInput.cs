@@ -71,12 +71,12 @@ public class CardDragInput : MonoBehaviour
        ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
        /// 
         
-       GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
-       AddActivePlayspace(uIHandler.invPlayspace);
-       AddActivePlayspace(uIHandler.deckPlayspace);
+    //    GameStateScript.UpdateGameState(GameStateScript.GameState.MENU);
+    //    AddActivePlayspace(uIHandler.invPlayspace);
+    //    AddActivePlayspace(uIHandler.deckPlayspace);
      
 
-       uIHandler.DisplayUI();
+    //    uIHandler.DisplayUI();
 
        //// TEST END
        //DragDropActive = true;
