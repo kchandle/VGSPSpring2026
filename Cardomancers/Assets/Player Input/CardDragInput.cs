@@ -13,7 +13,7 @@ public class CardDragInput : MonoBehaviour
     private InputActionMap actionMap; // current action map.
     public InputActionAsset inputActions;
 
-    public InventoryUIHandler uIHandler;
+    //public InventoryUIHandler uIHandler;
 
     private bool dragDropActive; // if the drag and drop ability is active
 
@@ -48,10 +48,10 @@ public class CardDragInput : MonoBehaviour
 
 // TEST STUFF FOR TESTING
 
-    public GameObject testPlayItemPrefab;
+    //public GameObject testPlayItemPrefab;
 
-    public Card_SO testSO;
-    public Card_SO testSO2;
+    //public Card_SO testSO;
+    //public Card_SO testSO2;
       
 
     // TESTING DONE
@@ -66,26 +66,26 @@ public class CardDragInput : MonoBehaviour
         GameStateScript.OnGameStateChanged -= ChangeActionMap;
     }
 
-    void Start()
-    {
-       ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
-       /// 
+    //void Start()
+    //{
+    //   ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
+    //   /// 
         
-       GameStateScript.CurrentState = GameStateScript.GameState.MENU;
-       AddActivePlayspace(uIHandler.invPlayspace);
-       AddActivePlayspace(uIHandler.deckPlayspace);
+    //   GameStateScript.CurrentState = GameStateScript.GameState.MENU;
+    //   AddActivePlayspace(uIHandler.invPlayspace);
+    //   AddActivePlayspace(uIHandler.deckPlayspace);
      
 
-       uIHandler.DisplayUI();
+    //   uIHandler.DisplayUI();
 
-       //// TEST END
-       //DragDropActive = true;
+    //   //// TEST END
+    //   //DragDropActive = true;
 
 
 
-       StartCoroutine(DragDrop());
+    //   StartCoroutine(DragDrop());
 
-    }
+    //}
     
     public void ChangeActionMap(GameStateScript.GameState gameState)
     {   
@@ -106,7 +106,6 @@ public class CardDragInput : MonoBehaviour
 // Coroutine for Dragging and Dropping items. When active, the player will be able to drag and drop playItems between the current active playspaces
     public IEnumerator DragDrop()
     {
-        print("DragDrop coroutine started");
         dragDropActive = true;
         while (dragDropActive == true)
         {
@@ -203,7 +202,6 @@ public class CardDragInput : MonoBehaviour
                         // New Playspace must not be the current parent of the dragTarget
                         if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
                         {
-                            print("allowed to move to new playspace");
                             // move dragTarget from it's parent to Playspace p
                            
                             
@@ -212,11 +210,11 @@ public class CardDragInput : MonoBehaviour
                             // This prevents them from playing more cards than they are allowed
                             if (FindFirstObjectByType<BattleManager>() != null)
                             {
+                                BattleManager bm = FindFirstObjectByType<BattleManager>();
                                 if (FindFirstObjectByType<BattleManager>().isBattling)
                                 {
-                                    print("we battlin");
-                                    if(AttemptPlay((Card)dragTarget, p) == true) {
-                                        print("stop the dragdrop");
+                                    if (AttemptPlay((Card)dragTarget, p) == true) {
+                                        bm.PlayerDeckCopy.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
                                         }
@@ -251,10 +249,8 @@ public class CardDragInput : MonoBehaviour
     //Tries to play card
     public bool AttemptPlay(Card dragTarget, Playspace p)
     {
-        print("Attemping to play " + dragTarget.name);
         if (dragTarget != null)
         {
-            print("dragtarget has a card component");
             //tries to play card against the playspace's parent gameobject enemy component
             dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
             return true;
