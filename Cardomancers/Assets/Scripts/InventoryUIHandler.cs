@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEngine.UI;
 public class InventoryUIHandler : MonoBehaviour
 {
 
@@ -15,6 +16,10 @@ public class InventoryUIHandler : MonoBehaviour
 
     public Playspace hackPlayspace;  //set in editor
 
+    public Playspace trashPlayspace;  //set in editor
+    public Image deleteCardPopup; //set in editor, inactive by default
+    
+    
     public GameObject cardPrefab;
     public GameObject hackPrefab;
 
@@ -76,10 +81,13 @@ public class InventoryUIHandler : MonoBehaviour
         inventory.RemoveCardFromDeck(card.inventoryCard);
     }
 
+    
+
     public void CardDraggedIntoPlayspace(PlayItem playItem, Playspace to, Playspace from)
     {
         if(to == invPlayspace) CardDraggedIntoInventory(playItem, from);
         if(to == deckPlayspace) CardDraggedIntoDeck(playItem, from);
+        if(to == trashPlayspace) CardDraggedIntoTrash(playItem, from);
     }
     public void CardDraggedIntoInventory(PlayItem playItem, Playspace originPlayspace)
     {
@@ -98,6 +106,48 @@ public class InventoryUIHandler : MonoBehaviour
             AttemptAddToDeck((Card)playItem);
         }
     }
+
+    #region Trash Card
+    //I'll clean the trash card functions up more in the future, but I wanted to get this much done for the vertical slice.
+    //Make popup appear when trashing card asking player to confirm. If they confirm, the button will call TrashCard. Else, the card will go back to where it came from with ReturnCard. The popup disappears regardless.
+    private PlayItem trashItem; 
+    private Playspace returnSpace; 
+    public void CardDraggedIntoTrash(PlayItem playItem, Playspace originPlayspace)
+    {
+        print("Card dragged into trash");
+        if(originPlayspace == invPlayspace || originPlayspace == deckPlayspace || originPlayspace == hackPlayspace)
+        {
+            trashItem = playItem;
+            returnSpace = originPlayspace;
+            deleteCardPopup.gameObject.SetActive(true);
+            trashPlayspace.DestroyPlayItem(playItem);
+        }
+    }
+
+    //Method called by the popup's confirm button On Click event
+    public void TrashCard()
+    {
+        inventory.RemoveCardFromInventory(((Card)trashItem).inventoryCard);
+        trashItem = null;
+        returnSpace = null;
+    }
+
+    //Method called by the popup's no button On Click event. Returns the card to where it was dragged from
+    public void ReturnCard()
+    {
+        if(returnSpace == invPlayspace)
+        {
+            inventory.AddCardToInventory((Card)trashItem);
+        }
+        else if(returnSpace == deckPlayspace)
+        {
+            AttemptAddToDeck((Card)trashItem);
+        }
+        trashItem = null;
+        returnSpace = null;
+    }
+    #endregion
+
 
 // IN PROGRESS, DO NOT USE
 
