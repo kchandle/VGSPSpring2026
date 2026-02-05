@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
 	public void OnJumping(InputAction.CallbackContext context)
 	{
+        //returns if it isnt the frame that it is pressed
+        if (!context.started) return;
 		// makes the player jump
 	    _characterControllerMovement.jumping = true; 
 	}
