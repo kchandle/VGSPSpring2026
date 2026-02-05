@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
     public List<InventoryCard> deck;
+    public Image healthBar; // Reference to the health bar UI element
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -127,6 +129,14 @@ public class Enemy : MonoBehaviour
         return card;
     }
 
+    public void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float)currentHealth / maxHealth;
+        }
+    }
+
     public IEnumerator StatusEffects()
     {
         foreach (StatusEffectContainer statusEffect in statusEffects)
@@ -146,6 +156,7 @@ public class Enemy : MonoBehaviour
                 currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount * DamageReduct);
             }
 
+            UpdateHealthBar();
 
             // Decrement the turn count for perishable effects
             if (statusEffect.DecrementTurn() <= 0)

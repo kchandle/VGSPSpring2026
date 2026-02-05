@@ -317,6 +317,7 @@ public class BattleManager : MonoBehaviour
                 OnWin.Invoke();
                 // Display win screen
                 winScreen.SetActive(true);
+                winScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings win screen to front of canvas
 
                 //Start win coroutine
                 //Get rewards from SO and display
@@ -326,6 +327,7 @@ public class BattleManager : MonoBehaviour
                 OnLose.Invoke();
                 // Display lose screen
                 loseScreen.SetActive(true);
+                loseScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings lose screen to front of canvas
 
                 //start loss coroutine
                 //If player lost, return to last checkpoint or main menu

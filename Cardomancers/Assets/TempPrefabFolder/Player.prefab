@@ -17,9 +17,10 @@ GameObject:
   - component: {fileID: 570683335199455242}
   - component: {fileID: 8277037704298673333}
   - component: {fileID: 8805448749967120339}
+  - component: {fileID: 9024597777328472057}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -283,3 +284,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
   UIInteract: {fileID: 0}
   range: 5
+--- !u!114 &9024597777328472057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282848640817842334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b625c6603a9612f4ab4f453d1b45ed16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  money: 0
+  inventory: []
+  deck: []
+  inventoryLength: 0
+  deckLength: 0
+  inventorySO: {fileID: 11400000, guid: bd0aa686dbcb14f48812470527e1f5ff, type: 2}

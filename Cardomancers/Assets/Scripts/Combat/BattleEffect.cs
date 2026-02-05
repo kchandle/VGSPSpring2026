@@ -110,6 +110,8 @@ public struct BattleEffect
         }
         //PlayParticles(pos);
         enemy.currentHealth -= DamageDealt;
+
+        enemy.UpdateHealthBar();
         if (enemy.currentHealth <= 0)
         {
             //Stops the player from interacting with the enemy once dead
