@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 9095480556342296059}
   - component: {fileID: 570683335199455242}
   - component: {fileID: 8277037704298673333}
+  - component: {fileID: 8805448749967120339}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -190,6 +191,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 25ae1478-7eea-415e-a3ff-5e9ddff99b42
     m_ActionName: 'Inventory/Drag[/Mouse/press]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 904dafb0-74a3-4240-a0f6-8f905aee42f5
+    m_ActionName: 'MapWalking/Zoom[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6bbe1a0c-1346-4ed8-83a0-fd774d85e00a
+    m_ActionName: 'MapWalking/Look[/Mouse/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 86532671-fc43-4240-984a-55741e2b113a
+    m_ActionName: 'MapWalking/ToggleInventory[/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: MapWalking
@@ -233,10 +246,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerMovement
   characterSpeed: 5
-  inputDirection: {x: 0, y: 0, z: 0}
+  inputDirectionInput: {x: 0, y: 0, z: 0}
   gravity: 9.8
   jumpIntensity: 1
   jumping: 0
+  footstepClips: []
+  jumpClips: []
 --- !u!114 &8277037704298673333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,4 +267,19 @@ MonoBehaviour:
   maxPlayerHealth: 100
   currentHealth: 0
   isShielded: 0
+  inventoryUI: {fileID: 0}
   _characterControllerMovement: {fileID: 570683335199455242}
+--- !u!114 &8805448749967120339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282848640817842334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
+  UIInteract: {fileID: 0}
+  range: 5
