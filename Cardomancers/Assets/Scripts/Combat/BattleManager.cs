@@ -106,7 +106,6 @@ public class BattleManager : MonoBehaviour
         // Optional: Keep the object alive when loading new scenes
         DontDestroyOnLoad(this.gameObject);
 
-        SwitchCam();
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
@@ -126,6 +125,7 @@ public class BattleManager : MonoBehaviour
     //Function called by an outside force to start a battle, must pass in battle_SO
     public void StartBattle(Battle_SO battle)
     {
+        SwitchCam();
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
