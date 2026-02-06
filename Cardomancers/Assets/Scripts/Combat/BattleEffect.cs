@@ -16,6 +16,7 @@ Poison,
 Dark,
 DamageBlock,
 Psychic,
+Stun,
 
 }
 
@@ -73,12 +74,23 @@ public struct BattleEffect
         int DamageDealt = StatusAmount;
         Enemy enemy = target.GetComponent<Enemy>();
         if (enemy.isShielded) return;
+        
 
         if (isStatusEffect)
         {
             enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
+            
+            if (damageType == DamageType.Stun) 
+            {
+
+                target.isStunned = true;
+            }
+            // Causes stun to happen
+
             return;
         }
+        
+        
 
         foreach (DamageType resistance in enemy.resistances)
         {

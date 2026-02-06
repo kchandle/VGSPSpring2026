@@ -29,6 +29,12 @@ public class Inventory : MonoBehaviour
         get { return deck; }
     }
 
+	public int Money
+	{
+		get {return money;}
+		set {money = Money;}
+	}
+
 
 	//Use inventory_so variables for the variables in here
 	private void Awake()
@@ -66,7 +72,7 @@ public class Inventory : MonoBehaviour
 		//don't add a card to the deck if the deck is full
 		if (deck.Count >= deckLength) return false;
 		// stop if the inventory doesn't contain the card
-		if (!inventory.Contains(card) || deck.Contains(card)) return false;
+		if (inventory.Contains(card) || deck.Contains(card)) return false;
 		deck.Add(card);
 		// sync deck with the SO
 		inventorySO.Deck = deck;
