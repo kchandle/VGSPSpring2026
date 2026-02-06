@@ -10,7 +10,10 @@ public class Enemy : MonoBehaviour
     public List<Card_SO> hand = new List<Card_SO>();
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
-    public bool isStunned; // f the enemy is stunned, they cannot take actions.
+
+    public bool isShielded; // If the enemy is shielded, they cannot take actions.
+    public bool hasAntiHeal = false; // If the enemy tries to heal when hasAntiHeal is true, it will heal 0 health instead
+    public bool isStunned; // If the enemy is stunned, they cannot take actions.
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -23,8 +26,6 @@ public class Enemy : MonoBehaviour
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
-
-    public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 

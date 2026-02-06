@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
@@ -79,14 +81,42 @@ public struct BattleEffect
         if (isStatusEffect)
         {
             enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
-            
+
+            // Healing
+            if (damageType == DamageType.Light)
+            {
+                StatusAmount += target.currentHealth;
+            }
+
+            // Anti-Heal
+            if (damageType == DamageType.Light && target.hasAntiHeal)
+            {
+                // Once anti-heal is applied to the target it will last for a certain amount of turns and, if they try to use a spell that heals, it will heal 0 health
+                target.hasAntiHeal = true;
+                turnsActive = 5;
+                turnsActive--;
+
+                if (turnsActive >= 0) StatusAmount = 0;
+                if (turnsActive <=0) target.hasAntiHeal = false;
+            }
+
+            // Causes stun to happen
             if (damageType == DamageType.Stun) 
             {
-
                 target.isStunned = true;
             }
-            // Causes stun to happen
 
+            // Shield, Defense, whatever you want to call it
+            if (damageType == DamageType.DamageBlock)
+            {
+                // Applied target has ALL damage blocked for 1 turn, then the status effect perishes
+                target.isShielded = true;
+                turnsActive = 1;
+                turnsActive--;
+
+                if (turnsActive >= 0) StatusAmount = 0;
+                if (turnsActive <= 0) target.isShielded = false;
+            }
             return;
         }
         

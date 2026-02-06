@@ -12,8 +12,9 @@ public class PlayerController : MonoBehaviour
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
-    public bool isShielded = false; //If the player is shielded, they take no damage this turn.
-
+    public bool isShielded = false; // If the player is shielded, they take no damage this turn.
+    public bool hasAntiHeal = false; // If the player tries to heal when hasAntiHeal is true, it will heal 0 health instead
+    public bool isStunned; // If the player is stunned, they cannot take actions.
     public void Awake()
     {
         currentHealth = maxPlayerHealth;
