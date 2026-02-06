@@ -16,7 +16,7 @@ namespace DialogueScripts
 
 public class DialogueManager : MonoBehaviour
 {
-
+    public static DialogueManager instance; // singleton instance
     public Animator animator; // the current animator changing the talksprite
 
 
@@ -28,8 +28,8 @@ public class DialogueManager : MonoBehaviour
     private int index; //Current line being displayed
     [SerializeField] GameObject canvas; // the canvas containing the dialogue GUI
 
-    public TextMeshProUGUI textElement; // the current text box the dialogue is being loaded into
-    public TextMeshProUGUI titleElement; // the current text box the dialogue is being loaded into
+    public TextMeshProUGUI textElement; // the current text box the dialogue text is being loaded into
+    public TextMeshProUGUI titleElement; // the current text box the dialogue speaker is being loaded into
     public Image talkspriteImage; // the image element where the talksprite will be loaded
 
     public InputActionAsset inputActions;
@@ -40,23 +40,36 @@ public class DialogueManager : MonoBehaviour
 
     public Transform playerTransform; // Assign the player's transform in the Inspector
 
-
+    //Gets player action map to react to player input
     private void Awake()
     { 
-        nextAction = inputActions.FindActionMap("MapWalking").FindAction("Next");  
+        nextAction = inputActions.FindActionMap("Keyboard").FindAction("UIInteract");  
+        // Check if an instance already exists
+        if (instance != null && instance != this)
+        {
+            // If so, destroy this new object to ensure only one instance remains
+            Destroy(this.gameObject);
+            return;
+        }
+
+        // Otherwise, set the instance to this object
+        instance = this;
+
+        // Optional: Keep the object alive when loading new scenes
+        DontDestroyOnLoad(this.gameObject);
     }
 
-    void Start()
-    {
-        //StartDialogue();
-    }
+    //void Start()
+    //{
+    //    StartDialogue(dialogue);
+    //}
 
     // Update is called once per frame
     void Update()
     {
         if (nextAction.WasPressedThisFrame())
         {
-            
+            //Checks if line is finished typing and either skips to next line or finishes current line on player input
             if (textElement.text == dialogue.lines[index].text)
             {
                 NextLine();
@@ -104,18 +117,17 @@ public class DialogueManager : MonoBehaviour
         {
             index++;
             
-
-            StartCoroutine(TypeLine());
             textElement.text = string.Empty;
+            StartCoroutine(TypeLine());            
         }
         else
         {
             textElement.text = string.Empty;
             canvas.SetActive(false);
-            if (!reactive)
-            {
-                //gameObject.SetActive(false);
-            }
+            //if (!reactive)
+            //{
+            //    //gameObject.SetActive(false);
+            //}
         }
 
     }
