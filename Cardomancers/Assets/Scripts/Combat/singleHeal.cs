@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class singleHeal : BattleEffect
-{
+//public class singleHeal : BattleEffect
+//{
 
     /*void healTarget(Player player)
     {
@@ -16,4 +16,4 @@ public class singleHeal : BattleEffect
         PlayParticles(enemy.transform.position);
     }
     Needs script with enemy HP first*/
-}
+//}
