@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
 
 // variable for enum switch state
     bool currentValue;
-    public EnemyState State;
+    public EnemyState State = EnemyState.Idle;
 
 
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
     }
     
     //enemy state enum changes here 
-    void EnemyAnimatorState()
+   public void EnemyAnimatorState()
     {
         switch (State)
         {
@@ -111,13 +111,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        // spriteRenderer = GetComponent<SpriteRenderer>();
-        // UIimage = GetComponent<Image>();
-        State = EnemyState.Attack;
-        EnemyAnimatorState();
-    }
+    // void Start()
+    // {
+    //     // spriteRenderer = GetComponent<SpriteRenderer>();
+    //     // UIimage = GetComponent<Image>();
+    //     State = EnemyState.Attack;
+    //     EnemyAnimatorState();
+    // }
 
     public void ShuffleDeck()
     {

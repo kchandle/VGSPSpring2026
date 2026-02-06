@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using static BattleManager;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -62,7 +63,6 @@ public class BattleManager : MonoBehaviour
 
     public GameObject cardPrefab; // Generic prefab for the cards used in battle
 
-
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
 
     public enum BattleState
@@ -92,6 +92,9 @@ public class BattleManager : MonoBehaviour
     }
     private void Awake()
     {
+           
+
+  
         // Check if an instance already exists
         if (instance != null && instance != this)
         {
@@ -242,6 +245,9 @@ public class BattleManager : MonoBehaviour
             if (enemy.GetComponent<Enemy>().deck.Count <= 0)
             {
                 enemy.GetComponent<Enemy>().ShuffleDeck();
+                enemy.GetComponent<Enemy>().State = Enemy.EnemyState.Idle;
+                enemy.GetComponent<Enemy>().EnemyAnimatorState();
+               
             }  
         }
 
@@ -256,9 +262,16 @@ public class BattleManager : MonoBehaviour
             
             //Plays Card
 
+            //enemy attacks the player by playing a card
+            enemy.GetComponent<Enemy>().State = Enemy.EnemyState.Attack;
+            enemy.GetComponent<Enemy>().EnemyAnimatorState();
+           
+
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
+                enemy.GetComponent<Enemy>().State = Enemy.EnemyState.Stunned;
+                enemy.GetComponent<Enemy>().EnemyAnimatorState();
                 effect.TriggerEffect(playerController, player.transform.position);
             }
         }
@@ -295,17 +308,27 @@ public class BattleManager : MonoBehaviour
             //print("Enemy: "+e.GetComponent<Enemy>().currentHealth);
             if (!(e.GetComponent<Enemy>().currentHealth <= 0))
             {
+                e.GetComponent<Enemy>().State = Enemy.EnemyState.Damaged;
+                e.GetComponent<Enemy>().EnemyAnimatorState();
                 allDead = false;
             }
         }
         if (allDead)
         {
+            foreach(GameObject e in currentEnemies)
+            {
+                e.GetComponent<Enemy>().State = Enemy.EnemyState.Defeated;
+                e.GetComponent<Enemy>().EnemyAnimatorState();
+            }
+            
             battleState = BattleState.WON;
             isBattling = false;
         }
 
 
     }
+
+    
 
     public void EndBattle()
     {
