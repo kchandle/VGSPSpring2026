@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static BattleManager;
 
 public class BattleManager : MonoBehaviour
@@ -77,19 +79,19 @@ public class BattleManager : MonoBehaviour
     #region Setup
 
     //Curently Switching Cameras doesn't work, but the code is here for future reference and hopefully implementation
-    public void SwitchCam()
-    {
-        if (mainCamera.enabled)
-        {
-            battleCamera.enabled = true;
-            mainCamera.enabled = false;
-        }
-        else
-        {
-            mainCamera.enabled = true;
-            battleCamera.enabled = false;
-        }
-    }
+    //public void SwitchCam()
+    //{
+    //    if (mainCamera.enabled)
+    //    {
+    //        battleCamera.enabled = true;
+    //        mainCamera.enabled = false;
+    //    }
+    //    else
+    //    {
+    //        mainCamera.enabled = true;
+    //        battleCamera.enabled = false;
+    //    }
+    //}
     private void Awake()
     {
         // Check if an instance already exists
@@ -104,12 +106,24 @@ public class BattleManager : MonoBehaviour
         instance = this;
 
         // Optional: Keep the object alive when loading new scenes
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
 
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
         playerInventory = player.GetComponent<Inventory>();
+
+        //Assign Variables for Cameras and UI
+        mainCamera = Camera.main;
+
+
+
+    }
+
+    private void OnDestroy()
+    {
+        battleCamera.enabled = false;
+        mainCamera.enabled = true;
     }
 
     private void OnEnable()
@@ -125,14 +139,14 @@ public class BattleManager : MonoBehaviour
     //Function called by an outside force to start a battle, must pass in battle_SO
     public void StartBattle(Battle_SO battle)
     {
-        SwitchCam();
+        //SwitchCam();
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
         //Switches Camera to Battle camera
         mainCamera.enabled = false;
         battleCamera.enabled = true;
-
+        battleUI.gameObject.SetActive(true);
         //Get the player set up (not in awake cause it ran before the player Inventory was set
         playerDeckCopyI = new List<InventoryCard>(playerInventory.Deck);
 
@@ -161,7 +175,8 @@ public class BattleManager : MonoBehaviour
         playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), -(canvasHeight* 3/4), 0), Quaternion.identity);
         playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
         cardDragInput.AddActivePlayspace(playerspacePrefab.GetComponent<Playspace>());
-        //Put Deck in player playerspace
+        
+        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
 
         foreach (Enemy_SO e in battle.enemies)
         {
@@ -309,6 +324,7 @@ public class BattleManager : MonoBehaviour
 
     public void EndBattle()
     {
+        battleUI.gameObject.SetActive(false);
         // Depending on battleState, invoke win or lose events
         // Potential bug where battlecam gets disabled before win/lose screen shows up
         switch (battleState)
@@ -317,17 +333,23 @@ public class BattleManager : MonoBehaviour
                 OnWin.Invoke();
                 // Display win screen
                 winScreen.SetActive(true);
-                winScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings win screen to front of canvas
+                //winScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings win screen to front of canvas
 
                 //Start win coroutine
                 //Get rewards from SO and display
 
                 break;
             case BattleState.LOST:
-                OnLose.Invoke();
+                foreach (GameObject enemy in currentEnemies)
+                {
+                    Destroy(enemy);
+                }
+                //Destroy(playerspacePrefab);
+                isBattling = false;
+                //OnLose.Invoke();
                 // Display lose screen
-                loseScreen.SetActive(true);
-                loseScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings lose screen to front of canvas
+                //loseScreen.SetActive(true);
+                //loseScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings lose screen to front of canvas
 
                 //start loss coroutine
                 //If player lost, return to last checkpoint or main menu
@@ -343,7 +365,12 @@ public class BattleManager : MonoBehaviour
         playerController.currentHealth = playerMaxHealth;
 
         //Switches Camera back to Main camera
-        SwitchCam();
+        //SwitchCam();
+        Destroy(gameObject);
+    }
 
+    public void UpdatePlayerHealthBar()
+    {
+        playerspacePrefab.GetComponentInChildren<Image>().fillAmount = playerController.currentHealth / playerController.maxPlayerHealth;
     }
 }

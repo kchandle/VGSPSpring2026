@@ -67,6 +67,7 @@ public struct BattleEffect
         }
         //PlayParticles(pos);
         player.currentHealth -= StatusAmount;
+        player.UpdateHealthbar();
     }
 
     public void TriggerEffect(Enemy target, Vector3 pos)

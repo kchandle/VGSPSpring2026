@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
 
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour
 {
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
+    public Image healthbar;
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -76,4 +78,11 @@ public class PlayerController : MonoBehaviour
         }
         yield return null;
     }
+
+    public void UpdateHealthbar()
+    {
+        healthbar.fillAmount = currentHealth / maxPlayerHealth;
+    }
+
+
 }

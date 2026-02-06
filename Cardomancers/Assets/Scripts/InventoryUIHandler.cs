@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using NUnit.Framework;
 public class InventoryUIHandler : MonoBehaviour
 {
@@ -116,6 +117,17 @@ public class InventoryUIHandler : MonoBehaviour
         {
             playspace.DestroyPlayItem(playitem);
         }
+    }
+
+
+
+
+
+    // Battle Exiting
+    public void ButtonClick(GameObject button)
+    {
+        if (button.name == "RetryButton") print("Retry");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
   
   
