@@ -74,6 +74,7 @@ public class CardDragInput : MonoBehaviour
        GameStateScript.CurrentState = GameStateScript.GameState.MENU;
        AddActivePlayspace(uIHandler.invPlayspace);
        AddActivePlayspace(uIHandler.deckPlayspace);
+       AddActivePlayspace(uIHandler.trashPlayspace);
      
 
        uIHandler.DisplayUI();
@@ -289,6 +290,7 @@ public class CardDragInput : MonoBehaviour
             from.DestroyPlayItem(moveTarget);
             PlayitemMoved.Invoke(moveTarget, to, from);
         }
+        else{print("not in allowed donors");}
 
     }
 

@@ -85,6 +85,7 @@ public class InventoryUIHandler : MonoBehaviour
 
     public void CardDraggedIntoPlayspace(PlayItem playItem, Playspace to, Playspace from)
     {
+        print("dragged");
         if(to == invPlayspace) CardDraggedIntoInventory(playItem, from);
         if(to == deckPlayspace) CardDraggedIntoDeck(playItem, from);
         if(to == trashPlayspace) CardDraggedIntoTrash(playItem, from);
@@ -108,15 +109,17 @@ public class InventoryUIHandler : MonoBehaviour
     }
 
     #region Trash Card
-    //I'll clean the trash card functions up more in the future, but I wanted to get this much done for the vertical slice.
     //Make popup appear when trashing card asking player to confirm. If they confirm, the button will call TrashCard. Else, the card will go back to where it came from with ReturnCard. The popup disappears regardless.
     private PlayItem trashItem; 
     private Playspace returnSpace; 
     public void CardDraggedIntoTrash(PlayItem playItem, Playspace originPlayspace)
     {
         print("Card dragged into trash");
-        if(originPlayspace == invPlayspace || originPlayspace == deckPlayspace || originPlayspace == hackPlayspace)
+        if(originPlayspace == invPlayspace || originPlayspace == deckPlayspace)
         {
+            if(originPlayspace == deckPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, deckPlayspace);}
+            if(originPlayspace == invPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, invPlayspace);}
+
             trashItem = playItem;
             returnSpace = originPlayspace;
             deleteCardPopup.gameObject.SetActive(true);
