@@ -88,9 +88,10 @@ public class Inventory : MonoBehaviour
 
 	public void RemoveCardFromInventory(InventoryCard card)
 	{
-		print("removing card from deck");
+		//print("removing card from deck");
 		if(deck.Contains(card)) RemoveCardFromDeck(card);
 		inventory.Remove(card);
+		print("removed card from inventory");
 		// sync with SO
 		inventorySO.Inventory = inventory;
 	}

@@ -19,7 +19,6 @@ public class InventoryUIHandler : MonoBehaviour
     public Playspace trashPlayspace;  //set in editor
     public Image deleteCardPopup; //set in editor, inactive by default
     
-    
     public GameObject cardPrefab;
     public GameObject hackPrefab;
 
@@ -68,6 +67,7 @@ public class InventoryUIHandler : MonoBehaviour
     {
   
         bool addedToDeck = inventory.AddCardToDeck(card.inventoryCard);
+        print(addedToDeck);
         if (addedToDeck == true) return true;
         else
         {
@@ -85,7 +85,6 @@ public class InventoryUIHandler : MonoBehaviour
 
     public void CardDraggedIntoPlayspace(PlayItem playItem, Playspace to, Playspace from)
     {
-        print("dragged");
         if(to == invPlayspace) CardDraggedIntoInventory(playItem, from);
         if(to == deckPlayspace) CardDraggedIntoDeck(playItem, from);
         if(to == trashPlayspace) CardDraggedIntoTrash(playItem, from);
@@ -114,40 +113,52 @@ public class InventoryUIHandler : MonoBehaviour
     private Playspace returnSpace; 
     public void CardDraggedIntoTrash(PlayItem playItem, Playspace originPlayspace)
     {
-        print("Card dragged into trash");
+        //print("Card dragged into trash");
         if(originPlayspace == invPlayspace || originPlayspace == deckPlayspace)
         {
-            if(originPlayspace == deckPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, deckPlayspace);}
-            if(originPlayspace == invPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, invPlayspace);}
+            //if(originPlayspace == deckPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, deckPlayspace);}
+            //if(originPlayspace == invPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, invPlayspace);}
 
-            trashItem = playItem;
+            //trashItem = playItem;
+
+            //trash playspace should only ever have one item in it
+            trashItem = trashPlayspace.playItems[0]; //active version of the playItem passed in
             returnSpace = originPlayspace;
+
             deleteCardPopup.gameObject.SetActive(true);
-            trashPlayspace.DestroyPlayItem(playItem);
+
+            //remove the thing
+            //trashPlayspace.DestroyPlayItem(playItem);
         }
+        //print("method done");
     }
 
-    //Method called by the popup's confirm button On Click event
+    //Method called by the popup's confirm button On Click event (Now works)
     public void TrashCard()
     {
         inventory.RemoveCardFromInventory(((Card)trashItem).inventoryCard);
+        trashPlayspace.ClearPlaySpace();
+        
         trashItem = null;
         returnSpace = null;
     }
 
-    //Method called by the popup's no button On Click event. Returns the card to where it was dragged from
+    //Method called by the popup's no button On Click event. Returns the card to where it was dragged from (Now Works)
     public void ReturnCard()
     {
+        //print("No clicked");
         if(returnSpace == invPlayspace)
         {
-            inventory.AddCardToInventory((Card)trashItem);
+            cardDragInput.MoveToNewPlayspace(trashItem, invPlayspace, trashPlayspace);
         }
         else if(returnSpace == deckPlayspace)
         {
-            AttemptAddToDeck((Card)trashItem);
+            //cardDragInput.MoveToNewPlayspace(trashItem, deckPlayspace, trashPlayspace);
         }
+
         trashItem = null;
         returnSpace = null;
+        //print("no completed");
     }
     #endregion
 

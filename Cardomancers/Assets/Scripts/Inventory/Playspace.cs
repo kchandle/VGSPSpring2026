@@ -121,12 +121,25 @@ public class Playspace : MonoBehaviour
     {
         //print("attempting destroy");
         if (playItems.Contains(playItem)){
-            print("destroying");
+            print(playItem.gameObject);
             playItems.Remove(playItem);
             Destroy(playItem.gameObject);
+            print("destroying");
         }
 
     }
+
+
+    //Destroys all items in the playspace (Only needed for items dragged into trash)
+    public void ClearPlaySpace()
+    {
+        foreach(PlayItem item in playItems)
+        {
+            playItems.Remove(item);
+            Destroy(item.gameObject);
+        }
+    }
+
 
 // Arranges all play items in a line
     void HorizontalLayout(int targetIndex = -1)
