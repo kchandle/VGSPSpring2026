@@ -81,7 +81,6 @@ public class Playspace : MonoBehaviour
         // without position
         public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO){
 
-        print("Spawning this Card: " + cardSO.name);
         GameObject newPlayItem = Instantiate(prefab);
         newPlayItem.transform.SetParent(transform);
 

@@ -418,6 +418,7 @@ Transform:
   - {fileID: 1846710947183263848}
   - {fileID: 3736482732357080188}
   - {fileID: 406214410116898802}
+  - {fileID: 2432245417977661186}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6862682295009153447
@@ -461,7 +462,7 @@ MonoBehaviour:
   playerDeckCopy: []
   currentEnemies: []
   turnCount: 0
-  cardPrefab: {fileID: 7278841492920612246, guid: 1302de6e74f43e74ebba899236c19707, type: 3}
+  cardPrefab: {fileID: 7278841492920612246, guid: ad9cfff1982a9484bac552ed07009f6c, type: 3}
   isBattling: 0
 --- !u!1 &3702187215012308460
 GameObject:
@@ -808,6 +809,58 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &7187872070858521487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2432245417977661186}
+  - component: {fileID: 5881118672196670138}
+  m_Layer: 0
+  m_Name: UIHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2432245417977661186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187872070858521487}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20.05024, y: 0, z: 5.50742}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2699413464071478142}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5881118672196670138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187872070858521487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f87ece01215b243b4d1566a4445da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryUIHandler
+  canvas: {fileID: 0}
+  inventory: {fileID: 0}
+  cardDragInput: {fileID: 1658119166004138401}
+  invPlayspace: {fileID: 0}
+  deckPlayspace: {fileID: 0}
+  hackPlayspace: {fileID: 0}
+  cardPrefab: {fileID: 0}
+  hackPrefab: {fileID: 0}
 --- !u!1 &7237643433605765440
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,15 +905,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9161bc64208f37c47b8cec0560459aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragInput
+  inventory: {fileID: 0}
   inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
   dragTargetStartPos: {x: 0, y: 0, z: 0}
   isDragging: 0
-  testPlayspace1: {fileID: 0}
-  testPlayspace2: {fileID: 0}
-  testPlayspace3: {fileID: 0}
-  testPlayItemPrefab: {fileID: 0}
-  testSO: {fileID: 0}
-  testSO2: {fileID: 0}
 --- !u!1 &8937375870080391644
 GameObject:
   m_ObjectHideFlags: 0

@@ -106,7 +106,6 @@ public class BattleManager : MonoBehaviour
         // Optional: Keep the object alive when loading new scenes
         DontDestroyOnLoad(this.gameObject);
 
-        SwitchCam();
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();
@@ -126,6 +125,7 @@ public class BattleManager : MonoBehaviour
     //Function called by an outside force to start a battle, must pass in battle_SO
     public void StartBattle(Battle_SO battle)
     {
+        SwitchCam();
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
@@ -317,6 +317,7 @@ public class BattleManager : MonoBehaviour
                 OnWin.Invoke();
                 // Display win screen
                 winScreen.SetActive(true);
+                winScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings win screen to front of canvas
 
                 //Start win coroutine
                 //Get rewards from SO and display
@@ -326,6 +327,7 @@ public class BattleManager : MonoBehaviour
                 OnLose.Invoke();
                 // Display lose screen
                 loseScreen.SetActive(true);
+                loseScreen.transform.SetSiblingIndex(battleUI.transform.childCount - 1); //Brings lose screen to front of canvas
 
                 //start loss coroutine
                 //If player lost, return to last checkpoint or main menu
