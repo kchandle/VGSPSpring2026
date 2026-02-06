@@ -108,6 +108,8 @@ public class InventoryUIHandler : MonoBehaviour
     }
 
     #region Trash Card
+    //Still WIP, trashing and returning cards works
+
     //Make popup appear when trashing card asking player to confirm. If they confirm, the button will call TrashCard. Else, the card will go back to where it came from with ReturnCard. The popup disappears regardless.
     private PlayItem trashItem; 
     private Playspace returnSpace; 
