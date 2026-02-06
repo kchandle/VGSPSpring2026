@@ -8,6 +8,7 @@ public class Card_SO : ScriptableObject
     public int price; // Price to BUY (Higher than sell value)
     public string displayName; // Card's name
     public string description; // Flavor text used for descriping the card
+    public int energyCost; // amount of energy it takes from the user
     
     public Sprite image; // sprite to be displayed when the card is instanced
     public BattleEffect[] cardEffects; // Needs battle effect to be done first

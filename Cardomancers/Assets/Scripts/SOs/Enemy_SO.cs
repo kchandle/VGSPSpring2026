@@ -11,6 +11,8 @@ public class Enemy_SO : ScriptableObject
    public string displayName; //The name of the enemy.
     public int moneyDrops; //The base amount of money the enemy drops when defeated 
     public float xpDrops;  //The base amount of XP the enemy drops when defeated
+    public int timer; // turns until enemy acts
+    public int energy; //energy it can use on cards
 
     public GameObject enemyPrefab; //Prefab of the enemy to be spawned in battle.
 
