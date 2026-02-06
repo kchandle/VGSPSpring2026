@@ -32,27 +32,27 @@ public class Enemy : MonoBehaviour
 
     
     // different sprites needed and change depending on state
-    public SpriteRenderer spriteRenderer;
+    public Image UIimage;
     public Sprite IdleSprite;
     public Sprite DamagedSprite;
     public Sprite AttackedSprite;
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
 
-
-
-// variable for enum switch state
-    bool currentValue;
-    int State = 5;
 //the different enemy states
     public enum EnemyState
     {
-        Idle,
-        Damaged,
-        Attacked,
-        Stunned,
-        Defeated,
+        Idle = 1,
+        Damaged = 2,
+        Attack = 3,
+        Stunned = 4,
+        Defeated = 5,
     }
+
+// variable for enum switch state
+    bool currentValue;
+    public EnemyState State;
+
 
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
@@ -71,44 +71,52 @@ public class Enemy : MonoBehaviour
     //enemy state enum changes here 
     void EnemyAnimatorState()
     {
-        switch(State)
+        switch (State)
         {
-            case 5:
-            {
-                currentValue = animator.GetBool("Idle");
-                animator.SetBool("Idle", true);
-                spriteRenderer.sprite = IdleSprite;
+            case EnemyState.Idle:
+               // animator.SetBool("Idle", true);
+                UIimage.sprite = IdleSprite;
                 break;
-            }
-            case 4:
-            {
-                currentValue = animator.GetBool("Defeated");
-                animator.SetBool("Defeated", true);
-                spriteRenderer.sprite = DefeatedSprite;
+
+            case EnemyState.Defeated:
+                //animator.SetBool("Defeated", true);
+                UIimage.sprite = DefeatedSprite;
                 break;
-            }
-            case 3:
-            {
-                currentValue = animator.GetBool("Stunned");
-                animator.SetBool("Stunned", true);
-                spriteRenderer.sprite = StunnedSprite;
+
+            case EnemyState.Stunned:
+                //animator.SetBool("Stunned", true);
+                UIimage.sprite = StunnedSprite;
                 break;
-            }
-            case 2:
-            {
-                currentValue = animator.GetBool("Attack");
-                animator.SetBool("Attack", true);
-                spriteRenderer.sprite = AttackedSprite;
+
+            case EnemyState.Attack:
+                //animator.SetBool("Attack", true);
+                Debug.Log("Changing sprite to AttackedSprite");
+                UIimage.sprite = AttackedSprite;
                 break;
-            }
-            case 1:
-            {
-                currentValue = animator.GetBool("Damaged");
-                animator.SetBool("Damaged", true);
-                spriteRenderer.sprite = DamagedSprite;
+
+            case EnemyState.Damaged:
+               // animator.SetBool("Damaged", true);
+                UIimage.sprite = DamagedSprite;
                 break;
-            }
         }
+    }
+
+    void Awake()
+    {
+        UIimage = transform.GetChild(1).GetComponent<Image>();
+
+        if (UIimage == null)
+        {
+            Debug.LogError("UIimage is missing! Please attach an Image component.");
+        }
+    }
+
+    void Start()
+    {
+        // spriteRenderer = GetComponent<SpriteRenderer>();
+        // UIimage = GetComponent<Image>();
+        State = EnemyState.Attack;
+        EnemyAnimatorState();
     }
 
     public void ShuffleDeck()
