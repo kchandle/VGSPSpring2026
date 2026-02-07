@@ -17,6 +17,7 @@ Cardomancers/[Uu]ser[Ss]ettings/[Ll]ayouts/
 
 # Recovery files are mostly local.
 Cardomancers/_Recovery/
+Cardomancers/_Recovery.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -114,6 +115,16 @@ mono_crash.*
 *.unitypackage
 *.unitypackage.meta
 *.app
+
+# Vim files...
+# Sometimes some people open vim and dont know how to use it, and close it but this is resedue from that.
+
+*.swp
+*.swo
+*.swn
+*.un~
+*~
+
 
 # Crashlytics generated file
 crashlytics-build.properties
