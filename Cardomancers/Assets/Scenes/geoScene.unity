@@ -254,34 +254,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_ActionId
-      value: 904dafb0-74a3-4240-a0f6-8f905aee42f5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[7].m_ActionId
-      value: 6bbe1a0c-1346-4ed8-83a0-fd774d85e00a
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[8].m_ActionId
-      value: 86532671-fc43-4240-984a-55741e2b113a
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_ActionName
-      value: 'MapWalking/Zoom[/Mouse/scroll]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[7].m_ActionName
-      value: 'MapWalking/Look[/Mouse/delta]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[8].m_ActionName
-      value: 'MapWalking/ToggleInventory[/Keyboard/tab]'
-      objectReference: {fileID: 0}
     - target: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.5005
@@ -328,7 +300,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1714003886}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
 --- !u!4 &242158041 stripped
@@ -573,7 +548,7 @@ GameObject:
   - component: {fileID: 1027741842}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -646,7 +621,7 @@ Transform:
   m_GameObject: {fileID: 1027741836}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212342, y: -0.000000018204481, z: 0.0000000028019385, w: 0.98836154}
-  m_LocalPosition: {x: 2.5005, y: 3.1728234, z: -1.3143678}
+  m_LocalPosition: {x: 2.5005, y: 4.6722374, z: -6.0699005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -968,7 +943,7 @@ GameObject:
   - component: {fileID: 1714003888}
   m_Layer: 0
   m_Name: FreeLook Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1097,7 +1072,7 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 4
+  Radius: 8.986315
   Orbits:
     Top:
       Radius: 2
@@ -1192,11 +1167,11 @@ Transform:
   m_GameObject: {fileID: 1714003880}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15212342, y: -0.000000018204481, z: 0.000000002801938, w: 0.98836154}
-  m_LocalPosition: {x: 2.5005, y: 3.1728234, z: -1.3143678}
+  m_LocalPosition: {x: 0, y: 2.7022374, z: -8.5704}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 242158041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1714003887
 MonoBehaviour:
@@ -1365,6 +1340,5 @@ SceneRoots:
   - {fileID: 2124749272}
   - {fileID: 720858594}
   - {fileID: 242158040}
-  - {fileID: 1714003886}
   - {fileID: 1363204722}
   - {fileID: 743841130}

@@ -46,10 +46,13 @@ public class CharacterControllerMovement : MonoBehaviour
 		}
 		
 		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
-        Vector3 finalMovement = (new Vector3(0f, _moveDirection.y, 0f) + Vector3.Normalize(planarInput)) * characterSpeed;
+        Vector3 InputtedMovement = (new Vector3(0f, _moveDirection.y, 0f) + Vector3.Normalize(planarInput)) * characterSpeed;
 
-		//actaully moves the character controller with the direction set 
-		_characterController.Move(finalMovement * Time.deltaTime);
+        //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
+        Vector3 finalMovement = transform.TransformDirection(InputtedMovement);
+
+        //actaully moves the character controller with the direction set 
+        _characterController.Move(finalMovement * Time.deltaTime);
 
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
 		//if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)

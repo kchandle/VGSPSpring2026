@@ -16,6 +16,8 @@ public class PlayerCamera : MonoBehaviour
     private float scrollDelta = 0f;
     private Vector2 scrollPosition;
 
+    private GameObject player;
+
     private float targetZoom;
     private float currentZoom;
 
@@ -23,6 +25,7 @@ public class PlayerCamera : MonoBehaviour
     {
         cam = GetComponent<CinemachineCamera>();
         orbital = cam.GetComponent<CinemachineOrbitalFollow>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
         targetZoom = orbital.Radius;
         currentZoom = targetZoom;
@@ -45,6 +48,8 @@ public class PlayerCamera : MonoBehaviour
         scrollDelta = Mathf.Lerp(scrollDelta, 0, Time.deltaTime * ZoomLerpSpeed);
 
         orbital.Radius = currentZoom;
+
+        player.transform.rotation = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
 
         Debug.Log(currentZoom);
     }
