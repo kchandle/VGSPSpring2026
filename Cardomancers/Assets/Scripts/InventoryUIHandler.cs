@@ -143,24 +143,26 @@ public class InventoryUIHandler : MonoBehaviour
 
         deckPlayspace.playItems.Clear();
     
-        for( int i = deckPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
-        {
-            GameObject.Destroy(deckPlayspace.gameObject.transform.GetChild(i).gameObject);
-        }
+        // for( int i = deckPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
+        // {
+        //     GameObject.Destroy(deckPlayspace.gameObject.transform.GetChild(i).gameObject);
+        // }
 
         invPlayspace.playItems.Clear();
 
-        for( int i = invPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
-        {
-            GameObject.Destroy(invPlayspace.gameObject.transform.GetChild(i).gameObject);
-        }
+        // for( int i = invPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
+        // {
+        //     GameObject.Destroy(invPlayspace.gameObject.transform.GetChild(i).gameObject);
+        // }
 
         hackPlayspace.playItems.Clear();
 
         //try this code later
         
-        //while (transform.childCount > 0) {
-       // DestroyImmediate(transform.GetChild(0).gameObject);
+        while (deckPlayspace.gameObject.transform.childCount > 0) {
+        DestroyImmediate(deckPlayspace.gameObject.transform.GetChild(0).gameObject); }
+        while (invPlayspace.gameObject.transform.childCount > 0) {
+        DestroyImmediate(invPlayspace.gameObject.transform.GetChild(0).gameObject); }
 }
 
         for( int i = hackPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
@@ -179,4 +181,4 @@ public class InventoryUIHandler : MonoBehaviour
   
   
 
-}
+

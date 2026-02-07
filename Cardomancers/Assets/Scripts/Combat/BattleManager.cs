@@ -10,7 +10,7 @@ using static BattleManager;
 
 public class BattleManager : MonoBehaviour
 {
-    public static BattleManager instance; // singleton instance
+    public static BattleManager instance; // singleton instance 
 
     #region Cameras
     public Camera battleCamera; // the camera used during battles
