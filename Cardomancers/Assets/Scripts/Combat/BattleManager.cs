@@ -106,7 +106,7 @@ public class BattleManager : MonoBehaviour
         // Optional: Keep the object alive when loading new scenes
         DontDestroyOnLoad(this.gameObject);
 
-        SwitchCam();
+        //SwitchCam();
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<PlayerController>();

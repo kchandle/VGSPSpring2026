@@ -13,7 +13,7 @@ public class CardDragInput : MonoBehaviour
     private InputActionMap actionMap; // current action map.
     public InputActionAsset inputActions;
 
-    //public InventoryUIHandler uIHandler;
+    public InventoryUIHandler uIHandler;
 
     private bool dragDropActive; // if the drag and drop ability is active
 
@@ -66,14 +66,15 @@ public class CardDragInput : MonoBehaviour
         GameStateScript.OnGameStateChanged -= ChangeActionMap;
     }
 
-    //void Start()
-    //{
+    void Start()
+    {
+     
+
     //   ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
     //   /// 
         
     //   GameStateScript.CurrentState = GameStateScript.GameState.MENU;
-    //   AddActivePlayspace(uIHandler.invPlayspace);
-    //   AddActivePlayspace(uIHandler.deckPlayspace);
+
      
 
     //   uIHandler.DisplayUI();
@@ -85,7 +86,7 @@ public class CardDragInput : MonoBehaviour
 
     //   StartCoroutine(DragDrop());
 
-    //}
+    }
     
     public void ChangeActionMap(GameStateScript.GameState gameState)
     {   
@@ -93,7 +94,7 @@ public class CardDragInput : MonoBehaviour
         switch (gameState)
         {
             case GameStateScript.GameState.BATTLE: newActionMap = inputActions.FindActionMap("Battle"); break;
-            case GameStateScript.GameState.MENU: newActionMap = inputActions.FindActionMap("Inventory"); break;
+            case GameStateScript.GameState.INVENTORY: newActionMap = inputActions.FindActionMap("Inventory"); break;
         }
 
         if (newActionMap != null)
@@ -189,10 +190,11 @@ public class CardDragInput : MonoBehaviour
                 {
                     // Gets the Playspace component of the dragTargets parent Playspace
 
-                    GameObject dragTargetParent = dragTarget.gameObject.transform.parent.gameObject;
+                    GameObject dragTargetParent = dragTarget.GetComponentInParent<Playspace>().gameObject;
                     // checking to see which playSpace, if any, the player released the drag target into
                     foreach (Playspace p in activePlayspaces)
                     {
+     
                         //float distanceToPlane = Mathf.Abs(p.transform.position.z - Camera.main.transform.position.z);
                         //mousePosition.z = distanceToPlane;
                         //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
@@ -200,12 +202,12 @@ public class CardDragInput : MonoBehaviour
                         // Conditions to successfully move a dragtarget to a new playspace
                         // Player must be hovering their mouse over the New Playspace
                         // New Playspace must not be the current parent of the dragTarget
-                        if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
+   
+                        if (p.InPlayArea(mousePosition) && (dragTargetParent != p.gameObject))
                         {
                             // move dragTarget from it's parent to Playspace p
                            
-                            
-
+                          
                             // If battling, stop the coroutine if the player successfully plays a card
                             // This prevents them from playing more cards than they are allowed
                             if (FindFirstObjectByType<BattleManager>() != null)
@@ -218,11 +220,13 @@ public class CardDragInput : MonoBehaviour
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
                                         }
-                                } 
-                            } else {
-                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-                                MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
-                            }
+                                } else
+                                {
+                                    print("attempting to move to new playspace");
+                                    ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
+                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                }
+                            } 
                             //yield break;
                         }
                     }
@@ -288,7 +292,9 @@ public class CardDragInput : MonoBehaviour
             print("in allowed donors");
             to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
             from.DestroyPlayItem(moveTarget);
+            print(moveTarget.gameObject.transform.parent);
             PlayitemMoved.Invoke(moveTarget, to, from);
+            
         }
 
     }

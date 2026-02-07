@@ -71,8 +71,8 @@ public class Inventory : MonoBehaviour
 	{
 		//don't add a card to the deck if the deck is full
 		if (deck.Count >= deckLength) return false;
-		// stop if the inventory doesn't contain the card
-		if (inventory.Contains(card) || deck.Contains(card)) return false;
+		// stop if the inventory doesn't contain the card OR if the deck already has that card
+		if (!inventory.Any(invCard => invCard.cardID == card.cardID) || deck.Any(deckCard => deckCard.cardID == card.cardID)) return false;
 		deck.Add(card);
 		// sync deck with the SO
 		inventorySO.Deck = deck;

@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
         currentHealth = maxPlayerHealth;
     }
 
-    [SerializeField] GameObject inventoryUI;
+    [SerializeField] InventoryUIHandler inventoryUIHandler;
 
     // reference to character controller movement
     [SerializeField] private CharacterControllerMovement _characterControllerMovement;
@@ -42,14 +42,14 @@ public class PlayerController : MonoBehaviour
     public void OnToggleInventory(InputAction.CallbackContext context)
     {
         //can only open the inventory when in free movement and alive
-        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
-            inventoryUI.SetActive(true);
+            inventoryUIHandler.DisplayUI();
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
         }
-        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY)
+        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY && inventoryUIHandler.uiDisplayed == true)
         {
-            inventoryUI.SetActive(false);
+            inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         }
     }
