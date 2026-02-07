@@ -67,6 +67,7 @@ public struct BattleEffect
         }
         //PlayParticles(pos);
         player.currentHealth -= StatusAmount;
+        player.UpdateHealthbar();
     }
 
     public void TriggerEffect(Enemy target, Vector3 pos)
@@ -110,6 +111,8 @@ public struct BattleEffect
         }
         //PlayParticles(pos);
         enemy.currentHealth -= DamageDealt;
+
+        enemy.UpdateHealthBar();
         if (enemy.currentHealth <= 0)
         {
             //Stops the player from interacting with the enemy once dead
