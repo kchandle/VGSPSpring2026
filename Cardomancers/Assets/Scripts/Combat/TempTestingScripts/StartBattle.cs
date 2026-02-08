@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 // Ensure the correct namespace or assembly reference for BattleSystem is included  
@@ -6,18 +7,18 @@ using UnityEngine;
 public class StartBattle : MonoBehaviour
 {
     public Battle_SO battleToStart;
+    public GameObject battleManagerPrefab; // Assign the BattleManager prefab in the inspector
     // The only reason this exists is to test the battle system quickly  
-    void Start()
+    public void StartBattleNow()
     {
-        // Updated to use the recommended method for finding objects  
+        // Updated to use the recommended method for finding objects
+         // Ensure the BattleManager prefab is instantiated in the scene
         var battleSystem = Object.FindFirstObjectByType<BattleManager>();
-        if (battleSystem != null)
+        if (battleSystem == null)
         {
-            battleSystem.StartBattle(battleToStart);
+            Instantiate(battleManagerPrefab);
+            battleSystem = Object.FindFirstObjectByType<BattleManager>();
         }
-        else
-        {
-            Debug.LogError("BattleSystem not found in the scene.");
-        }
+        battleSystem.StartBattle(battleToStart);
     }
 }

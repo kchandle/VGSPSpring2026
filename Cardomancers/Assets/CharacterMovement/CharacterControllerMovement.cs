@@ -19,7 +19,7 @@ public class CharacterControllerMovement : MonoBehaviour
 
 	[SerializeField] AudioClip[] footstepClips;
 	[SerializeField] AudioClip[] jumpClips;
-	private AudioSource footstepSource;
+	//private AudioSource footstepSource;
 
     private void Awake()
     {
@@ -41,26 +41,29 @@ public class CharacterControllerMovement : MonoBehaviour
         //if the jump key was pressed this frame then adds to the Y value of the moveDirection
         if (_characterController.isGrounded && jumping)
 		{
-			SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 1f);
+			//SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 1f);
             _moveDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
 		}
 		
 		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
-        Vector3 finalMovement = (new Vector3(0f, _moveDirection.y, 0f) + Vector3.Normalize(planarInput)) * characterSpeed;
+        Vector3 InputtedMovement = (new Vector3(0f, _moveDirection.y, 0f) + Vector3.Normalize(planarInput)) * characterSpeed;
 
-		//actaully moves the character controller with the direction set 
-		_characterController.Move(finalMovement * Time.deltaTime);
+        //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
+        Vector3 finalMovement = transform.TransformDirection(InputtedMovement);
+
+        //actaully moves the character controller with the direction set 
+        _characterController.Move(finalMovement * Time.deltaTime);
 
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
-		if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
-		{
-			footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 1f);
-		}
-		//if there is a soundplaying check if the player isnt ground or moving and then delete the sound
-		else if (footstepSource != null)
-		{
-			if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
-		}
+		//if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
+		//{
+		//	footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 1f);
+		//}
+		////if there is a soundplaying check if the player isnt ground or moving and then delete the sound
+		//else if (footstepSource != null)
+		//{
+		//	if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
+		//}
 
 		//resets the jump bool that is set in the player controller script to true whenever space is pressed
 		jumping = false; 

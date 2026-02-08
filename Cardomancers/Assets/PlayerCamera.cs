@@ -1,68 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 
-//This script is attached to an Empty GameObject called CameraBase which is a child of the player.
-//The Main Camera is a child of the CameraBase placed at x: 0 y: 0 z: -0.6
-
-
-//This script controls movement of the camera
 public class PlayerCamera : MonoBehaviour
-{   //Controls the rotation of the Camerabase
-    Vector3 rotation;
+{
+    public float ZoomSpeed = 15f;
+    public float ZoomLerpSpeed = 5f;
+    public float MinDistance = 3f;
+    public float MaxDistance = 15f;
 
-    //Values are changeable in editor, not during gameplay
-    public float pitchRate = 45f;
-    public float yawRate = 45f;
+    private CinemachineCamera cam;
+    private CinemachineOrbitalFollow orbital;
+    private float scrollDelta = 0f;
+    private Vector2 scrollPosition;
 
-    //Getter/setters that are separate from the above two variables. These are changed by mouse input.
-    public float PitchInput{get;set;}
-    public float YawInput{get;set;}
+    private GameObject player;
 
-    //Mouse Input from Unity Input System (Default Map: Player)
-    Vector2 lookInput;
+    private float targetZoom;
+    private float currentZoom;
 
+    void Start()
+    {
+        cam = GetComponent<CinemachineCamera>();
+        orbital = cam.GetComponent<CinemachineOrbitalFollow>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
+        targetZoom = orbital.Radius;
+        currentZoom = targetZoom;
+    }
 
+    private void HandleMouseScroll()
+    {
+        scrollDelta += Input.GetAxisRaw("Mouse ScrollWheel");
+    }
 
-    //Game started or clicked on
-    void OnEnable() => Cursor.lockState = CursorLockMode.Locked;
-    //Esc pressed
-    void OnDisable() => Cursor.lockState = CursorLockMode.None;
-
-
-
-    //Calculations to make the camera rotate
     void Update()
     {
-        //Changes the camera's x and y rotation
-        float pitchInput = PitchInput * pitchRate * Time.deltaTime;
-        float yawInput = YawInput * yawRate * Time.deltaTime;
+        HandleMouseScroll();
 
-        rotation.x = Mathf.Clamp(rotation.x - pitchInput, -89f, 89f);
-        rotation.y += yawInput;
+        if(orbital != null)
+        {   targetZoom = Mathf.Clamp(orbital.Radius - (scrollDelta * ZoomSpeed), MinDistance, MaxDistance);
+        }
 
-        //Resets so camera isn't spinning when mouse isn't moving
-        PitchInput = 0f;
-        YawInput = 0f;
+        currentZoom = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * ZoomLerpSpeed);
+        scrollDelta = Mathf.Lerp(scrollDelta, 0, Time.deltaTime * ZoomLerpSpeed);
+
+        orbital.Radius = currentZoom;
+
+        player.transform.rotation = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
+
+        Debug.Log(currentZoom);
     }
-
-
-
-    void LateUpdate()
-    {
-        //Make camera position change relative to CameraBase
-        transform.localRotation = Quaternion.Euler(rotation);
-    }
-
-    //Moves camera with mouse input
-    void OnLook(InputValue value)
-    {
-        lookInput = value.Get<Vector2>();
-
-        PitchInput = lookInput.y;
-        YawInput = lookInput.x;
-    }
-    
 }

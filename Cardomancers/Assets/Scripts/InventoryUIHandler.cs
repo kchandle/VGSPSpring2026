@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using NUnit.Framework;
 using Unity.VisualScripting;
 public class InventoryUIHandler : MonoBehaviour
@@ -177,6 +178,17 @@ public class InventoryUIHandler : MonoBehaviour
         canvas.gameObject.SetActive(false); 
         }
         
+    }
+
+
+
+
+
+    // Battle Exiting
+    public void ButtonClick(GameObject button)
+    {
+        if (button.name == "RetryButton") print("Retry");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
   
   
