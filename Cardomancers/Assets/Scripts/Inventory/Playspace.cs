@@ -121,23 +121,10 @@ public class Playspace : MonoBehaviour
     {
         //print("attempting destroy");
         if (playItems.Contains(playItem)){
-            print(playItem.gameObject);
             playItems.Remove(playItem);
             Destroy(playItem.gameObject);
-            print("destroying");
         }
 
-    }
-
-
-    //Destroys all items in the playspace (Only needed for items dragged into trash)
-    public void ClearPlaySpace()
-    {
-        foreach(PlayItem item in playItems)
-        {
-            playItems.Remove(item);
-            Destroy(item.gameObject);
-        }
     }
 
 

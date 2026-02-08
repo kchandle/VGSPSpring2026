@@ -290,8 +290,6 @@ public class CardDragInput : MonoBehaviour
             from.DestroyPlayItem(moveTarget);
             PlayitemMoved.Invoke(moveTarget, to, from);
         }
-        else{print("not in allowed donors");}
-
     }
 
     // gets correct mousePosition if using a Screen Space - Camera canvas

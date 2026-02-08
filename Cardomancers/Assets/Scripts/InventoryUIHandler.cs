@@ -118,49 +118,47 @@ public class InventoryUIHandler : MonoBehaviour
         //print("Card dragged into trash");
         if(originPlayspace == invPlayspace || originPlayspace == deckPlayspace)
         {
-            //if(originPlayspace == deckPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, deckPlayspace);}
-            //if(originPlayspace == invPlayspace){cardDragInput.MoveToNewPlayspace((Card)playItem, trashPlayspace, invPlayspace);}
-
             //trashItem = playItem;
 
-            //trash playspace should only ever have one item in it
+            //trash playspace should only have at most one item in it, the one actively being deleted
             trashItem = trashPlayspace.playItems[0]; //active version of the playItem passed in
             returnSpace = originPlayspace;
 
             deleteCardPopup.gameObject.SetActive(true);
 
-            //remove the thing
-            //trashPlayspace.DestroyPlayItem(playItem);
+            //stop cards from being dragged while trashing one to prevent uninteded results
+            cardDragInput.DragDropActive = false;
         }
         //print("method done");
     }
 
-    //Method called by the popup's confirm button On Click event (Now works)
+    //Method called by the popup's confirm button On Click event
+    //Remove the card to be deleted from inventory, then remove it from the trash playspace, fully discarding it.
     public void TrashCard()
     {
         inventory.RemoveCardFromInventory(((Card)trashItem).inventoryCard);
-        trashPlayspace.ClearPlaySpace();
+        trashPlayspace.playItems.Remove(trashItem);
+        Destroy(trashItem.gameObject);
+        //print("delete");
         
         trashItem = null;
         returnSpace = null;
+
+        //trash process ended, allow cards to be dragged again
+        cardDragInput.DragDropActive = true;
     }
 
-    //Method called by the popup's no button On Click event. Returns the card to where it was dragged from (Now Works)
+    //Method called by the popup's no button On Click event. 
+    //Returns the card to the playspace it was dragged from.
     public void ReturnCard()
     {
-        //print("No clicked");
-        if(returnSpace == invPlayspace)
-        {
-            cardDragInput.MoveToNewPlayspace(trashItem, invPlayspace, trashPlayspace);
-        }
-        else if(returnSpace == deckPlayspace)
-        {
-            //cardDragInput.MoveToNewPlayspace(trashItem, deckPlayspace, trashPlayspace);
-        }
+        cardDragInput.MoveToNewPlayspace(trashItem, returnSpace, trashPlayspace);
 
         trashItem = null;
         returnSpace = null;
-        //print("no completed");
+
+        //trash process ended, allow cards to be dragged again
+        cardDragInput.DragDropActive = true;
     }
     #endregion
 
