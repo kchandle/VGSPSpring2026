@@ -33,6 +33,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public InventoryUIHandler inventoryUIHandler;
+    private int shield = 0;
+
+    public int Shield
+    {
+        get { return shield; }
+        set
+        {
+            if (value <= 0)
+            {
+                shield = 0;
+                UpdateShield();
+            }
+        }
+    }
+
+    public GameObject shieldPanel;
+    public TMP_Text shieldText;
+
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public bool isShielded = false; //If the player is shielded, they take no damage this turn.
