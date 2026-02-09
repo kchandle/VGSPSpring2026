@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
 using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -96,8 +94,8 @@ public class Playspace : MonoBehaviour
 
         return newPlayItem;
     }
-    
-    // with inventoryCard
+
+    // with inventoryCarc
     public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard){
 
         print("Spawning this Card: " + cardSO.name);
@@ -110,30 +108,11 @@ public class Playspace : MonoBehaviour
 
         newPlayItem.GetComponent<Card>().CardSO = cardSO;
         newPlayItem.GetComponent<Card>().inventoryCard = inventoryCard;
-        newPlayItem.GetComponent<Card>().hacks = inventoryCard.hacks;
 
         
 
         return newPlayItem;
     }
-
-    // adding a Hack
-    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO){
-
-        print("Spawning this Card: " + hackSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
-
- 
-
-        playItems.Add(newPlayItem.GetComponent<PlayItem>());
-
-        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
-        
-
-        return newPlayItem;
-    }
-
 
 
     // Destroys a specific PlayItem in this PlaySpace
@@ -147,7 +126,6 @@ public class Playspace : MonoBehaviour
         }
 
     }
-
 
 // Arranges all play items in a line
     void HorizontalLayout(int targetIndex = -1)
@@ -241,7 +219,7 @@ public PlayItem GetNearestPlayItem(Vector3 position)
     // 1. Find the absolute closest item
     foreach (PlayItem p in playItems)
     {
-        float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
+        float sqrDistance = (position - p.transform.position).sqrMagnitude;
         if (sqrDistance < minSqrDistance)
         {
             minSqrDistance = sqrDistance;

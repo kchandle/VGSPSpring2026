@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
         currentHealth = maxPlayerHealth;
     }
 
-    [SerializeField] InventoryUIHandler inventoryUIHandler;
+    // Inputs the INventory Canvas object to be toggled on and off
+    [SerializeField] GameObject inventoryUI;
 
     // reference to character controller movement
     [SerializeField] private CharacterControllerMovement _characterControllerMovement;
@@ -44,14 +45,14 @@ public class PlayerController : MonoBehaviour
     public void OnToggleInventory(InputAction.CallbackContext context)
     {
         //can only open the inventory when in free movement and alive
-        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
         {
-            inventoryUIHandler.DisplayUI();
+            inventoryUI.SetActive(true);
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
         }
-        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY && inventoryUIHandler.uiDisplayed == true)
+        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY)
         {
-            inventoryUIHandler.DestroyUI();
+            inventoryUI.SetActive(false);
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         }
     }
