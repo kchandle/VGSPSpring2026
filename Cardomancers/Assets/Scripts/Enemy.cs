@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,6 +13,38 @@ public class Enemy : MonoBehaviour
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
     public bool isStunned; // f the enemy is stunned, they cannot take actions.
+    public int currentTimer;
+    public int currentMana = 5;
+    private int currentShield = 0;
+    public GameObject shieldPanel;
+    public TMP_Text shieldText;
+
+    public int CurrentShield
+    {
+        get { return currentShield; }
+        set
+        {
+            currentShield = value;
+            UpdateShield();
+        }
+    }
+
+    private void UpdateShield()
+    {
+        if (currentShield <= 0)
+        {
+            currentShield = 0;
+            shieldPanel.SetActive(false);
+        }
+        else
+        {
+            shieldPanel.SetActive(true);
+            shieldText.text = "" + CurrentShield;
+        }
+    }
+
+    public int currentActionAmount;
+    public string currentActionType;
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -20,8 +53,17 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
+
+    //References to UI components
     public List<InventoryCard> deck;
     public Image healthBar; // Reference to the health bar UI element
+    public TMP_Text manaText;
+    public TMP_Text timerText;
+    public GameObject actionTypeATK;
+    public GameObject actionTypeDEF;
+    public GameObject actionTypeRST;
+    public TMP_Text actionAmountText;
+    public InventoryCard currentCard;
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -61,6 +103,10 @@ public class Enemy : MonoBehaviour
         enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
         currentHealth = maxHealth;
+        currentTimer = Random.Range(1, 4);
+        UpdateTimer();
+        UpdateShield();
+        currentMana = 5;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
@@ -135,6 +181,64 @@ public class Enemy : MonoBehaviour
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
         }
+    }
+
+    public void UpdateActionState()
+    {
+        currentActionType = currentCard.cardSO.type;
+        //actionTypeText.text = currentActionType;
+        switch (currentActionType)
+        {
+            case ("DEF"):
+            {
+                actionTypeDEF.SetActive(true);
+                actionTypeATK.SetActive(false);
+                actionTypeRST.SetActive(false);
+                break;
+            }
+            case ("ATK"):
+            {
+                actionTypeDEF.SetActive(false);
+                actionTypeATK.SetActive(true);
+                actionTypeRST.SetActive(false);
+                break;
+            }
+            case ("RST"):
+            {
+                actionTypeDEF.SetActive(false);
+                actionTypeATK.SetActive(false);
+                actionTypeRST.SetActive(true);
+                break;
+            }
+        }
+        print(currentActionType);
+
+        currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
+        if (currentActionType != "RST")
+        {
+            actionAmountText.text = "" + currentActionAmount;
+        }
+        else
+        {
+            actionAmountText.text = "";
+        }
+        print(currentActionAmount);
+    }
+
+    public void UpdateTimer()
+    {
+        timerText.text = "" + currentTimer;
+        //float rotateTime = 2f;  // This should eventually rotate the timer on update.
+        //float amount = -180f; // 
+        //float currentTime = 0f;
+        //float amountPerMillis = amount/rotateTime;
+        //while (currentTime < rotateTime)
+        //{
+        //    print("rotating, current angle: " + timerText.transform.parent.GetChild(1).rotation.z);
+        //    timerText.transform.parent.GetChild(1).Rotate(0, 0, ((amount/rotateTime) * currentTime));
+        //    currentTime += Time.deltaTime;
+        //}
+        //timerText.transform.parent.GetChild(1).Rotate(0, 0, 180);
     }
 
     public IEnumerator StatusEffects()

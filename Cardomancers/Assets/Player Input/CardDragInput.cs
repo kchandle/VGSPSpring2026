@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using System;
 using System.Collections;
 using UnityEditor;
-
+//Has depreciated code
 public class CardDragInput : MonoBehaviour
 {
 
@@ -13,7 +13,7 @@ public class CardDragInput : MonoBehaviour
     private InputActionMap actionMap; // current action map.
     public InputActionAsset inputActions;
 
-    public InventoryUIHandler uIHandler;
+    //public InventoryUIHandler uIHandler;
 
     private bool dragDropActive; // if the drag and drop ability is active
 
@@ -41,7 +41,7 @@ public class CardDragInput : MonoBehaviour
     public Vector3 dragTargetStartPos; // starting position of the dragTarget
     public bool isDragging = false; // if a playItem being dragged
 
-    [SerializeField] private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
+    private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
 
     public event Action<PlayItem, Playspace, Playspace> PlayitemMoved; // PlayItem being moved, To, From
 
@@ -66,15 +66,14 @@ public class CardDragInput : MonoBehaviour
         GameStateScript.OnGameStateChanged -= ChangeActionMap;
     }
 
-    void Start()
-    {
-     
-
+    //void Start()
+    //{
     //   ////  TEST STUFF BEGIN - WILL BE REMOVED LATER
     //   /// 
         
     //   GameStateScript.CurrentState = GameStateScript.GameState.MENU;
-
+    //   AddActivePlayspace(uIHandler.invPlayspace);
+    //   AddActivePlayspace(uIHandler.deckPlayspace);
      
 
     //   uIHandler.DisplayUI();
@@ -86,7 +85,7 @@ public class CardDragInput : MonoBehaviour
 
     //   StartCoroutine(DragDrop());
 
-    }
+    //}
     
     public void ChangeActionMap(GameStateScript.GameState gameState)
     {   
@@ -94,7 +93,7 @@ public class CardDragInput : MonoBehaviour
         switch (gameState)
         {
             case GameStateScript.GameState.BATTLE: newActionMap = inputActions.FindActionMap("Battle"); break;
-            case GameStateScript.GameState.INVENTORY: newActionMap = inputActions.FindActionMap("Inventory"); break;
+            case GameStateScript.GameState.MENU: newActionMap = inputActions.FindActionMap("Inventory"); break;
         }
 
         if (newActionMap != null)
@@ -125,7 +124,6 @@ public class CardDragInput : MonoBehaviour
             {
                 foreach (Playspace p in activePlayspaces)
                 {
-
                     // try to get focusTarget in Playspace p
 
                     //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
@@ -169,18 +167,10 @@ public class CardDragInput : MonoBehaviour
                     dragTarget = dragPlayspace.GetNearestPlayItem(mousePosition);
                     if (dragTarget)
                     {
-                        if (dragTarget)
+                        if ((Card)dragTarget)
                         {
-                            if(dragTarget is Card)
-                            {
-                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
-                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3; 
-                            } else if(dragTarget is InventoryHack)
-                            {
-                                ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the hack doesn't dissapear when dragged outside of a scrollable playspace
-                                ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().sortingOrder = 3; 
-                            }
-                       
+                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
+                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
 
                         }
                         
@@ -198,11 +188,10 @@ public class CardDragInput : MonoBehaviour
                 {
                     // Gets the Playspace component of the dragTargets parent Playspace
 
-                    GameObject dragTargetParent = dragTarget.GetComponentInParent<Playspace>().gameObject;
+                    GameObject dragTargetParent = dragTarget.gameObject.transform.parent.gameObject;
                     // checking to see which playSpace, if any, the player released the drag target into
                     foreach (Playspace p in activePlayspaces)
                     {
-     
                         //float distanceToPlane = Mathf.Abs(p.transform.position.z - Camera.main.transform.position.z);
                         //mousePosition.z = distanceToPlane;
                         //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
@@ -210,12 +199,12 @@ public class CardDragInput : MonoBehaviour
                         // Conditions to successfully move a dragtarget to a new playspace
                         // Player must be hovering their mouse over the New Playspace
                         // New Playspace must not be the current parent of the dragTarget
-   
-                        if (p.InPlayArea(mousePosition) && (dragTargetParent != p.gameObject))
+                        if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
                         {
                             // move dragTarget from it's parent to Playspace p
                            
-                          
+                            
+
                             // If battling, stop the coroutine if the player successfully plays a card
                             // This prevents them from playing more cards than they are allowed
                             if (FindFirstObjectByType<BattleManager>() != null)
@@ -224,66 +213,21 @@ public class CardDragInput : MonoBehaviour
                                 if (FindFirstObjectByType<BattleManager>().isBattling)
                                 {
                                     if (AttemptPlay((Card)dragTarget, p) == true) {
-                                        bm.PlayerDeckCopy.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
+                                        bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
                                         }
-                                } else
-                                {
-                                   
-                                    if (dragTarget is Card)
-                                    {
-                                         print("attempting to move to new playspace");
-                                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-                                        MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
-                                    } 
-
-                                     // if the drag target is a hack, try to add it to a card
-                                    if (dragTarget is InventoryHack)
-                                    {
-                                        if (dragTarget is InventoryHack)((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-
-                                        foreach (PlayItem item in p.playItems)
-                                        {
-                                            if(item.BoxCollider.OverlapPoint(mousePosition) == true)
-                                            {
-                                                print("mouse inside playitem bounds");
-                                                if (item is Card)
-                                                {   
-                                                    print("item is a card");
-                                                    
-                                                
-                                                        foreach (InventoryCard inventoryCard in inventory.CardInventory)
-                                                        {
-                                                            if (inventoryCard.cardID == ((Card)item).inventoryCard.cardID)
-                                                            {
-                                                                ((Card)item).AddHackToCard(((InventoryHack)dragTarget).HackSO, inventory);
-                                                                break;
-                                                            }
-                                                        }
-                                                    inventory.RemoveHack(((InventoryHack)dragTarget).HackSO);
-                                                    dragPlayspace.DestroyPlayItem(dragTarget);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        
-                                       
-                                    }
-                                }
-                            } 
+                                } 
+                            } else {
+                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
+                                MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                            }
                             //yield break;
                         }
                     }
 
-
                     
-                    if (dragTarget) // revert back to normal sorting when no longer being dragged
-                    {
-                        if (dragTarget is Card) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-                        if (dragTarget is InventoryHack)((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-                    } 
-
+                    if (dragTarget) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
                     dragTarget = null;
 
                 }
@@ -318,7 +262,7 @@ public class CardDragInput : MonoBehaviour
         activePlayspaces.Clear();
     }
 
-    // Adds a playspace to activePlayspaces if it isn't already in the list
+// Adds a playspace to activePlayspaces if it isn't already in the list
     public void AddActivePlayspace(Playspace playspace)
     {
         if(!activePlayspaces.Contains(playspace)) activePlayspaces.Add(playspace);
@@ -337,12 +281,9 @@ public class CardDragInput : MonoBehaviour
         // only move the item if the "to" PlaySpace can receive PlayItems from the "from" PlaySpace
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
-            
             to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
             from.DestroyPlayItem(moveTarget);
-            print(moveTarget.gameObject.transform.parent);
             PlayitemMoved.Invoke(moveTarget, to, from);
-            
         }
 
     }
