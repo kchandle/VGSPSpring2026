@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-//using static UnityEditor.PlayerSettings;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
 using TMPro;
 
@@ -56,14 +56,17 @@ public class PlayerController : MonoBehaviour
 
 	public void OnJumping(InputAction.CallbackContext context)
 	{
+       
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
+         print("HELLO JUMPING");
 		// makes the player jump
 	    _characterControllerMovement.jumping = true; 
 	}
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
+        print("TABBED");
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {

@@ -57,7 +57,7 @@ public class InventoryUIHandler : MonoBehaviour
             // Add deck cards
             foreach(InventoryCard card in inventory.Deck)
             {
-                
+                print(card);   
                 GameObject newCard = deckPlayspace.NewPlayItem(cardPrefab, card.cardSO, card);
             }
 
