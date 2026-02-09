@@ -224,7 +224,7 @@ public class CardDragInput : MonoBehaviour
                                 if (FindFirstObjectByType<BattleManager>().isBattling)
                                 {
                                     if (AttemptPlay((Card)dragTarget, p) == true) {
-                                        bm.PlayerDeckCopy.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
+                                        bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
                                         }
