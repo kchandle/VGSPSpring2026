@@ -51,6 +51,5 @@ public class PlayerCamera : MonoBehaviour
 
         player.transform.rotation = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
 
-        Debug.Log(currentZoom);
     }
 }
