@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using System;
 using System.Collections;
 using UnityEditor;
-
+//Has depreciated code
 public class CardDragInput : MonoBehaviour
 {
 
