@@ -5,12 +5,30 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
+    private int shield = 0;
+
+    public int Shield
+    {
+        get { return shield; }
+        set
+        {
+            if (value <= 0)
+            {
+                shield = 0;
+                UpdateShield();
+            }
+        }
+    }
+
+    public GameObject shieldPanel;
+    public TMP_Text shieldText;
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -84,5 +102,17 @@ public class PlayerController : MonoBehaviour
         healthbar.fillAmount = currentHealth / maxPlayerHealth;
     }
 
-
+    public void UpdateShield()
+    {
+        if (Shield == 0)
+        {
+            shieldText.text = "0";
+            shieldPanel.SetActive(false);
+        }
+        else
+        {
+            shieldPanel.SetActive(true);
+            shieldText.text = "" + Shield;
+        }
+    }
 }

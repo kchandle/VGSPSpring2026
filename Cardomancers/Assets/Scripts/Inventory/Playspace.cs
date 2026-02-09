@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
-    public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
+    public float focusOffset = 3f; // how much the focusTarget will be offset from non-focused PlayItem's
 
     public List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
 
@@ -146,8 +146,8 @@ public class Playspace : MonoBehaviour
                     else if (i == targetIndex + 1) position += Vector3.right * focusOffset;
                     else if (i == targetIndex) position += Vector3.up * focusOffset;
                 }
-            position.z += zOffset;
-            playItems[i].position = position;
+                position.z += zOffset;
+                playItems[i].position = position;
             }
 
     } 
@@ -177,8 +177,8 @@ public class Playspace : MonoBehaviour
         for (int i = 0; i < playItems.Count; i++)
         {
             // Calculate grid coordinates based on the list index
-            int currentRow = i / columns; // Integer division (e.g., 4/3 = 1)
-            int currentCol = i % columns; // Modulo operator (e.g., 4%3 = 1)
+            int currentRow = i / columns; // Integer division (e.g., 5/3 = 1)
+            int currentCol = i % columns; // Modulo operator (e.g., 5%3 = 2)
 
             // Calculate position
             // We usually multiply 'currentRow' by negative spacing to build downwards
