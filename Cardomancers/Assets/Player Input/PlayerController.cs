@@ -12,20 +12,7 @@ public class PlayerController : MonoBehaviour
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
-    private int shield = 0;
-
-    public int Shield
-    {
-        get { return shield; }
-        set
-        {
-            if (value <= 0)
-            {
-                shield = 0;
-                UpdateShield();
-            }
-        }
-    }
+  
 
     public GameObject shieldPanel;
     public TMP_Text shieldText;
@@ -45,9 +32,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    public GameObject shieldPanel;
-    public TMP_Text shieldText;
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
