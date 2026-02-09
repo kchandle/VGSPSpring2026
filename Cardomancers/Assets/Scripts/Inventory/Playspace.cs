@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -8,7 +10,7 @@ using Unity.VisualScripting;
 public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
-    public float focusOffset = 3f; // how much the focusTarget will be offset from non-focused PlayItem's
+    public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
 
     public List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
 
@@ -94,8 +96,8 @@ public class Playspace : MonoBehaviour
 
         return newPlayItem;
     }
-
-    // with inventoryCarc
+    
+    // with inventoryCard
     public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard){
 
         print("Spawning this Card: " + cardSO.name);
@@ -108,11 +110,30 @@ public class Playspace : MonoBehaviour
 
         newPlayItem.GetComponent<Card>().CardSO = cardSO;
         newPlayItem.GetComponent<Card>().inventoryCard = inventoryCard;
+        newPlayItem.GetComponent<Card>().hacks = inventoryCard.hacks;
 
         
 
         return newPlayItem;
     }
+
+    // adding a Hack
+    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO){
+
+        print("Spawning this Card: " + hackSO.name);
+        GameObject newPlayItem = Instantiate(prefab);
+        newPlayItem.transform.SetParent(transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
+        
+
+        return newPlayItem;
+    }
+
 
 
     // Destroys a specific PlayItem in this PlaySpace
@@ -126,6 +147,7 @@ public class Playspace : MonoBehaviour
         }
 
     }
+
 
 // Arranges all play items in a line
     void HorizontalLayout(int targetIndex = -1)
@@ -146,8 +168,8 @@ public class Playspace : MonoBehaviour
                     else if (i == targetIndex + 1) position += Vector3.right * focusOffset;
                     else if (i == targetIndex) position += Vector3.up * focusOffset;
                 }
-                position.z += zOffset;
-                playItems[i].position = position;
+            position.z += zOffset;
+            playItems[i].position = position;
             }
 
     } 
@@ -177,8 +199,8 @@ public class Playspace : MonoBehaviour
         for (int i = 0; i < playItems.Count; i++)
         {
             // Calculate grid coordinates based on the list index
-            int currentRow = i / columns; // Integer division (e.g., 5/3 = 1)
-            int currentCol = i % columns; // Modulo operator (e.g., 5%3 = 2)
+            int currentRow = i / columns; // Integer division (e.g., 4/3 = 1)
+            int currentCol = i % columns; // Modulo operator (e.g., 4%3 = 1)
 
             // Calculate position
             // We usually multiply 'currentRow' by negative spacing to build downwards
@@ -219,7 +241,7 @@ public PlayItem GetNearestPlayItem(Vector3 position)
     // 1. Find the absolute closest item
     foreach (PlayItem p in playItems)
     {
-        float sqrDistance = (position - p.transform.position).sqrMagnitude;
+        float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
         if (sqrDistance < minSqrDistance)
         {
             minSqrDistance = sqrDistance;
