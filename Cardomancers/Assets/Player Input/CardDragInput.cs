@@ -169,10 +169,18 @@ public class CardDragInput : MonoBehaviour
                     dragTarget = dragPlayspace.GetNearestPlayItem(mousePosition);
                     if (dragTarget)
                     {
-                        if ((Card)dragTarget)
+                        if (dragTarget)
                         {
-                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
-                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
+                            if(dragTarget is Card)
+                            {
+                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
+                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3; 
+                            } else if(dragTarget is InventoryHack)
+                            {
+                                ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the hack doesn't dissapear when dragged outside of a scrollable playspace
+                                ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().sortingOrder = 3; 
+                            }
+                       
 
                         }
                         
@@ -222,21 +230,60 @@ public class CardDragInput : MonoBehaviour
                                         }
                                 } else
                                 {
-                                    print("attempting to move to new playspace");
-                                    ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                   
+                                    if (dragTarget is Card)
+                                    {
+                                         print("attempting to move to new playspace");
+                                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
+                                        MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                    } 
+
+                                     // if the drag target is a hack, try to add it to a card
+                                    if (dragTarget is InventoryHack)
+                                    {
+                                        if (dragTarget is InventoryHack)((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
+
+                                        foreach (PlayItem item in p.playItems)
+                                        {
+                                            if(item.BoxCollider.OverlapPoint(mousePosition) == true)
+                                            {
+                                                print("mouse inside playitem bounds");
+                                                if (item is Card)
+                                                {   
+                                                    print("item is a card");
+                                                    
+                                                
+                                                        foreach (InventoryCard inventoryCard in inventory.CardInventory)
+                                                        {
+                                                            if (inventoryCard.cardID == ((Card)item).inventoryCard.cardID)
+                                                            {
+                                                                ((Card)item).AddHackToCard(((InventoryHack)dragTarget).HackSO, inventory);
+                                                                break;
+                                                            }
+                                                        }
+                                                    inventory.RemoveHack(((InventoryHack)dragTarget).HackSO);
+                                                    dragPlayspace.DestroyPlayItem(dragTarget);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        
+                                       
+                                    }
                                 }
                             } 
                             //yield break;
                         }
                     }
 
-                    // if the drag target is a hack, try to add it to a card
-                    if (dragTarget is InventoryHack)
+
+                    
+                    if (dragTarget) // revert back to normal sorting when no longer being dragged
                     {
-                        dragTarget.gameObject.GetComponent<InventoryHack>().AddHackToCard();
-                    }
-                    if (dragTarget) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
+                        if (dragTarget is Card) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
+                        if (dragTarget is InventoryHack)((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
+                    } 
+
                     dragTarget = null;
 
                 }
@@ -271,7 +318,7 @@ public class CardDragInput : MonoBehaviour
         activePlayspaces.Clear();
     }
 
-// Adds a playspace to activePlayspaces if it isn't already in the list
+    // Adds a playspace to activePlayspaces if it isn't already in the list
     public void AddActivePlayspace(Playspace playspace)
     {
         if(!activePlayspaces.Contains(playspace)) activePlayspaces.Add(playspace);
@@ -290,6 +337,7 @@ public class CardDragInput : MonoBehaviour
         // only move the item if the "to" PlaySpace can receive PlayItems from the "from" PlaySpace
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
+            
             to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
             from.DestroyPlayItem(moveTarget);
             print(moveTarget.gameObject.transform.parent);

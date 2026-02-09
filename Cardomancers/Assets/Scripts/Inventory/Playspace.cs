@@ -96,8 +96,8 @@ public class Playspace : MonoBehaviour
 
         return newPlayItem;
     }
-
-    // with inventoryCarc
+    
+    // with inventoryCard
     public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard){
 
         print("Spawning this Card: " + cardSO.name);
@@ -110,11 +110,30 @@ public class Playspace : MonoBehaviour
 
         newPlayItem.GetComponent<Card>().CardSO = cardSO;
         newPlayItem.GetComponent<Card>().inventoryCard = inventoryCard;
+        newPlayItem.GetComponent<Card>().hacks = inventoryCard.hacks;
 
         
 
         return newPlayItem;
     }
+
+    // adding a Hack
+    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO){
+
+        print("Spawning this Card: " + hackSO.name);
+        GameObject newPlayItem = Instantiate(prefab);
+        newPlayItem.transform.SetParent(transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
+        
+
+        return newPlayItem;
+    }
+
 
 
     // Destroys a specific PlayItem in this PlaySpace

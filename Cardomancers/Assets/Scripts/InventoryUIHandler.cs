@@ -36,7 +36,7 @@ public class InventoryUIHandler : MonoBehaviour
     }
 
 
-// CREATE UI
+// CREATE UI 
     public void DisplayUI()
     
     {
@@ -47,6 +47,7 @@ public class InventoryUIHandler : MonoBehaviour
             
             cardDragInput.AddActivePlayspace(invPlayspace);
             cardDragInput.AddActivePlayspace(deckPlayspace);
+            cardDragInput.AddActivePlayspace(hackPlayspace);
         
             // Ensure that inventory and deck have no duplicates
             inventory.ValidateInventoryIntegrity(); 
@@ -63,12 +64,18 @@ public class InventoryUIHandler : MonoBehaviour
             List<InventoryCard> notInDeck = inventory.CardInventory.Where(card => 
             !inventory.Deck.Any(deckCard => deckCard.cardID == card.cardID))
             .ToList();
-
+ 
             foreach (InventoryCard card in notInDeck)
             {
                 print(card);
                 GameObject newCard = invPlayspace.NewPlayItem(cardPrefab, card.cardSO, card);
             } 
+
+            foreach (Hack_SO hack in inventory.Hacks)
+            {
+                print(hack);
+                GameObject newHack = hackPlayspace.NewPlayItem(hackPrefab, hack);
+            }
 
             StartCoroutine(cardDragInput.DragDrop());
         }
@@ -118,78 +125,56 @@ public class InventoryUIHandler : MonoBehaviour
         }
     }
 
-// IN PROGRESS, DO NOT USE
-
-    // public void DisplayUI(Playspace playspace, List<Hack_SO> list)
-    // {
-    //     foreach(Hack_SO hack in list)
-    //     {
-    //         playspace.NewPlayItem(hackPrefab);
-    //     }
-    // }
-
 
 // destroy all inventory ui
     public void DestroyUI()
     {
-        if (uiDisplayed == true)
+        if (uiDisplayed == true) // only run if the UI already exists
         {
             uiDisplayed = false;
            print("destroying inv ui");
         StopCoroutine(cardDragInput.DragDrop());
-        // loop through each playspace and destroy all playItems
-        // you must use for loops b/c foreach loops will error when deleting items from the collection
 
-        // deleting all child objects manually to be sure nothing is leftover
-
+        
+        // clear playItems list of each playspace
         deckPlayspace.playItems.Clear();
-    
-        // for( int i = deckPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
-        // {
-        //     GameObject.Destroy(deckPlayspace.gameObject.transform.GetChild(i).gameObject);
-        // }
 
         invPlayspace.playItems.Clear();
 
-        // for( int i = invPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
-        // {
-        //     GameObject.Destroy(invPlayspace.gameObject.transform.GetChild(i).gameObject);
-        // }
-
         hackPlayspace.playItems.Clear();
 
-        //try this code later
-        
+        // deleting all child objects manually to be sure nothing is leftover
         while (deckPlayspace.gameObject.transform.childCount > 0) {
         DestroyImmediate(deckPlayspace.gameObject.transform.GetChild(0).gameObject); }
+
         while (invPlayspace.gameObject.transform.childCount > 0) {
         DestroyImmediate(invPlayspace.gameObject.transform.GetChild(0).gameObject); }
-}
 
-        for( int i = hackPlayspace.gameObject.transform.childCount-1 ;  i > 0 ; i-- )
-        {
-            GameObject.Destroy(hackPlayspace.gameObject.transform.GetChild(i).gameObject);
-        }
-
-
+        while (hackPlayspace.gameObject.transform.childCount > 0) {
+        DestroyImmediate(hackPlayspace.gameObject.transform.GetChild(0).gameObject); }
+        
 
         cardDragInput.RemoveActivePlayspace(invPlayspace);
         cardDragInput.RemoveActivePlayspace(deckPlayspace);
+        cardDragInput.RemoveActivePlayspace(hackPlayspace);
         canvas.gameObject.SetActive(false); 
         }
-        
     }
-
-
-
-
-
-    // Battle Exiting
+    
+        // Battle Exiting
     public void ButtonClick(GameObject button)
     {
         if (button.name == "RetryButton") print("Retry");
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+       SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
+  
+    }
+
+
+
+
+
+
   
   
 
