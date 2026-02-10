@@ -17,7 +17,7 @@ public class SoundEffectManager : MonoBehaviour
     }
 
     //plays a sound effect clip with a spawn position and volume from 0f to 1f
-    public AudioSource PlaySoundFXClip(AudioClip audioClip, Transform spawn, float volume)
+    public AudioSource PlaySoundFXClip(AudioClip audioClip, Transform spawn, float volume = 1f, float pitch = 1f)
     {
         //instances the audiosource prefab empty and gets the audio source from it 
         AudioSource audioSource = Instantiate(soundFXEmpty, spawn.position, Quaternion.identity);
@@ -26,6 +26,7 @@ public class SoundEffectManager : MonoBehaviour
         //sets the audio clip in the source and volume and then plays it 
         audioSource.clip = audioClip;
         audioSource.volume = volume;
+        audioSource.pitch = pitch;
         audioSource.Play();
 
         //gets the time length of the clip in seconds and destorys it in that amount of time
@@ -37,7 +38,7 @@ public class SoundEffectManager : MonoBehaviour
     }
 
     //overload for the method above but uses a random clip from an array instead
-    public AudioSource PlaySoundFXClip(AudioClip[] audioClips, Transform spawn, float volume)
+    public AudioSource PlaySoundFXClip(AudioClip[] audioClips, Transform spawn, float volume = 1f, float pitch = 1f)
     {
         //instances the audiosource prefab empty and gets the audio source from it 
         AudioSource audioSource = Instantiate(soundFXEmpty, spawn.position, Quaternion.identity);
@@ -49,10 +50,12 @@ public class SoundEffectManager : MonoBehaviour
         //sets the audio clip to the random index in the audiosource and sets volume and then plays it 
         audioSource.clip = audioClips[randomIndex];
         audioSource.volume = volume;
+        audioSource.pitch = pitch;
         audioSource.Play();
 
         //gets the time length of the clip in seconds and destorys it in that amount of time
         float clipLength = audioSource.clip.length;
+        clipLength /= pitch;
       
         Destroy(audioSource.gameObject, clipLength);
         return returnSource;
