@@ -68,7 +68,7 @@ public class CharacterControllerMovement : MonoBehaviour
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
 		if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
 		{
-			footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 1f, 2f);
+			footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 0.5f, 1.5f);
 		}
 		////if there is a soundplaying check if the player isnt ground or moving and then delete the sound
 		else if (footstepSource != null)
