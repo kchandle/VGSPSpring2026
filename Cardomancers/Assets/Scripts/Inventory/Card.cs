@@ -10,7 +10,7 @@ public class Card : PlayItem
 
     private Card_SO cardSO;
 
-    public InventoryCard inventoryCard; // reference to it's own inventory card\
+    public InventoryCard inventoryCard; // reference to it's own inventory card
 
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
@@ -25,7 +25,7 @@ public class Card : PlayItem
     }
 
     
-    public List<Hack_SO> hacks;
+    public List<Hack_SO> hacks; //TO BE REMOVED IN A LATER ITERATION OF THE GAME
 
     public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
 
@@ -93,4 +93,22 @@ public class Card : PlayItem
     }
 
 
-}
+    public void AddHackToCard(Hack_SO hack, Inventory inventory)
+    {
+        if (hack != null && inventory != null && inventoryCard.hacks.Count < maxHacks)
+        {
+            hacks.Add(hack);
+            foreach (InventoryCard invCard in inventory.Deck)
+            {
+                if (invCard.cardID == inventoryCard.cardID)
+                {
+                    invCard.hacks.Add(hack); 
+                }
+            }
+        }
+            //inventoryCard.hacks.Add(hack);
+        }
+    }
+
+
+
