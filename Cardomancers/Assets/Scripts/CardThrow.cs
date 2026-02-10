@@ -6,11 +6,13 @@ public class CardThrow : MonoBehaviour
     //the object pool the throw is getting objects from
     [SerializeField] ObjectPool pool; 
 
-    [SerializeField] InputActionReference click;
     //where the mouse is on the screen
     private Vector2 mouseScreenPosition;
 
-    [SerializeField] float cardForce;
+    [SerializeField] float cardForce = 10f;
+
+    [SerializeField] private AudioClip[] throwWooshSounds;
+    [SerializeField] private AudioClip[] throwGruntSounds;
 
     void Update()
     {
@@ -18,20 +20,11 @@ public class CardThrow : MonoBehaviour
         mouseScreenPosition = Mouse.current.position.ReadValue();
     }
 
-    private void OnEnable()
+    public void OnCardFire(InputAction.CallbackContext context)
     {
-        //adds the OnThrow method to the input action for clicking
-        click.action.started += OnThrow;
-    }
+        //returns if it isnt the frame that it is pressed
+        if (!context.started) return;
 
-    private void OnDisable()
-    {
-        //removes the OnThrow method to the click action whenever the script is destroyed or disabled
-        click.action.started -= OnThrow;
-    }
-
-    public void OnThrow(InputAction.CallbackContext obj)
-    {
         //gets a ray from the camera position to the mouse position on the screen
         Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
         RaycastHit hit;
@@ -50,6 +43,9 @@ public class CardThrow : MonoBehaviour
                 card.GetComponent<Rigidbody>().useGravity = false;
 
             }
+
+            SoundEffectManager.Instance.PlaySoundFXClip(throwGruntSounds, transform, 1f);
+            SoundEffectManager.Instance.PlaySoundFXClip(throwWooshSounds, transform, 1f);
 
             //resets the card instance position, sets it to actives and gets the rigidbody
             card.transform.position = transform.position;
