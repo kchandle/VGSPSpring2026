@@ -31,13 +31,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8093299586542698804}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15212342, y: -0.000000018204481, z: 0.000000002801938, w: 0.98836154}
+  m_LocalRotation: {x: 0.1521233, y: 0.00000008158994, z: -0.0000000121991715, w: 0.98836154}
   m_LocalPosition: {x: 0, y: 4.510587, z: -14.305755}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7833135755326040512}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.5, y: 180, z: 0}
 --- !u!114 &5643702191230477794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,7 +496,19 @@ MonoBehaviour:
     m_ActionId: 6bbe1a0c-1346-4ed8-83a0-fd774d85e00a
     m_ActionName: 'MapWalking/Look[/Mouse/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8277037704298673333}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnToggleInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 86532671-fc43-4240-984a-55741e2b113a
     m_ActionName: 'MapWalking/ToggleInventory[/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -541,13 +553,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4997c9de8e44c36988f40f6052f7718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerMovement
-  characterSpeed: 5
+  characterSpeed: 15
   inputDirectionInput: {x: 0, y: 0, z: 0}
   gravity: 9.8
-  jumpIntensity: 1
-  jumping: 0
-  footstepClips: []
-  jumpClips: []
+  jumpIntensity: 4
+  maxFallSpeed: -30
+  jumpWasPressed: 0
+  footstepClips:
+  - {fileID: 8300000, guid: 9d179faca6ac38c40b0b0b3bf631aaf0, type: 3}
+  jumpClips:
+  - {fileID: 8300000, guid: a9b85f251c1c2c14aa6d3c4d784b601d, type: 3}
+  - {fileID: 8300000, guid: b01a239940a185a41974f11849a864d8, type: 3}
+  - {fileID: 8300000, guid: 4065c8fe437c181498f88cf78e45b861, type: 3}
+  - {fileID: 8300000, guid: ad1adc643de79de4e87cee3ff6bb9820, type: 3}
+  - {fileID: 8300000, guid: 00c4601736c9d294a8c5e930a47d13a8, type: 3}
+  - {fileID: 8300000, guid: a2300cbd9d7ef7e43a22ec22ced80162, type: 3}
+  jumpLandClips:
+  - {fileID: 8300000, guid: 7e75a3eea6376964d872d3b58f387dc2, type: 3}
 --- !u!114 &8277037704298673333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,6 +585,9 @@ MonoBehaviour:
   maxPlayerHealth: 100
   currentHealth: 0
   healthbar: {fileID: 0}
+  shieldPanel: {fileID: 0}
+  shieldText: {fileID: 0}
+  inventoryUIHandler: {fileID: 0}
   isShielded: 0
   inventoryUI: {fileID: 0}
   _characterControllerMovement: {fileID: 570683335199455242}
@@ -595,6 +620,8 @@ MonoBehaviour:
   money: 0
   inventory: []
   deck: []
+  hacks: []
   inventoryLength: 0
   deckLength: 0
+  hackLength: 0
   inventorySO: {fileID: 11400000, guid: bd0aa686dbcb14f48812470527e1f5ff, type: 2}
