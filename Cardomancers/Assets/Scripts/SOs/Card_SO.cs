@@ -8,7 +8,10 @@ public class Card_SO : ScriptableObject
     public int price; // Price to BUY (Higher than sell value)
     public string displayName; // Card's name
     public string description; // Flavor text used for descriping the card
-    
+    public int energyCost; // amount of energy it takes from the user
+
+    [Tooltip("The type of action. Currently can be ATK or DEF.")]
+    public string type;
     public Sprite image; // sprite to be displayed when the card is instanced
     public BattleEffect[] cardEffects; // Needs battle effect to be done first
     public ParticleSystem particleSystem; // Used by damage scripts to play effect upon hit
