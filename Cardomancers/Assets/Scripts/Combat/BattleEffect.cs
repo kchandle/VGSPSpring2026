@@ -59,14 +59,21 @@ public struct BattleEffect
     public void TriggerEffect(PlayerController target, Vector3 pos)
     {
         PlayerController player = target.GetComponent<PlayerController>();
-        if (player.isShielded) return;
+        int dmgToDo = StatusAmount;
+        int shieldAmount = player.Shield;
         if (isStatusEffect)
         {
             player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
             return;
         }
+        if (shieldAmount > 0)
+        {
+            player.Shield -= dmgToDo;
+            dmgToDo -= shieldAmount;
+        }
+        if(dmgToDo > 0)
+            player.currentHealth -= dmgToDo;
         //PlayParticles(pos);
-        player.currentHealth -= StatusAmount;
         player.UpdateHealthbar();
     }
 
@@ -74,7 +81,7 @@ public struct BattleEffect
     {
         int DamageDealt = StatusAmount;
         Enemy enemy = target.GetComponent<Enemy>();
-        if (enemy.isShielded) return;
+        
         
 
         if (isStatusEffect)
@@ -90,14 +97,20 @@ public struct BattleEffect
 
             return;
         }
-        
-        
 
+        int dmgToDeal = DamageDealt;
+        int shieldAmount = enemy.CurrentShield;
+        if (shieldAmount > 0)
+        {
+            enemy.CurrentShield -= dmgToDeal;
+            DamageDealt -= shieldAmount;
+            dmgToDeal -= shieldAmount;
+        }
         foreach (DamageType resistance in enemy.resistances)
         {
             if (resistance == damageType)
             {
-                DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageReduct);
+                DamageDealt = Mathf.RoundToInt(dmgToDeal * enemy.DamageReduct);
                 break;
             }
         }
@@ -105,12 +118,13 @@ public struct BattleEffect
         {
             if (weakness == damageType)
             {
-                DamageDealt = Mathf.RoundToInt(StatusAmount * enemy.DamageMult);
+                DamageDealt = Mathf.RoundToInt(dmgToDeal * enemy.DamageMult);
                 break;
             }
         }
         //PlayParticles(pos);
-        enemy.currentHealth -= DamageDealt;
+        if (DamageDealt > 0)
+            enemy.currentHealth -= DamageDealt;
 
         enemy.UpdateHealthBar();
         if (enemy.currentHealth <= 0)
@@ -118,6 +132,7 @@ public struct BattleEffect
             //Stops the player from interacting with the enemy once dead
             enemy.gameObject.GetComponentInChildren<Image>().enabled = false;
             enemy.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            enemy.gameObject.SetActive(false);
         }
 
     }
