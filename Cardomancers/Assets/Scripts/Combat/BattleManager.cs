@@ -111,8 +111,8 @@ public class BattleManager : MonoBehaviour
 
 
         player = GameObject.FindGameObjectWithTag("Player");
+        playerInventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>();
         playerController = player.GetComponent<PlayerController>();
-        playerInventory = player.GetComponent<Inventory>();
 
         //Assign Variables for Cameras and UI
         mainCamera = Camera.main;
