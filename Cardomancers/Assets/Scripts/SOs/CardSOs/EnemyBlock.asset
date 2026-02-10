@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: EnemyBlock
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 5
+  price: 5
+  displayName: Block
+  description: 
+  energyCost: 2
+  type: DEF
+  image: {fileID: 0}
+  cardEffects:
+  - StatusAmount: 4
+    damageType: 10
+    isStatusEffect: 0
+    isPerishable: 0
+    turnsActive: 0
+  particleSystem: {fileID: 0}
