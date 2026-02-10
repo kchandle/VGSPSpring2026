@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
     public List<InventoryCard> deck;
+    public Image healthBar; // Reference to the health bar UI element
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -27,6 +29,30 @@ public class Enemy : MonoBehaviour
     public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
+
+    
+    // different sprites needed and change depending on state
+    public SpriteRenderer spriteRenderer;
+    public Sprite IdleSprite;
+    public Sprite DamagedSprite;
+    public Sprite AttackedSprite;
+    public Sprite StunnedSprite;
+    public Sprite DefeatedSprite;
+
+
+
+// variable for enum switch state
+    bool currentValue;
+    int State = 5;
+//the different enemy states
+    public enum EnemyState
+    {
+        Idle,
+        Damaged,
+        Attacked,
+        Stunned,
+        Defeated,
+    }
 
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
@@ -42,6 +68,49 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     
+    //enemy state enum changes here 
+    void EnemyAnimatorState()
+    {
+        switch(State)
+        {
+            case 5:
+            {
+                currentValue = animator.GetBool("Idle");
+                animator.SetBool("Idle", true);
+                spriteRenderer.sprite = IdleSprite;
+                break;
+            }
+            case 4:
+            {
+                currentValue = animator.GetBool("Defeated");
+                animator.SetBool("Defeated", true);
+                spriteRenderer.sprite = DefeatedSprite;
+                break;
+            }
+            case 3:
+            {
+                currentValue = animator.GetBool("Stunned");
+                animator.SetBool("Stunned", true);
+                spriteRenderer.sprite = StunnedSprite;
+                break;
+            }
+            case 2:
+            {
+                currentValue = animator.GetBool("Attack");
+                animator.SetBool("Attack", true);
+                spriteRenderer.sprite = AttackedSprite;
+                break;
+            }
+            case 1:
+            {
+                currentValue = animator.GetBool("Damaged");
+                animator.SetBool("Damaged", true);
+                spriteRenderer.sprite = DamagedSprite;
+                break;
+            }
+        }
+    }
+
     public void ShuffleDeck()
     {
         // If deck has less than or equal to zero cards, shuffle the deck
@@ -58,6 +127,14 @@ public class Enemy : MonoBehaviour
         InventoryCard card = deck[Random.Range(0, deck.Count)];
         deck.Remove(card);
         return card;
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float)currentHealth / maxHealth;
+        }
     }
 
     public IEnumerator StatusEffects()
@@ -79,6 +156,7 @@ public class Enemy : MonoBehaviour
                 currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount * DamageReduct);
             }
 
+            UpdateHealthBar();
 
             // Decrement the turn count for perishable effects
             if (statusEffect.DecrementTurn() <= 0)
