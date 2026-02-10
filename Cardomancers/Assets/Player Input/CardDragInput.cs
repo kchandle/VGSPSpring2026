@@ -41,7 +41,7 @@ public class CardDragInput : MonoBehaviour
     public Vector3 dragTargetStartPos; // starting position of the dragTarget
     public bool isDragging = false; // if a playItem being dragged
 
-    [SerializeField] private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
+    private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
 
     public event Action<PlayItem, Playspace, Playspace> PlayitemMoved; // PlayItem being moved, To, From
 
@@ -124,7 +124,6 @@ public class CardDragInput : MonoBehaviour
             {
                 foreach (Playspace p in activePlayspaces)
                 {
-
                     // try to get focusTarget in Playspace p
 
                     //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
@@ -227,11 +226,7 @@ public class CardDragInput : MonoBehaviour
                         }
                     }
 
-                    // if the drag target is a hack, try to add it to a card
-                    if (dragTarget is InventoryHack)
-                    {
-                        dragTarget.gameObject.GetComponent<InventoryHack>().AddHackToCard();
-                    }
+                    
                     if (dragTarget) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
                     dragTarget = null;
 

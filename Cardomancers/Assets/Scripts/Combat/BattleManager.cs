@@ -114,7 +114,7 @@ public class BattleManager : MonoBehaviour
         playerInventory = player.GetComponent<Inventory>();
 
         //Assign Variables for Cameras and UI
-        mainCamera = Camera.main;
+        //mainCamera = Camera.main;
 
 
 

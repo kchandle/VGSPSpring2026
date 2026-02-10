@@ -219,7 +219,7 @@ public PlayItem GetNearestPlayItem(Vector3 position)
     // 1. Find the absolute closest item
     foreach (PlayItem p in playItems)
     {
-        float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
+        float sqrDistance = (position - p.transform.position).sqrMagnitude;
         if (sqrDistance < minSqrDistance)
         {
             minSqrDistance = sqrDistance;
