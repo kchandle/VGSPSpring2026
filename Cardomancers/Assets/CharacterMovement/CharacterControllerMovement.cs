@@ -19,7 +19,7 @@ public class CharacterControllerMovement : MonoBehaviour
 
 	[SerializeField] AudioClip[] footstepClips;
 	[SerializeField] AudioClip[] jumpClips;
-	//private AudioSource footstepSource;
+	private AudioSource footstepSource;
 
     private void Awake()
     {
@@ -55,15 +55,15 @@ public class CharacterControllerMovement : MonoBehaviour
         _characterController.Move(finalMovement * Time.deltaTime);
 
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
-		//if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
-		//{
-		//	footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 1f);
-		//}
+		if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
+		{
+			footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 1f);
+		}
 		////if there is a soundplaying check if the player isnt ground or moving and then delete the sound
-		//else if (footstepSource != null)
-		//{
-		//	if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
-		//}
+		else if (footstepSource != null)
+		{
+			if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
+		}
 
 		//resets the jump bool that is set in the player controller script to true whenever space is pressed
 		jumping = false; 
