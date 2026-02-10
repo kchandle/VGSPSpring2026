@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
 	public int Money
 	{
 		get {return money;}
-		set {money = Money;}
+		set {money = value;}
 	}
 
 
