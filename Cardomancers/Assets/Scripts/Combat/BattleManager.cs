@@ -220,6 +220,7 @@ public class BattleManager : MonoBehaviour
                     EnemiesChooseCards();
                     //print("EnemiesChooseCards has run.");
                     battleState = BattleState.PLAYER_TURN;
+                    playerController.currentHealth = playerController.maxPlayerHealth;
                     break;
                 }
                 case BattleState.ENEMIES_TURN:
