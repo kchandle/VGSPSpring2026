@@ -78,9 +78,9 @@ public class PlayerController : MonoBehaviour
        
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
-         print("HELLO JUMPING");
+        print("HELLO JUMPING");
 		// makes the player jump
-	    _characterControllerMovement.jumping = true; 
+	    _characterControllerMovement.jumpWasPressed = true; 
 	}
 
    public void OnToggleInventory(InputAction.CallbackContext context)
