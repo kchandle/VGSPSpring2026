@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterControllerMovement _characterControllerMovement;
 
     //Player Input component should have invoke unity events behavior, then make the unity event call this method
-    public void OnWalking(InputAction.CallbackContext context) 
+    public void OnWalking(InputAction.CallbackContext context)
     {
 	    // assigns the input direction value of the movement script to the actual players input
 	     _characterControllerMovement.inputDirectionInput = context.ReadValue<Vector3>();
@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
 
 	public void OnJumping(InputAction.CallbackContext context)
 	{
-       
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
          print("HELLO JUMPING");
@@ -72,13 +71,16 @@ public class PlayerController : MonoBehaviour
         {
             inventoryUIHandler.DisplayUI();
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+            Debug.Log(GameStateScript.CurrentState);
         }
         else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY && inventoryUIHandler.uiDisplayed == true)
         {
             inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+            Debug.Log(GameStateScript.CurrentState);
         }
     }
+   
     public IEnumerator StatusEffects()
     {
         foreach(StatusEffectContainer statusEffect in statusEffects)
