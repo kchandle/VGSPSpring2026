@@ -31,6 +31,7 @@ public class SoundEffectManager : MonoBehaviour
 
         //gets the time length of the clip in seconds and destorys it in that amount of time
         float clipLength = audioSource.clip.length;
+        clipLength /= pitch;
        
         Destroy(audioSource.gameObject, clipLength);
 

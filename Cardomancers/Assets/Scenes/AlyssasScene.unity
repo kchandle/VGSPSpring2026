@@ -184,51 +184,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 512649829450912818, guid: 6fd3f6719fd476f4eaa79a4f53fc2295, type: 3}
   m_PrefabInstance: {fileID: 62660002}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &150184063
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 150184065}
-  - component: {fileID: 150184064}
-  m_Layer: 0
-  m_Name: SoundEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &150184064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 150184063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72468418562394648ad938f16fc22141, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SoundEffectManager
-  soundFXEmpty: {fileID: 5179481035146612763, guid: 52a2c10667c64ee428a0b3c57d8253dd, type: 3}
---- !u!4 &150184065
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 150184063}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &632368382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2272,7 +2227,6 @@ SceneRoots:
   - {fileID: 860255211}
   - {fileID: 1205827320}
   - {fileID: 1602400386}
-  - {fileID: 150184065}
   - {fileID: 778791216}
   - {fileID: 62660002}
   - {fileID: 1340947069}
