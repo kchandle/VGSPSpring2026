@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterControllerMovement : MonoBehaviour
 {
     public float characterSpeed = 1f; 
+	public Animator animator;
 
 	//Vector3 from another script that gives the direction the character will move in 
 	public Vector3 inputDirectionInput;
@@ -32,6 +33,17 @@ public class CharacterControllerMovement : MonoBehaviour
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
+		if(planarInput.x != 0 || planarInput.z != 0){
+
+			animator.SetTrigger("Run");
+
+
+		}else{
+			animator.SetTrigger("Idle");
+
+
+		}
+
 		//if the character controller is off the ground accelerate the player downward
 		if(!_characterController.isGrounded)
 		{
@@ -43,6 +55,8 @@ public class CharacterControllerMovement : MonoBehaviour
 		{
 			//SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 1f);
             _moveDirection.y = Mathf.Sqrt(jumpIntensity * 2f * gravity); 
+			// Triggers the Jump Animation.
+			animator.SetTrigger("Jump");
 		}
 		
 		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed

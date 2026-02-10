@@ -2578,7 +2578,7 @@ Transform:
   m_GameObject: {fileID: 1990595188407324157}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0.004, y: -1.055, z: -0}
+  m_LocalPosition: {x: -0.002, y: -1, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10360,13 +10360,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8093299586542698804}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15212342, y: -0.000000018204481, z: 0.000000002801938, w: 0.98836154}
+  m_LocalRotation: {x: 0.1521233, y: 0.00000008158994, z: -0.0000000121991715, w: 0.98836154}
   m_LocalPosition: {x: 0, y: 4.510587, z: -14.305755}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7833135755326040512}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.5, y: 180, z: 0}
 --- !u!114 &5643702191230477794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10865,6 +10865,7 @@ GameObject:
   - component: {fileID: 8277037704298673333}
   - component: {fileID: 8805448749967120339}
   - component: {fileID: 9024597777328472057}
+  - component: {fileID: 5922011169274108495}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -11072,7 +11073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4997c9de8e44c36988f40f6052f7718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerMovement
-  characterSpeed: 5
+  characterSpeed: 15
+  animator: {fileID: 5922011169274108495}
   inputDirectionInput: {x: 0, y: 0, z: 0}
   gravity: 9.8
   jumpIntensity: 1
@@ -11129,6 +11131,28 @@ MonoBehaviour:
   inventoryLength: 0
   deckLength: 0
   inventorySO: {fileID: 11400000, guid: bd0aa686dbcb14f48812470527e1f5ff, type: 2}
+--- !u!95 &5922011169274108495
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282848640817842334}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86fd6d10bfb5de648a10f0b53304b0af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8286531831720146448
 GameObject:
   m_ObjectHideFlags: 0
