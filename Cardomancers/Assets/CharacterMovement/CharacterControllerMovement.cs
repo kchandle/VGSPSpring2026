@@ -10,6 +10,8 @@ public class CharacterControllerMovement : MonoBehaviour
 
     private Vector3 _moveDirection;
 
+	public Animator animator;
+
     // intensity of gravity MUST be 9.8f so it is realistic
     [SerializeField] private float gravity = 9.8f; 
 	[SerializeField] private float jumpIntensity = 4f;
@@ -35,6 +37,13 @@ public class CharacterControllerMovement : MonoBehaviour
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
+		if(planarInput.x != 0 || planarInput.z != 0){
+			// triggers Run animator
+			animator.SetTrigger("Run");
+
+
+		}
+
 		//if the character controller is off the ground accelerate the player downward and cap the downward velocity
 		if (!_characterController.isGrounded && _characterController.velocity.y > maxFallSpeed)
 		{
@@ -47,6 +56,9 @@ public class CharacterControllerMovement : MonoBehaviour
 			_jumping = true;
 			SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 0.25f);
             _moveDirection.y = Mathf.Sqrt(jumpIntensity); 
+
+			// triggers jump animation
+			animator.SetTrigger("Jump");
 		}
 
 		//if the player was jumping and they became grounded on a frame where the jumpkey wasnt pressed then it plays a sound for the player landing
