@@ -3,14 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-//using static UnityEditor.PlayerSettings;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
+  
+
+    public GameObject shieldPanel;
+    public TMP_Text shieldText;
+
+    public InventoryUIHandler inventoryUIHandler;
+    private int shield = 0;
+
+    public int Shield
+    {
+        get { return shield; }
+        set
+        {
+            if (value <= 0)
+            {
+                shield = 0;
+                UpdateShield();
+            }
+        }
+    }
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -21,7 +42,6 @@ public class PlayerController : MonoBehaviour
         currentHealth = maxPlayerHealth;
     }
 
-    // Inputs the INventory Canvas object to be toggled on and off
     [SerializeField] GameObject inventoryUI;
 
     // reference to character controller movement
@@ -42,21 +62,20 @@ public class PlayerController : MonoBehaviour
 	    _characterControllerMovement.jumping = true; 
 	}
 
-    public void OnToggleInventory(InputAction.CallbackContext context)
+   public void OnToggleInventory(InputAction.CallbackContext context)
     {
         //can only open the inventory when in free movement and alive
-        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
-            inventoryUI.SetActive(true);
+            inventoryUIHandler.DisplayUI();
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
         }
-        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY)
+        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY && inventoryUIHandler.uiDisplayed == true)
         {
-            inventoryUI.SetActive(false);
+            inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         }
     }
-
     public IEnumerator StatusEffects()
     {
         foreach(StatusEffectContainer statusEffect in statusEffects)
@@ -85,5 +104,17 @@ public class PlayerController : MonoBehaviour
         healthbar.fillAmount = currentHealth / maxPlayerHealth;
     }
 
-
+    public void UpdateShield()
+    {
+        if (Shield == 0)
+        {
+            shieldText.text = "0";
+            shieldPanel.SetActive(false);
+        }
+        else
+        {
+            shieldPanel.SetActive(true);
+            shieldText.text = "" + Shield;
+        }
+    }
 }
