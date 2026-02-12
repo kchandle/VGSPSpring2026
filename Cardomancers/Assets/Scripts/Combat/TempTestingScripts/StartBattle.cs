@@ -11,6 +11,7 @@ public class StartBattle : MonoBehaviour
     // The only reason this exists is to test the battle system quickly  
     public void StartBattleNow()
     {
+        GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
         // Updated to use the recommended method for finding objects
          // Ensure the BattleManager prefab is instantiated in the scene
         var battleSystem = Object.FindFirstObjectByType<BattleManager>();
