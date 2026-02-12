@@ -38,5 +38,9 @@ public static class SaveSystem
         inventory.InventoryLength = data.inventoryLength;
         player.transform.position = data.position;
         player.transform.rotation = Quaternion.Euler(data.rotation);
+        player.GetComponent<Inventory>().ValidateDeckIntegrity();
+        player.GetComponent<Inventory>().ValidateInventoryIntegrity();
     }
+    
+    
 }
