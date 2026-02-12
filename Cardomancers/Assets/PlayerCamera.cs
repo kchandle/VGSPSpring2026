@@ -38,6 +38,8 @@ public class PlayerCamera : MonoBehaviour
 
     void Update()
     {
+        if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
+        
         HandleMouseScroll();
 
         if(orbital != null)
