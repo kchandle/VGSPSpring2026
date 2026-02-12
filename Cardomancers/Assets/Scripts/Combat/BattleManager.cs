@@ -46,6 +46,7 @@ public class BattleManager : MonoBehaviour
     private GameObject player; // reference to the player game object
     private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
+    public GameObject playerspacePlayOnSelf;
     private Inventory playerInventory; // reference to the player's inventory
     private float playerMaxHealth; // reference to the player's max health
     private float playerCurrentHealth; // reference to the player's current health
@@ -176,7 +177,11 @@ public class BattleManager : MonoBehaviour
         //Sets Playerspace to be in bottom center
         playerspacePrefab = Instantiate(playerspacePrefab, new Vector3((canvasWidth / 2), -(canvasHeight * 3 / 4), 0), Quaternion.identity);
         playerspacePrefab.transform.SetParent(battleUI.gameObject.transform, false);
+        playerspacePlayOnSelf = playerspacePrefab.transform.GetChild(2).gameObject;
         cardDragInput.AddActivePlayspace(playerspacePrefab.GetComponent<Playspace>());
+
+        cardDragInput.AddActivePlayspace(playerspacePlayOnSelf.GetComponent<Playspace>());
+        playerspacePlayOnSelf.GetComponent<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
         
         //Shows player HP and Mana
         playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
@@ -199,7 +204,7 @@ public class BattleManager : MonoBehaviour
             currentEnemies.Add(enemyPrefab);
             i++;
         }
-        //cardDragInput.AddActivePlayspace(playerspacePrefab.transform.GetChild(2).GetComponent<Playspace>());
+        
 
 
     }
@@ -349,7 +354,7 @@ public class BattleManager : MonoBehaviour
             //Add NewPlayItem from playsapce for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
             {
-                UnityEngine.GameObject playerCard = playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
+                GameObject playerCard = playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
                 playerCard.GetComponent<Card>().inventoryCard = card;
                 playerCard.GetComponent<Card>().hacks = card.hacks;
                 playerCard.GetComponent<Card>().CardSO = card.cardSO;

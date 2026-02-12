@@ -94,6 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Playspace
   focusTarget: {fileID: 0}
   focusOffset: 3
+  battlePlayType: NULL
   playItems: []
   allowedDonors: []
   horizontalLayout: 1
@@ -593,7 +594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7580826465923034503
 RectTransform:
   m_ObjectHideFlags: 0
@@ -666,6 +667,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Playspace
   focusTarget: {fileID: 0}
   focusOffset: 3
+  battlePlayType: DEF
   playItems: []
   allowedDonors:
   - {fileID: 2696411791441725937}
@@ -674,7 +676,7 @@ MonoBehaviour:
   width: 70
   height: 120
   zOffset: 0.1
-  playArea: {fileID: 0}
+  playArea: {fileID: 8795157967282111106}
   selectionBuffer: 0.4
 --- !u!61 &8795157967282111106
 BoxCollider2D:
