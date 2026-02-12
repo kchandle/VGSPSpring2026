@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public float currentHealth;
     public Image healthbar;
   
-
     public GameObject shieldPanel;
     public TMP_Text shieldText;
 
@@ -63,6 +62,17 @@ public class PlayerController : MonoBehaviour
 		// makes the player jump
 	    _characterControllerMovement.jumpWasPressed = true; 
 	}
+
+    public void OnSprinting(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _characterControllerMovement.sprinting = true;
+            return;
+        }
+  
+        _characterControllerMovement.sprinting = false;
+    }
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
