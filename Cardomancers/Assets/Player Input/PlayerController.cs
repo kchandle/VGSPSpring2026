@@ -62,6 +62,16 @@ public class PlayerController : MonoBehaviour
         // makes the player jump
         _characterControllerMovement.jumpWasPressed = true;
     }
+
+    public void OnSprinting(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _characterControllerMovement.sprinting = true;
+            return;
+        }
+        _characterControllerMovement.sprinting = false;
+    }
 	
 
    public void OnToggleInventory(InputAction.CallbackContext context)
