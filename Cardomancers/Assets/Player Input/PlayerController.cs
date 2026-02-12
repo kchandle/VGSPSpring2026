@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
-  
 
     public GameObject shieldPanel;
     public TMP_Text shieldText;
@@ -54,15 +53,16 @@ public class PlayerController : MonoBehaviour
 	     _characterControllerMovement.inputDirectionInput = context.ReadValue<Vector3>();
     }
 
-	public void OnJumping(InputAction.CallbackContext context)
-	{
-       
+    public void OnJumping(InputAction.CallbackContext context)
+    {
+
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
         print("HELLO JUMPING");
-		// makes the player jump
-	    _characterControllerMovement.jumpWasPressed = true; 
-	}
+        // makes the player jump
+        _characterControllerMovement.jumpWasPressed = true;
+    }
+	
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
