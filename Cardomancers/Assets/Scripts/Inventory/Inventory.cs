@@ -7,18 +7,21 @@ public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
 	[SerializeField] private int money;
+	//The amount of xp the player has
+	[SerializeField] private float xp;
+	//The player's level
+	[SerializeField] private int level;
+	//The amount of xp the player needs to level up
+	[SerializeField] private float levelUpXp;
 
 	// all the cards the player has
 	[SerializeField] private List<InventoryCard> inventory;
-
 	// cards that can be used when in battle
 	[SerializeField] private List<InventoryCard> deck;
 
 	[SerializeField] private List<Hack_SO> hacks;
-
 	// total size of inventory
 	[SerializeField] private int inventoryLength;
-
 	// amount of cards the player is alowed to have in their deck at one time
 	[SerializeField] private int deckLength;
 
@@ -117,9 +120,10 @@ public class Inventory : MonoBehaviour
 
 	public void RemoveCardFromInventory(InventoryCard card)
 	{
-		print("removing card from deck");
+		//print("removing card from deck");
 		if(deck.Contains(card)) RemoveCardFromDeck(card);
 		inventory.Remove(card);
+		print("removed card from inventory");
 		// sync with SO
 		inventorySO.Inventory = inventory;
 	}
@@ -172,5 +176,22 @@ public class Inventory : MonoBehaviour
 				.ToList();
 		inventorySO.Inventory = inventory;
 		return inventory;
+	}
+
+
+
+	//Methods to change money and xp
+	public void GainMoney(int amount)
+	{
+		money += amount;
+	}
+	public void GainXp(float amount)
+	{
+		xp += amount;
+		if(xp >= levelUpXp)
+		{
+			xp -= levelUpXp;
+			level += 1;
+		}
 	}
 }
