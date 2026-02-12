@@ -7,14 +7,18 @@ public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
 	[SerializeField] private int money;
+
 	// all the cards the player has
 	[SerializeField] private List<InventoryCard> inventory;
+
 	// cards that can be used when in battle
 	[SerializeField] private List<InventoryCard> deck;
 
 	[SerializeField] private List<Hack_SO> hacks;
+
 	// total size of inventory
 	[SerializeField] private int inventoryLength;
+
 	// amount of cards the player is alowed to have in their deck at one time
 	[SerializeField] private int deckLength;
 
@@ -25,26 +29,32 @@ public class Inventory : MonoBehaviour
 
 	public List<InventoryCard> CardInventory
 	{
-		get {return inventory;}
+		get { return inventory; }
 	}
 
-    public List<InventoryCard> Deck
-    {
-        get { return deck; }
-    }
+	public List<InventoryCard> Deck
+	{
+		get { return deck; }
+	}
+
 	public List<Hack_SO> Hacks
 	{
-		get {return hacks;}
+		get { return hacks; }
 	}
 
 	public int Money
 	{
-		get {return money;}
-		set {money = value;}
+		get { return money; }
+		set { money = value; }
+	}
+
+	public Inventory_SO InventorySO
+	{
+		get { return inventorySO; }
 	}
 
 
-	//Use inventory_so variables for the variables in here
+//Use inventory_so variables for the variables in here
 	private void Awake()
 	{
 		inventory = inventorySO.Inventory;
