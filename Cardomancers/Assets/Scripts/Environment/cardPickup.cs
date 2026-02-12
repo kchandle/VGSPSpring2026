@@ -8,7 +8,7 @@ public class cardPickup : MonoBehaviour
 
     public void Awake()
     {
-      inventory = GameObject.Find("Player").GetComponent<Inventory>();
+      inventory = GameObject.FindWithTag("PlayerInventory").GetComponent<Inventory>();
     }
     // Gets playerInventory.
 

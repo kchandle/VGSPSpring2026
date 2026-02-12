@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.Events;
 
 public class GameStateScript
-    {
+{
     // possible states
     public enum GameState
     {
@@ -19,6 +19,7 @@ public class GameStateScript
 
     //state
     private static GameState currentState;
+
     public static GameState CurrentState
     {
         get => currentState;

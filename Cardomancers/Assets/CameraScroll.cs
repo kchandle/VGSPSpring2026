@@ -21,6 +21,7 @@ public class CameraScroll : MonoBehaviour
     //Unity Input System returns positive or negative value based on if the mouse is scrolled up or down
     public void OnZoom(InputValue value)
     {
+        if(GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
         zoomInput = value.Get<Vector2>();
         transform.localPosition = new Vector3(0, 0, Mathf.Clamp(transform.localPosition.z + zoomInput.y, -10f, 0f));
     }
