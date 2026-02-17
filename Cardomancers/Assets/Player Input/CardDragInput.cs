@@ -212,7 +212,7 @@ public class CardDragInput : MonoBehaviour
                                 BattleManager bm = FindFirstObjectByType<BattleManager>();
                                 if (FindFirstObjectByType<BattleManager>().isBattling)
                                 {
-                                    if (AttemptPlay((Card)dragTarget, p) == true) {
+                                    if (AttemptPlay((Card)dragTarget, p)) {
                                         bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
@@ -247,8 +247,10 @@ public class CardDragInput : MonoBehaviour
         if (dragTarget != null)
         {
             //tries to play card against the playspace's parent gameobject enemy component
-            dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
-            return true;
+            if(p.gameObject.GetComponentInParent<Enemy>())
+                return dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+            else
+                return dragTarget.TryPlayCard(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
         }
         else{
             return false;
@@ -281,9 +283,13 @@ public class CardDragInput : MonoBehaviour
         // only move the item if the "to" PlaySpace can receive PlayItems from the "from" PlaySpace
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
-            to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
-            from.DestroyPlayItem(moveTarget);
-            PlayitemMoved.Invoke(moveTarget, to, from);
+            if(to.battlePlayType == ((Card)moveTarget).CardSO.type || to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas")
+            {
+                print("Is of allowed type");
+                to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
+                from.DestroyPlayItem(moveTarget);
+                PlayitemMoved.Invoke(moveTarget, to, from);
+            }
         }
 
     }

@@ -56,15 +56,26 @@ public struct BattleEffect
 
 
     //The function that is called when the card is played: Change into Overload function for player and enemy respectively
-    public void TriggerEffect(PlayerController target, Vector3 pos)
+    public bool TriggerEffect(PlayerController target, Vector3 pos, Card_SO card = null)
     {
         PlayerController player = target.GetComponent<PlayerController>();
+        if(card)
+        {
+            if(card.type == "DEF")
+            {
+                player.Shield += StatusAmount;
+                return true;
+            }
+            return false;
+        }
+
+
         int dmgToDo = StatusAmount;
         int shieldAmount = player.Shield;
         if (isStatusEffect)
         {
             player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles));
-            return;
+            return true;
         }
         if (shieldAmount > 0)
         {
@@ -75,10 +86,19 @@ public struct BattleEffect
             player.currentHealth -= dmgToDo;
         //PlayParticles(pos);
         player.UpdateHealthbar();
+        return true;
     }
 
-    public void TriggerEffect(Enemy target, Vector3 pos)
+    public bool TriggerEffect(Enemy target, Vector3 pos, Card_SO card = null)
     {
+        if(card)
+        {
+            if(card.type == "DEF")
+            {
+                Debug.Log("def played on enemy");
+                return false;
+            }
+        }
         int DamageDealt = StatusAmount;
         Enemy enemy = target.GetComponent<Enemy>();
         
@@ -95,7 +115,7 @@ public struct BattleEffect
             }
             // Causes stun to happen
 
-            return;
+            return true;
         }
 
         int dmgToDeal = DamageDealt;
@@ -134,6 +154,7 @@ public struct BattleEffect
             enemy.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
             enemy.gameObject.SetActive(false);
         }
+        return true;
 
     }
 }

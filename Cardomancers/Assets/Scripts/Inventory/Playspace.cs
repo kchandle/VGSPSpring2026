@@ -11,7 +11,7 @@ public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
     public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
-
+    public string battlePlayType = "NULL";
     public List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
 
 //PlaySpaces that this PlaySpace can accept PlayItems from
