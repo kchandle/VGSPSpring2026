@@ -185,7 +185,7 @@ public class BattleManager : MonoBehaviour
         
         //Shows player HP and Mana
         playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
-        playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+        playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
         playerController.UpdateShield();
 

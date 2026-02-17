@@ -283,7 +283,8 @@ public class CardDragInput : MonoBehaviour
         // only move the item if the "to" PlaySpace can receive PlayItems from the "from" PlaySpace
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
-            if(to.battlePlayType == ((Card)moveTarget).CardSO.type || to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas")
+            //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
+            if(to.battlePlayType == ((Card)moveTarget).CardSO.type || to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas" || to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
             {
                 print("Is of allowed type");
                 to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);

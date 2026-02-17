@@ -97,12 +97,21 @@ public class Card : PlayItem
     public bool TryPlayCard(PlayerController player)
     {
         bool returnVal = false;
-        // Try to play the card on the target enemy
-        BattleEffect[] effects = cardSO.cardEffects;
-        foreach (BattleEffect effect in effects)
+        // Try to play the card on the player
+        if(cardSO.type == "DEF")
         {
-            //Apply each effect to the target
-            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            print(cardSO.cardEffects[0].StatusAmount);
+            player.Shield += cardSO.cardEffects[0].StatusAmount;
+            returnVal = true;
+        }
+        else
+        {
+            BattleEffect[] effects = cardSO.cardEffects;
+            foreach (BattleEffect effect in effects)
+            {
+                //Apply each effect to the target
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            }
         }
         return returnVal;
     }
