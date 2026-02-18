@@ -22,6 +22,9 @@ public class Inventory : MonoBehaviour
 
 	//inventory_so reference
 	[SerializeField] private Inventory_SO inventorySO;
+	
+	// popup reference
+	popUpActive popupActive;
 
 	public List<InventoryCard> CardInventory
 	{
@@ -44,6 +47,7 @@ public class Inventory : MonoBehaviour
 	}
 
 
+
 	//Use inventory_so variables for the variables in here
 	private void Awake()
 	{
@@ -53,6 +57,8 @@ public class Inventory : MonoBehaviour
 		deckLength = inventorySO.DeckLength;
 		hacks = inventorySO.Hacks;
 		hackLength = inventorySO.HackLength;
+
+		popupActive = GetComponent<popUpActive>();
 	}
 
 	private void Start(){
@@ -65,7 +71,11 @@ public class Inventory : MonoBehaviour
 	public bool AddCardToInventory(Card card, bool isNewCard = false)
 	{
 		// stops the method and returns false if the inventory is full
-		if (inventory.Count >= inventoryLength) return false;
+		if (inventory.Count >= inventoryLength) 
+		{	
+			print("HELP");
+			return false;
+		}
 		// very temporary
 		InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
 		// add new card to inventory
