@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterControllerMovement : MonoBehaviour
 {
     public float walkSpeed = 15f;
-	public float sprintSpeed = 50f;
+	public float sprintSpeed = 30f;
 	private float currentSpeed;
 
 	//the bool changed in playercontroller for whether the player is sprinting or not 

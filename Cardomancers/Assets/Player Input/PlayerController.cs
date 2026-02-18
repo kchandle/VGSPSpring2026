@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     public void Awake()
     {
         currentHealth = maxPlayerHealth;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     [SerializeField] GameObject inventoryUI;
