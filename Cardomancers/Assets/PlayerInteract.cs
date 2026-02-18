@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.XR.Haptics;
 public class PlayerInteract : MonoBehaviour
 {
 
+ 
+
     //gets interact key reference from the input system:
     public InputActionReference Interact;
 

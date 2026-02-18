@@ -7,9 +7,13 @@ public class InteractCollision : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.collider.tag == "Player")
+        if(other.GetComponent<Collider>().tag == "Player")
         {
-            interaction
+            GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
         }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
     }
 }
