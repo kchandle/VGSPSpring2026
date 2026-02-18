@@ -12,13 +12,12 @@ public class PlayerController : MonoBehaviour
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
-  
 
     public GameObject shieldPanel;
     public TMP_Text shieldText;
 
     public InventoryUIHandler inventoryUIHandler;
-    private int shield = 0;
+    [SerializeField] private int shield = 0;
 
     public int Shield
     {
@@ -30,9 +29,13 @@ public class PlayerController : MonoBehaviour
                 shield = 0;
                 UpdateShield();
             }
+            else
+            {
+                shield = value;
+                UpdateShield();
+            }
         }
     }
-
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -49,20 +52,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterControllerMovement _characterControllerMovement;
 
     //Player Input component should have invoke unity events behavior, then make the unity event call this method
-    public void OnWalking(InputAction.CallbackContext context)
+    public void OnWalking(InputAction.CallbackContext context) 
     {
 	    // assigns the input direction value of the movement script to the actual players input
 	     _characterControllerMovement.inputDirectionInput = context.ReadValue<Vector3>();
     }
 
-	public void OnJumping(InputAction.CallbackContext context)
-	{
+    public void OnJumping(InputAction.CallbackContext context)
+    {
+
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
         print("HELLO JUMPING");
-		// makes the player jump
-	    _characterControllerMovement.jumpWasPressed = true; 
-	}
+        // makes the player jump
+        _characterControllerMovement.jumpWasPressed = true;
+    }
+
+    public void OnSprinting(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _characterControllerMovement.sprinting = true;
+            return;
+        }
+        _characterControllerMovement.sprinting = false;
+    }
+	
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
@@ -72,16 +87,13 @@ public class PlayerController : MonoBehaviour
         {
             inventoryUIHandler.DisplayUI();
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
-            Debug.Log(GameStateScript.CurrentState);
         }
         else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY && inventoryUIHandler.uiDisplayed == true)
         {
             inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
-            Debug.Log(GameStateScript.CurrentState);
         }
     }
-   
     public IEnumerator StatusEffects()
     {
         foreach(StatusEffectContainer statusEffect in statusEffects)
@@ -114,6 +126,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Shield == 0)
         {
+            shieldPanel.SetActive(true);
             shieldText.text = "0";
             shieldPanel.SetActive(false);
         }

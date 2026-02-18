@@ -212,7 +212,7 @@ public class CardDragInput : MonoBehaviour
                                 BattleManager bm = FindFirstObjectByType<BattleManager>();
                                 if (FindFirstObjectByType<BattleManager>().isBattling)
                                 {
-                                    if (AttemptPlay((Card)dragTarget, p) == true) {
+                                    if (AttemptPlay((Card)dragTarget, p)) {
                                         bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
@@ -247,8 +247,10 @@ public class CardDragInput : MonoBehaviour
         if (dragTarget != null)
         {
             //tries to play card against the playspace's parent gameobject enemy component
-            dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
-            return true;
+            if(p.gameObject.GetComponentInParent<Enemy>())
+                return dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+            else
+                return dragTarget.TryPlayCard(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
         }
         else{
             return false;
@@ -280,9 +282,14 @@ public class CardDragInput : MonoBehaviour
     {
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
-            to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
-            from.DestroyPlayItem(moveTarget);
-            PlayitemMoved.Invoke(moveTarget, to, from);
+            //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
+            if(to.battlePlayType == ((Card)moveTarget).CardSO.type || to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas" || to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
+            {
+                print("Is of allowed type");
+                to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
+                from.DestroyPlayItem(moveTarget);
+                PlayitemMoved.Invoke(moveTarget, to, from);
+            }
         }
 
     }
