@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public TMP_Text shieldText;
 
     public InventoryUIHandler inventoryUIHandler;
-    private int shield = 0;
+    [SerializeField] private int shield = 0;
 
     public int Shield
     {
@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
             if (value <= 0)
             {
                 shield = 0;
+                UpdateShield();
+            }
+            else
+            {
+                shield = value;
                 UpdateShield();
             }
         }
@@ -39,6 +44,7 @@ public class PlayerController : MonoBehaviour
     public void Awake()
     {
         currentHealth = maxPlayerHealth;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     [SerializeField] GameObject inventoryUI;
@@ -120,6 +126,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Shield == 0)
         {
+            shieldPanel.SetActive(true);
             shieldText.text = "0";
             shieldPanel.SetActive(false);
         }

@@ -7,10 +7,6 @@ using UnityEngine.InputSystem.XR.Haptics;
 
 public class PlayerInteract : MonoBehaviour
 {
-
-    //gets interact key reference from the input system:
-    public InputActionReference Interact;
-
     // the range of the area player can interact with things in:
      public int range = 5;
 
@@ -32,9 +28,8 @@ public class PlayerInteract : MonoBehaviour
                 {
                     inter.interactable.Invoke();
                 }
-            }  
+            }
         }
-        
  
     }
 
