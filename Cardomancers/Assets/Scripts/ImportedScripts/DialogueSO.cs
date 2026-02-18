@@ -8,6 +8,7 @@ namespace DialogueScripts
 public class DialogueSO : ScriptableObject
 {
     public DialogueLine[] lines;
+    public bool startsBattle;
 }
 
 [System.Serializable]
