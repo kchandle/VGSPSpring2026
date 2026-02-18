@@ -7,7 +7,8 @@ public class Card_SO : ScriptableObject
     public int sellValue; // Price to SELL (Lower than price)
     public int price; // Price to BUY (Higher than sell value)
     public string displayName; // Card's name
-    public string description; // Flavor text used for descriping the card
+    public string description; // Description of the card used in the info pop up
+    public string tagLine; // short tag line used in the info pop up
     public int energyCost; // amount of energy it takes from the user
 
     [Tooltip("The type of action. Currently can be ATK, DEF, or RST.")]
