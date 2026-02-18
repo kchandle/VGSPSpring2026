@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
         }
         _characterControllerMovement.sprinting = false;
     }
-	
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
