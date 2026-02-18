@@ -115,6 +115,7 @@ public class BattleManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerInventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>();
         playerController = player.GetComponent<PlayerController>();
+        // player.GetComponent<PlayerInteract>().interacting = true;
 
         //Assign Variables for Cameras and UI
         mainCamera = Camera.main;
@@ -134,6 +135,8 @@ public class BattleManager : MonoBehaviour
     {
         battleCamera.enabled = false;
         mainCamera.enabled = true;
+        GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+        player.GetComponent<PlayerInteract>().interacting = false;
     }
     #endregion
 
@@ -502,6 +505,7 @@ public class BattleManager : MonoBehaviour
 
     public void Continue()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
         Destroy(this.gameObject);
@@ -509,6 +513,7 @@ public class BattleManager : MonoBehaviour
 
     public void Flee()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         OnFlee.Invoke();
         mainCamera.enabled = true;
         battleCamera.enabled = false;
