@@ -81,15 +81,39 @@ public class Card : PlayItem
         cardNameDisplay.text = cardSO.displayName;
     }
 
-    public void TryPlayCard(Enemy target)
+    public bool TryPlayCard(Enemy target)
     {
+        bool returnVal = false;
         //Try to play the card on the target enemy
         BattleEffect[] effects = cardSO.cardEffects;
         foreach (BattleEffect effect in effects)
         {
             //Apply each effect to the target
-            effect.TriggerEffect(target, target.gameObject.transform.position);
+            if(effect.TriggerEffect(target, target.gameObject.transform.position, cardSO)) returnVal = true;
         }
+        return returnVal;
+    }
+
+    public bool TryPlayCard(PlayerController player)
+    {
+        bool returnVal = false;
+        // Try to play the card on the player
+        if(cardSO.type == "DEF")
+        {
+            print(cardSO.cardEffects[0].StatusAmount);
+            player.Shield += cardSO.cardEffects[0].StatusAmount;
+            returnVal = true;
+        }
+        else
+        {
+            BattleEffect[] effects = cardSO.cardEffects;
+            foreach (BattleEffect effect in effects)
+            {
+                //Apply each effect to the target
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            }
+        }
+        return returnVal;
     }
 
 
