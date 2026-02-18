@@ -1,26 +1,22 @@
 using UnityEngine;
-
+using UnityEngine.Events;
 
 public class InteractCollision : MonoBehaviour
-{   
-    InteractableObject interaction;
+{
+     public UnityEvent interactable;
 
-    //if in radius, player cannot interact, speaking state
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<Collider>().tag == "Player")
-        {
-            GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
-        }
-    }
+        //check the state, if speaking, inventory, or battle, return, if not it invokes
 
-    //when player leaves radius, state is walking, can interact
-    void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<Collider>().tag == "Player")
-        {
-            GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
-        }   
+        if (other.tag == "Player")
+        { 
+            if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
+            if (GameStateScript.CurrentState == GameStateScript.GameState.BATTLE) return;
+            if (GameStateScript.CurrentState == GameStateScript.GameState.SPEAKING) return;
+        
+            interactable.Invoke();
+        }
     }
 }
