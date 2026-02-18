@@ -43,12 +43,26 @@ public class CardInfoPopUp : PlayItem
 
     private void OpenPopup()
     {
-        gameObject.SetActive(true);
+        name.gameObject.SetActive(true);
+        description.gameObject.SetActive(true);
+        cardType.gameObject.SetActive(true);
+        damageType.gameObject.SetActive(true);
+        tagLine.gameObject.SetActive(true);
+        typeImage.gameObject.SetActive(true);
+        damageImage.gameObject.SetActive(true);
+        backgroundImage.gameObject.SetActive(true);
     }
 
     private void ClosePopup()
     {
-        
+        name.gameObject.SetActive(false);
+        description.gameObject.SetActive(false);
+        cardType.gameObject.SetActive(false);
+        damageType.gameObject.SetActive(false);
+        tagLine.gameObject.SetActive(false);
+        typeImage.gameObject.SetActive(false);
+        damageImage.gameObject.SetActive(false);
+        backgroundImage.gameObject.SetActive(false);
     }
 
     private Vector3 GetPopUpLocation()
@@ -64,6 +78,7 @@ public class CardInfoPopUp : PlayItem
         }
         else
         {
+            ClosePopup();
             return Vector3.zero;
         }
 
