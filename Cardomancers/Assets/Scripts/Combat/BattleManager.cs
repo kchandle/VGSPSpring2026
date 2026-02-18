@@ -30,6 +30,7 @@ public class BattleManager : MonoBehaviour
     public UnityEvent PlayerTurn; // event triggered at the start of the player's turn
     public UnityEvent EnemyTurn; // event triggered at the start of the enemy's turn
     public UnityEvent OnEnd; // event triggered at the end of the battle
+    public UnityEvent OnFlee; // event triggered if player clicks flee
     #endregion
 
     #region UI Elements
@@ -506,6 +507,16 @@ public class BattleManager : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    public void Flee()
+    {
+        OnFlee.Invoke();
+        mainCamera.enabled = true;
+        battleCamera.enabled = false;
+        Destroy(this.gameObject);
+    }
+
     #endregion
+
+
 
 }
