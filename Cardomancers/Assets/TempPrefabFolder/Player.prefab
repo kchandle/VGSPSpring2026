@@ -460,10 +460,6 @@ MonoBehaviour:
     m_ActionName: 'MapWalking/UIInteract[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0a7f7b27-a60f-4523-92e7-b05a04256833
-    m_ActionName: 'Battle/Drag[/Mouse/press]'
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 25ae1478-7eea-415e-a3ff-5e9ddff99b42
     m_ActionName: 'Inventory/Drag[/Mouse/press]'
   - m_PersistentCalls:
@@ -490,6 +486,74 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 86532671-fc43-4240-984a-55741e2b113a
     m_ActionName: 'MapWalking/ToggleInventory[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 200aada3-c2d2-4bcf-acca-20c82c61b0bd
+    m_ActionName: 'Inventory/Scroll[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9a2d596e-5df2-4a79-ae40-a9d3ce72155e
+    m_ActionName: 'Inventory/Left Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3706a47f-b248-45ee-8b74-9f647f2e7cb3
+    m_ActionName: 'Inventory/Middle Click[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: acb1e872-7ac2-4da1-ace4-ef46da2c0073
+    m_ActionName: 'Inventory/Right Click[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2ee31c4d-1d4c-4ce6-bb68-665e7f4aae88
+    m_ActionName: 'Inventory/Move[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ca6472bc-8f1d-4f55-bf70-0edd04571dba
+    m_ActionName: 'Inventory/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 639cabcb-f84e-45e8-b011-dfcf00430dcf
+    m_ActionName: 'Battle/Drag[/Mouse/press]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b2b5151c-3ec2-450e-9ccc-36b1722caab5
+    m_ActionName: 'Battle/Scroll[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: df306652-f51a-438f-95e4-0fbad2dd065b
+    m_ActionName: 'Battle/Left Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 401f6c5b-e868-411e-a238-1df676ae838e
+    m_ActionName: 'Battle/Middle Click[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c6539857-5547-4b7f-aae9-0dcfa59e5d7a
+    m_ActionName: 'Battle/Right Click[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40662b5d-f308-472f-975b-33b6dff0ffb1
+    m_ActionName: 'Battle/Move[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 29899951-34c5-45d3-87c7-45667734dae0
+    m_ActionName: 'Battle/Submit[/Mouse/press]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8277037704298673333}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSprinting
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3f7d8b47-b4d4-422d-81c6-8c15cf7d724f
+    m_ActionName: 'MapWalking/Sprinting[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: MapWalking
@@ -532,13 +596,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4997c9de8e44c36988f40f6052f7718c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerMovement
-  characterSpeed: 15
+  walkSpeed: 15
+  sprintSpeed: 50
+  sprinting: 0
   inputDirectionInput: {x: 0, y: 0, z: 0}
   animator: {fileID: 9020132958950900259}
   gravity: 9.8
   jumpIntensity: 4
   maxFallSpeed: -30
   jumpWasPressed: 0
+  jumpMultiplier: 15
   footstepClips:
   - {fileID: 8300000, guid: 9d179faca6ac38c40b0b0b3bf631aaf0, type: 3}
   jumpClips:
@@ -583,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
-  UIInteract: {fileID: 0}
+  Interact: {fileID: 0}
   range: 5
 --- !u!114 &9024597777328472057
 MonoBehaviour:
