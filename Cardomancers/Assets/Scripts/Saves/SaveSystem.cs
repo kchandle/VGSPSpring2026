@@ -56,6 +56,15 @@ public static class SaveSystem
         player.GetComponent<Inventory>().ValidateDeckIntegrity();
         player.GetComponent<Inventory>().ValidateInventoryIntegrity();
     }
+
+    public static void Load(GameObject player)
+    {
+        if(!File.Exists(DataPath)) return;
+        
+        SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(DataPath));
+        player.transform.position = data.position;
+        player.transform.rotation = Quaternion.Euler(data.rotation);
+    }
     
     
 }

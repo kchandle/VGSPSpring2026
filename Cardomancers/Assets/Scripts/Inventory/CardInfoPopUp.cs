@@ -21,6 +21,14 @@ public class CardInfoPopUp : PlayItem
     // the background. Should be set in editor
     private Image backgroundImage;
 
-    [Tooltip("Distance from the center of the card")]
+    [Tooltip("Distance from the center of the card the popup is giving info about")]
     [SerializeField] private float padding;
+
+    private void SetDescriptions(Card card)
+    {
+        name.text = card.CardSO.displayName;
+        description.text = card.CardSO.description;
+        cardType.text = card.CardSO.type;
+        //damageType.text = 
+    }
 }
