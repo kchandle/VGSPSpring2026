@@ -126,7 +126,7 @@ public class CardDragInput : MonoBehaviour
                 {
                     // try to get focusTarget in Playspace p
 
-                    //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
+                    Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
 
                     focusTarget = p.GetNearestPlayItem(mousePosition);
 
@@ -280,7 +280,6 @@ public class CardDragInput : MonoBehaviour
     // moves a PlayItem from one playSpace to another by destroying it and reinstancing it
     public void MoveToNewPlayspace(PlayItem moveTarget, Playspace to, Playspace from)
     {
-        // only move the item if the "to" PlaySpace can receive PlayItems from the "from" PlaySpace
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
             //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
