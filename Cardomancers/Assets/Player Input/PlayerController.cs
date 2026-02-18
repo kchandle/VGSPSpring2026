@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth = maxPlayerHealth;
         Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 
     [SerializeField] GameObject inventoryUI;
@@ -61,10 +62,9 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumping(InputAction.CallbackContext context)
     {
-
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
-        print("HELLO JUMPING");
+
         // makes the player jump
         _characterControllerMovement.jumpWasPressed = true;
     }
@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        print("TABBED");
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
