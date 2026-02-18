@@ -3,10 +3,15 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class CharacterControllerMovement : MonoBehaviour
 {
-    public float characterSpeed = 1f; 
+    public float walkSpeed = 15f;
+	public float sprintSpeed = 50f;
+	private float currentSpeed;
 
-	//Vector3 from another script that gives the direction the character will move in 
-	public Vector3 inputDirectionInput;
+	//the bool changed in playercontroller for whether the player is sprinting or not 
+    public bool sprinting;
+
+    //Vector3 from another script that gives the direction the character will move in 
+    public Vector3 inputDirectionInput;
 
     private Vector3 _moveDirection;
 
@@ -18,12 +23,17 @@ public class CharacterControllerMovement : MonoBehaviour
 	[SerializeField] private float maxFallSpeed = -30f;
 	public bool jumpWasPressed;
 	private bool _jumping;
+	[HideInInspector] public float jumpMultiplier = 15f;
 
+	//reference to the character controller component
     private CharacterController _characterController;
 
+	//different audioclips for different actions
 	[SerializeField] AudioClip[] footstepClips;
 	[SerializeField] AudioClip[] jumpClips;
 	[SerializeField] AudioClip[] jumpLandClips;
+	
+	//keeps track of if there is already a footstep sound so it doesnt overlap
 	private AudioSource footstepSource;
 
     private void Awake()
@@ -67,9 +77,12 @@ public class CharacterControllerMovement : MonoBehaviour
 			_jumping = false;
 			SoundEffectManager.Instance.PlaySoundFXClip(jumpLandClips, transform, 0.05f);
 		}
-		
+
+		//changes the current speed to the speed of either sprinting or walking depending on if youre sprinting or not
+		currentSpeed = sprinting ? sprintSpeed : walkSpeed;
+
 		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
-        Vector3 moveDirection = (new Vector3(0f, _moveDirection.y, 0f) + Vector3.Normalize(planarInput)) * characterSpeed;
+        Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed;
 
         //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
         Vector3 finalMovement = transform.TransformDirection(moveDirection);
