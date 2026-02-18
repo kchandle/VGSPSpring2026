@@ -3,12 +3,19 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class CharacterControllerMovement : MonoBehaviour
 {
-    public float characterSpeed = 1f; 
+    public float walkSpeed = 15f;
+	public float sprintSpeed = 50f;
+	private float currentSpeed;
 
-	//Vector3 from another script that gives the direction the character will move in 
-	public Vector3 inputDirectionInput;
+	//the bool changed in playercontroller for whether the player is sprinting or not 
+    public bool sprinting;
+
+    //Vector3 from another script that gives the direction the character will move in 
+    public Vector3 inputDirectionInput;
 
     private Vector3 _moveDirection;
+
+	public Animator animator;
 
     // intensity of gravity MUST be 9.8f so it is realistic
     [SerializeField] private float gravity = 9.8f; 
@@ -16,12 +23,17 @@ public class CharacterControllerMovement : MonoBehaviour
 	[SerializeField] private float maxFallSpeed = -30f;
 	public bool jumpWasPressed;
 	private bool _jumping;
+	[HideInInspector] public float jumpMultiplier = 15f;
 
+	//reference to the character controller component
     private CharacterController _characterController;
 
+	//different audioclips for different actions
 	[SerializeField] AudioClip[] footstepClips;
 	[SerializeField] AudioClip[] jumpClips;
 	[SerializeField] AudioClip[] jumpLandClips;
+	
+	//keeps track of if there is already a footstep sound so it doesnt overlap
 	private AudioSource footstepSource;
 
     private void Awake()
@@ -35,6 +47,13 @@ public class CharacterControllerMovement : MonoBehaviour
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
+		if(planarInput.x != 0 || planarInput.z != 0){
+			// triggers Run animator
+			animator.SetTrigger("Run");
+
+
+		}
+
 		//if the character controller is off the ground accelerate the player downward and cap the downward velocity
 		if (!_characterController.isGrounded && _characterController.velocity.y > maxFallSpeed)
 		{
@@ -47,6 +66,9 @@ public class CharacterControllerMovement : MonoBehaviour
 			_jumping = true;
 			SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 0.25f);
             _moveDirection.y = Mathf.Sqrt(jumpIntensity); 
+
+			// triggers jump animation
+			animator.SetTrigger("Jump");
 		}
 
 		//if the player was jumping and they became grounded on a frame where the jumpkey wasnt pressed then it plays a sound for the player landing
@@ -55,9 +77,12 @@ public class CharacterControllerMovement : MonoBehaviour
 			_jumping = false;
 			SoundEffectManager.Instance.PlaySoundFXClip(jumpLandClips, transform, 0.05f);
 		}
-		
+
+		//changes the current speed to the speed of either sprinting or walking depending on if youre sprinting or not
+		currentSpeed = sprinting ? sprintSpeed : walkSpeed;
+
 		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
-        Vector3 moveDirection = (new Vector3(0f, _moveDirection.y, 0f) + Vector3.Normalize(planarInput)) * characterSpeed;
+        Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed;
 
         //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
         Vector3 finalMovement = transform.TransformDirection(moveDirection);
