@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
             inventoryUIHandler.DisplayUI();
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
         }
-        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY && inventoryUIHandler.uiDisplayed == true)
+        else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY/* && inventoryUIHandler.uiDisplayed == true*/)
         {
             inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
