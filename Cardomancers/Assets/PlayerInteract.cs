@@ -1,29 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR.Haptics;
 
 public class PlayerInteract : MonoBehaviour
 {
 
     //gets interact key reference from the input system:
-    public InputActionReference UIInteract;
-
-  
+    public InputActionReference Interact;
 
     // the range of the area player can interact with things in:
      public int range = 5;
 
-   
-    //get the interact referance and set it to another variable, if the player presses:
-     void OnEnable()
-    {
-        UIInteract.action.started += InteractKey;
-    }
-
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
-     void InteractKey(InputAction.CallbackContext obj)
+    public void OnInteract(InputAction.CallbackContext obj)
     {
+        // Checking CurrentState to make sure you can't interact while in battle
+        if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
+        if (GameStateScript.CurrentState == GameStateScript.GameState.BATTLE) return;
+        if (GameStateScript.CurrentState == GameStateScript.GameState.SPEAKING) return;
+
         // sends an array thing to get all objects:
         Collider[] col = Physics.OverlapSphere(transform.position, range);
         {
@@ -35,9 +33,9 @@ public class PlayerInteract : MonoBehaviour
                     inter.interactable.Invoke();
                 }
             }  
-        }   
-
-
+        }
+        
+ 
     }
 
 }
