@@ -44,8 +44,8 @@ public class CardDragInput : MonoBehaviour
     private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
 
     public event Action<PlayItem, Playspace, Playspace> PlayitemMoved; // PlayItem being moved, To, From
-
-
+    
+    public static PlayItem focusTarget;
 // TEST STUFF FOR TESTING
 
     //public GameObject testPlayItemPrefab;
@@ -119,7 +119,7 @@ public class CardDragInput : MonoBehaviour
 
 
             // get the current focusTarget (Playitem closests to the mouse INSIDE the playspace they are hovering over)
-            PlayItem focusTarget;
+            
             if (isDragging == false)
             {
                 foreach (Playspace p in activePlayspaces)
