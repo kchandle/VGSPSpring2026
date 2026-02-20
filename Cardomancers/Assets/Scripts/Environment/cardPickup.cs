@@ -5,6 +5,7 @@ public class cardPickup : MonoBehaviour
      public InventoryCard card;
      public UnityEvent GetCard = new UnityEvent();
      private Inventory inventory;
+     public bool added; 
 
     public void Awake()
     {
@@ -14,9 +15,10 @@ public class cardPickup : MonoBehaviour
 
     public void getCard()
     {
-        inventory.AddCardToDeck(card);
+        if (inventory.inventoryPriority) added = inventory.AddCardToInventory(card);
+        else added = inventory.AddCardToInventory(card, true);
         // Adds card to deck
-        GetCard.Invoke();
+        if (added) GetCard.Invoke();
         // Deletes the object because you only get the card ONCE!!!!!!!
         Debug.Log ("Card Got!");
     }
