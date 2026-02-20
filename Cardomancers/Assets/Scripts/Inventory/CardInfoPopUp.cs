@@ -23,6 +23,17 @@ public class CardInfoPopUp : PlayItem
     [SerializeField] private Image damageImage;
     // the background
     [SerializeField] private Image backgroundImage;
+    
+    [Header("Card type images")]
+    [SerializeField] private Image ATKImage;
+    [SerializeField] private Image DEFImage;
+    [SerializeField] private Image RSTImage;
+    
+    [Header("Damage images")]
+    [SerializeField] private Image InstantDamageImage;
+    [SerializeField] private Image DamageOverTimeImage;
+    [SerializeField] private Image InstantHealImage;
+    [SerializeField] private Image HealOverTimeImage;
 
     [Tooltip("Distance from the center of the card the popup is giving info about")]
     [SerializeField] private float padding;
@@ -40,19 +51,35 @@ public class CardInfoPopUp : PlayItem
         cardName.text = card.CardSO.displayName;
         description.text = card.CardSO.description;
         cardType.text = card.CardSO.cardType.ToString();
+        switch (card.CardSO.cardType)
+        {
+            case global::cardType.ATK:
+                typeImage = ATKImage;
+                break;
+            case global::cardType.DEF:
+                typeImage = DEFImage;
+                break;
+            case global::cardType.RST:
+                typeImage = RSTImage;
+                break;
+        }
         switch (card.CardSO.damageType)
         {
             case global::damageType.damageInstant:
                 damageType.text = "Instant Damage";
+                damageImage = InstantDamageImage;
                 break;
             case global::damageType.damageOverTime:
                 damageType.text = "Damage Over Time";
+                damageImage = DamageOverTimeImage;
                 break;
             case global::damageType.healInstant:
                 damageType.text = "Instant Heal";
+                damageImage = InstantHealImage;
                 break;
             case global::damageType.healOverTime:
                 damageType.text = "Heal Over Time";
+                damageImage = HealOverTimeImage;
                 break;
         }
         tagLine.text = card.CardSO.tagLine;
