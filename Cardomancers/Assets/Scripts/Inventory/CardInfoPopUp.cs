@@ -1,12 +1,14 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class CardInfoPopUp : PlayItem
 {
     // name of the card
-    [SerializeField] private TextMeshProUGUI name; 
+    [SerializeField] private TextMeshProUGUI cardName; 
     // the description of the card
     [SerializeField] private TextMeshProUGUI description;
     // the type of the card (ice, fire, etc.)
@@ -35,16 +37,30 @@ public class CardInfoPopUp : PlayItem
 
     private void SetDescriptions(Card card)
     {
-        name.text = card.CardSO.displayName;
+        cardName.text = card.CardSO.displayName;
         description.text = card.CardSO.description;
-        cardType.text = card.CardSO.type;
-        //damageType.text = 
+        cardType.text = card.CardSO.cardType.ToString();
+        switch (card.CardSO.damageType)
+        {
+            case global::damageType.damageInstant:
+                damageType.text = "Instant Damage";
+                break;
+            case global::damageType.damageOverTime:
+                damageType.text = "Damage Over Time";
+                break;
+            case global::damageType.healInstant:
+                damageType.text = "Instant Heal";
+                break;
+            case global::damageType.healOverTime:
+                damageType.text = "Heal Over Time";
+                break;
+        }
         tagLine.text = card.CardSO.tagLine;
     }
 
     private void OpenPopup()
     {
-        name.gameObject.SetActive(true);
+        cardName.gameObject.SetActive(true);
         description.gameObject.SetActive(true);
         cardType.gameObject.SetActive(true);
         damageType.gameObject.SetActive(true);
@@ -56,7 +72,7 @@ public class CardInfoPopUp : PlayItem
 
     private void ClosePopup()
     {
-        name.gameObject.SetActive(false);
+        cardName.gameObject.SetActive(false);
         description.gameObject.SetActive(false);
         cardType.gameObject.SetActive(false);
         damageType.gameObject.SetActive(false);
@@ -73,9 +89,10 @@ public class CardInfoPopUp : PlayItem
         
         bool focusTargetExists = false;
 
-        if (CardDragInput.focusTarget)
+        if (CardDragInput.focusTarget && CardDragInput.focusTarget is Card)
         {
             basePosition = CardDragInput.focusTarget.transform.position;
+            SetDescriptions(CardDragInput.focusTarget.GetComponent<Card>());
         }
         else
         {
