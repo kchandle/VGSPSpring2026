@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour
 	[SerializeField] private List<Hack_SO> hacks;
 	// total size of inventory
 	[SerializeField] private int inventoryLength;
-	// amount of cards the player is alowed to have in their deck at one time
+	// amount of cards the player is allowed to have in their deck at one time
 	[SerializeField] private int deckLength;
 
 	[SerializeField] private int hackLength;
@@ -33,16 +33,30 @@ public class Inventory : MonoBehaviour
 	public List<InventoryCard> CardInventory
 	{
 		get { return inventory; }
+		set  { inventory = value; }
 	}
 
 	public List<InventoryCard> Deck
 	{
 		get { return deck; }
+		set => deck = value;
 	}
 
 	public List<Hack_SO> Hacks
 	{
 		get { return hacks; }
+	}
+
+	public int DeckLength
+	{
+		get => deckLength;
+		set => deckLength = value;
+	}
+
+	public int InventoryLength
+	{
+		get => inventoryLength;
+		set => inventoryLength = value;
 	}
 
 	public int Money
