@@ -27,9 +27,10 @@ public class CardInfoPopUp : PlayItem
 
     
     
-    private void Update()
+    protected override void Update()
     {
         position = GetPopUpLocation();
+        base.Update();
     }
 
     private void SetDescriptions(Card card)
