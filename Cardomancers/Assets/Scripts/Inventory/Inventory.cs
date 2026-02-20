@@ -22,6 +22,12 @@ public class Inventory : MonoBehaviour
 
 	//inventory_so reference
 	[SerializeField] private Inventory_SO inventorySO;
+	
+	// popup reference
+	popUpActive popupActive;
+
+	// Used in card pickup script
+	public bool inventoryPriority = true;
 
 	public List<InventoryCard> CardInventory
 	{
@@ -44,6 +50,7 @@ public class Inventory : MonoBehaviour
 	}
 
 
+
 	//Use inventory_so variables for the variables in here
 	private void Awake()
 	{
@@ -53,6 +60,8 @@ public class Inventory : MonoBehaviour
 		deckLength = inventorySO.DeckLength;
 		hacks = inventorySO.Hacks;
 		hackLength = inventorySO.HackLength;
+
+		popupActive = GetComponent<popUpActive>();
 	}
 
 	private void Start(){
@@ -65,15 +74,29 @@ public class Inventory : MonoBehaviour
 	public bool AddCardToInventory(Card card, bool isNewCard = false)
 	{
 		// stops the method and returns false if the inventory is full
-		if (inventory.Count >= inventoryLength) return false;
+		if (inventory.Count >= inventoryLength) ;
 		// very temporary
 		InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
 		// add new card to inventory
 		inventory.Add(newInventoryCard);
 		// automatically add to deck if possible (if it is a new card)
-		if (deck.Count >= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
+		if (deck.Count <= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
 		// sync inventory with the SO
 		inventorySO.Inventory = inventory;
+		return true;
+	}
+
+	public bool AddCardToInventory(InventoryCard card, bool addToDeck = false)
+	{
+		if(inventory.Count >= inventoryLength)
+		{
+			popupActive.activate();
+			return false;
+		}
+		inventory.Add(card);
+		if (deck.Count <= deckLength) AddCardToDeck(card);
+		inventorySO.Inventory = inventory;
+		if (addToDeck) AddCardToDeck(card);
 		return true;
 	}
 
@@ -162,5 +185,11 @@ public class Inventory : MonoBehaviour
 				.ToList();
 		inventorySO.Inventory = inventory;
 		return inventory;
+	}
+
+	public void invtoggle()
+	{
+		if (inventoryPriority) inventoryPriority = false;
+		else inventoryPriority = true;
 	}
 }
