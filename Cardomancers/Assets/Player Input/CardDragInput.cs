@@ -36,7 +36,7 @@ public class CardDragInput : MonoBehaviour
     }
 
     PlayItem dragTarget; // the current PlayItem being dragged (if any)
-    Playspace dragPlayspace; // the Playspace that dragTarget is in
+    public  Playspace dragPlayspace; // the Playspace that dragTarget is in
 
     public Vector3 dragTargetStartPos; // starting position of the dragTarget
     public bool isDragging = false; // if a playItem being dragged
@@ -126,8 +126,7 @@ public class CardDragInput : MonoBehaviour
                 {
                     // try to get focusTarget in Playspace p
 
-                    Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
-
+                    //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
                     focusTarget = p.GetNearestPlayItem(mousePosition);
 
                     //if(p.InPlayArea(mousePositionWorld) == true) print(p.name+" is being hovered over");

@@ -51,10 +51,17 @@ public static class SaveSystem
         inventory.Deck =  data.deck;
         inventory.DeckLength = data.deckLength;
         inventory.InventoryLength = data.inventoryLength;
+
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
         player.transform.position = data.position;
         player.transform.rotation = Quaternion.Euler(data.rotation);
-        player.GetComponent<Inventory>().ValidateDeckIntegrity();
-        player.GetComponent<Inventory>().ValidateInventoryIntegrity();
+
+        if (cc != null) cc.enabled = true;
+
+        GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateDeckIntegrity();
+        GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateInventoryIntegrity();
     }
 
 
@@ -68,7 +75,6 @@ public static class SaveSystem
         if (cc != null) cc.enabled = false;
 
         player.transform.position = data.position;
-        Debug.Log(DataPath);
 
         player.transform.rotation = Quaternion.Euler(data.rotation);
 
