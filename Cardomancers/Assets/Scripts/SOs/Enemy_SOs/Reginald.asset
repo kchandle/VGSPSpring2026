@@ -10,10 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 728b5e43d7f81ab43882e16ab5e09a08, type: 3}
-  m_Name: BasicEnemy
+  m_Name: Reginald
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_SO
   deck:
   - cardSO: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: c8eb2927ea48df745b49b7ecbe6d7afa, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 631f5403dda2f524e86f539d73b06bcd, type: 2}
     hacks: []
     length: 0
     cardID: 
@@ -25,16 +41,12 @@ MonoBehaviour:
     hacks: []
     length: 0
     cardID: 
-  - cardSO: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
-    hacks: []
-    length: 0
-    cardID: 
-  maxHealth: 35
-  displayName: Basic Intern
-  moneyDrops: 5
-  xpDrops: 5
+  maxHealth: 100
+  displayName: Manager Reginald
+  moneyDrops: 25
+  xpDrops: 25
   timer: 1
-  energy: 2
+  energy: 4
   enemyPrefab: {fileID: 1754986763223118875, guid: 58e883a55141a4e4781e3160ca43035f, type: 3}
-  resistances: 
-  weaknesses: 090000000c000000
+  resistances: 05000000020000000400000003000000
+  weaknesses: 0b000000
