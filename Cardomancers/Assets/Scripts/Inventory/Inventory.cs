@@ -60,7 +60,7 @@ public class Inventory : MonoBehaviour
 //Use inventory_so variables for the variables in here
 	private void Awake()
 	{
-		inventory = inventorySO.Inventory;
+		inventory = inventorySO.Inventory;	
 		deck = inventorySO.Deck;
         inventoryLength = inventorySO.InventoryLength;
 		deckLength = inventorySO.DeckLength;
