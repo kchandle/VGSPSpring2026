@@ -17,7 +17,7 @@ public class moneyPickup : MonoBehaviour
     
     void Awake()
     {
-        inventory = GameObject.Find("Player").GetComponent<Inventory>();
+        inventory = GameObject.FindWithTag("PlayerInventory").GetComponent<Inventory>();
     }
 
     public void Update()
