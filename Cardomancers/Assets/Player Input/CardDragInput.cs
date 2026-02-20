@@ -125,10 +125,11 @@ public class CardDragInput : MonoBehaviour
                 foreach (Playspace p in activePlayspaces)
                 {
                     // try to get focusTarget in Playspace p
-
-                    Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
-
+                    //Debug.Log(mousePosition);
+                    //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
+                    
                     focusTarget = p.GetNearestPlayItem(mousePosition);
+                   
 
                     //if(p.InPlayArea(mousePositionWorld) == true) print(p.name+" is being hovered over");
     

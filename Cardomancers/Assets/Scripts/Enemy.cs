@@ -62,6 +62,7 @@ public class Enemy : MonoBehaviour
     public GameObject actionTypeATK;
     public GameObject actionTypeDEF;
     public GameObject actionTypeRST;
+
     public TMP_Text actionAmountText;
     public InventoryCard currentCard;
 
@@ -210,6 +211,7 @@ public class Enemy : MonoBehaviour
                 actionTypeRST.SetActive(true);
                 break;
             }
+
         }
         print(currentActionType);
 

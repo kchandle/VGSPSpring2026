@@ -81,6 +81,9 @@ public class BattleManager : MonoBehaviour
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
 
+    public int moneyDrops; //Money to be gained from winning the battle
+    public float xpDrops; //xP to be gained from winning the battle
+
     public enum BattleState //Indicates State of Gameplay. Can be START, END, PLAYER_TURN, ENEMIES_TURN, CHECK_PLAYER_HP, CHECK_ENEMIES_HP
     {
         START,
@@ -174,7 +177,8 @@ public class BattleManager : MonoBehaviour
     {
         float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
         float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
-        float enemySpacing = canvasWidth / (battle.enemies.Length);
+        //float enemySpacing = canvasWidth / (battle.enemies.Length);
+        float enemySpacing = canvasWidth/3 / (battle.enemies.Count);
         int i = 0;
 
 
@@ -200,9 +204,11 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
 
-            //Player playspace allowed donors
-            
+            //Summing money and xp drops
+            moneyDrops += e.moneyDrops;
+            xpDrops += e.xpDrops;
 
+            //Player playspace allowed donors
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
@@ -211,6 +217,26 @@ public class BattleManager : MonoBehaviour
         
 
 
+    }
+
+    //TEMPORARY TESTING
+    void SetUpNewEnemy(Enemy_SO newEnemy)
+    {
+        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
+        //float enemySpacing = canvasWidth / (battle.enemies.Length);
+        float enemySpacing = canvasWidth/2 / (battle.enemies.Count);
+
+
+        GameObject enemyPrefab = newEnemy.enemyPrefab;
+        enemyPrefab = Instantiate(newEnemy.enemyPrefab, new Vector3(0 + (enemySpacing * (1)), (canvasHeight * 1 / 4), 0), Quaternion.identity);
+        enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
+        enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
+
+        //Player playspace allowed donors
+        cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+        enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
+        currentEnemies.Add(enemyPrefab);
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -285,6 +311,10 @@ public class BattleManager : MonoBehaviour
             {
                 winScreen.SetActive(true);
                 OnWin.Invoke();
+
+                playerInventory.GainMoney(moneyDrops);
+                playerInventory.GainXp(xpDrops);
+
                 break;
             }
             case (EndState.LOSE):
@@ -402,10 +432,37 @@ public class BattleManager : MonoBehaviour
             enemyScript.currentTimer--;
             enemyScript.UpdateTimer();
 
+            print("About to check battle effects");
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
+                print("ENTERED FOREACH LOOP: " + enemyScript.EnemySO.displayName);
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
+
+                //********
+                print("Evaluating Enemy Card Battle Effects");
+                print("Summons enemies: " + effect.summonsEnemies);
+                print("Card Name: " + card.cardSO.displayName);
+                //print(card.cardSO.cardEffects);
+                if(effect.summonsEnemies) //test
+                {
+                    if(currentEnemies.Count >= 3)
+                    {
+                        print("Max enemies, summon failed");
+                    }
+                    else
+                    {
+                        print("Summoned enemy");
+                        Enemy_SO newEnemy = effect.summonableEnemies[UnityEngine.Random.Range(0, effect.summonableEnemies.Count)];
+                        battle.enemies.Add( newEnemy );
+
+                        SetUpNewEnemy( newEnemy );
+
+                        //SetupPlayspaces();
+                    }
+                    
+                }
+                //********
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
@@ -419,9 +476,11 @@ public class BattleManager : MonoBehaviour
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
                     }
+
                 }
             }
 
+            print("reseting timer");
             if (enemyScript.currentTimer <= 0)
             {
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));

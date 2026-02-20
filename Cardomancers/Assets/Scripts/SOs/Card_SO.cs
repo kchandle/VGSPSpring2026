@@ -10,7 +10,7 @@ public class Card_SO : ScriptableObject
     public string description; // Flavor text used for descriping the card
     public int energyCost; // amount of energy it takes from the user
 
-    [Tooltip("The type of action. Currently can be ATK, DEF, or RST.")]
+    [Tooltip("The type of action. Currently can be ATK, DEF, or RST.")] //***************** or SMN
     public string type;
     public Sprite image; // sprite to be displayed when the card is instanced
     public BattleEffect[] cardEffects; // Needs battle effect to be done first

@@ -40,8 +40,6 @@ public struct BattleEffect
     //Summoning variables, only used if summonsEnemies is true
     public bool summonsEnemies; //Whether or not this card summons enemies
     public List<Enemy_SO> summonableEnemies; //The possible enemy types that can be summoned
-    //public Enemy_SO summon; //The enemy to be summoned
-
 
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
@@ -120,7 +118,9 @@ public struct BattleEffect
         #region summoning enemies (WIP)
         if(summonsEnemies)
         {
-            //summon = summonableEnemies[Random.Range(0, summonableEnemies.Count)];
+            //check if max enemies on field
+            //if not, add to battle
+            //???? =  summonableEnemies[Random.Range(0, summonableEnemies.Count)];
         }
         #endregion
         
