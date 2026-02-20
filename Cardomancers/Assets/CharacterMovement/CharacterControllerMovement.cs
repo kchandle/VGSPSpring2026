@@ -52,11 +52,11 @@ public class CharacterControllerMovement : MonoBehaviour
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
+		if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) return;
+
 		if(planarInput.x != 0 || planarInput.z != 0){
 			// triggers Run animator
 			animator.SetTrigger("Run");
-
-
 		}
 
 		//if the character controller is off the ground accelerate the player downward and cap the downward velocity

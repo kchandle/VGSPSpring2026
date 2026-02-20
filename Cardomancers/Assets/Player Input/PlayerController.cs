@@ -48,6 +48,25 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void OnEnable()
+    {
+        GameStateScript.OnGameStateChanged += StateChanged;
+    }
+
+    public void StateChanged(GameStateScript.GameState newState)
+    {
+        if (newState == GameStateScript.GameState.WALKING)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
     [SerializeField] GameObject inventoryUI;
 
     // reference to character controller movement
@@ -62,6 +81,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumping(InputAction.CallbackContext context)
     {
+        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) return;
+
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
 
