@@ -27,16 +27,16 @@ public static class SaveSystem
         // Serialize save data into JSON
         string json = JsonUtility.ToJson(data);
         //Convert to bytes so that the save data can be encrypted
-        byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+        //byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
         //using (Aes aes = Aes.Create())
         //{
-            //aes.Key = key;
-            //aes.IV = aes.GenerateIV();
+        //aes.Key = key;
+        //aes.IV = aes.GenerateIV();
         //}
-        
 
+        Debug.Log(DataPath);
         // Creates or overwrites save file with readable file structure
-        File.WriteAllBytes(DataPath, jsonBytes);
+        File.WriteAllText(DataPath, json);
     }
 
     // Takes in an inventory SO and assigns its data based on the saved data
@@ -44,7 +44,7 @@ public static class SaveSystem
     {
         // Ends function if there is no save data
         if (!File.Exists(DataPath)) return;
-       
+
         // where data is assigned
         SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(DataPath));
         inventory.Inventory = data.inventory;
@@ -57,14 +57,21 @@ public static class SaveSystem
         player.GetComponent<Inventory>().ValidateInventoryIntegrity();
     }
 
+
     public static void Load(GameObject player)
     {
-        if(!File.Exists(DataPath)) return;
-        
+        if (!File.Exists(DataPath)) return;
+
         SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(DataPath));
+
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
         player.transform.position = data.position;
+        Debug.Log(DataPath);
+
         player.transform.rotation = Quaternion.Euler(data.rotation);
+
+        if (cc != null) cc.enabled = true;
     }
-    
-    
 }
