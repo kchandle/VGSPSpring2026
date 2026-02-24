@@ -118,16 +118,18 @@ public class Inventory : MonoBehaviour
     {
         if(inventory.Count >= inventoryLength)
         {
-            popupActive.activate();
+            //popupActive.activate();
             return false;
         }
         inventory.Add(card);
+		Debug.Log("Added to inv");
         if (deck.Count <= deckLength) AddCardToDeck(card);
         inventorySO.Inventory = inventory;
+		print(addToDeck == true);
         if (addToDeck)
 		{ 
 			AddCardToDeck(card);
-			Debug.Log("bleh");
+			Debug.Log("Added to deck");
 		}
         return true;
     }
