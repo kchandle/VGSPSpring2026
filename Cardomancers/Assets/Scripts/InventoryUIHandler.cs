@@ -58,7 +58,6 @@ public class InventoryUIHandler : MonoBehaviour
             inventory.ValidateInventoryIntegrity(); 
             inventory.ValidateDeckIntegrity();
 
-            print(inventory.Deck);
             // Add deck cards
             foreach(InventoryCard card in inventory.Deck)
             {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
@@ -29,6 +30,14 @@ public class Inventory : MonoBehaviour
 
 	//inventory_so reference
 	[SerializeField] private Inventory_SO inventorySO;
+
+	// Used in card pickup script
+    public bool inventoryPriority = true;
+
+	// toggle for priority
+	public Toggle priorityToggle;
+
+	popUpActive popupActive;
 
 	public List<InventoryCard> CardInventory
 	{
@@ -90,19 +99,56 @@ public class Inventory : MonoBehaviour
 	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
 
 	public bool AddCardToInventory(Card card, bool isNewCard = false)
-	{
-		// stops the method and returns false if the inventory is full
-		if (inventory.Count >= inventoryLength) return false;
-		// very temporary
-		InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
-		// add new card to inventory
-		inventory.Add(newInventoryCard);
-		// automatically add to deck if possible (if it is a new card)
-		if (deck.Count >= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
-		// sync inventory with the SO
-		inventorySO.Inventory = inventory;
-		return true;
-	}
+    {
+        // stops the method and returns false if the inventory is full
+        if (inventory.Count >= inventoryLength) ;
+        // very temporary
+        InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
+        // add new card to inventory
+        inventory.Add(newInventoryCard);
+        // automatically add to deck if possible (if it is a new card)
+        if (deck.Count <= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
+        // sync inventory with the SO
+        inventorySO.Inventory = inventory;
+        return true;
+    }
+
+
+    public bool AddCardToInventory(InventoryCard card, bool addToDeck = false)
+    {
+        if(inventory.Count >= inventoryLength)
+        {
+            //popupActive.activate();
+            return false;
+        }
+        inventory.Add(card);
+		Debug.Log("Added to inv");
+        if (deck.Count <= deckLength) AddCardToDeck(card);
+        inventorySO.Inventory = inventory;
+		print(addToDeck == true);
+        if (addToDeck)
+		{ 
+			AddCardToDeck(card);
+			Debug.Log("Added to deck");
+		}
+        return true;
+    }
+
+	public void OnToggleValueChanged()
+    {
+        inventoryPriority = priorityToggle.isOn;
+		// Uses UI toggle to change where cards go when picked up
+        if (inventoryPriority)
+		{
+			Debug.Log("Cards go to inventory");
+		}
+		// If cards go to inventory, print
+		else
+		{
+			Debug.Log("Cards go to deck");
+		}
+		// If cards go to deck, print
+    }
 
 	public bool AddHackToInventory(Hack_SO hack)
 	{
