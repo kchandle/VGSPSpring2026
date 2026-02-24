@@ -182,7 +182,7 @@ public class Enemy : MonoBehaviour
         {
             card = nextCard;
             nextCardSet = false; //go back to normal, random card selection
-            return card;
+            //return card;
         }
 
         //If the drawn card sets the next card, set the value of the next card to be played
@@ -196,8 +196,10 @@ public class Enemy : MonoBehaviour
             }
         }
         
-
-        deck.Remove(card);
+        if(deck.Contains(card))
+        {
+            deck.Remove(card);
+        }
         return card;
     }
 
