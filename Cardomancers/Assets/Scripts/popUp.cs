@@ -9,12 +9,16 @@ public class popUp : MonoBehaviour
     public Image image;
     public TextMeshProUGUI popUpText;
     public GameObject canvas;
+    public GameObject yesorno;
+    // "Decision" if the pop up has a yes or no
+    public bool decision;
     private float timer;
 
     public void SetVariables(popUp_SO popSO)
     {
         this.popSO = popSO;
         timer = popSO.timer;
+        decision = popSO.decision;
         SettingActive();
     } 
     // Script called by other scripts that incur popups, passing in their popup_SO
@@ -24,9 +28,13 @@ public class popUp : MonoBehaviour
     {
         canvas.SetActive(true);
         popUpText.text = popSO.popUpText;
+        if (decision) 
+        {
+            yesorno.SetActive(true);
+        }
         StartCoroutine(popUpTimer(timer));
     }
-    // Sets canvas active and starts coroutine
+    // Sets canvas active and starts coroutine, if "decision" active turn on the yes/no
 
     IEnumerator popUpTimer(float Timer)
     {
