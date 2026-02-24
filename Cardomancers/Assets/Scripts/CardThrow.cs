@@ -49,6 +49,7 @@ public class CardThrow : MonoBehaviour
 
             //resets the card instance position, sets it to actives and gets the rigidbody
             card.transform.position = transform.position;
+            card.transform.rotation = Quaternion.Euler(Vector3.zero);
             card.SetActive(true);
             Rigidbody cardRB = card.GetComponent<Rigidbody>();
 

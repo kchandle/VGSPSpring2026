@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8093299586542698804}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1521233, y: 0.00000008158994, z: -0.0000000121991715, w: 0.98836154}
+  m_LocalRotation: {x: 0.086753726, y: -1.4881823e-17, z: -1.1140392e-16, w: 0.9962298}
   m_LocalPosition: {x: 0, y: 4.510587, z: -14.305755}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0, y: 2, z: 0}
   Damping: {x: 0.5, y: 0.5}
   Lookahead:
     Enabled: 0
@@ -655,7 +655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardThrow
   pool: {fileID: 0}
-  cardForce: 10
+  cardForce: 20
   throwWooshSounds:
   - {fileID: 8300000, guid: ef9028466a2be154c94e7e1fdbb3949e, type: 3}
   throwGruntSounds:
