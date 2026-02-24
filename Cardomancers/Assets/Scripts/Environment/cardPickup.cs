@@ -15,7 +15,6 @@ public class cardPickup : MonoBehaviour
 
     public void getCard()
     {
-      print("Get card function call");
       // Adds extra value that makes it get added to deck if inventory priority isnt true
         if (inventory.inventoryPriority){
           added = inventory.AddCardToInventory(card);
