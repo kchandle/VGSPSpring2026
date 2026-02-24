@@ -68,7 +68,7 @@ public static class ExpLevels
     }
 
     // updates fields based on save data
-    private static void UpdateExpData(int newCurrentLevel, int newExpToNextLevel, int newCurrentExp, int newSkillPoints)
+    public static void UpdateExpData(int newCurrentLevel, int newExpToNextLevel, int newCurrentExp, int newSkillPoints)
     {
         currentLevel = newCurrentLevel;
         expToNextLevel = newExpToNextLevel;
