@@ -1,10 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Collider))]
 public class InteractCollision : MonoBehaviour
 {
      public UnityEvent interactable;
 
+    private void Awake()
+    {
+        GetComponent<Collider>().isTrigger = true;
+    }
 
     void OnTriggerEnter(Collider other)
     {
