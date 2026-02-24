@@ -87,6 +87,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumping(InputAction.CallbackContext context)
     {
+        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) return;
+
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
 
