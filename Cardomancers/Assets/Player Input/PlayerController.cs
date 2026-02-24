@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static GameStateScript;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.ParticleSystem;
-using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,6 +41,30 @@ public class PlayerController : MonoBehaviour
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public bool isShielded = false; //If the player is shielded, they take no damage this turn.
+
+    private void OnEnable()
+    {
+        GameStateScript.OnGameStateChanged += UpdateGameState;
+    }
+
+    private void OnDisable()
+    {
+        GameStateScript.OnGameStateChanged += UpdateGameState;
+    }
+
+    public void UpdateGameState(GameState newState)
+    {
+        if (newState == GameState.WALKING)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+        }
+        else 
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
 
     public void Awake()
     {
