@@ -175,7 +175,7 @@ public class BattleManager : MonoBehaviour
                 {
                     case(Drop.DropType.CARD):
                     {
-                        // playerInventory.AddCardToInventory((Card_SO)drop.item);
+                        playerInventory.AddCardToInventory((Card_SO)drop.item, 1, true);
                         break;
                     }
                     case(Drop.DropType.HACK):

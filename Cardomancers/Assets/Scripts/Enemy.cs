@@ -116,7 +116,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void OnDestroy()
+    public void Death()
     {
         battleManager.allDrops.AddRange(enemySO.drops);
     }
@@ -187,6 +187,13 @@ public class Enemy : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
+        }
+        if(currentHealth <= 0)
+        {
+            Death();
+            this.gameObject.GetComponentInChildren<Image>().enabled = false;
+            this.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            this.gameObject.SetActive(false);
         }
     }
 

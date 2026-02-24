@@ -150,6 +150,7 @@ public struct BattleEffect
             //Stops the player from interacting with the enemy once dead
             enemy.gameObject.GetComponentInChildren<Image>().enabled = false;
             enemy.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            enemy.Death();
             enemy.gameObject.SetActive(false);
         }
         return true;
