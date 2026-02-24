@@ -1720,6 +1720,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f87ece01215b243b4d1566a4445da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryUIHandler
+--- !u!1 &1161234084 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+  m_PrefabInstance: {fileID: 2128579980}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1161234093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161234084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b625c6603a9612f4ab4f453d1b45ed16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  money: 0
+  xp: 0
+  level: 0
+  levelUpXp: 0
+  inventory: []
+  deck: []
+  hacks: []
+  inventoryLength: 0
+  deckLength: 0
+  hackLength: 0
+  inventorySO: {fileID: 0}
 --- !u!1001 &1309066372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2315,7 +2343,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1161234093}
   m_SourcePrefab: {fileID: 100100000, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
