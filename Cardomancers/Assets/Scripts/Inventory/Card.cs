@@ -11,7 +11,8 @@ public class Card : PlayItem
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
-
+    public GameObject bottom;
+    public GameObject top;
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
@@ -127,6 +128,23 @@ public class Card : PlayItem
                 if (invCard.cardID == inventoryCard.cardID)
                 {
                     invCard.hacks.Add(hack); 
+                    switch (hack.sideOfCard)
+                    {
+                        case(Hack_SO.Layer.TOP):
+                        {
+                            top.SetActive(true);
+                            break;
+                        }
+                        case(Hack_SO.Layer.BOTTOM):
+                        {
+                            bottom.SetActive(true);
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
                 }
             }
         }

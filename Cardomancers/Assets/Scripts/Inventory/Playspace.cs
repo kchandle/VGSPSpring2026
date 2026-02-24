@@ -141,7 +141,6 @@ public class Playspace : MonoBehaviour
     {
         //print("attempting destroy");
         if (playItems.Contains(playItem)){
-            print("destroying");
             playItems.Remove(playItem);
             Destroy(playItem.gameObject);
         }
