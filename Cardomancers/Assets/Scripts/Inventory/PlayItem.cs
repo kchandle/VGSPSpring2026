@@ -34,7 +34,7 @@ public class PlayItem : MonoBehaviour
     } 
 
     // Move the PlayItem towards its target position at all times
-    void Update()
+    protected virtual void Update()
     {
         Vector3 targetPosition = position + offset;
         //targetPosition.z = 0f;
