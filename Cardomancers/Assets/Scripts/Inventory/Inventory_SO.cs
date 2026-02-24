@@ -6,9 +6,16 @@ public class Inventory_SO : ScriptableObject
 {
     [SerializeField] private List<InventoryCard> inventory;
 	[SerializeField] private List<InventoryCard> deck;
+
+	[SerializeField] private List<Hack_SO> hacks;
 	[SerializeField] private int deckLength;
 	[SerializeField] private int inventoryLength;
 
+	[SerializeField] private int hackLength;
+
+	
+
+	// ALL cards currently in the player's inventory, including those in the Deck
 	public List<InventoryCard> Inventory
 	{
 			get => inventory;
@@ -18,6 +25,7 @@ public class Inventory_SO : ScriptableObject
 			}
 	}
 
+	// Cards inside of the player's deck only
 	public List<InventoryCard> Deck
 	{
 			get => deck;
@@ -27,6 +35,16 @@ public class Inventory_SO : ScriptableObject
 			}
 	}
 
+		public List<Hack_SO> Hacks
+	{
+			get => hacks;
+			set
+			{
+			    hacks = value;
+			}
+	}
+
+	// Max amount of cards you can have in your deck
 	public int DeckLength
 	{
 			get => deckLength;
@@ -35,13 +53,22 @@ public class Inventory_SO : ScriptableObject
 				deckLength = value;
 			}
 	}
-
+	// Max amount of cards you can have in your inventory
 	public int InventoryLength
 	{
 			get => inventoryLength;
 			set
 			{
 					inventoryLength = value;
+			}
+	}
+
+		public int HackLength
+	{
+			get => hackLength;
+			set
+			{
+					hackLength = value;
 			}
 	}
 

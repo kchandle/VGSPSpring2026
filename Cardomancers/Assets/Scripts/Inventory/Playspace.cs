@@ -1,5 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
+using System;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 
@@ -7,14 +11,16 @@ public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
     public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
-
+    public string battlePlayType = "NULL";
     public List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
 
 //PlaySpaces that this PlaySpace can accept PlayItems from
 // For a PlayItem to move into this playspace, it must be FROM a PlaySpace in this list
     public List<Playspace> allowedDonors = new List<Playspace>(); 
 
-    public bool horizontalLayout = true; // If true, PlayItems will be arranged in a line. If false, a grid
+    public bool horizontalLayout = true; // If true, PlayItems will be arranged in a line. If false, they will be arranged in a grid
+
+    public int columnCount = 3; // The number of columns the grid will have, if playItems are arranged in a grid
 
 
 
@@ -23,14 +29,10 @@ public class Playspace : MonoBehaviour
 
 
     // wide each spot for a playitem is
-    public float width = 10f;
+    public float width = 70f;
 
     // how tall each spot for playitem is (only used by GridLayout)
-    public float height = 10f;
-
-    // how much space between spots
-    public float paddingX = 1f;
-    public float paddingY = 1f;
+    public float height = 120f;
 
     public float zOffset = .1f; // how much the playItems are offset from the Playspace on the z axis
 
@@ -39,6 +41,8 @@ public class Playspace : MonoBehaviour
 
     private PlayItem dragTarget; // the currently PlayItem being dragged
     private Vector3 dragTargetPosition; // position of the dragTarget PlayItem
+
+    
 
     
 
@@ -60,7 +64,7 @@ public class Playspace : MonoBehaviour
         switch (horizontalLayout)
         {
             case true: HorizontalLayout(targetIndex); break;
-            case false: GridLayout(targetIndex); break;
+            case false: GridLayout(targetIndex, columnCount); break;
         }
 
         if (dragTarget) dragTarget.position = new Vector3 (dragTargetPosition.x, dragTargetPosition.y, dragTarget.position.z);
@@ -73,15 +77,7 @@ public class Playspace : MonoBehaviour
 
     Vector3 defaultPosition = new Vector3(0,0,0);
 
-    // default
-    //public GameObject NewPlayItem(GameObject prefab)
-    //{
-    //    GameObject newPlayItem = Instantiate(prefab);
-    //    newPlayItem.transform.SetParent(transform);
 
-    //    playItems.Add(newPlayItem.GetComponent<PlayItem>());
-    //    return newPlayItem;
-    //}
 
 
         // without position
@@ -96,13 +92,54 @@ public class Playspace : MonoBehaviour
 
         newPlayItem.GetComponent<Card>().CardSO = cardSO;
 
+        
+
         return newPlayItem;
     }
+    
+    // with inventoryCard
+    public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard){
+
+        print("Spawning this Card: " + cardSO.name);
+        GameObject newPlayItem = Instantiate(prefab);
+        newPlayItem.transform.SetParent(transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<Card>().CardSO = cardSO;
+        newPlayItem.GetComponent<Card>().inventoryCard = inventoryCard;
+        newPlayItem.GetComponent<Card>().hacks = inventoryCard.hacks;
+
+        
+
+        return newPlayItem;
+    }
+
+    // adding a Hack
+    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO){
+
+        print("Spawning this Card: " + hackSO.name);
+        GameObject newPlayItem = Instantiate(prefab);
+        newPlayItem.transform.SetParent(transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
+        
+
+        return newPlayItem;
+    }
+
 
 
     // Destroys a specific PlayItem in this PlaySpace
     public void DestroyPlayItem(PlayItem playItem)
     {
+        //print("attempting destroy");
         if (playItems.Contains(playItem)){
             playItems.Remove(playItem);
             Destroy(playItem.gameObject);
@@ -110,18 +147,19 @@ public class Playspace : MonoBehaviour
 
     }
 
+
 // Arranges all play items in a line
     void HorizontalLayout(int targetIndex = -1)
     {
         int count = playItems.Count;
-        float totalWidth = (count * width) + (count - 1) * paddingX;
+        float totalWidth = (count * width) + (count - 1);
         Vector3 start = transform.position + Vector3.left * (totalWidth / 2);
 
         
             for (int i = 0; i < count; i++)
             {
                 float index = (float)i + 0.5f;
-                Vector3 position = start + Vector3.right * ((index * width) + (i * paddingX));
+                Vector3 position = start + Vector3.right * (index * width);
 
                 if (targetIndex != -1)
                 {
@@ -136,7 +174,7 @@ public class Playspace : MonoBehaviour
     } 
 
 // Generated by Gemini with human edits
-    void GridLayout(int targetIndex = -1, int columns = 2)
+    void GridLayout(int targetIndex = -1, int columns = 3)
     {
         if (playItems == null || playItems.Count == 0 || columns <= 0) 
             return;
@@ -148,8 +186,8 @@ public class Playspace : MonoBehaviour
         int rowCount = Mathf.CeilToInt((float)playItems.Count / columns);
         
 
-        float totalWidth = ((columns - 1) * width) + ((columns - 1) * paddingX);
-        float totalHeight = ((rowCount - 1) * height) + (rowCount - 1) * paddingY;
+        float totalWidth = ((columns - 1) * width);
+        float totalHeight = ((rowCount - 1) * height) ;
 
 
         float startX = transform.position.x - totalWidth / 2.0f;
@@ -202,7 +240,7 @@ public PlayItem GetNearestPlayItem(Vector3 position)
     // 1. Find the absolute closest item
     foreach (PlayItem p in playItems)
     {
-        float sqrDistance = (position - p.transform.position).sqrMagnitude;
+        float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
         if (sqrDistance < minSqrDistance)
         {
             minSqrDistance = sqrDistance;

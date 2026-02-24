@@ -1,42 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
-    Vector3 rotation;
-    public float pitchRate = 90f;
-    public float yawRate = 90f;
-    public float PitchInput{get;set;}
-    public float YawInput{get;set;}
+    public float ZoomSpeed = 15f;
+    public float ZoomLerpSpeed = 5f;
+    public float MinDistance = 3f;
+    public float MaxDistance = 15f;
 
+    private CinemachineCamera cam;
+    private CinemachineOrbitalFollow orbital;
+    private float scrollDelta = 0f;
+    private Vector2 scrollPosition;
 
-    //Game started or clicked on
-    void OnEnable() => Cursor.lockState = CursorLockMode.Locked;
-    //Esc pressed
-    void OnDisable() => Cursor.lockState = CursorLockMode.None;
+    private GameObject player;
 
-    //stuff to make the camera rotate
-    void Update()
+    private float targetZoom;
+    private float currentZoom;
+
+    void Start()
     {
-        float pitchInput = PitchInput * pitchRate * Time.deltaTime;
-        float yawInput = YawInput * yawRate * Time.deltaTime;
+        cam = GetComponent<CinemachineCamera>();
+        orbital = cam.GetComponent<CinemachineOrbitalFollow>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
-        rotation.x = Mathf.Clamp(rotation.x - pitchInput, -89f, 89f);
-        rotation.y += yawInput;
-
-        //resets so camera isn't constantly spinning
-        PitchInput = 0f;
-        YawInput = 0f;
+        targetZoom = orbital.Radius;
+        currentZoom = targetZoom;
     }
 
-    void LateUpdate()
+    private void HandleMouseScroll()
     {
-        //transform.rotation = Quaternion.Euler(rotation);
+        scrollDelta += Input.GetAxisRaw("Mouse ScrollWheel");
+    }
 
-        //make camera position change
+    void Update()
+    {
+        if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
+        
+        HandleMouseScroll();
 
-        transform.localRotation = Quaternion.Euler(rotation);
+        if(orbital != null)
+        {   targetZoom = Mathf.Clamp(orbital.Radius - (scrollDelta * ZoomSpeed), MinDistance, MaxDistance);
+        }
+
+        currentZoom = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * ZoomLerpSpeed);
+        scrollDelta = Mathf.Lerp(scrollDelta, 0, Time.deltaTime * ZoomLerpSpeed);
+
+        orbital.Radius = currentZoom;
+
+        player.transform.rotation = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
 
     }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 
 public class Enemy : MonoBehaviour
 {
@@ -10,7 +12,39 @@ public class Enemy : MonoBehaviour
     public List<Card_SO> hand = new List<Card_SO>();
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
-    bool isStunned; // f the enemy is stunned, they cannot take actions.
+    public bool isStunned; // f the enemy is stunned, they cannot take actions.
+    public int currentTimer;
+    public int currentMana = 5;
+    private int currentShield = 0;
+    public GameObject shieldPanel;
+    public TMP_Text shieldText;
+
+    public int CurrentShield
+    {
+        get { return currentShield; }
+        set
+        {
+            currentShield = value;
+            UpdateShield();
+        }
+    }
+
+    private void UpdateShield()
+    {
+        if (currentShield <= 0)
+        {
+            currentShield = 0;
+            shieldPanel.SetActive(false);
+        }
+        else
+        {
+            shieldPanel.SetActive(true);
+            shieldText.text = "" + CurrentShield;
+        }
+    }
+
+    public int currentActionAmount;
+    public string currentActionType;
 
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -19,7 +53,17 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
 
+
+    //References to UI components
     public List<InventoryCard> deck;
+    public Image healthBar; // Reference to the health bar UI element
+    public TMP_Text manaText;
+    public TMP_Text timerText;
+    public GameObject actionTypeATK;
+    public GameObject actionTypeDEF;
+    public GameObject actionTypeRST;
+    public TMP_Text actionAmountText;
+    public InventoryCard currentCard;
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -28,6 +72,30 @@ public class Enemy : MonoBehaviour
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
+    
+    // different sprites needed and change depending on state
+    public SpriteRenderer spriteRenderer;
+    public Sprite IdleSprite;
+    public Sprite DamagedSprite;
+    public Sprite AttackedSprite;
+    public Sprite StunnedSprite;
+    public Sprite DefeatedSprite;
+
+
+
+// variable for enum switch state
+    bool currentValue;
+    int State = 5;
+//the different enemy states
+    public enum EnemyState
+    {
+        Idle,
+        Damaged,
+        Attacked,
+        Stunned,
+        Defeated,
+    }
+
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
     {
@@ -35,6 +103,10 @@ public class Enemy : MonoBehaviour
         enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
         currentHealth = maxHealth;
+        currentTimer = Random.Range(1, 4);
+        UpdateTimer();
+        UpdateShield();
+        currentMana = 5;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
@@ -42,6 +114,49 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     
+    //enemy state enum changes here 
+    void EnemyAnimatorState()
+    {
+        switch(State)
+        {
+            case 5:
+            {
+                currentValue = animator.GetBool("Idle");
+                animator.SetBool("Idle", true);
+                spriteRenderer.sprite = IdleSprite;
+                break;
+            }
+            case 4:
+            {
+                currentValue = animator.GetBool("Defeated");
+                animator.SetBool("Defeated", true);
+                spriteRenderer.sprite = DefeatedSprite;
+                break;
+            }
+            case 3:
+            {
+                currentValue = animator.GetBool("Stunned");
+                animator.SetBool("Stunned", true);
+                spriteRenderer.sprite = StunnedSprite;
+                break;
+            }
+            case 2:
+            {
+                currentValue = animator.GetBool("Attack");
+                animator.SetBool("Attack", true);
+                spriteRenderer.sprite = AttackedSprite;
+                break;
+            }
+            case 1:
+            {
+                currentValue = animator.GetBool("Damaged");
+                animator.SetBool("Damaged", true);
+                spriteRenderer.sprite = DamagedSprite;
+                break;
+            }
+        }
+    }
+
     public void ShuffleDeck()
     {
         // If deck has less than or equal to zero cards, shuffle the deck
@@ -58,6 +173,72 @@ public class Enemy : MonoBehaviour
         InventoryCard card = deck[Random.Range(0, deck.Count)];
         deck.Remove(card);
         return card;
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = (float)currentHealth / maxHealth;
+        }
+    }
+
+    public void UpdateActionState()
+    {
+        currentActionType = currentCard.cardSO.type;
+        //actionTypeText.text = currentActionType;
+        switch (currentActionType)
+        {
+            case ("DEF"):
+            {
+                actionTypeDEF.SetActive(true);
+                actionTypeATK.SetActive(false);
+                actionTypeRST.SetActive(false);
+                break;
+            }
+            case ("ATK"):
+            {
+                actionTypeDEF.SetActive(false);
+                actionTypeATK.SetActive(true);
+                actionTypeRST.SetActive(false);
+                break;
+            }
+            case ("RST"):
+            {
+                actionTypeDEF.SetActive(false);
+                actionTypeATK.SetActive(false);
+                actionTypeRST.SetActive(true);
+                break;
+            }
+        }
+        print(currentActionType);
+
+        currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
+        if (currentActionType != "RST")
+        {
+            actionAmountText.text = "" + currentActionAmount;
+        }
+        else
+        {
+            actionAmountText.text = "";
+        }
+        print(currentActionAmount);
+    }
+
+    public void UpdateTimer()
+    {
+        timerText.text = "" + currentTimer;
+        //float rotateTime = 2f;  // This should eventually rotate the timer on update.
+        //float amount = -180f; // 
+        //float currentTime = 0f;
+        //float amountPerMillis = amount/rotateTime;
+        //while (currentTime < rotateTime)
+        //{
+        //    print("rotating, current angle: " + timerText.transform.parent.GetChild(1).rotation.z);
+        //    timerText.transform.parent.GetChild(1).Rotate(0, 0, ((amount/rotateTime) * currentTime));
+        //    currentTime += Time.deltaTime;
+        //}
+        //timerText.transform.parent.GetChild(1).Rotate(0, 0, 180);
     }
 
     public IEnumerator StatusEffects()
@@ -79,11 +260,13 @@ public class Enemy : MonoBehaviour
                 currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount * DamageReduct);
             }
 
+            UpdateHealthBar();
 
             // Decrement the turn count for perishable effects
             if (statusEffect.DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
+                if (statusEffect.damageType == DamageType.Stun) isStunned = false;
                 statusEffects.Remove(statusEffect);
                 Debug.Log("A status effect has expired.");
             }

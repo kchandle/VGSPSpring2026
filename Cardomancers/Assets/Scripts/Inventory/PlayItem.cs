@@ -1,7 +1,8 @@
 using UnityEngine;
 
-// Base class for draggable, interacteable objects like cards.
+// Base class for draggable, interactable objects like cards.
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayItem : MonoBehaviour
 
 {
@@ -12,19 +13,28 @@ public class PlayItem : MonoBehaviour
     public Vector3 position;
     // Additional (optional) offset from position
     public Vector3 offset;
+    [SerializeField] private BoxCollider2D boxCollider;
+
+    public BoxCollider2D BoxCollider
+    {
+        get => boxCollider;
+    }
 
     // scaling
     void Awake()
     {
         //transform.localScale = new Vector3(1, 1, 1);
         //transform.position = new Vector3(0,0,0);
+        boxCollider = GetComponent<BoxCollider2D>();
+        
+        boxCollider.isTrigger = true;
     }
     void Start(){
         position = transform.position;
     } 
 
     // Move the PlayItem towards its target position at all times
-    void Update()
+    protected virtual void Update()
     {
         Vector3 targetPosition = position + offset;
         //targetPosition.z = 0f;

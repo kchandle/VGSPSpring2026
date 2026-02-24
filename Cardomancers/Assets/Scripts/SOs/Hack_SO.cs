@@ -10,6 +10,15 @@ public class Hack_SO : ScriptableObject
    public string displayName; //The name of the Hack as it appears to the player
    public string description; //The flavor text for the description
 
-   // public BattleEffect[] hackEffects; //The list of effects that occur when this hack is played
+    public Sprite image; // sprite to be displayed when the hack is instanced
+    public enum Layer
+    {
+      TOP,
+      BOTTOM
+    }
+    public Layer sideOfCard;
+    public BattleEffect[] hackEffects; // Needs battle effect to be done first
+    public ParticleSystem particleSystem; // Used by damage scripts to play effect upon hit
+
 
 }

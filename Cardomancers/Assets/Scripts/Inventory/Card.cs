@@ -11,6 +11,9 @@ public class Card : PlayItem
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
+    public GameObject bottom;
+    public GameObject top;
+    // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
         get {return cardSO;}
@@ -23,10 +26,11 @@ public class Card : PlayItem
     }
 
     
-    public List<Hack_SO> hacks;
+    public List<Hack_SO> hacks; //TO BE REMOVED IN A LATER ITERATION OF THE GAME
 
-    public int maxHacks; //Int containing the maximum number of hacks that can be applied to this card.
+    public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
 
+    [Header("UI Components")]
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
 
     [SerializeField] public Image cardImage; // set in editor
@@ -39,7 +43,7 @@ public class Card : PlayItem
     public Sprite CardSprite
     {
         get{return cardSprite;}
-        set // when CardSprite is changed, also change it in the Image
+        set // when CardSprite is changed, also change it in the UI Image
         {
             cardSprite = value;
             cardImage.sprite = value;
@@ -51,7 +55,7 @@ public class Card : PlayItem
     public Sprite DamageTypeSprite
     {
         get{return damageTypeSprite;}
-        set // when CardSprite is changed, also change it in the spriteRenderer
+        set // when CardSprite is changed, also change it in the UI Image
         {
             damageTypeSprite = value;
             damageImage.sprite = value;
@@ -61,7 +65,7 @@ public class Card : PlayItem
     public Sprite BattleEffectSprite
     {
         get{return battleEffectSprite;}
-        set // when CardSprite is changed, also change it in the spriteRenderer
+        set // when CardSprite is changed, also change it in the UI Image
         {
             battleEffectSprite = value;
             battleImage.sprite = value;
@@ -69,9 +73,7 @@ public class Card : PlayItem
     }
     #endregion
 
-    public Animator animator; // set in editor
 
-    // Once we have the animated cards, we can use the Animator field to start it's animation
 
     void Start()
     {
@@ -80,16 +82,75 @@ public class Card : PlayItem
         cardNameDisplay.text = cardSO.displayName;
     }
 
-    public void TryPlayCard(Enemy target)
+    public bool TryPlayCard(Enemy target)
     {
+        bool returnVal = false;
         //Try to play the card on the target enemy
         BattleEffect[] effects = cardSO.cardEffects;
         foreach (BattleEffect effect in effects)
         {
             //Apply each effect to the target
-            effect.TriggerEffect(target, target.gameObject.transform.position);
+            if(effect.TriggerEffect(target, target.gameObject.transform.position, cardSO)) returnVal = true;
+        }
+        return returnVal;
+    }
+
+    public bool TryPlayCard(PlayerController player)
+    {
+        bool returnVal = false;
+        // Try to play the card on the player
+        if(cardSO.type == "DEF")
+        {
+            print(cardSO.cardEffects[0].StatusAmount);
+            player.Shield += cardSO.cardEffects[0].StatusAmount;
+            returnVal = true;
+        }
+        else
+        {
+            BattleEffect[] effects = cardSO.cardEffects;
+            foreach (BattleEffect effect in effects)
+            {
+                //Apply each effect to the target
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            }
+        }
+        return returnVal;
+    }
+
+
+    public void AddHackToCard(Hack_SO hack, Inventory inventory)
+    {
+        if (hack != null && inventory != null && inventoryCard.hacks.Count < maxHacks)
+        {
+            hacks.Add(hack);
+            foreach (InventoryCard invCard in inventory.Deck)
+            {
+                if (invCard.cardID == inventoryCard.cardID)
+                {
+                    invCard.hacks.Add(hack); 
+                    switch (hack.sideOfCard)
+                    {
+                        case(Hack_SO.Layer.TOP):
+                        {
+                            top.SetActive(true);
+                            break;
+                        }
+                        case(Hack_SO.Layer.BOTTOM):
+                        {
+                            bottom.SetActive(true);
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+            //inventoryCard.hacks.Add(hack);
         }
     }
 
 
-}
+

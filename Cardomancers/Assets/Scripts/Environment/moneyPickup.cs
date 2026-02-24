@@ -3,16 +3,23 @@ using UnityEngine.Events;
 
 public class moneyPickup : MonoBehaviour
 {
-
-    public static int money = 0;
     public bool respawn = false;
+    // respawn bool causes respawn countdown
     public float respawnTime = 15f;
+    // time until respawn occurs
     public UnityEvent Respawn = new UnityEvent();
+    // respawns the moneys
     public UnityEvent OnCollect = new UnityEvent();
-    public InteractableObject_SO is_so;
+    // collects the moneys
+    private Inventory inventory;
 
     // money on here for testing put on SO or sum later
     
+    void Awake()
+    {
+        inventory = GameObject.Find("Player").GetComponent<Inventory>();
+    }
+
     public void Update()
     {
         if (respawn)
@@ -30,10 +37,13 @@ public class moneyPickup : MonoBehaviour
 
     public void getMoney()
     {
-        money++;
-        Debug.Log ($"money: {money}");
-        respawn = true;
-        OnCollect.Invoke();
+        if(!respawn)
+        {
+            inventory.Money++;
+            Debug.Log ($"money: {inventory.Money}");
+            respawn = true;
+            OnCollect.Invoke();
+        }
     }
     // getMoney called by interaction scripts
 }

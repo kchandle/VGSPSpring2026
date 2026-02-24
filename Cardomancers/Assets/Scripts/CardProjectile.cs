@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class CardProjectile : MonoBehaviour
 {
+    [SerializeField] private AudioClip[] cardHitSounds;
+
     private void OnCollisionEnter(Collision collision)
     {
+        SoundEffectManager.Instance.PlaySoundFXClip(cardHitSounds, transform, 1f);
         //whenever the card hits something, if the object that was hit has the CardInteractable script 
         if (collision.gameObject.TryGetComponent(out CardInteractable interactable))
         {
