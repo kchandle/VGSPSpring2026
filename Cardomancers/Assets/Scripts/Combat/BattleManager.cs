@@ -30,6 +30,7 @@ public class BattleManager : MonoBehaviour
     public UnityEvent PlayerTurn; // event triggered at the start of the player's turn
     public UnityEvent EnemyTurn; // event triggered at the start of the enemy's turn
     public UnityEvent OnEnd; // event triggered at the end of the battle
+    public UnityEvent OnFlee; // event triggered if player clicks flee
     #endregion
 
     #region UI Elements
@@ -114,6 +115,7 @@ public class BattleManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerInventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>();
         playerController = player.GetComponent<PlayerController>();
+        // player.GetComponent<PlayerInteract>().interacting = true;
 
         //Assign Variables for Cameras and UI
         mainCamera = Camera.main;
@@ -133,6 +135,8 @@ public class BattleManager : MonoBehaviour
     {
         battleCamera.enabled = false;
         mainCamera.enabled = true;
+        GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+        player.GetComponent<PlayerInteract>().interacting = false;
     }
     #endregion
 
@@ -185,7 +189,7 @@ public class BattleManager : MonoBehaviour
         
         //Shows player HP and Mana
         playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
-        playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>();
+        playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
         playerController.UpdateShield();
 
@@ -501,11 +505,23 @@ public class BattleManager : MonoBehaviour
 
     public void Continue()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
+        mainCamera.enabled = true;
+        battleCamera.enabled = false;
+        Destroy(this.gameObject);
+    }
+
+    public void Flee()
+    {
+        player.GetComponent<PlayerInteract>().interacting = false;
+        OnFlee.Invoke();
         mainCamera.enabled = true;
         battleCamera.enabled = false;
         Destroy(this.gameObject);
     }
 
     #endregion
+
+
 
 }

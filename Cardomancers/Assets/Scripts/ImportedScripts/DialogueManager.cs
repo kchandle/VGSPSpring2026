@@ -33,17 +33,18 @@ public class DialogueManager : MonoBehaviour
     public Image talkspriteImage; // the image element where the talksprite will be loaded
 
     public InputActionAsset inputActions; //The set of actions the player can perform, reference used to react to player input
-    InputAction nextAction;
+    public InputAction nextAction;
 
     public DialogueSO dialogue; // current dialogue SO
 
 
     public Transform playerTransform; // Assign the player's transform in the Inspector
+    public StartBattle reference;
 
     //Gets player action map to react to player input
     private void Awake()
     { 
-        nextAction = inputActions.FindActionMap("Keyboard").FindAction("UIInteract");  
+        nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");  
         // Check if an instance already exists
         if (instance != null && instance != this)
         {
@@ -59,6 +60,11 @@ public class DialogueManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    public void AssignStartBattle(StartBattle starter)
+    {
+        reference = starter;
+    }
+
     //void Start()
     //{
     //    StartDialogue(dialogue);
@@ -67,17 +73,20 @@ public class DialogueManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nextAction.WasPressedThisFrame())
+        if(canvas.activeInHierarchy)
         {
-            //Checks if line is finished typing and either skips to next line or finishes current line on player input
-            if (textElement.text == dialogue.lines[index].text)
+            if (nextAction.WasPressedThisFrame())
             {
-                NextLine();
-            }
-            else
-            {
-                StopAllCoroutines();
-                textElement.text = dialogue.lines[index].text;
+                //Checks if line is finished typing and either skips to next line or finishes current line on player input
+                if (textElement.text == dialogue.lines[index].text)
+                {
+                    NextLine();
+                }
+                else
+                {
+                    StopAllCoroutines();
+                    textElement.text = dialogue.lines[index].text;
+                }
             }
         }
     }
@@ -119,8 +128,13 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
             textElement.text = string.Empty;
             canvas.SetActive(false);
+            if(dialogue.startsBattle)
+            {
+                reference.StartBattleNow();
+            }
             //if (!reactive)
             //{
             //    //gameObject.SetActive(false);

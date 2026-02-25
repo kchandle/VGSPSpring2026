@@ -61,12 +61,10 @@ public struct BattleEffect
         PlayerController player = target.GetComponent<PlayerController>();
         if(card)
         {
-            if(card.type == "DEF")
+            if(card.type != "DEF")
             {
-                player.Shield += StatusAmount;
-                return true;
+                return false;
             }
-            return false;
         }
 
 

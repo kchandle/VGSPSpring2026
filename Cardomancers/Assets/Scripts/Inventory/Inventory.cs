@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
 	// the amount of money the player has
 	[SerializeField] private int money;
+	//The amount of xp the player has
+	[SerializeField] private float xp;
+	//The player's level
+	[SerializeField] private int level;
+	//The amount of xp the player needs to level up
+	[SerializeField] private float levelUpXp;
+
 	// all the cards the player has
 	[SerializeField] private List<InventoryCard> inventory;
 	// cards that can be used when in battle
@@ -15,7 +23,7 @@ public class Inventory : MonoBehaviour
 	[SerializeField] private List<Hack_SO> hacks;
 	// total size of inventory
 	[SerializeField] private int inventoryLength;
-	// amount of cards the player is alowed to have in their deck at one time
+	// amount of cards the player is allowed to have in their deck at one time
 	[SerializeField] private int deckLength;
 
 	[SerializeField] private int hackLength;
@@ -23,31 +31,59 @@ public class Inventory : MonoBehaviour
 	//inventory_so reference
 	[SerializeField] private Inventory_SO inventorySO;
 
+	// Used in card pickup script
+    public bool inventoryPriority = true;
+
+	// toggle for priority
+	public Toggle priorityToggle;
+
+	popUpActive popupActive;
+
 	public List<InventoryCard> CardInventory
 	{
-		get {return inventory;}
+		get { return inventory; }
+		set  { inventory = value; }
 	}
 
-    public List<InventoryCard> Deck
-    {
-        get { return deck; }
-    }
+	public List<InventoryCard> Deck
+	{
+		get { return deck; }
+		set => deck = value;
+	}
+
 	public List<Hack_SO> Hacks
 	{
-		get {return hacks;}
+		get { return hacks; }
+	}
+
+	public int DeckLength
+	{
+		get => deckLength;
+		set => deckLength = value;
+	}
+
+	public int InventoryLength
+	{
+		get => inventoryLength;
+		set => inventoryLength = value;
 	}
 
 	public int Money
 	{
-		get {return money;}
-		set {money = value;}
+		get { return money; }
+		set { money = value; }
+	}
+
+	public Inventory_SO InventorySO
+	{
+		get { return inventorySO; }
 	}
 
 
-	//Use inventory_so variables for the variables in here
+//Use inventory_so variables for the variables in here
 	private void Awake()
 	{
-		inventory = inventorySO.Inventory;
+		inventory = inventorySO.Inventory;	
 		deck = inventorySO.Deck;
         inventoryLength = inventorySO.InventoryLength;
 		deckLength = inventorySO.DeckLength;
@@ -63,19 +99,56 @@ public class Inventory : MonoBehaviour
 	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
 
 	public bool AddCardToInventory(Card card, bool isNewCard = false)
-	{
-		// stops the method and returns false if the inventory is full
-		if (inventory.Count >= inventoryLength) return false;
-		// very temporary
-		InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
-		// add new card to inventory
-		inventory.Add(newInventoryCard);
-		// automatically add to deck if possible (if it is a new card)
-		if (deck.Count >= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
-		// sync inventory with the SO
-		inventorySO.Inventory = inventory;
-		return true;
-	}
+    {
+        // stops the method and returns false if the inventory is full
+        if (inventory.Count >= inventoryLength) ;
+        // very temporary
+        InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
+        // add new card to inventory
+        inventory.Add(newInventoryCard);
+        // automatically add to deck if possible (if it is a new card)
+        if (deck.Count <= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
+        // sync inventory with the SO
+        inventorySO.Inventory = inventory;
+        return true;
+    }
+
+
+    public bool AddCardToInventory(InventoryCard card, bool addToDeck = false)
+    {
+        if(inventory.Count >= inventoryLength)
+        {
+            //popupActive.activate();
+            return false;
+        }
+        inventory.Add(card);
+		Debug.Log("Added to inv");
+        if (deck.Count <= deckLength) AddCardToDeck(card);
+        inventorySO.Inventory = inventory;
+		print(addToDeck == true);
+        if (addToDeck)
+		{ 
+			AddCardToDeck(card);
+			Debug.Log("Added to deck");
+		}
+        return true;
+    }
+
+	public void OnToggleValueChanged()
+    {
+        inventoryPriority = priorityToggle.isOn;
+		// Uses UI toggle to change where cards go when picked up
+        if (inventoryPriority)
+		{
+			Debug.Log("Cards go to inventory");
+		}
+		// If cards go to inventory, print
+		else
+		{
+			Debug.Log("Cards go to deck");
+		}
+		// If cards go to deck, print
+    }
 
 	public bool AddHackToInventory(Hack_SO hack)
 	{
@@ -107,9 +180,10 @@ public class Inventory : MonoBehaviour
 
 	public void RemoveCardFromInventory(InventoryCard card)
 	{
-		print("removing card from deck");
+		//print("removing card from deck");
 		if(deck.Contains(card)) RemoveCardFromDeck(card);
 		inventory.Remove(card);
+		print("removed card from inventory");
 		// sync with SO
 		inventorySO.Inventory = inventory;
 	}
@@ -162,5 +236,22 @@ public class Inventory : MonoBehaviour
 				.ToList();
 		inventorySO.Inventory = inventory;
 		return inventory;
+	}
+
+
+
+	//Methods to change money and xp
+	public void GainMoney(int amount)
+	{
+		money += amount;
+	}
+	public void GainXp(float amount)
+	{
+		xp += amount;
+		if(xp >= levelUpXp)
+		{
+			xp -= levelUpXp;
+			level += 1;
+		}
 	}
 }

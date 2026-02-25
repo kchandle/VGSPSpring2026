@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2170236861764640008}
   m_Layer: 0
   m_Name: PlayerInventory
-  m_TagString: Untagged
+  m_TagString: PlayerInventory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,9 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardDragInput
   inventory: {fileID: 8206509888101916535}
   inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
+  dragPlayspace: {fileID: 0}
   dragTargetStartPos: {x: 0, y: 0, z: 0}
   isDragging: 0
-  activePlayspaces: []
 --- !u!114 &8206509888101916535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,11 +64,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   money: 0
+  xp: 0
+  level: 0
+  levelUpXp: 0
   inventory: []
   deck: []
+  hacks: []
   inventoryLength: 0
   deckLength: 0
-  inventorySO: {fileID: 11400000, guid: bd0aa686dbcb14f48812470527e1f5ff, type: 2}
+  hackLength: 0
+  inventorySO: {fileID: 11400000, guid: ae1c55241edb1bc4b93f9ff454908abc, type: 2}
+  inventoryPriority: 1
+  priorityToggle: {fileID: 0}
 --- !u!114 &2170236861764640008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,5 +94,8 @@ MonoBehaviour:
   invPlayspace: {fileID: 0}
   deckPlayspace: {fileID: 0}
   hackPlayspace: {fileID: 0}
+  trashPlayspace: {fileID: 0}
+  deleteCardPopup: {fileID: 0}
   cardPrefab: {fileID: 7278841492920612246, guid: ad9cfff1982a9484bac552ed07009f6c, type: 3}
-  hackPrefab: {fileID: 0}
+  hackPrefab: {fileID: 7278841492920612246, guid: 199eb441522d7f8479480f5230abb7e9, type: 3}
+  uiDisplayed: 0
