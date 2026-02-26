@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
 
     public int currentActionAmount;
     public string currentActionType;
-
+    
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public List<DamageType> resistances;
@@ -72,7 +72,8 @@ public class Enemy : MonoBehaviour
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
-    
+    public BattleManager battleManager;
+
     // different sprites needed and change depending on state
     public SpriteRenderer spriteRenderer;
     public Sprite IdleSprite;
@@ -99,6 +100,7 @@ public class Enemy : MonoBehaviour
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
     {
+        battleManager = transform.parent.parent.gameObject.GetComponent<BattleManager>();
         // sets Max Health from the SO and sets the current health to max health
         enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
@@ -112,6 +114,11 @@ public class Enemy : MonoBehaviour
         weaknesses = new List<DamageType>(enemySO.weaknesses);
 
         animator = GetComponent<Animator>();
+    }
+
+    public void Death()
+    {
+        battleManager.allDrops.AddRange(enemySO.drops);
     }
     
     //enemy state enum changes here 
@@ -180,6 +187,13 @@ public class Enemy : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
+        }
+        if(currentHealth <= 0)
+        {
+            Death();
+            this.gameObject.GetComponentInChildren<Image>().enabled = false;
+            this.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            this.gameObject.SetActive(false);
         }
     }
 

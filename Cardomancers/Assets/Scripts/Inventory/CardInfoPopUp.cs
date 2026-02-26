@@ -114,7 +114,7 @@ public class CardInfoPopUp : PlayItem
         Vector3 basePosition = Vector3.zero;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         
-        bool focusTargetExists = false;
+        // bool focusTargetExists = false;
 
         if (CardDragInput.focusTarget && CardDragInput.focusTarget is Card)
         {
