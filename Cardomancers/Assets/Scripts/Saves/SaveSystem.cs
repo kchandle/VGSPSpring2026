@@ -13,16 +13,8 @@ public static class SaveSystem
     // Takes in an inventory SO and the game object for the player and turns it into a JSON file
     public static void Save(Inventory_SO inventory, GameObject player)
     {
-        // Creates an instance of the InventoryData class using the Inventory_SO that was input
-        SaveData data = new SaveData
-        {
-            inventory = inventory.Inventory,
-            inventoryLength = inventory.InventoryLength,
-            deck = inventory.Deck,
-            deckLength = inventory.DeckLength,
-            position = player.transform.position,
-            rotation = player.transform.eulerAngles
-        };
+        // Creates an instance of the InventoryData class using the input
+        SaveData data = new SaveData(inventory, player);
 
         // Serialize save data into JSON
         string json = JsonUtility.ToJson(data);
@@ -60,6 +52,9 @@ public static class SaveSystem
         player.transform.rotation = Quaternion.Euler(data.rotation);
 
         if (cc != null) cc.enabled = true;
+        
+        // Update exp data based on save file
+        ExpLevels.UpdateExpData(data.currentLevel, data.expToNextLevel, data.currentExp, data.skillPoints);
 
         GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateDeckIntegrity();
         GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateInventoryIntegrity();
