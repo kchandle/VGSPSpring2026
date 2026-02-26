@@ -21,6 +21,10 @@ public class BattleManager : MonoBehaviour
     public Camera mainCamera; // the main camera used outside of battles
     #endregion
 
+    #region Drops
+    public List<Drop> allDrops;
+    public List<Drop> chanceDrops;
+    #endregion
 
     #region Public Events 
     //May be used, will implement later?
@@ -74,8 +78,6 @@ public class BattleManager : MonoBehaviour
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
 
-    public int turnCount = 0; // counter for the number of turns taken in the battle
-
     public GameObject cardPrefab; // Generic prefab for the cards used in battle
 
 
@@ -110,7 +112,7 @@ public class BattleManager : MonoBehaviour
 
         // Otherwise, set the instance to this object
         instance = this;
-
+        allDrops = new List<Drop>();
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerInventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>();
@@ -125,7 +127,7 @@ public class BattleManager : MonoBehaviour
     {
         OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
         OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        OnWin.AddListener(() => Debug.Log("You Win!")); //Occurs on Win
+        OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
         PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
         EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
         OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
@@ -137,8 +139,66 @@ public class BattleManager : MonoBehaviour
         mainCamera.enabled = true;
         GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         player.GetComponent<PlayerInteract>().interacting = false;
+
+        
     }
     #endregion
+
+    public void Win()
+    {
+        float totalWeights = 0;
+        foreach(Drop drop in allDrops)
+        {
+            if(drop.weight <= 0)
+            {
+                if(drop.dropType == Drop.DropType.EXP)
+                {
+                    //playerInventory.xp += drop.quantity;
+                }
+                else if(drop.dropType == Drop.DropType.MONEY)
+                {
+                    playerInventory.Money += drop.quantity;
+                }
+            }
+            else
+            {
+                totalWeights += drop.weight;
+                chanceDrops.Add(drop);
+            }
+        }
+        float randVal = UnityEngine.Random.Range(0, totalWeights);
+        foreach (Drop drop in chanceDrops)
+        {
+            if(randVal < drop.weight)
+            {
+                switch(drop.dropType)
+                {
+                    case(Drop.DropType.CARD):
+                    {
+                        playerInventory.AddCardToInventory((Card_SO)drop.item, 1, true);
+                        break;
+                    }
+                    case(Drop.DropType.HACK):
+                    {
+                        playerInventory.AddHackToInventory((Hack_SO)drop.item);
+                        break;
+                    }
+                    case(Drop.DropType.MISC):
+                    {
+                        Debug.Log("Add this type of functionality.");
+                        break;
+                    }
+                    default:
+                    {
+                        Debug.Log("This should never print. (BattleManager.Win)");
+                        break;
+                    }
+                }
+            }
+            randVal -= drop.weight;
+        }
+        
+    }
 
     #region Startup
     //Function called by an outside force to start a battle, must pass in battle_SO
@@ -161,7 +221,6 @@ public class BattleManager : MonoBehaviour
 
         SetupPlayspaces();
 
-        turnCount = 0;
         battleState = BattleState.START; //So that it finishes setup correctly.
         isBattling = true;
         OnBattleStart.Invoke();
@@ -219,7 +278,6 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator BattleStateManager()
     {
-        int turnCount = 0;
         while(isBattling)
         {
             switch (battleState)
