@@ -5,5 +5,5 @@ public class popUp_SO : ScriptableObject
 {
     public string popUpText;
     public float timer;
-    
+    public bool decision;
 }

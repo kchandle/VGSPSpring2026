@@ -101,9 +101,24 @@ public class Inventory : MonoBehaviour
 	public bool AddCardToInventory(Card card, bool isNewCard = false)
     {
         // stops the method and returns false if the inventory is full
-        if (inventory.Count >= inventoryLength) ;
+        if (inventory.Count >= inventoryLength) return false;
         // very temporary
         InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
+        // add new card to inventory
+        inventory.Add(newInventoryCard);
+        // automatically add to deck if possible (if it is a new card)
+        if (deck.Count <= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
+        // sync inventory with the SO
+        inventorySO.Inventory = inventory;
+        return true;
+    }
+
+	public bool AddCardToInventory(Card_SO card, int maxHacks, bool isNewCard = false)
+    {
+        // stops the method and returns false if the inventory is full
+        if (inventory.Count >= inventoryLength) return false;
+        // very temporary
+        InventoryCard newInventoryCard = new InventoryCard(card, null, maxHacks);
         // add new card to inventory
         inventory.Add(newInventoryCard);
         // automatically add to deck if possible (if it is a new card)
