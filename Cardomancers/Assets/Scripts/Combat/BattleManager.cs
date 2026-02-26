@@ -153,7 +153,7 @@ public class BattleManager : MonoBehaviour
             {
                 if(drop.dropType == Drop.DropType.EXP)
                 {
-                    //playerInventory.xp += drop.quantity;
+                    ExpLevels.CurrentExp += drop.quantity;
                 }
                 else if(drop.dropType == Drop.DropType.MONEY)
                 {
@@ -549,6 +549,7 @@ public class BattleManager : MonoBehaviour
 
     public void MainMenu()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
@@ -556,6 +557,7 @@ public class BattleManager : MonoBehaviour
 
     public void Retry()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);

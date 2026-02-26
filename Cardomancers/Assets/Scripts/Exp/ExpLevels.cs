@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public static class ExpLevels
 {
@@ -40,6 +41,8 @@ public static class ExpLevels
             {
                 LevelUp();
             }
+            Debug.Log("New Current EXP = " + currentExp);
+            Debug.Log("New Current LVL = " + currentLevel);
         }
     }
     #endregion
