@@ -3,6 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Static class that manages the player's inventory, deck, hacks, and money.
+/// Provides methods for adding/removing cards and hacks, as well as hacking cards.
+/// </summary>
 public static class Inventory
 {
     #region Collections
@@ -24,106 +28,242 @@ public static class Inventory
     private static int hackInventorySize;
     #endregion
     
-    // Raised whenever inventory, deck, or hack inventory is changed
+    /// <summary>
+    /// Raised whenever the inventory, deck, or hack inventory is modified.
+    /// </summary>
     public static EventHandler inventoryChanged;
 
+    /// <summary>
+    /// The amount of money the player currently has.
+    /// </summary>
+    private static int money;
+
     #region Properties
+    /// <summary>
+    /// Database of all available cards, keyed by their name.
+    /// </summary>
     public static Dictionary<string, Card_SO> CardsDatabase
     {
         set { cardsDatabase ??= value; }
         get => cardsDatabase;
     }
 
+    /// <summary>
+    /// Database of all available hacks, keyed by their name.
+    /// </summary>
     public static Dictionary<string, Hack_SO> HacksDatabase
     {
         set { hacksDatabase ??= value; }
         get => hacksDatabase;
     }
 
+    /// <summary>
+    /// List of all cards currently in the player's inventory.
+    /// </summary>
     public static List<InventoryCard> InventoryList
     {
         get => inventory;
     }
 
+    /// <summary>
+    /// List of cards currently in the player's active deck.
+    /// </summary>
     public static List<InventoryCard> Deck
     {
         get => deck;
     }
 
+    /// <summary>
+    /// List of hacks currently in the player's inventory.
+    /// </summary>
     public static List<Hack_SO> HackInventory
     {
         get => hackInventory;
     }
+
+    /// <summary>
+    /// Gets or sets the player's current money.
+    /// </summary>
+    public static int Money
+    {
+        get => money;
+        set => money = value;
+    }
+
     #endregion
     
-    #region Add to card to Inventory
+    #region Inventory Management
 
+    /// <summary>
+    /// Adds a card to the player's inventory based on a Card ScriptableObject.
+    /// </summary>
+    /// <param name="card">The Card_SO to add.</param>
+    /// <exception cref="CardNotInDatabaseException">Thrown if the card is not in the database.</exception>
+    /// <exception cref="InventoryFullException">Thrown if the inventory is already full.</exception>
     public static void AddCardToInventory(Card_SO card)
     {
-        if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
-        {
-            throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
-        }
-        if (inventory.Count >= inventorySize)
-        {
-            throw new InventoryFullException("Inventory is full.");
-        }
+            if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
+            {
+                throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
+            }
+            if (inventory.Count >= inventorySize)
+            {
+                throw new InventoryFullException("Inventory is full.");
+            }
         InventoryCard newCard = new InventoryCard(card);
-        
+            
         inventory.Add(newCard);
+
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Adds multiple copies of a card to the inventory.
+    /// </summary>
+    /// <param name="card">The Card_SO to add.</param>
+    /// <param name="numberOfCards">The number of copies to add.</param>
+    /// <exception cref="CardNotInDatabaseException">Thrown if the card is not in the database.</exception>
     public static void AddCardToInventory(Card_SO card, int numberOfCards)
     {
+        void InternalAdd()
+        {
+            if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
+            {
+                throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
+            }
+            if (inventory.Count >= inventorySize)
+            {
+                throw new InventoryFullException("Inventory is full.");
+            }
+            InventoryCard newCard = new InventoryCard(card);
+            
+            inventory.Add(newCard);
+        }
+
         while (numberOfCards > 0)
         {
             try
             {
-                AddCardToInventory(card);
+                InternalAdd();
                 numberOfCards--;
             }
-            catch (Exception e)
+            catch (CardNotInDatabaseException e)
             {
-                Console.WriteLine(e);
+                Debug.LogError(e);
+                throw;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Adds an existing InventoryCard instance to the inventory.
+    /// </summary>
+    /// <param name="card">The InventoryCard to add.</param>
+    /// <exception cref="CardNotInDatabaseException">Thrown if the card's SO is not in the database.</exception>
+    /// <exception cref="InventoryFullException">Thrown if the inventory is full.</exception>
     public static void AddCardToInventory(InventoryCard card)
     {
-        if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.cardSO.name))
-        {
-            throw new CardNotInDatabaseException($"Card \"{card.cardSO.name}\" not found in the database.");
-        }
-        if (inventory.Count >= inventorySize)
-        {
-            throw new InventoryFullException("Inventory is full.");
-        }
-        
-        inventory.Add(card);
+            if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.cardSO.name))
+            {
+                throw new CardNotInDatabaseException($"Card \"{card.cardSO.name}\" not found in the database.");
+            }
+            if (inventory.Count >= inventorySize)
+            {
+                throw new InventoryFullException("Inventory is full.");
+            }
+            
+            
+            inventory.Add(card);
+
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Adds multiple instances of an InventoryCard to the inventory.
+    /// </summary>
+    /// <param name="card">The InventoryCard instance to add.</param>
+    /// <param name="numberOfCards">The number of times to add the card.</param>
     public static void AddCardToInventory(InventoryCard card, int numberOfCards)
     {
+        void InternalAdd()
+        {
+            if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.cardSO.name))
+            {
+                throw new CardNotInDatabaseException($"Card \"{card.cardSO.name}\" not found in the database.");
+            }
+            if (inventory.Count >= inventorySize)
+            {
+                throw new InventoryFullException("Inventory is full.");
+            }
+            
+            inventory.Add(card);
+        }
+
         while (numberOfCards > 0)
         {
             try
             {
-                AddCardToInventory(card);
+                InternalAdd();
                 numberOfCards--;
             }
-            catch (Exception e)
+            catch (CardNotInDatabaseException e)
             {
-                Console.WriteLine(e);
+                Debug.LogError(e);
+                throw;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
+
+    /// <summary>
+    /// Removes a card from the inventory and the deck if it's currently in it.
+    /// </summary>
+    /// <param name="card">The InventoryCard to remove.</param>
+    /// <exception cref="CardNotInInventoryException">Thrown if the card is not in the inventory.</exception>
+    /// <exception cref="CardNotInDatabaseException">Thrown if the card's SO is not in the database.</exception>
+    /// <exception cref="CardNotInDeckException">Thrown if the card is in the deck list but not found when attempting to remove.</exception>
+    public static void RemoveCardFromInventory(InventoryCard card)
+    {
+        if (!inventory.Contains(card))
+        {
+            throw new CardNotInInventoryException("Card not detected in in inventory, so it cannot be removed");
+        }
+        if (!cardsDatabase.ContainsKey(card.cardSO.name))
+        {
+            throw new CardNotInDatabaseException($"Card with card SO {card.cardSO.name} that is attempting to remove from inventory is not in the database.");
+        }
+        
+        inventory.Remove(card);
+        if (deck.Contains((card)))
+        {
+            if (!deck.Contains(card))
+            {
+                throw new CardNotInDeckException("The card that is being removed from the deck is not detected in the deck");
+            }
+            deck.Remove(card);
+        }
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
+    }
+
     #endregion
 
-    #region Deck
-
+    #region Deck Management
+    /// <summary>
+    /// Adds a card from the inventory to the active deck.
+    /// </summary>
+    /// <param name="card">The InventoryCard to add.</param>
+    /// <exception cref="DeckFullException">Thrown if the deck is full.</exception>
+    /// <exception cref="CardNotInInventoryException">Thrown if the card is not in the inventory.</exception>
+    /// <exception cref="CardNotInDatabaseException">Thrown if the card's SO is not in the database.</exception>
     public static void AddCardToDeck(InventoryCard card)
     {
         if (deck.Count >= deckSize)
@@ -140,32 +280,143 @@ public static class Inventory
         }
         
         deck.Add(card);
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    public static void AddCardToDeck(InventoryCard card, int numberOfCards)
-    {
-        while (numberOfCards > 0)
-        {
-            try
-            {
-                AddCardToDeck(card);
-                numberOfCards--;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-    }
-
+    /// <summary>
+    /// Removes a card from the active deck.
+    /// </summary>
+    /// <param name="card">The InventoryCard to remove.</param>
+    /// <exception cref="CardNotInDeckException">Thrown if the card is not in the deck.</exception>
     public static void RemoveCardFromDeck(InventoryCard card)
     {
         if (!deck.Contains(card))
         {
-            
+            throw new CardNotInDeckException("The card that is being removed from the deck is not detected in the deck");
         }
+        deck.Remove(card);
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
+    }
+    #endregion
+
+    #region Hacking and Hacks Management
+
+    /// <summary>
+    /// Adds a hack to the hack inventory.
+    /// </summary>
+    /// <param name="hack">The Hack_SO to add.</param>
+    /// <exception cref="HackNotInDatabaseException">Thrown if the hack is not in the database.</exception>
+    /// <exception cref="HackInventoryFullException">Thrown if the hack inventory is full.</exception>
+    public static void AddHackToInventory(Hack_SO hack)
+    {
+        void InternalAdd()
+        {
+            if (!hacksDatabase.ContainsKey(hack.name))
+            {
+                throw new HackNotInDatabaseException($"The hack {hack.name} was not found in the database.");
+            }
+
+            if (hackInventory.Count >= hackInventorySize)
+            {
+                throw new HackInventoryFullException("Hack inventory is full.");
+            }
+            
+            hackInventory.Add(hack);
+        }
+
+        InternalAdd();
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
+    /// <summary>
+    /// Adds multiple copies of a hack to the hack inventory.
+    /// </summary>
+    /// <param name="hack">The Hack_SO to add.</param>
+    /// <param name="numberOfHacks">The number of copies to add.</param>
+    public static void AddHackToInventory(Hack_SO hack, int numberOfHacks)
+    {
+        void InternalAdd()
+        {
+            if (!hacksDatabase.ContainsKey(hack.name))
+            {
+                throw new HackNotInDatabaseException($"The hack {hack.name} was not found in the database.");
+            }
+
+            if (hackInventory.Count >= hackInventorySize)
+            {
+                throw new HackInventoryFullException("Hack inventory is full.");
+            }
+            
+            hackInventory.Add(hack);
+        }
+
+        while (numberOfHacks > 0)
+        {
+            try
+            {
+                InternalAdd();
+                numberOfHacks--;
+            }
+            catch (HackNotInDatabaseException e)
+            {
+                Debug.LogError(e);
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// Removes a hack from the hack inventory.
+    /// </summary>
+    /// <param name="hack">The Hack_SO to remove.</param>
+    /// <exception cref="HackNotInInventoryException">Thrown if the hack is not in the inventory.</exception>
+    public static void RemoveHackFromInventory(Hack_SO hack)
+    {
+        if (!hackInventory.Contains(hack))
+        {
+            throw new HackNotInInventoryException($"The hack {hack.name} was not found in the inventory.");
+        }
+        hackInventory.Remove(hack);
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// Applies a hack to a specific card in the inventory.
+    /// </summary>
+    /// <param name="card">The card to be hacked.</param>
+    /// <param name="hack">The hack to apply.</param>
+    /// <exception cref="CardNotInInventoryException">Thrown if the card is not in the inventory.</exception>
+    /// <exception cref="HackNotInInventoryException">Thrown if the hack is not in the inventory.</exception>
+    /// <exception cref="CardHackLimitReachedException">Thrown if the card has already reached its hack limit.</exception>
+    public static void HackCard(InventoryCard card, Hack_SO hack)
+    {
+        if (!inventory.Contains(card))
+        {
+            throw new CardNotInInventoryException($"The card {card.cardSO.name} was not found in the inventory.");
+        }
+        if (!hackInventory.Contains(hack))
+        {
+            throw new HackNotInInventoryException($"The hack {hack.name} was not found in the inventory.");
+        }
+        if (card.hacks.Count >= card.length)
+        {
+            throw new CardHackLimitReachedException($"The card {card.cardSO.name} has already reached its hack limit.");
+        }
+        card.hacks.Add(hack);
+        
+        // Remove from inventory logic
+        if (!hackInventory.Contains(hack))
+        {
+            throw new HackNotInInventoryException($"The hack {hack.name} was not found in the inventory.");
+        }
+        hackInventory.Remove(hack);
+        
+        inventoryChanged?.Invoke(null, EventArgs.Empty);
+    }
     #endregion
 }
