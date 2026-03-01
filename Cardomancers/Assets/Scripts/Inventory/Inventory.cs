@@ -1,272 +1,171 @@
+using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
-using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public static class Inventory
 {
-	// the amount of money the player has
-	[SerializeField] private int money;
-	//The amount of xp the player has
-	[SerializeField] private float xp;
-	//The player's level
-	[SerializeField] private int level;
-	//The amount of xp the player needs to level up
-	[SerializeField] private float levelUpXp;
+    #region Collections
+    // Enforce good file organization 
+    private static Dictionary<string, Card_SO> cardsDatabase;
+    private static Dictionary<string, Hack_SO> hacksDatabase;
+    
+    // Inventory, contains all cards the player currently has
+    private static List<InventoryCard> inventory = new List<InventoryCard>();
+    // Deck, contains all cards the player can play in battle
+    private static List<InventoryCard> deck = new List<InventoryCard>();
+    // Hack Inventory, contains all the hacks the player has yet to apply to a card
+    private static List<Hack_SO> hackInventory = new  List<Hack_SO>();
+    #endregion
 
-	// all the cards the player has
-	[SerializeField] private List<InventoryCard> inventory;
-	// cards that can be used when in battle
-	[SerializeField] private List<InventoryCard> deck;
+    #region Limiting Variables
+    private static int inventorySize;
+    private static int deckSize;
+    private static int hackInventorySize;
+    #endregion
+    
+    // Raised whenever inventory, deck, or hack inventory is changed
+    public static EventHandler inventoryChanged;
 
-	[SerializeField] private List<Hack_SO> hacks;
-	// total size of inventory
-	[SerializeField] private int inventoryLength;
-	// amount of cards the player is allowed to have in their deck at one time
-	[SerializeField] private int deckLength;
-
-	[SerializeField] private int hackLength;
-
-	//inventory_so reference
-	[SerializeField] private Inventory_SO inventorySO;
-
-	// Used in card pickup script
-    public bool inventoryPriority = true;
-
-	// toggle for priority
-	public Toggle priorityToggle;
-
-	popUpActive popupActive;
-
-	public List<InventoryCard> CardInventory
-	{
-		get { return inventory; }
-		set  { inventory = value; }
-	}
-
-	public List<InventoryCard> Deck
-	{
-		get { return deck; }
-		set => deck = value;
-	}
-
-	public List<Hack_SO> Hacks
-	{
-		get { return hacks; }
-	}
-
-	public int DeckLength
-	{
-		get => deckLength;
-		set => deckLength = value;
-	}
-
-	public int InventoryLength
-	{
-		get => inventoryLength;
-		set => inventoryLength = value;
-	}
-
-	public int Money
-	{
-		get { return money; }
-		set { money = value; }
-	}
-
-	public Inventory_SO InventorySO
-	{
-		get { return inventorySO; }
-	}
-
-
-//Use inventory_so variables for the variables in here
-	private void Awake()
-	{
-		inventory = inventorySO.Inventory;	
-		deck = inventorySO.Deck;
-        inventoryLength = inventorySO.InventoryLength;
-		deckLength = inventorySO.DeckLength;
-		hacks = inventorySO.Hacks;
-		hackLength = inventorySO.HackLength;
-	}
-
-	private void Start(){
-		ValidateInventoryIntegrity();
-		ValidateDeckIntegrity();
-	}
-
-	// all add card to x methods return true if card is successfully added to inventory otherwise returns false
-
-	public bool AddCardToInventory(Card card, bool isNewCard = false)
+    #region Properties
+    public static Dictionary<string, Card_SO> CardsDatabase
     {
-        // stops the method and returns false if the inventory is full
-        if (inventory.Count >= inventoryLength) return false;
-        // very temporary
-        InventoryCard newInventoryCard = new InventoryCard(card.CardSO, card.hacks, card.maxHacks);
-        // add new card to inventory
-        inventory.Add(newInventoryCard);
-        // automatically add to deck if possible (if it is a new card)
-        if (deck.Count <= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
-        // sync inventory with the SO
-        inventorySO.Inventory = inventory;
-        return true;
+        set { cardsDatabase ??= value; }
+        get => cardsDatabase;
     }
 
-	public bool AddCardToInventory(Card_SO card, int maxHacks, bool isNewCard = false)
+    public static Dictionary<string, Hack_SO> HacksDatabase
     {
-        // stops the method and returns false if the inventory is full
-        if (inventory.Count >= inventoryLength) return false;
-        // very temporary
-        InventoryCard newInventoryCard = new InventoryCard(card, null, maxHacks);
-        // add new card to inventory
-        inventory.Add(newInventoryCard);
-        // automatically add to deck if possible (if it is a new card)
-        if (deck.Count <= deckLength && isNewCard == true) AddCardToDeck(newInventoryCard);
-        // sync inventory with the SO
-        inventorySO.Inventory = inventory;
-        return true;
+        set { hacksDatabase ??= value; }
+        get => hacksDatabase;
     }
 
-
-    public bool AddCardToInventory(InventoryCard card, bool addToDeck = false)
+    public static List<InventoryCard> InventoryList
     {
-        if(inventory.Count >= inventoryLength)
+        get => inventory;
+    }
+
+    public static List<InventoryCard> Deck
+    {
+        get => deck;
+    }
+
+    public static List<Hack_SO> HackInventory
+    {
+        get => hackInventory;
+    }
+    #endregion
+    
+    #region Add to card to Inventory
+
+    public static void AddCardToInventory(Card_SO card)
+    {
+        if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
         {
-            //popupActive.activate();
-            return false;
+            throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
         }
+        if (inventory.Count >= inventorySize)
+        {
+            throw new InventoryFullException("Inventory is full.");
+        }
+        InventoryCard newCard = new InventoryCard(card);
+        
+        inventory.Add(newCard);
+    }
+
+    public static void AddCardToInventory(Card_SO card, int numberOfCards)
+    {
+        while (numberOfCards > 0)
+        {
+            try
+            {
+                AddCardToInventory(card);
+                numberOfCards--;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+    }
+
+    public static void AddCardToInventory(InventoryCard card)
+    {
+        if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.cardSO.name))
+        {
+            throw new CardNotInDatabaseException($"Card \"{card.cardSO.name}\" not found in the database.");
+        }
+        if (inventory.Count >= inventorySize)
+        {
+            throw new InventoryFullException("Inventory is full.");
+        }
+        
         inventory.Add(card);
-		Debug.Log("Added to inv");
-        if (deck.Count <= deckLength) AddCardToDeck(card);
-        inventorySO.Inventory = inventory;
-		print(addToDeck == true);
-        if (addToDeck)
-		{ 
-			AddCardToDeck(card);
-			Debug.Log("Added to deck");
-		}
-        return true;
     }
 
-	public void OnToggleValueChanged()
+    public static void AddCardToInventory(InventoryCard card, int numberOfCards)
     {
-        inventoryPriority = priorityToggle.isOn;
-		// Uses UI toggle to change where cards go when picked up
-        if (inventoryPriority)
-		{
-			Debug.Log("Cards go to inventory");
-		}
-		// If cards go to inventory, print
-		else
-		{
-			Debug.Log("Cards go to deck");
-		}
-		// If cards go to deck, print
+        while (numberOfCards > 0)
+        {
+            try
+            {
+                AddCardToInventory(card);
+                numberOfCards--;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
+    #endregion
 
-	public bool AddHackToInventory(Hack_SO hack)
-	{
-		if (hacks.Count >= hackLength) return false;
+    #region Deck
 
-		hacks.Add(hack);
-
-		inventorySO.Hacks = hacks;
-
-		return true;
-	}
-
-	public void RemoveHack(Hack_SO hack)
-	{
-		hacks.Remove(hack);
-	}
-
-	public bool AddCardToDeck(InventoryCard card)
-	{
-		//don't add a card to the deck if the deck is full
-		if (deck.Count >= deckLength) return false;
-		// stop if the inventory doesn't contain the card OR if the deck already has that card
-		if (!inventory.Any(invCard => invCard.cardID == card.cardID) || deck.Any(deckCard => deckCard.cardID == card.cardID)) return false;
-		deck.Add(card);
-		// sync deck with the SO
-		inventorySO.Deck = deck;
-		return true;
-	}
-
-	public void RemoveCardFromInventory(InventoryCard card)
-	{
-		//print("removing card from deck");
-		if(deck.Contains(card)) RemoveCardFromDeck(card);
-		inventory.Remove(card);
-		print("removed card from inventory");
-		// sync with SO
-		inventorySO.Inventory = inventory;
-	}
-
-	public void RemoveCardFromDeck(InventoryCard card)
-	{
-		deck.Remove(card);
-		// sync with the SO
-		inventorySO.Deck = deck;
-	}
-
-	public List<InventoryCard> Shuffle(List<InventoryCard> deck)
-	{
-		for (int i = 0; i < deck.Count; i++)
-		{
-			InventoryCard temp = deck[i];
-			int randomIndex = Random.Range(i, deck.Count);
-			deck[i] = deck[randomIndex];
-			deck[randomIndex] = temp;
-		}
-        return deck;
-    }
-
-	//Currently a function that will not be called, but is here in a case that would require the player to pick a random card
-	public InventoryCard DrawCards()
+    public static void AddCardToDeck(InventoryCard card)
     {
-        // Pick random card from deck then remove from deck
-        InventoryCard card = deck[Random.Range(0, deck.Count)];
-        deck.Remove(card);
-        //Temp line to show what card was picked
-        Debug.Log(card);
-        return card;
+        if (deck.Count >= deckSize)
+        {
+            throw new DeckFullException("Deck is full");
+        }
+        if (!inventory.Contains(card))
+        {
+            throw new CardNotInInventoryException($"The card {card} was not found in the inventory.");
+        }
+        if (!cardsDatabase.ContainsKey(card.cardSO.name))
+        {
+            throw new CardNotInDatabaseException($"The card {card.cardSO.name} was not found in the database.");
+        }
+        
+        deck.Add(card);
     }
 
-// Function generated by Gemini with human edits
-	public List<InventoryCard> ValidateDeckIntegrity()
+    public static void AddCardToDeck(InventoryCard card, int numberOfCards)
     {
-        // LINQ: Filters the deck to only include items found in the inventory
-        deck = deck.Where(card => inventory.Any(invCard => invCard.cardID == card.cardID) &&
-		inventory.Any(invCard => invCard.hacks.SequenceEqual(card.hacks))) // Final safety check to ensure no duplicates
-                   .Distinct()
-				   .ToList();
-		inventorySO.Deck = deck;
-		return deck;
+        while (numberOfCards > 0)
+        {
+            try
+            {
+                AddCardToDeck(card);
+                numberOfCards--;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 
-	public List<InventoryCard> ValidateInventoryIntegrity()
-	{
-			inventory = inventory.Distinct() // Ensures there are no duplicates
-				.ToList();
-		inventorySO.Inventory = inventory;
-		return inventory;
-	}
+    public static void RemoveCardFromDeck(InventoryCard card)
+    {
+        if (!deck.Contains(card))
+        {
+            
+        }
+    }
 
-
-
-	//Methods to change money and xp
-	public void GainMoney(int amount)
-	{
-		money += amount;
-	}
-	public void GainXp(float amount)
-	{
-		xp += amount;
-		if(xp >= levelUpXp)
-		{
-			xp -= levelUpXp;
-			level += 1;
-		}
-	}
+    #endregion
 }
