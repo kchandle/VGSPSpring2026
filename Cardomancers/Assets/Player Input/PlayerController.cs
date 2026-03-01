@@ -130,6 +130,8 @@ public class PlayerController : MonoBehaviour
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
             currentHealth -= statusEffect.statusAmount;
+            print("Status Effects did " + statusEffect.statusAmount + " damage to the player");
+            UpdateHealthbar();
 
             // Decrement the turn count for perishable effects
             if (statusEffect.DecrementTurn() <= 0)
