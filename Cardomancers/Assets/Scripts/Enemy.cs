@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
 
-
+    public bool deathCalled = false;
 
 // variable for enum switch state
     bool currentValue;
@@ -118,7 +118,11 @@ public class Enemy : MonoBehaviour
 
     public void Death()
     {
-        battleManager.allDrops.AddRange(enemySO.drops);
+        if(!deathCalled)
+        {
+            battleManager.allDrops.AddRange(enemySO.drops);
+            deathCalled = true;
+        }
     }
     
     //enemy state enum changes here 
@@ -190,7 +194,11 @@ public class Enemy : MonoBehaviour
         }
         if(currentHealth <= 0)
         {
-            Death();
+            if(!deathCalled)
+            {
+                Death();
+                deathCalled = true;
+            }
             this.gameObject.GetComponentInChildren<Image>().enabled = false;
             this.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
             this.gameObject.SetActive(false);
@@ -257,31 +265,29 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator StatusEffects()
     {
-        foreach (StatusEffectContainer statusEffect in statusEffects)
+        for (int i = 0; i < statusEffects.Count; i++)
         {
             // Apply the status effect to the player
-            foreach (ParticleSystem particle in (statusEffect.particles))
+            foreach (ParticleSystem particle in (statusEffects[i].particles))
             {
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
 
-            if (weaknesses.Contains(statusEffect.damageType) )
+            if (weaknesses.Contains(statusEffects[i].damageType) )
             {
-                currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount*DamageMult);  
+                currentHealth -= Mathf.FloorToInt(statusEffects[i].statusAmount*DamageMult);  
             }
-            else if (resistances.Contains(statusEffect.damageType))
+            else if (resistances.Contains(statusEffects[i].damageType))
             {
-                currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount * DamageReduct);
+                currentHealth -= Mathf.FloorToInt(statusEffects[i].statusAmount * DamageReduct);
             }
-
-            UpdateHealthBar();
-
             // Decrement the turn count for perishable effects
-            if (statusEffect.DecrementTurn() <= 0)
+            if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
-                if (statusEffect.damageType == DamageType.Stun) isStunned = false;
-                statusEffects.Remove(statusEffect);
+                if (statusEffects[i].damageType == DamageType.Stun) isStunned = false;
+                statusEffects.Remove(statusEffects[i]);
+                i++;
                 Debug.Log("A status effect has expired.");
             }
             yield return new WaitForSeconds(0.1f);

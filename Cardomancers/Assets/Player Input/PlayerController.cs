@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public float currentHealth;
     public Image healthbar;
 
+    public bool TestingFastMode = false;
+
     public GameObject shieldPanel;
     public TMP_Text shieldText;
 
@@ -122,23 +124,29 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator StatusEffects()
     {
-        foreach(StatusEffectContainer statusEffect in statusEffects)
+        for(int i = 0; i < statusEffects.Count; i++)
         {
             // Apply the status effect to the player
-            foreach (ParticleSystem particle in (statusEffect.particles))
+            foreach (ParticleSystem particle in statusEffects[i].particles)
             {
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
-            currentHealth -= statusEffect.statusAmount;
-
+            currentHealth -= statusEffects[i].statusAmount;
+            print("Status Effects did " + statusEffects[i].statusAmount + " damage to the player");
+            UpdateHealthbar();
+            // statusEffects[i].turnsRemaining--;
             // Decrement the turn count for perishable effects
-            if (statusEffect.DecrementTurn() <= 0)
+            if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
-                statusEffects.Remove(statusEffect);
+                statusEffects.Remove(statusEffects[i]);
                 Debug.Log("A status effect has expired.");
+                i++;
             }
-            yield return new WaitForSeconds(0.1f);
+            if(TestingFastMode)
+                yield return null;
+            else
+                yield return new WaitForSeconds(0.1f);
         }
         yield return null;
     }

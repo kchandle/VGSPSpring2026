@@ -170,6 +170,7 @@ public class MusicPlayer : MonoBehaviour
     // This gets the Music size, can only use in the editor though...
     private static long GetMusicSize(AudioClip clip)
     {
+        long length = 0L;
 #if UNITY_EDITOR
         if (clip == null)
         {
@@ -187,9 +188,9 @@ public class MusicPlayer : MonoBehaviour
 
         FileInfo fileInfo = new FileInfo(path);
 
-        return fileInfo.Length;
+        length = fileInfo.Length;
 #endif
-        return 0L;
+        return length;
     }
 
     // This makes sure other programmers, artists etc... fix the clip size since most dont know how to do that...

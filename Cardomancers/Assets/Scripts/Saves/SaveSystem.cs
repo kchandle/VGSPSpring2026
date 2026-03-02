@@ -11,10 +11,10 @@ public static class SaveSystem
     private static readonly EncryptionService encryption = new EncryptionService(key);
 
     // Takes in an inventory SO and the game object for the player and turns it into a JSON file
-    public static void Save(Inventory_SO inventory, GameObject player)
+    public static void Save(GameObject player)
     {
         // Creates an instance of the InventoryData class using the input
-        SaveData data = new SaveData(inventory, player);
+        SaveData data = new SaveData(player);
 
         // Serialize save data into JSON
         string json = JsonUtility.ToJson(data);
@@ -27,7 +27,7 @@ public static class SaveSystem
     }
 
     // Takes in an inventory SO and assigns its data based on the saved data
-    public static void Load(Inventory inventory, GameObject player)
+    public static void Load(GameObject player)
     {
         Debug.Log(File.Exists(DataPath));
         // Ends function if there is no save data
@@ -35,15 +35,10 @@ public static class SaveSystem
 
         // where data is assigned
         SaveData data = JsonUtility.FromJson<SaveData>(encryption.Decrypt(File.ReadAllText(DataPath)));
-        inventory.InventorySO.Inventory = data.inventory;
-        inventory.InventorySO.Deck =  data.deck;
-        inventory.InventorySO.DeckLength = data.deckLength;
-        inventory.InventorySO.InventoryLength = data.inventoryLength;
-        
-        inventory.CardInventory = inventory.InventorySO.Inventory;
-        inventory.Deck = inventory.InventorySO.Deck;
-        inventory.InventoryLength = inventory.InventorySO.InventoryLength;
-        inventory.DeckLength = inventory.InventorySO.DeckLength;
+        Inventory.InventoryList = data.inventory;
+        Inventory.Deck =  data.deck;
+        Inventory.DeckSize = data.deckLength;
+        Inventory.InventorySize = data.inventoryLength;
 
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
@@ -56,24 +51,7 @@ public static class SaveSystem
         // Update exp data based on save file
         ExpLevels.UpdateExpData(data.currentLevel, data.expToNextLevel, data.currentExp, data.skillPoints);
 
-        GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateDeckIntegrity();
-        GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateInventoryIntegrity();
-    }
-
-
-    public static void Load(GameObject player)
-    {
-        if (!File.Exists(DataPath)) return;
-
-        SaveData data = JsonUtility.FromJson<SaveData>(File.ReadAllText(DataPath));
-
-        CharacterController cc = player.GetComponent<CharacterController>();
-        if (cc != null) cc.enabled = false;
-
-        player.transform.position = data.position;
-
-        player.transform.rotation = Quaternion.Euler(data.rotation);
-
-        if (cc != null) cc.enabled = true;
+        //GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateDeckIntegrity();
+        //GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateInventoryIntegrity();
     }
 }
