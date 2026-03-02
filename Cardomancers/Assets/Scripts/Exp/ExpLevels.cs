@@ -30,6 +30,17 @@ public static class ExpLevels
         get => currentLevel;
     }
 
+    // remove after tests are done
+    public static int ExpToNextLevel
+    {
+        get => expToNextLevel;
+    }
+
+    public static int SkillPoints
+    {
+        get => skillPoints;
+    }
+    
     public static int CurrentExp
     {
         get => currentExp;
@@ -64,10 +75,13 @@ public static class ExpLevels
         expToNextLevel = currentLevel * 50;
 
         // increase skill points based on next level
-        skillPoints += currentLevel * 5;
+        skillPoints = currentLevel * 5;
         
         // call level up event
         levelUp?.Invoke();
+
+        // If exp is still enough to level up, do it again
+        if (currentExp >= expToNextLevel) LevelUp();
     }
 
     // updates fields based on save data

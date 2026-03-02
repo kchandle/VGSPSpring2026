@@ -10,7 +10,6 @@ public class InventoryUIHandler : MonoBehaviour
 {
 
     public Canvas canvas;
-    public Inventory inventory; //set in editor
 
     public CardDragInput cardDragInput; //set in editor
 
@@ -55,18 +54,18 @@ public class InventoryUIHandler : MonoBehaviour
             cardDragInput.AddActivePlayspace(trashPlayspace);
         
             // Ensure that inventory and deck have no duplicates
-            inventory.ValidateInventoryIntegrity(); 
-            inventory.ValidateDeckIntegrity();
+            //inventory.ValidateInventoryIntegrity(); 
+            //inventory.ValidateDeckIntegrity();
 
             // Add deck cards
-            foreach(InventoryCard card in inventory.Deck)
+            foreach(InventoryCard card in Inventory.Deck)
             {
                 print(card);   
                 GameObject newCard = deckPlayspace.NewPlayItem(cardPrefab, card.cardSO, card);
             }
 
-            List<InventoryCard> notInDeck = inventory.CardInventory.Where(card => 
-            !inventory.Deck.Any(deckCard => deckCard.cardID == card.cardID))
+            List<InventoryCard> notInDeck = Inventory.InventoryList.Where(card => 
+            !Inventory.Deck.Any(deckCard => deckCard.cardID == card.cardID))
             .ToList();
  
             foreach (InventoryCard card in notInDeck)
@@ -75,7 +74,7 @@ public class InventoryUIHandler : MonoBehaviour
                 GameObject newCard = invPlayspace.NewPlayItem(cardPrefab, card.cardSO, card);
             } 
 
-            foreach (Hack_SO hack in inventory.Hacks)
+            foreach (Hack_SO hack in Inventory.HackInventory)
             {
                 print(hack);
                 GameObject newHack = hackPlayspace.NewPlayItem(hackPrefab, hack);
@@ -90,7 +89,7 @@ public class InventoryUIHandler : MonoBehaviour
     public bool AttemptAddToDeck(Card card)
     {
   
-        bool addedToDeck = inventory.AddCardToDeck(card.inventoryCard);
+        bool addedToDeck = Inventory.AddCardToDeck(card.inventoryCard);
         if (addedToDeck == true) return true;
         else
         {
@@ -102,7 +101,7 @@ public class InventoryUIHandler : MonoBehaviour
 
     public void AttemptRemoveFromDeck(Card card)
     {
-        inventory.RemoveCardFromDeck(card.inventoryCard);
+        Inventory.RemoveCardFromDeck(card.inventoryCard);
     }
 
     public void CardDraggedIntoPlayspace(PlayItem playItem, Playspace to, Playspace from)
@@ -153,7 +152,7 @@ public class InventoryUIHandler : MonoBehaviour
     //Remove the card to be deleted from inventory, then remove it from the trash playspace, fully discarding it.
     public void TrashCard()
     {
-        inventory.RemoveCardFromInventory(((Card)trashItem).inventoryCard);
+        Inventory.RemoveCardFromInventory(((Card)trashItem).inventoryCard);
         trashPlayspace.playItems.Remove(trashItem);
         Destroy(trashItem.gameObject);
        
