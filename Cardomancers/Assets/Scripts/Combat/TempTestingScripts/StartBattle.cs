@@ -21,7 +21,7 @@ public class StartBattle : MonoBehaviour
     // The only reason this exists is to test the battle system quickly  
     public void StartBattleNow()
     {
-        canvas.SetActive(true);
+        // canvas.SetActive(true);
         StartCoroutine(DisableTransition(timer));
 
         GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
@@ -39,7 +39,7 @@ public class StartBattle : MonoBehaviour
     IEnumerator DisableTransition(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        canvas.SetActive(false);
+        // canvas.SetActive(false);
     }
 
         
