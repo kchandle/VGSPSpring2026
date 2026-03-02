@@ -155,7 +155,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else if(drop.dropType == Drop.DropType.MONEY)
                 {
-                    playerInventory.Money += drop.quantity;
+                    Inventory.Money += drop.quantity;
                 }
             }
             else
@@ -173,7 +173,7 @@ public class BattleManager : MonoBehaviour
                 {
                     case(Drop.DropType.CARD):
                     {
-                        Inventory.AddCardToInventory((Card_SO)drop.item, 1, true);
+                        Inventory.AddCardToInventory((Card_SO)drop.item);
                         break;
                     }
                     case(Drop.DropType.HACK):
