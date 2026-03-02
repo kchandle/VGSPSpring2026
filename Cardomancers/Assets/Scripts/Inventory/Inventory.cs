@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using InventoryExceptions;
 
 /// <summary>
 /// Static class that manages the player's inventory, deck, hacks, and money.
@@ -63,6 +64,7 @@ public static class Inventory
     public static List<InventoryCard> InventoryList
     {
         get => inventory;
+        set => inventory = value;
     }
 
     /// <summary>
@@ -71,6 +73,7 @@ public static class Inventory
     public static List<InventoryCard> Deck
     {
         get => deck;
+        set =>  deck = value;
     }
 
     /// <summary>
@@ -79,6 +82,7 @@ public static class Inventory
     public static List<Hack_SO> HackInventory
     {
         get => hackInventory;
+        set => hackInventory = value;
     }
 
     /// <summary>
@@ -90,6 +94,23 @@ public static class Inventory
         set => money = value;
     }
 
+    public static int InventorySize
+    {
+        get => inventorySize;
+        set => inventorySize = value;
+    }
+
+    public static int DeckSize
+    {
+        get => deckSize;
+        set => deckSize = value;
+    }
+
+    public static int HackInventorySize
+    {
+        get => hackInventorySize;
+        set => hackInventorySize = value;
+    }
     #endregion
     
     #region Inventory Management
@@ -100,7 +121,7 @@ public static class Inventory
     /// <param name="card">The Card_SO to add.</param>
     /// <exception cref="CardNotInDatabaseException">Thrown if the card is not in the database.</exception>
     /// <exception cref="InventoryFullException">Thrown if the inventory is already full.</exception>
-    public static void AddCardToInventory(Card_SO card)
+    public static bool AddCardToInventory(Card_SO card)
     {
             if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
             {
@@ -115,6 +136,7 @@ public static class Inventory
         inventory.Add(newCard);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        return true;
     }
 
     /// <summary>
@@ -123,7 +145,7 @@ public static class Inventory
     /// <param name="card">The Card_SO to add.</param>
     /// <param name="numberOfCards">The number of copies to add.</param>
     /// <exception cref="CardNotInDatabaseException">Thrown if the card is not in the database.</exception>
-    public static void AddCardToInventory(Card_SO card, int numberOfCards)
+    public static bool AddCardToInventory(Card_SO card, int numberOfCards)
     {
         void InternalAdd()
         {
@@ -158,6 +180,7 @@ public static class Inventory
             }
         }
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        return true;
     }
 
     /// <summary>
@@ -188,7 +211,7 @@ public static class Inventory
     /// </summary>
     /// <param name="card">The InventoryCard instance to add.</param>
     /// <param name="numberOfCards">The number of times to add the card.</param>
-    public static void AddCardToInventory(InventoryCard card, int numberOfCards)
+    public static bool AddCardToInventory(InventoryCard card, int numberOfCards)
     {
         void InternalAdd()
         {
@@ -222,6 +245,7 @@ public static class Inventory
             }
         }
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        return true;
     }
 
     /// <summary>
@@ -264,7 +288,7 @@ public static class Inventory
     /// <exception cref="DeckFullException">Thrown if the deck is full.</exception>
     /// <exception cref="CardNotInInventoryException">Thrown if the card is not in the inventory.</exception>
     /// <exception cref="CardNotInDatabaseException">Thrown if the card's SO is not in the database.</exception>
-    public static void AddCardToDeck(InventoryCard card)
+    public static bool AddCardToDeck(InventoryCard card)
     {
         if (deck.Count >= deckSize)
         {
@@ -281,6 +305,7 @@ public static class Inventory
         
         deck.Add(card);
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        return true;
     }
 
     /// <summary>

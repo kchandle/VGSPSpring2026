@@ -6,6 +6,6 @@ public class LoadGame : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        SaveSystem.Load(GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>(), player);
+        SaveSystem.Load(player);
     }
 }

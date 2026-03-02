@@ -1,87 +1,130 @@
 using System;
 
-/// <summary>
-/// Exception thrown when a card is not found in the card database.
-/// </summary>
-public class CardNotInDatabaseException : Exception
+namespace InventoryExceptions
 {
-    public CardNotInDatabaseException() { }
-    public CardNotInDatabaseException(string message) : base(message) { }
-}
+    /// <summary>
+    /// Exception thrown when a card is not found in the card database.
+    /// </summary>
+    public class CardNotInDatabaseException : Exception
+    {
+        public CardNotInDatabaseException()
+        {
+        }
 
-/// <summary>
-/// Exception thrown when attempting to add a card to the inventory and it is already at maximum capacity.
-/// </summary>
-public class InventoryFullException : Exception
-{
-    public InventoryFullException() { }
-    public InventoryFullException(string message) : base(message) { }
-}
+        public CardNotInDatabaseException(string message) : base(message)
+        {
+        }
+    }
 
-/// <summary>
-/// Exception thrown when attempting to add a card to the deck and it is already at maximum capacity.
-/// </summary>
-public class DeckFullException : Exception
-{
-    public DeckFullException() { }
-    public DeckFullException(string message) : base(message) { }
-}
+    /// <summary>
+    /// Exception thrown when attempting to add a card to the inventory and it is already at maximum capacity.
+    /// </summary>
+    public class InventoryFullException : Exception
+    {
+        public InventoryFullException()
+        {
+        }
 
-/// <summary>
-/// Exception thrown when an operation is attempted on a card that is not in the inventory.
-/// </summary>
-public class CardNotInInventoryException : Exception
-{
-    public CardNotInInventoryException() { }
-    public CardNotInInventoryException(string message) : base(message) { }
-}
+        public InventoryFullException(string message) : base(message)
+        {
+        }
+    }
 
-/// <summary>
-/// Exception thrown when an operation is attempted on a card that is not in the deck.
-/// </summary>
-public class CardNotInDeckException : Exception
-{
-    public CardNotInDeckException() { }
+    /// <summary>
+    /// Exception thrown when attempting to add a card to the deck and it is already at maximum capacity.
+    /// </summary>
+    public class DeckFullException : Exception
+    {
+        public DeckFullException()
+        {
+        }
 
-    public CardNotInDeckException(string message) : base(message) { }
-}
+        public DeckFullException(string message) : base(message)
+        {
+        }
+    }
 
-/// <summary>
-/// Exception thrown when a hack is not found in the hack database.
-/// </summary>
-public class HackNotInDatabaseException : Exception
-{
-    public HackNotInDatabaseException() { }
+    /// <summary>
+    /// Exception thrown when an operation is attempted on a card that is not in the inventory.
+    /// </summary>
+    public class CardNotInInventoryException : Exception
+    {
+        public CardNotInInventoryException()
+        {
+        }
 
-    public HackNotInDatabaseException(string message) : base(message) { }
-}
+        public CardNotInInventoryException(string message) : base(message)
+        {
+        }
+    }
 
-/// <summary>
-/// Exception thrown when attempting to add a hack to the hack inventory and it is already at maximum capacity.
-/// </summary>
-public class HackInventoryFullException : Exception
-{
-    public HackInventoryFullException() { }
+    /// <summary>
+    /// Exception thrown when an operation is attempted on a card that is not in the deck.
+    /// </summary>
+    public class CardNotInDeckException : Exception
+    {
+        public CardNotInDeckException()
+        {
+        }
 
-    public HackInventoryFullException(string message) : base(message) { }
-}
+        public CardNotInDeckException(string message) : base(message)
+        {
+        }
+    }
 
-/// <summary>
-/// Exception thrown when an operation is attempted on a hack that is not in the hack inventory.
-/// </summary>
-public class HackNotInInventoryException : Exception
-{
-    public HackNotInInventoryException() { }
+    /// <summary>
+    /// Exception thrown when a hack is not found in the hack database.
+    /// </summary>
+    public class HackNotInDatabaseException : Exception
+    {
+        public HackNotInDatabaseException()
+        {
+        }
 
-    public HackNotInInventoryException(string message) : base(message) { }
-}
+        public HackNotInDatabaseException(string message) : base(message)
+        {
+        }
+    }
 
-/// <summary>
-/// Exception thrown when attempting to apply a hack to a card that has already reached its maximum number of hacks.
-/// </summary>
-public class CardHackLimitReachedException : Exception
-{
-    public CardHackLimitReachedException() { }
+    /// <summary>
+    /// Exception thrown when attempting to add a hack to the hack inventory and it is already at maximum capacity.
+    /// </summary>
+    public class HackInventoryFullException : Exception
+    {
+        public HackInventoryFullException()
+        {
+        }
 
-    public CardHackLimitReachedException(string message) : base(message) { }
+        public HackInventoryFullException(string message) : base(message)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Exception thrown when an operation is attempted on a hack that is not in the hack inventory.
+    /// </summary>
+    public class HackNotInInventoryException : Exception
+    {
+        public HackNotInInventoryException()
+        {
+        }
+
+        public HackNotInInventoryException(string message) : base(message)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Exception thrown when attempting to apply a hack to a card that has already reached its maximum number of hacks.
+    /// </summary>
+    public class CardHackLimitReachedException : Exception
+    {
+        public CardHackLimitReachedException()
+        {
+        }
+
+        public CardHackLimitReachedException(string message) : base(message)
+        {
+        }
+    }
 }
