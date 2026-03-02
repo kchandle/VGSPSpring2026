@@ -24,12 +24,12 @@ public class SaveData
     public int skillPoints;
     #endregion
     
-    public  SaveData(Inventory_SO inventorySO, GameObject player)
+    public  SaveData(GameObject player)
     {
-       inventory = inventorySO.Inventory;
-       deck = inventorySO.Deck;
-       inventoryLength = inventorySO.InventoryLength;
-       deckLength = inventorySO.DeckLength;
+       inventory = Inventory.InventoryList;
+       deck = Inventory.Deck;
+       inventoryLength = Inventory.InventorySize;
+       deckLength = Inventory.DeckSize;
        
        position = player.transform.position;
        rotation = player.transform.eulerAngles;
