@@ -7,9 +7,10 @@ public class LoadingScreen : MonoBehaviour
 {
     public static LoadingScreen Instance;
 
-    [HideInInspector] public bool loading = false;
+    public bool updating = false;
 
     public GameObject loadingScreenCanvas;
+    private CanvasGroup canvasGroup;
     [SerializeField] Image loadBar;
 
     private void Awake()
@@ -18,28 +19,38 @@ public class LoadingScreen : MonoBehaviour
         else Destroy(this.gameObject);
 
         DontDestroyOnLoad(this);
-    }
 
-    [ContextMenu("TestLoad")]
-    public void Test()
-    {
-        loading = true;
-        StartCoroutine(UpdateLoadingBar(1f));
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     public IEnumerator UpdateLoadingBar(float fillPercent)
     {
-        while (loading)
+        updating = true;
+
+        while(Mathf.Abs(loadBar.fillAmount - fillPercent) > 0.01)
         {
-            while(Mathf.Abs(loadBar.fillAmount - fillPercent) > 0.01)
-            {
-                loadBar.fillAmount = Mathf.Lerp(loadBar.fillAmount, fillPercent, 0.01f);
-                yield return null;
-            }
-            loadBar.fillAmount = fillPercent;
+            loadBar.fillAmount = Mathf.Lerp(loadBar.fillAmount, fillPercent, 0.01f);
             yield return null;
-            if (loadBar.fillAmount == 1f) loading = false;
         }
-        //fade out loading screen 
+        loadBar.fillAmount = fillPercent;
+        yield return null;
+        if (loadBar.fillAmount == 1f) StartCoroutine(ChangeAlpha(0f));
+        updating = false;
+    }
+
+    public IEnumerator ChangeAlpha(float alpha)
+    {
+        while (Mathf.Abs(canvasGroup.alpha - alpha) > 0.01)
+        {
+            canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, alpha, 0.1f);
+            yield return null;
+        }
+        canvasGroup.alpha = alpha;
+    }
+
+    public void ResetLoadingScreen()
+    {
+        canvasGroup.alpha = 1f;
+        loadBar.fillAmount = 0f;
     }
 }
