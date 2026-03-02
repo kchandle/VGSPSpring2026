@@ -409,7 +409,7 @@ public class BattleManager : MonoBehaviour
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
         {
-            playerDeckCopyActive = System.Random.Shuffle(Inventory.Deck);
+            playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
 
             //Add NewPlayItem from playsapce for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
