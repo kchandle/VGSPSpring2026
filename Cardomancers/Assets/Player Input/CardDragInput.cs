@@ -9,7 +9,6 @@ using UnityEditor;
 public class CardDragInput : MonoBehaviour
 {
 
-    public Inventory inventory; //set in editor
     private InputActionMap actionMap; // current action map.
     public InputActionAsset inputActions;
 
@@ -36,7 +35,7 @@ public class CardDragInput : MonoBehaviour
     }
 
     PlayItem dragTarget; // the current PlayItem being dragged (if any)
-    Playspace dragPlayspace; // the Playspace that dragTarget is in
+    public  Playspace dragPlayspace; // the Playspace that dragTarget is in
 
     public Vector3 dragTargetStartPos; // starting position of the dragTarget
     public bool isDragging = false; // if a playItem being dragged
@@ -44,8 +43,8 @@ public class CardDragInput : MonoBehaviour
     private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
 
     public event Action<PlayItem, Playspace, Playspace> PlayitemMoved; // PlayItem being moved, To, From
-
-
+    
+    public static PlayItem focusTarget;
 // TEST STUFF FOR TESTING
 
     //public GameObject testPlayItemPrefab;
@@ -119,17 +118,15 @@ public class CardDragInput : MonoBehaviour
 
 
             // get the current focusTarget (Playitem closests to the mouse INSIDE the playspace they are hovering over)
-            PlayItem focusTarget;
+            
             if (isDragging == false)
             {
                 foreach (Playspace p in activePlayspaces)
                 {
                     // try to get focusTarget in Playspace p
-                    //Debug.Log(mousePosition);
+
                     //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
-                    
                     focusTarget = p.GetNearestPlayItem(mousePosition);
-                   
 
                     //if(p.InPlayArea(mousePositionWorld) == true) print(p.name+" is being hovered over");
     
@@ -157,7 +154,6 @@ public class CardDragInput : MonoBehaviour
 
             if (Pointer.current.press.wasPressedThisFrame)
             {
-                print("you clicked");
 
                 if (isDragging == false && dragPlayspace != null)
                 {

@@ -1,12 +1,16 @@
 using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
-public struct StatusEffectContainer
+[Serializable]
+public class StatusEffectContainer
 {
     public DamageType damageType;
     public int statusAmount;
     public bool isPerishable;
     public int turnsLasting;
-    private int turnsRemaining;
+    public int turnsRemaining;
 
     public ParticleSystem[] particles;
 
@@ -16,6 +20,11 @@ public struct StatusEffectContainer
         if (isPerishable && turnsRemaining > 0)
         {
             turnsRemaining--;
+            Debug.Log("turnsRemainingDecremented: " + turnsRemaining);
+        }
+        else if (turnsRemaining <= 0 && isPerishable)
+        {
+            statusAmount = 0;
         }
         return turnsRemaining;
     }

@@ -595,13 +595,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9161bc64208f37c47b8cec0560459aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragInput
+  inventory: {fileID: 0}
   inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
+  dragPlayspace: {fileID: 0}
   dragTargetStartPos: {x: 0, y: 0, z: 0}
   isDragging: 0
-  testPlayspace1: {fileID: 0}
-  testPlayspace2: {fileID: 0}
-  testPlayspace3: {fileID: 0}
-  testPlayItemPrefab: {fileID: 0}
 --- !u!1 &5620023240782424658
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,5 +731,15 @@ MonoBehaviour:
   titleElement: {fileID: 8283461280315372233}
   talkspriteImage: {fileID: 2848244003762869042}
   inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
+  nextAction:
+    m_Name: Next
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2b984263-596f-4bf5-98b0-5ed8527c0fb5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   dialogue: {fileID: 11400000, guid: ae00827df36e3aa49a22e5cb7526d353, type: 2}
   playerTransform: {fileID: 0}
+  reference: {fileID: 0}
