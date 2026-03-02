@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using InventoryExceptions;
+using Random = System.Random;
 
 /// <summary>
 /// Static class that manages the player's inventory, deck, hacks, and money.
@@ -321,6 +322,22 @@ public static class Inventory
         }
         deck.Remove(card);
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+    }
+
+    private static Random rng = new Random();
+    public static List<InventoryCard> Shuffle(List<InventoryCard> input)
+    {
+        List<InventoryCard> copyInput = new List<InventoryCard>(input);
+        int length = copyInput.Count;
+        while (length > 1)
+        {
+            length--;
+            int k = rng.Next(length + 1);
+            InventoryCard value = copyInput[k];
+            copyInput[k] = copyInput[length];
+            copyInput[length] = value;
+        }
+        return copyInput;
     }
     #endregion
 
