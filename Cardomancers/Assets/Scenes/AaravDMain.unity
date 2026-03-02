@@ -791,7 +791,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1053514593}
   m_SourcePrefab: {fileID: 100100000, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
 --- !u!1 &373989020
 GameObject:
@@ -823,6 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoadGame
   player: {fileID: 639705246}
+  testDefaultCard: {fileID: 0}
 --- !u!4 &373989022
 Transform:
   m_ObjectHideFlags: 0
@@ -1574,6 +1578,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
+--- !u!114 &1053514593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639705246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 059102c7f18780f4a90f7dc80dbc37fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleTheme
+  battleTheme: {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
 --- !u!1 &1100253969
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,22 +2513,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5583888723143640853, guid: 559656a195551694089231c653c45834, type: 3}
-      propertyPath: m_Name
-      value: MapV2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7295323874505220431, guid: 559656a195551694089231c653c45834, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7295323874505220431, guid: 559656a195551694089231c653c45834, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7295323874505220431, guid: 559656a195551694089231c653c45834, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 40514076277070836, guid: b0f3d3cac6735844aa66829e04c858a7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3096,6 +3097,22 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 067889638a4765c49bdb098724e127b5, type: 2}
+    - target: {fileID: 5583888723143640853, guid: 559656a195551694089231c653c45834, type: 3}
+      propertyPath: m_Name
+      value: MapV2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7295323874505220431, guid: 559656a195551694089231c653c45834, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7295323874505220431, guid: 559656a195551694089231c653c45834, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7295323874505220431, guid: 559656a195551694089231c653c45834, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3508495341197601730, guid: b0f3d3cac6735844aa66829e04c858a7, type: 3}
     - {fileID: 8928490477100476107, guid: b0f3d3cac6735844aa66829e04c858a7, type: 3}
