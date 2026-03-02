@@ -6,7 +6,7 @@ public class cardPickup : MonoBehaviour
      public UnityEvent GetCard = new UnityEvent();
      public bool added; 
 
-    /*public void getCard()
+    public void GetCardNow()
     {
         added = Inventory.AddCardToInventory(card);
         
@@ -15,7 +15,7 @@ public class cardPickup : MonoBehaviour
         Debug.Log("Card Got!");
         if (added) GetCard.Invoke();
     }
-    */
+    
 
     // Puts card in inventroy and deletes :)
     // getCard is called by playerInteract

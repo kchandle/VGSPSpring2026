@@ -25,9 +25,9 @@ public static class Inventory
     #endregion
 
     #region Limiting Variables
-    private static int inventorySize;
-    private static int deckSize;
-    private static int hackInventorySize;
+    private static int inventorySize = 5;
+    private static int deckSize = 5;
+    private static int hackInventorySize = 5;
     #endregion
     
     /// <summary>
@@ -190,7 +190,7 @@ public static class Inventory
     /// <param name="card">The InventoryCard to add.</param>
     /// <exception cref="CardNotInDatabaseException">Thrown if the card's SO is not in the database.</exception>
     /// <exception cref="InventoryFullException">Thrown if the inventory is full.</exception>
-    public static void AddCardToInventory(InventoryCard card)
+    public static bool AddCardToInventory(InventoryCard card)
     {
             if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.cardSO.name))
             {
@@ -205,6 +205,7 @@ public static class Inventory
             inventory.Add(card);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        return true;
     }
 
     /// <summary>
