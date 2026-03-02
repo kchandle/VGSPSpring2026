@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 804995262820333319}
   - component: {fileID: 1517075493596924805}
-  - component: {fileID: 8206509888101916535}
   - component: {fileID: 2170236861764640008}
   m_Layer: 0
   m_Name: PlayerInventory
@@ -46,36 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9161bc64208f37c47b8cec0560459aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragInput
-  inventory: {fileID: 8206509888101916535}
   inputActions: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
   dragPlayspace: {fileID: 0}
   dragTargetStartPos: {x: 0, y: 0, z: 0}
   isDragging: 0
---- !u!114 &8206509888101916535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6614670402393019240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b625c6603a9612f4ab4f453d1b45ed16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  money: 0
-  xp: 0
-  level: 0
-  levelUpXp: 0
-  inventory: []
-  deck: []
-  hacks: []
-  inventoryLength: 0
-  deckLength: 0
-  hackLength: 0
-  inventorySO: {fileID: 11400000, guid: ae1c55241edb1bc4b93f9ff454908abc, type: 2}
-  inventoryPriority: 1
-  priorityToggle: {fileID: 0}
 --- !u!114 &2170236861764640008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +62,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryUIHandler
   canvas: {fileID: 0}
-  inventory: {fileID: 8206509888101916535}
   cardDragInput: {fileID: 1517075493596924805}
   invPlayspace: {fileID: 0}
   deckPlayspace: {fileID: 0}

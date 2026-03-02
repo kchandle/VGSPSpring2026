@@ -52,7 +52,6 @@ public class BattleManager : MonoBehaviour
     private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
-    private Inventory playerInventory; // reference to the player's inventory
     private float playerMaxHealth; // reference to the player's max health
     private float playerCurrentHealth; // reference to the player's current health
     #endregion
@@ -115,7 +114,6 @@ public class BattleManager : MonoBehaviour
         allDrops = new List<Drop>();
 
         player = GameObject.FindGameObjectWithTag("Player");
-        playerInventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>();
         playerController = player.GetComponent<PlayerController>();
         // player.GetComponent<PlayerInteract>().interacting = true;
 
@@ -153,11 +151,11 @@ public class BattleManager : MonoBehaviour
             {
                 if(drop.dropType == Drop.DropType.EXP)
                 {
-                    //playerInventory.xp += drop.quantity;
+                    ExpLevels.CurrentExp += drop.quantity;
                 }
                 else if(drop.dropType == Drop.DropType.MONEY)
                 {
-                    playerInventory.Money += drop.quantity;
+                    Inventory.Money += drop.quantity;
                 }
             }
             else
@@ -175,12 +173,12 @@ public class BattleManager : MonoBehaviour
                 {
                     case(Drop.DropType.CARD):
                     {
-                        playerInventory.AddCardToInventory((Card_SO)drop.item, 1, true);
+                        Inventory.AddCardToInventory((Card_SO)drop.item);
                         break;
                     }
                     case(Drop.DropType.HACK):
                     {
-                        playerInventory.AddHackToInventory((Hack_SO)drop.item);
+                        Inventory.AddHackToInventory((Hack_SO)drop.item);
                         break;
                     }
                     case(Drop.DropType.MISC):
@@ -212,7 +210,7 @@ public class BattleManager : MonoBehaviour
         battleCamera.enabled = true;
         battleUI.gameObject.SetActive(true);
         //Get the player set up (not in awake cause it ran before the player Inventory was set
-        playerDeckCopyInitial = new List<InventoryCard>(playerInventory.Deck);
+        playerDeckCopyInitial = new List<InventoryCard>(Inventory.Deck);
 
         playerMaxHealth = playerController.maxPlayerHealth;
         playerCurrentHealth = playerController.currentHealth;
@@ -411,7 +409,7 @@ public class BattleManager : MonoBehaviour
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
         {
-            playerDeckCopyActive = playerInventory.Shuffle(new List<InventoryCard>(playerInventory.Deck));
+            playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
 
             //Add NewPlayItem from playsapce for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
@@ -549,6 +547,7 @@ public class BattleManager : MonoBehaviour
 
     public void MainMenu()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
@@ -556,6 +555,7 @@ public class BattleManager : MonoBehaviour
 
     public void Retry()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);

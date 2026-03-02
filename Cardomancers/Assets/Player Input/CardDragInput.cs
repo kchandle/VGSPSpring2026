@@ -9,7 +9,6 @@ using UnityEditor;
 public class CardDragInput : MonoBehaviour
 {
 
-    public Inventory inventory; //set in editor
     private InputActionMap actionMap; // current action map.
     public InputActionAsset inputActions;
 

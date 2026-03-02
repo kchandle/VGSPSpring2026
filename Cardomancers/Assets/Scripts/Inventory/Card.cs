@@ -118,12 +118,12 @@ public class Card : PlayItem
     }
 
 
-    public void AddHackToCard(Hack_SO hack, Inventory inventory)
+    public void AddHackToCard(Hack_SO hack)
     {
-        if (hack != null && inventory != null && inventoryCard.hacks.Count < maxHacks)
+        if (hack != null && inventoryCard.hacks.Count < maxHacks)
         {
             hacks.Add(hack);
-            foreach (InventoryCard invCard in inventory.Deck)
+            foreach (InventoryCard invCard in Inventory.Deck)
             {
                 if (invCard.cardID == inventoryCard.cardID)
                 {
