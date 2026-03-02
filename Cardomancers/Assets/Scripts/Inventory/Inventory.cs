@@ -325,7 +325,7 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    private static Random rng = new Random();
+    private static readonly Random rng = new Random();
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
         List<InventoryCard> copyInput = new List<InventoryCard>(input);
