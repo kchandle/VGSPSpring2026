@@ -2,6 +2,8 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
+
+[ System.Serializable ]
 public enum DamageType
 {
     None,
