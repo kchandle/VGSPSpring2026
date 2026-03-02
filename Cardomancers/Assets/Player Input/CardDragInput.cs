@@ -164,10 +164,16 @@ public class CardDragInput : MonoBehaviour
                     dragTarget = dragPlayspace.GetNearestPlayItem(mousePosition);
                     if (dragTarget)
                     {
-                        if ((Card)dragTarget)
+                        if (dragTarget.itemType == PlayItem.ItemType.CARD)
                         {
                         ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
                         ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
+
+                        }
+                        else if (dragTarget.itemType == PlayItem.ItemType.HACK)
+                        {
+                            ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
+                            ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
 
                         }
                         
@@ -216,15 +222,20 @@ public class CardDragInput : MonoBehaviour
                                         }
                                 } 
                             } else {
-                                ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false;
-                                MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                if (dragTarget.itemType == PlayItem.ItemType.CARD)
+                                {
+                                    ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting =
+                                        false;
+                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                }
                             }
                             //yield break;
                         }
                     }
 
                     
-                    if (dragTarget) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
+                    if (dragTarget.itemType == PlayItem.ItemType.CARD) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
+                    if (dragTarget.itemType == PlayItem.ItemType.HACK) ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
                     dragTarget = null;
 
                 }
