@@ -263,10 +263,6 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
 
-            //Summing money and xp drops
-            moneyDrops += e.moneyDrops;
-            xpDrops += e.xpDrops;
-
             //Player playspace allowed donors
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
@@ -409,8 +405,6 @@ public class BattleManager : MonoBehaviour
                 winScreen.SetActive(true);
                 OnWin.Invoke();
 
-                playerInventory.GainMoney(moneyDrops);
-                playerInventory.GainXp(xpDrops);
 
                 break;
             }
