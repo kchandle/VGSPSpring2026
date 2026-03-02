@@ -19,7 +19,7 @@ public class SavePoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Saving");
-            SaveSystem.Save(GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().InventorySO, other.gameObject);
+            SaveSystem.Save(other.gameObject);
         }
     }
 }

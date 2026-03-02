@@ -114,7 +114,7 @@ public struct BattleEffect
                 target.isStunned = true;
             }
             // Causes stun to happen
-
+            enemy.UpdateHealthBar();
             return true;
         }
 
@@ -145,8 +145,8 @@ public struct BattleEffect
         //PlayParticles(pos);
         if (DamageDealt > 0)
             enemy.currentHealth -= DamageDealt;
-
         enemy.UpdateHealthBar();
+        
         if (enemy.currentHealth <= 0)
         {
             //Stops the player from interacting with the enemy once dead
