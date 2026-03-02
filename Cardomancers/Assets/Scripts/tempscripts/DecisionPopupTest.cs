@@ -14,7 +14,7 @@ public class DecisionPopupTest : MonoBehaviour
 
     public void OnActivate()
     {
-        PopUpActive.activate();
+        PopUpActive.Activate();
     }
     
     void Update()

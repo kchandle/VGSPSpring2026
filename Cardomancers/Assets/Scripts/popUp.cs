@@ -52,11 +52,11 @@ public class popUp : MonoBehaviour
             yes.SetActive(true);
             no.SetActive(true);
         }
-        StartCoroutine(popUpTimer(timer));
+        StartCoroutine(PopUpTimer(timer));
     }
     // Sets canvas active and starts coroutine, if "decision" active turn on the yes/no
 
-    IEnumerator popUpTimer(float Timer)
+    IEnumerator PopUpTimer(float Timer)
     {
         if (!decision)
         {
