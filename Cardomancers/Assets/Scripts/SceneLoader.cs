@@ -55,7 +55,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     //returns a bool for whether or not the scene is in the preloaded scene dictionary
-    private bool IsSceneLoading(string sceneName)
+    public bool IsSceneLoading(string sceneName)
     {   
         if (!preloadedScenes.ContainsKey(sceneName)) 
         {
@@ -66,7 +66,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     //returns a bool for if the scene is in the dictionary and if it is finshed preloading
-    private bool IsSceneReady(string sceneName)
+    public bool IsSceneReady(string sceneName)
     {
         if (!preloadedScenes.ContainsKey(sceneName)) 
         {   
