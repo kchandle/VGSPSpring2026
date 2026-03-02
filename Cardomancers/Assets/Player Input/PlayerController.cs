@@ -87,6 +87,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumping(InputAction.CallbackContext context)
     {
+        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) return;
+
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
 
@@ -128,6 +130,8 @@ public class PlayerController : MonoBehaviour
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
             currentHealth -= statusEffect.statusAmount;
+            print("Status Effects did " + statusEffect.statusAmount + " damage to the player");
+            UpdateHealthbar();
 
             // Decrement the turn count for perishable effects
             if (statusEffect.DecrementTurn() <= 0)

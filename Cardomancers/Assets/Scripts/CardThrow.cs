@@ -26,7 +26,7 @@ public class CardThrow : MonoBehaviour
         if (!context.started) return;
 
         //gets a ray from the camera position to the mouse position on the screen
-        Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hit;
 
         //casts the ray with a max range of 100 and ignores the Player layermask
@@ -49,6 +49,7 @@ public class CardThrow : MonoBehaviour
 
             //resets the card instance position, sets it to actives and gets the rigidbody
             card.transform.position = transform.position;
+            card.transform.rotation = Quaternion.Euler(Vector3.zero);
             card.SetActive(true);
             Rigidbody cardRB = card.GetComponent<Rigidbody>();
 

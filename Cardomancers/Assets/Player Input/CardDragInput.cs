@@ -155,7 +155,6 @@ public class CardDragInput : MonoBehaviour
 
             if (Pointer.current.press.wasPressedThisFrame)
             {
-                print("you clicked");
 
                 if (isDragging == false && dragPlayspace != null)
                 {

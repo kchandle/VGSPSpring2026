@@ -55,8 +55,6 @@ public class CharacterControllerMovement : MonoBehaviour
 		if(planarInput.x != 0 || planarInput.z != 0){
 			// triggers Run animator
 			animator.SetTrigger("Run");
-
-
 		}
 
 		//if the character controller is off the ground accelerate the player downward and cap the downward velocity
@@ -89,7 +87,8 @@ public class CharacterControllerMovement : MonoBehaviour
 		//if character is not grounded, add drag to movement (0.4f)
 		float drag = _characterController.isGrounded ? 1f : airDrag;
 
-		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
+        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) planarInput = Vector3.zero;
+        //combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
         Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed * drag;
 
 
