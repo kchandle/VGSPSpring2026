@@ -322,6 +322,11 @@ public static class Inventory
         deck.Remove(card);
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
+
+    //public static List<InventoryCard> Shuffle(List<InventoryCard> input)
+    //{
+     //   input.Shuffle()
+    //}
     #endregion
 
     #region Hacking and Hacks Management
