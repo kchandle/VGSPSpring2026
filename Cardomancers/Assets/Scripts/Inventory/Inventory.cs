@@ -22,6 +22,9 @@ public static class Inventory
     private static List<InventoryCard> deck = new List<InventoryCard>();
     // Hack Inventory, contains all the hacks the player has yet to apply to a card
     private static List<Hack_SO> hackInventory = new  List<Hack_SO>();
+    
+    private static List<InventoryHack> hackSlot = new List<InventoryHack>();
+    private static List<InventoryCard> cardSlot = new List<InventoryCard>();
     #endregion
 
     #region Limiting Variables
@@ -67,7 +70,23 @@ public static class Inventory
         get => inventory;
         set => inventory = value;
     }
-
+    
+    
+    /// <summary>
+    /// List of cards in the hack creator.
+    /// </summary>
+    public static List<InventoryCard> CardSlot
+    {
+        get => cardSlot;
+        set => cardSlot = value;
+    }
+    
+    public static List<InventoryHack> HackSlot
+    {
+        get => hackSlot;
+        set => hackSlot = value;
+    }
+    
     /// <summary>
     /// List of cards currently in the player's active deck.
     /// </summary>
@@ -436,8 +455,10 @@ public static class Inventory
     /// <exception cref="CardNotInInventoryException">Thrown if the card is not in the inventory.</exception>
     /// <exception cref="HackNotInInventoryException">Thrown if the hack is not in the inventory.</exception>
     /// <exception cref="CardHackLimitReachedException">Thrown if the card has already reached its hack limit.</exception>
-    public static void HackCard(InventoryCard card, Hack_SO hack)
+    public static void HackCard()
     {
+        InventoryCard card = cardSlot[0];
+        Hack_SO hack = hackSlot[0].HackSO;
         if (!inventory.Contains(card))
         {
             throw new CardNotInInventoryException($"The card {card.cardSO.name} was not found in the inventory.");

@@ -228,6 +228,12 @@ public class CardDragInput : MonoBehaviour
                                         false;
                                     MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
                                 }
+                                else if (dragTarget.itemType == PlayItem.ItemType.HACK)
+                                {
+                                    ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting =
+                                        false;
+                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                }
                             }
                             //yield break;
                         }
@@ -291,12 +297,28 @@ public class CardDragInput : MonoBehaviour
         if (to.allowedDonors.Contains(from)){
             print("in allowed donors");
             //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
-            if(to.battlePlayType == ((Card)moveTarget).CardSO.type || to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas" || to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
+            if (moveTarget.itemType == PlayItem.ItemType.CARD)
             {
-                print("Is of allowed type");
-                to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
-                from.DestroyPlayItem(moveTarget);
-                PlayitemMoved.Invoke(moveTarget, to, from);
+                if (to.battlePlayType == ((Card)moveTarget).CardSO.type ||
+                    to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas" ||
+                    to.gameObject.transform.parent.parent.gameObject.name == "InventoryCanvas" ||
+                    to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
+                {
+                    print("Is of allowed type");
+                    to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
+                    from.DestroyPlayItem(moveTarget);
+                    PlayitemMoved.Invoke(moveTarget, to, from);
+                }
+            }
+            else if (moveTarget.itemType == PlayItem.ItemType.HACK)
+            {
+                if (to.gameObject.transform.parent.parent.gameObject.name == "InventoryCanvas")
+                {
+                    print("Is of allowed type");
+                    to.NewPlayItem(moveTarget.gameObject, ((InventoryHack)moveTarget).HackSO, ((InventoryHack)moveTarget));
+                    from.DestroyPlayItem(moveTarget);
+                    PlayitemMoved.Invoke(moveTarget, to, from);
+                }
             }
         }
 

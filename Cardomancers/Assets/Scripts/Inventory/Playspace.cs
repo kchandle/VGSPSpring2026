@@ -116,6 +116,22 @@ public class Playspace : MonoBehaviour
 
         return newPlayItem;
     }
+    
+    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO, InventoryHack inventoryHack){
+
+        print("Spawning this Hack: " + hackSO.name);
+        GameObject newPlayItem = Instantiate(prefab);
+        newPlayItem.transform.SetParent(transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
+        
+
+        return newPlayItem;
+    }
 
     // adding a Hack
     public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO){
