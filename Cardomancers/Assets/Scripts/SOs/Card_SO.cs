@@ -8,6 +8,7 @@ public enum cardType
     RST
 }
 
+[SerializeField]
 public enum damageType
 {
     damageOverTime,
