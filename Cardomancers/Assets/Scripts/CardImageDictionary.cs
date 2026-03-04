@@ -6,35 +6,47 @@ using System.Collections.Generic;
 public class CardImageDictionary : MonoBehaviour
 {
     #region Image refs
-    public Image imageNone;
-    public Image imageIce;
-    public Image imageFire;
-    public Image imageWater;
-    public Image imageWind;
-    public Image imageLight;
-    public Image imageLightning;
-    public Image imagePoison;
-    public Image imageDark;
-    public Image imageDamageBlock;
-    public Image imagePsychic;
-    public Image imageStun;
+    public Sprite imageNone;
+    public Sprite imageIce;
+    public Sprite imageFire;
+    public Sprite imageWater;
+    public Sprite imageWind;
+    public Sprite imageLight;
+    public Sprite imageLightning;
+    public Sprite imagePoison;
+    public Sprite imageDark;
+    public Sprite imageDamageBlock;
+    public Sprite imagePsychic;
+    public Sprite imageStun;
     // Image for each damage type
+    public Sprite imageDamageInst;
+    public Sprite imageHealInst;
+
+
+
     #endregion
 
-    public Dictionary<DamageType, Image> cardImageDictionary = new Dictionary<DamageType, Image>();
+    public Dictionary<DamageType, Sprite> cardElementImageDictionary = new Dictionary<DamageType, Sprite>();
+    public Dictionary<damageType, Sprite> cardAttackTypeDictionary = new Dictionary<damageType, Sprite>();
     public void Awake()
     {
-        cardImageDictionary.Add(DamageType.None, imageNone);
-        cardImageDictionary.Add(DamageType.Ice, imageIce);
-        cardImageDictionary.Add(DamageType.Fire, imageFire);
-        cardImageDictionary.Add(DamageType.Water, imageWater);
-        cardImageDictionary.Add(DamageType.Wind, imageWind);
-        cardImageDictionary.Add(DamageType.Light, imageLight);
-        cardImageDictionary.Add(DamageType.Lightning, imageLightning);
-        cardImageDictionary.Add(DamageType.Poison, imagePoison);
-        cardImageDictionary.Add(DamageType.Dark, imageDark);
-        cardImageDictionary.Add(DamageType.DamageBlock, imageDamageBlock);
-        cardImageDictionary.Add(DamageType.Psychic, imagePsychic);
-        cardImageDictionary.Add(DamageType.Stun, imageStun);
+
+        // Additions to the cardElementImageDictionary dict
+        cardElementImageDictionary.Add(DamageType.None, imageNone);
+        cardElementImageDictionary.Add(DamageType.Ice, imageIce);
+        cardElementImageDictionary.Add(DamageType.Fire, imageFire);
+        cardElementImageDictionary.Add(DamageType.Water, imageWater);
+        cardElementImageDictionary.Add(DamageType.Wind, imageWind);
+        cardElementImageDictionary.Add(DamageType.Light, imageLight);
+        cardElementImageDictionary.Add(DamageType.Lightning, imageLightning);
+        cardElementImageDictionary.Add(DamageType.Poison, imagePoison);
+        cardElementImageDictionary.Add(DamageType.Dark, imageDark);
+        cardElementImageDictionary.Add(DamageType.DamageBlock, imageDamageBlock);
+        cardElementImageDictionary.Add(DamageType.Psychic, imagePsychic);
+        cardElementImageDictionary.Add(DamageType.Stun, imageStun);
+
+        // Additions to the cardAttackTypeDictionary dict
+        cardAttackTypeDictionary.Add(damageType.damageInstant, imageDamageInst);
+        cardAttackTypeDictionary.Add(damageType.healInstant, imageHealInst);
     }
 }

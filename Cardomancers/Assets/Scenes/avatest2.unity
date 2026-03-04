@@ -1039,6 +1039,110 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1278978436}
   m_SourcePrefab: {fileID: 100100000, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+--- !u!1 &806695743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 806695745}
+  - component: {fileID: 806695744}
+  m_Layer: 0
+  m_Name: Load Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &806695744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806695743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cef0282f6de59a10fbc8221f4eade06b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoadGame
+  player: {fileID: 0}
+  testDefaultCard: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
+--- !u!4 &806695745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806695743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -360.95193, y: 0, z: 201.26605}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &927112245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 927112247}
+  - component: {fileID: 927112246}
+  m_Layer: 0
+  m_Name: CardImageDictionary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &927112246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927112245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4261f122474049498828eb325f18d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardImageDictionary
+  imageNone: {fileID: 0}
+  imageIce: {fileID: 21300000, guid: 635b65b504ad9424e9476d6f9f87eb35, type: 3}
+  imageFire: {fileID: 21300000, guid: b76b6c9f99d4fda49b356971f252b320, type: 3}
+  imageWater: {fileID: 21300000, guid: 3fbe68d3fe44b714e84d098aa1633dbe, type: 3}
+  imageWind: {fileID: 21300000, guid: e88f1421b03df0e4aaaa7458d2236d6b, type: 3}
+  imageLight: {fileID: 21300000, guid: 433dd3dc67a0ade4aa65e1d658b303c1, type: 3}
+  imageLightning: {fileID: 21300000, guid: b0bccfa04dd77e5479602a1870d73b6c, type: 3}
+  imagePoison: {fileID: 21300000, guid: 5b4f8164a624d704990e58af2a53cb88, type: 3}
+  imageDark: {fileID: 21300000, guid: 84a7faa88c4fb394c95281b0f4ac593f, type: 3}
+  imageDamageBlock: {fileID: 0}
+  imagePsychic: {fileID: 0}
+  imageStun: {fileID: 0}
+  imageDamageInst: {fileID: 21300000, guid: 4447831074f93674b8f6ecdd073b46ff, type: 3}
+  imageHealInst: {fileID: 21300000, guid: 5ef735a4aaa1da243b686dabc94ed2c6, type: 3}
+--- !u!4 &927112247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927112245}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -360.9521, y: 0, z: 201.26624}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &991846568 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4518877454398742867, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
@@ -1589,6 +1693,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1710280922}
   m_CullTransparentMesh: 1
+--- !u!1 &1715443517 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6105093374102025538, guid: 01c467f47897f07438eae1a034064631, type: 3}
+  m_PrefabInstance: {fileID: 4274219584641987483}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1734291740 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7725921554011848750, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
@@ -2085,13 +2194,37 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
-      propertyPath: card.cardID
-      value: demonblade
-      objectReference: {fileID: 0}
-    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: card.cardSO
       value: 
-      objectReference: {fileID: 11400000, guid: ad3863997cede9741bd8a01ceaa8cb77, type: 2}
+      objectReference: {fileID: 11400000, guid: cbd1244eec2dc3842bf7dbb062279e34, type: 2}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1715443517}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 952982720295965672, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6105093374102025538, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: m_Name
       value: CardPickup
@@ -2428,3 +2561,5 @@ SceneRoots:
   - {fileID: 6488530738238433901}
   - {fileID: 1756959906}
   - {fileID: 577459453}
+  - {fileID: 806695745}
+  - {fileID: 927112247}
