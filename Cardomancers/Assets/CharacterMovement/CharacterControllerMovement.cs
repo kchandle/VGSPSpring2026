@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController))]
@@ -13,6 +14,7 @@ public class CharacterControllerMovement : MonoBehaviour
 
 	//the bool changed in playercontroller for whether the player is sprinting or not 
     public bool sprinting;
+	private bool _sprintingLastFrame;
 
     //Vector3 from another script that gives the direction the character will move in 
     public Vector3 inputDirectionInput;
@@ -37,6 +39,7 @@ public class CharacterControllerMovement : MonoBehaviour
 	[SerializeField] AudioClip[] footstepClips;
 	[SerializeField] AudioClip[] jumpClips;
 	[SerializeField] AudioClip[] jumpLandClips;
+	[SerializeField] AudioClip sprintingClip;
 	
 	//keeps track of if there is already a footstep sound so it doesnt overlap
 	private AudioSource footstepSource;
@@ -47,8 +50,12 @@ public class CharacterControllerMovement : MonoBehaviour
 		_characterController = GetComponent<CharacterController>();
     }
 
+
+
     private void Update()
     {
+
+
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
@@ -84,8 +91,8 @@ public class CharacterControllerMovement : MonoBehaviour
 		//changes the current speed to the speed of either sprinting or walking depending on if youre sprinting or not
 		currentSpeed = sprinting ? sprintSpeed : walkSpeed;
 
-		//if character is not grounded, add drag to movement (0.4f)
-		float drag = _characterController.isGrounded ? 1f : airDrag;
+        //if character is not grounded, add drag to movement (0.4f)
+        float drag = _characterController.isGrounded ? 1f : airDrag;
 
         if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) planarInput = Vector3.zero;
         //combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
@@ -99,16 +106,21 @@ public class CharacterControllerMovement : MonoBehaviour
         //actaully moves the character controller with the direction set 
         _characterController.Move(finalMovement * Time.deltaTime);
 
+
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
 		if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
 		{
-			footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 0.5f, 1.5f);
-		}
+			if (!sprinting) footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 0.5f, 1.5f);
+            else footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(sprintingClip, transform, 0.5f);
+        }
 		////if there is a soundplaying check if the player isnt ground or moving and then delete the sound
 		else if (footstepSource != null)
 		{
 			if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
 		}
+
+		if (sprinting != _sprintingLastFrame) Destroy(footstepSource.gameObject);
+		_sprintingLastFrame = sprinting;
 
         //resets the jump bool that is set in the player controller script to true whenever space is pressed
         jumpWasPressed = false; 
