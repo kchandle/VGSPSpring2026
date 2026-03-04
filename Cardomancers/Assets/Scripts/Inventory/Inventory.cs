@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using InventoryExceptions;
+using Unity.VisualScripting.FullSerializer;
 using Random = System.Random;
 
 /// <summary>
@@ -22,6 +23,9 @@ public static class Inventory
     private static List<InventoryCard> deck = new List<InventoryCard>();
     // Hack Inventory, contains all the hacks the player has yet to apply to a card
     private static List<Hack_SO> hackInventory = new  List<Hack_SO>();
+    
+    private static PlayItem hackSlot;
+    private static Card cardSlot;
     #endregion
 
     #region Limiting Variables
@@ -67,7 +71,23 @@ public static class Inventory
         get => inventory;
         set => inventory = value;
     }
-
+    
+    
+    /// <summary>
+    /// List of cards in the hack creator.
+    /// </summary>
+    public static Card CardSlot
+    {
+        get => cardSlot;
+        set => cardSlot = value;
+    }
+    
+    public static PlayItem HackSlot
+    {
+        get => hackSlot;
+        set => hackSlot = value;
+    }
+    
     /// <summary>
     /// List of cards currently in the player's active deck.
     /// </summary>
@@ -441,28 +461,17 @@ public static class Inventory
     /// <exception cref="CardNotInInventoryException">Thrown if the card is not in the inventory.</exception>
     /// <exception cref="HackNotInInventoryException">Thrown if the hack is not in the inventory.</exception>
     /// <exception cref="CardHackLimitReachedException">Thrown if the card has already reached its hack limit.</exception>
-    public static void HackCard(InventoryCard card, Hack_SO hack)
+    public static void HackCard()
     {
-        if (!inventory.Contains(card))
-        {
-            throw new CardNotInInventoryException($"The card {card.cardSO.name} was not found in the inventory.");
-        }
-        if (!hackInventory.Contains(hack))
-        {
-            throw new HackNotInInventoryException($"The hack {hack.name} was not found in the inventory.");
-        }
-        if (card.hacks.Count >= card.length)
-        {
-            throw new CardHackLimitReachedException($"The card {card.cardSO.name} has already reached its hack limit.");
-        }
-        card.hacks.Add(hack);
-        
+        Card card = cardSlot;
+        Hack_SO hack = ((InventoryHack)hackSlot).HackSO;
+        card.AddHackToCard(hack);
+
+        Debug.Log("hack added, deleting old hack");
         // Remove from inventory logic
-        if (!hackInventory.Contains(hack))
-        {
-            throw new HackNotInInventoryException($"The hack {hack.name} was not found in the inventory.");
-        }
-        hackInventory.Remove(hack);
+        InventoryUIHandler invUIHand =
+            (InventoryUIHandler)UnityEngine.Object.FindAnyObjectByType(typeof(InventoryUIHandler));
+        invUIHand.hackCombinePlayspace.DestroyPlayItem(hackSlot);
         
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
