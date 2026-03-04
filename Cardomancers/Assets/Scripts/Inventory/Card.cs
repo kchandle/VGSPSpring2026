@@ -8,20 +8,30 @@ using TMPro;
 public class Card : PlayItem
 {
 
+    
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
     public GameObject bottom;
     public GameObject top;
+    public Dictionary<DamageType, Image> cardImageDictionary;
+
+    public void Awake()
+    {
+        cardImageDictionary = GameObject.Find("CardImageDictionary").GetComponent<CardImageDictionary>().cardImageDictionary;
+    }
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
         get {return cardSO;}
         set
-        {
+        { 
             cardSO = value;
             CardSprite = cardSO.image;
             cardNameDisplay.text = cardSO.displayName;
+            foreach (BattleEffect battleEf in cardSO.cardEffects){
+                damageTypeImage = cardImageDictionary[battleEf.damageType];
+            }
         }
     }
 
@@ -37,6 +47,7 @@ public class Card : PlayItem
     [SerializeField] public Image damageImage; // set in editor
 
     [SerializeField] public Image battleImage; // set in editor
+    [SerializeField] Image damageTypeImage;
 
     #region Sprites
     private Sprite cardSprite; 
@@ -77,6 +88,7 @@ public class Card : PlayItem
 
     void Start()
     {
+        
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;

@@ -24,7 +24,6 @@ public class CardImageDictionary : MonoBehaviour
     public Dictionary<DamageType, Image> cardImageDictionary = new Dictionary<DamageType, Image>();
     public void Awake()
     {
-        
         cardImageDictionary.Add(DamageType.None, imageNone);
         cardImageDictionary.Add(DamageType.Ice, imageIce);
         cardImageDictionary.Add(DamageType.Fire, imageFire);
@@ -37,6 +36,5 @@ public class CardImageDictionary : MonoBehaviour
         cardImageDictionary.Add(DamageType.DamageBlock, imageDamageBlock);
         cardImageDictionary.Add(DamageType.Psychic, imagePsychic);
         cardImageDictionary.Add(DamageType.Stun, imageStun);
-        
     }
 }
