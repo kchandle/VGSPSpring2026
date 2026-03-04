@@ -326,6 +326,11 @@ public static class Inventory
     }
 
     private static readonly Random rng = new Random();
+    /// <summary>
+    ///  Randomizes the order of a list of inventory cards
+    /// </summary>
+    /// <param name="input"> The list of inventory cards to be randomized</param>
+    /// <returns>A list of inventory cards with random order</returns>
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
         List<InventoryCard> copyInput = new List<InventoryCard>(input);
