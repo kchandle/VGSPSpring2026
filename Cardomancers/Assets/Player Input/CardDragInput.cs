@@ -305,8 +305,7 @@ public class CardDragInput : MonoBehaviour
                     to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
                 {
                     print("Is of allowed type");
-                    to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard);
-                    from.DestroyPlayItem(moveTarget);
+                    if(to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard)) from.DestroyPlayItem(moveTarget);
                     PlayitemMoved.Invoke(moveTarget, to, from);
                 }
             }
@@ -315,8 +314,7 @@ public class CardDragInput : MonoBehaviour
                 if (to.gameObject.transform.parent.parent.gameObject.name == "InventoryCanvas")
                 {
                     print("Is of allowed type");
-                    to.NewPlayItem(moveTarget.gameObject, ((InventoryHack)moveTarget).HackSO, ((InventoryHack)moveTarget));
-                    from.DestroyPlayItem(moveTarget);
+                    if(to.NewPlayItem(moveTarget.gameObject, ((InventoryHack)moveTarget).HackSO, ((InventoryHack)moveTarget))) from.DestroyPlayItem(moveTarget);
                     PlayitemMoved.Invoke(moveTarget, to, from);
                 }
             }

@@ -223,8 +223,22 @@ public class InventoryUIHandler : MonoBehaviour
         // Battle Exiting
     public void ButtonClick(GameObject button)
     {
-        if (button.name == "RetryButton") print("Retry");
-       SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        switch (button.name)
+        {
+            case("RetryButton"):
+            {
+                print("Retry");
+                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+                break;
+            }
+            case ("ApplyHack"):
+            {
+                Inventory.CardSlot = ((Card)cardCombinePlayspace.playItems[0]);
+                Inventory.HackSlot = (hackCombinePlayspace.playItems[0]);
+                Inventory.HackCard();
+                break;
+            }
+        }
     }
     
     

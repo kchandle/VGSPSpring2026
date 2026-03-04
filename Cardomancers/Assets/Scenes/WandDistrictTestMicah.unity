@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 166765099830095792, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: maxItems
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1553461472792540532, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -209,11 +213,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -226,7 +230,7 @@ PrefabInstance:
     - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 11500000, guid: b625c6603a9612f4ab4f453d1b45ed16, type: 3}
+      objectReference: {fileID: 1562945976}
     - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -247,9 +251,45 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButtonClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InventoryUIHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1883470739}
+    - target: {fileID: 1832010663999345106, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2528353467851765023, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: maxItems
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2773217144371532689, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: maxItems
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3021949238701664615, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: maxItems
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271655580935239197, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: maxItems
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7198456333863232596, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
       propertyPath: m_Name
       value: InventoryCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7725921554011848750, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+      propertyPath: maxItems
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3355,6 +3395,11 @@ PrefabInstance:
       addedObject: {fileID: 1116024889}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
+--- !u!1 &1883470739 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6867305642194349303, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
+  m_PrefabInstance: {fileID: 62829874}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1909516034
 GameObject:
   m_ObjectHideFlags: 0
