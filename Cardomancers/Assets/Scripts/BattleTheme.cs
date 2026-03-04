@@ -17,6 +17,7 @@ public class BattleTheme : MonoBehaviour
     private void Start()
     {
         audioSource.clip = wandDistrictTheme;
+        audioSource.volume = 0.05f;
         this.audioSource.Play();
     }
     void OnStateChange(GameStateScript.GameState state)
