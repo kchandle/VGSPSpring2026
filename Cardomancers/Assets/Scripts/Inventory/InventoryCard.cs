@@ -29,6 +29,14 @@ public struct InventoryCard
         this.cardID = Guid.NewGuid().ToString();
     }
 
+    public InventoryCard(Card_SO cardSO)
+    {
+        this.cardSO = cardSO;
+        this.hacks = new List<Hack_SO>();
+        this.length = 0; 
+        this.cardID = Guid.NewGuid().ToString();
+    }
+
     public void CheckLength()
     {
         if (hacks.Count > length)

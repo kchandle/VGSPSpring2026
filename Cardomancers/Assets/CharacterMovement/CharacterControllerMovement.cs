@@ -49,6 +49,8 @@ public class CharacterControllerMovement : MonoBehaviour
 
     private void Update()
     {
+
+
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 

@@ -14,6 +14,7 @@ public class GameStateScript
         MENU,
         INVENTORY,
         DEAD,
+        LOADINGSCREEN,
         NULL
     }
 

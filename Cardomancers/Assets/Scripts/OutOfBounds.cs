@@ -16,7 +16,7 @@ public class OutOfBounds : MonoBehaviour
         if (other.gameObject == player)
         {
             //loads the players last position without loading the inventory
-            SaveSystem.Load(GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>(), player);
+            SaveSystem.Load(player);
         }
     }
 }

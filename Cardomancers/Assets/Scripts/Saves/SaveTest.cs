@@ -7,7 +7,7 @@ public class SaveTest : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SaveSystem.Load(GameObject.FindWithTag("PlayerInventory").GetComponent<Inventory>(), player);
+        SaveSystem.Load(player);
     }
 
 }

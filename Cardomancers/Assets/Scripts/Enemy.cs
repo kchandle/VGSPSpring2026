@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
 
     public int currentActionAmount;
     public string currentActionType;
-
+    
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public List<DamageType> resistances;
@@ -72,7 +72,8 @@ public class Enemy : MonoBehaviour
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
-    
+    public BattleManager battleManager;
+
     // different sprites needed and change depending on state
     public SpriteRenderer spriteRenderer;
     public Sprite IdleSprite;
@@ -81,7 +82,7 @@ public class Enemy : MonoBehaviour
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
 
-
+    public bool deathCalled = false;
 
 // variable for enum switch state
     bool currentValue;
@@ -99,6 +100,7 @@ public class Enemy : MonoBehaviour
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
     {
+        battleManager = transform.parent.parent.gameObject.GetComponent<BattleManager>();
         // sets Max Health from the SO and sets the current health to max health
         enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
@@ -112,6 +114,15 @@ public class Enemy : MonoBehaviour
         weaknesses = new List<DamageType>(enemySO.weaknesses);
 
         animator = GetComponent<Animator>();
+    }
+
+    public void Death()
+    {
+        if(!deathCalled)
+        {
+            battleManager.allDrops.AddRange(enemySO.drops);
+            deathCalled = true;
+        }
     }
     
     //enemy state enum changes here 
@@ -181,6 +192,17 @@ public class Enemy : MonoBehaviour
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
         }
+        if(currentHealth <= 0)
+        {
+            if(!deathCalled)
+            {
+                Death();
+                deathCalled = true;
+            }
+            this.gameObject.GetComponentInChildren<Image>().enabled = false;
+            this.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            this.gameObject.SetActive(false);
+        }
     }
 
     public void UpdateActionState()
@@ -243,31 +265,29 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator StatusEffects()
     {
-        foreach (StatusEffectContainer statusEffect in statusEffects)
+        for (int i = 0; i < statusEffects.Count; i++)
         {
             // Apply the status effect to the player
-            foreach (ParticleSystem particle in (statusEffect.particles))
+            foreach (ParticleSystem particle in (statusEffects[i].particles))
             {
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
 
-            if (weaknesses.Contains(statusEffect.damageType) )
+            if (weaknesses.Contains(statusEffects[i].damageType) )
             {
-                currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount*DamageMult);  
+                currentHealth -= Mathf.FloorToInt(statusEffects[i].statusAmount*DamageMult);  
             }
-            else if (resistances.Contains(statusEffect.damageType))
+            else if (resistances.Contains(statusEffects[i].damageType))
             {
-                currentHealth -= Mathf.FloorToInt(statusEffect.statusAmount * DamageReduct);
+                currentHealth -= Mathf.FloorToInt(statusEffects[i].statusAmount * DamageReduct);
             }
-
-            UpdateHealthBar();
-
             // Decrement the turn count for perishable effects
-            if (statusEffect.DecrementTurn() <= 0)
+            if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
-                if (statusEffect.damageType == DamageType.Stun) isStunned = false;
-                statusEffects.Remove(statusEffect);
+                if (statusEffects[i].damageType == DamageType.Stun) isStunned = false;
+                statusEffects.Remove(statusEffects[i]);
+                i++;
                 Debug.Log("A status effect has expired.");
             }
             yield return new WaitForSeconds(0.1f);
