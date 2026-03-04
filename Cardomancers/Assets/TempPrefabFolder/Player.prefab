@@ -499,6 +499,8 @@ GameObject:
   - component: {fileID: 8277037704298673333}
   - component: {fileID: 8805448749967120339}
   - component: {fileID: 9106127963584501081}
+  - component: {fileID: 180481573607976801}
+  - component: {fileID: 7640498981376258451}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -642,22 +644,6 @@ MonoBehaviour:
     m_ActionId: 86532671-fc43-4240-984a-55741e2b113a
     m_ActionName: 'MapWalking/ToggleInventory[/Keyboard/tab]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8277037704298673333}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnSprinting
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 3f7d8b47-b4d4-422d-81c6-8c15cf7d724f
-    m_ActionName: 'MapWalking/Sprinting[/Keyboard/leftShift]'
-  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 200aada3-c2d2-4bcf-acca-20c82c61b0bd
     m_ActionName: 'Inventory/Scroll[/Mouse/scroll]'
@@ -709,6 +695,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 29899951-34c5-45d3-87c7-45667734dae0
     m_ActionName: 'Battle/Submit[/Mouse/press]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8277037704298673333}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSprinting
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3f7d8b47-b4d4-422d-81c6-8c15cf7d724f
+    m_ActionName: 'MapWalking/Sprinting[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: MapWalking
@@ -836,6 +838,117 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e3cff8677a3760a4e99e8c786ca0a182, type: 3}
   - {fileID: 8300000, guid: 83581f194c3053f48bb7e0308dd97583, type: 3}
   - {fileID: 8300000, guid: 56847cb718cb8b04e9626a92bd2c3a76, type: 3}
+--- !u!82 &180481573607976801
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282848640817842334}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 16d225e54690d824bb1d908e4a2d4a94, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &7640498981376258451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282848640817842334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 059102c7f18780f4a90f7dc80dbc37fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleTheme
+  battleTheme: {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
+  wandDistrictTheme: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
 --- !u!1001 &2316027303749749726
 PrefabInstance:
   m_ObjectHideFlags: 0
