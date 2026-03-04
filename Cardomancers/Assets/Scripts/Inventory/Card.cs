@@ -2,33 +2,46 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Serialization;
 
 
 // The physical cards that appear when in combat or inventory
 public class Card : PlayItem
 {
 
+    
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
-    public GameObject red;
-    public GameObject blue;
+    public GameObject bottom;
+    public GameObject top;
+    public Dictionary<DamageType, Sprite> cardElementImageDictionary;
+    public Dictionary<damageType, Sprite> cardAttackTypeDictionary;
+
+    public void Awake()
+    {
+        cardElementImageDictionary = GameObject.Find("CardImageDictionary").GetComponent<CardImageDictionary>().cardElementImageDictionary;
+        cardAttackTypeDictionary = GameObject.Find("CardImageDictionary").GetComponent<CardImageDictionary>().cardAttackTypeDictionary;
+    }
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
         get {return cardSO;}
         set
-        {
+        { 
             cardSO = value;
             CardSprite = cardSO.image;
             cardNameDisplay.text = cardSO.displayName;
+            foreach (BattleEffect battleEf in cardSO.cardEffects){
+                damageTypeImage.sprite = cardElementImageDictionary[battleEf.damageType];
+            }
+            attackTypeImage.sprite = cardAttackTypeDictionary[cardSO.damageType];
         }
     }
-    
-    public Hack_SO[] hacks; //The array, max length 2, of hacks on the card.
 
-    public int maxHacks = 2; // Int containing the maximum number of hacks that can be applied to this card.
+    
+    public List<Hack_SO> hacks; //TO BE REMOVED IN A LATER ITERATION OF THE GAME
+
+    public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
 
     [Header("UI Components")]
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
@@ -37,6 +50,8 @@ public class Card : PlayItem
     [SerializeField] public Image damageImage; // set in editor
 
     [SerializeField] public Image battleImage; // set in editor
+    [SerializeField] public Image damageTypeImage;
+    [SerializeField] public Image attackTypeImage;
 
     #region Sprites
     private Sprite cardSprite; 
@@ -77,11 +92,10 @@ public class Card : PlayItem
 
     void Start()
     {
+        
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
-        blue = transform.GetChild(2).gameObject;
-        red = transform.GetChild(0).gameObject;
     }
 
     public bool TryPlayCard(Enemy target)
@@ -122,33 +136,32 @@ public class Card : PlayItem
 
     public void AddHackToCard(Hack_SO hack)
     {
-        print(hack.sideOfCard);
-        switch (hack.sideOfCard)
+        if (hack != null && inventoryCard.hacks.Count < maxHacks)
         {
-            case(Hack_SO.Layer.TOP):
+            hacks.Add(hack);
+            foreach (InventoryCard invCard in Inventory.Deck)
             {
-                hacks[1] = hack;
-                inventoryCard.hacks[1] = hack;
-                print("hack added");
-                blue.GetComponent<RawImage>().texture = hack.image.texture;
-                print("Design on top.");
-                blue.SetActive(true);
-                break;
-            }
-            case(Hack_SO.Layer.BOTTOM):
-            {
-                hacks[0] = hack;
-                inventoryCard.hacks[0] = hack;
-                print("hack added");
-                print(hack.image.name);
-                red.GetComponent<RawImage>().texture = hack.image.texture;
-                print("Design on bottom.");
-                red.SetActive(true);
-                break;
-            }
-            default:
-            {
-                break;
+                if (invCard.cardID == inventoryCard.cardID)
+                {
+                    invCard.hacks.Add(hack); 
+                    switch (hack.sideOfCard)
+                    {
+                        case(Hack_SO.Layer.TOP):
+                        {
+                            top.SetActive(true);
+                            break;
+                        }
+                        case(Hack_SO.Layer.BOTTOM):
+                        {
+                            bottom.SetActive(true);
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
             }
         }
             //inventoryCard.hacks.Add(hack);
