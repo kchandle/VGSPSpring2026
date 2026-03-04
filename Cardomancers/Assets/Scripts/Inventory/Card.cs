@@ -8,12 +8,12 @@ using TMPro;
 public class Card : PlayItem
 {
 
-    
+
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
-    public GameObject bottom;
-    public GameObject top;
+    public GameObject red;
+    public GameObject blue;
     public Dictionary<DamageType, Sprite> cardElementImageDictionary;
     public Dictionary<damageType, Sprite> cardAttackTypeDictionary;
 
@@ -25,21 +25,22 @@ public class Card : PlayItem
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
-        get {return cardSO;}
+        get { return cardSO; }
         set
-        { 
+        {
             cardSO = value;
             CardSprite = cardSO.image;
             cardNameDisplay.text = cardSO.displayName;
-            foreach (BattleEffect battleEf in cardSO.cardEffects){
+            foreach (BattleEffect battleEf in cardSO.cardEffects)
+            {
                 damageTypeImage.sprite = cardElementImageDictionary[battleEf.damageType];
             }
             attackTypeImage.sprite = cardAttackTypeDictionary[cardSO.damageType];
         }
     }
 
-    
-    public List<Hack_SO> hacks; //TO BE REMOVED IN A LATER ITERATION OF THE GAME
+
+    public Hack_SO[] hacks; //TO BE REMOVED IN A LATER ITERATION OF THE GAME
 
     public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
 
@@ -54,10 +55,10 @@ public class Card : PlayItem
     [SerializeField] public Image attackTypeImage;
 
     #region Sprites
-    private Sprite cardSprite; 
+    private Sprite cardSprite;
     public Sprite CardSprite
     {
-        get{return cardSprite;}
+        get { return cardSprite; }
         set // when CardSprite is changed, also change it in the UI Image
         {
             cardSprite = value;
@@ -69,7 +70,7 @@ public class Card : PlayItem
 
     public Sprite DamageTypeSprite
     {
-        get{return damageTypeSprite;}
+        get { return damageTypeSprite; }
         set // when CardSprite is changed, also change it in the UI Image
         {
             damageTypeSprite = value;
@@ -79,7 +80,7 @@ public class Card : PlayItem
     private Sprite battleEffectSprite; // sprite for displaying the type of BattleEffect the card is (ex. single hit, DOT)
     public Sprite BattleEffectSprite
     {
-        get{return battleEffectSprite;}
+        get { return battleEffectSprite; }
         set // when CardSprite is changed, also change it in the UI Image
         {
             battleEffectSprite = value;
@@ -92,7 +93,7 @@ public class Card : PlayItem
 
     void Start()
     {
-        
+
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
@@ -106,7 +107,7 @@ public class Card : PlayItem
         foreach (BattleEffect effect in effects)
         {
             //Apply each effect to the target
-            if(effect.TriggerEffect(target, target.gameObject.transform.position, cardSO)) returnVal = true;
+            if (effect.TriggerEffect(target, target.gameObject.transform.position, cardSO)) returnVal = true;
         }
         return returnVal;
     }
@@ -115,7 +116,7 @@ public class Card : PlayItem
     {
         bool returnVal = false;
         // Try to play the card on the player
-        if(cardSO.type == "DEF")
+        if (cardSO.type == "DEF")
         {
             print(cardSO.cardEffects[0].StatusAmount);
             player.Shield += cardSO.cardEffects[0].StatusAmount;
@@ -127,7 +128,7 @@ public class Card : PlayItem
             foreach (BattleEffect effect in effects)
             {
                 //Apply each effect to the target
-                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+                if (effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
             }
         }
         return returnVal;
@@ -136,37 +137,37 @@ public class Card : PlayItem
 
     public void AddHackToCard(Hack_SO hack)
     {
-        if (hack != null && inventoryCard.hacks.Count < maxHacks)
+        print(hack.sideOfCard);
+        switch (hack.sideOfCard)
         {
-            hacks.Add(hack);
-            foreach (InventoryCard invCard in Inventory.Deck)
-            {
-                if (invCard.cardID == inventoryCard.cardID)
+            case (Hack_SO.Layer.TOP):
                 {
-                    invCard.hacks.Add(hack); 
-                    switch (hack.sideOfCard)
-                    {
-                        case(Hack_SO.Layer.TOP):
-                        {
-                            top.SetActive(true);
-                            break;
-                        }
-                        case(Hack_SO.Layer.BOTTOM):
-                        {
-                            bottom.SetActive(true);
-                            break;
-                        }
-                        default:
-                        {
-                            break;
-                        }
-                    }
+                    hacks[1] = hack;
+                    inventoryCard.hacks[1] = hack;
+                    print("hack added");
+                    blue.GetComponent<RawImage>().texture = hack.image.texture;
+                    print("Design on top.");
+                    blue.SetActive(true);
+                    break;
                 }
-            }
-        }
-            //inventoryCard.hacks.Add(hack);
+            case (Hack_SO.Layer.BOTTOM):
+                {
+                    hacks[0] = hack;
+                    inventoryCard.hacks[0] = hack;
+                    print("hack added");
+                    print(hack.image.name);
+                    red.GetComponent<RawImage>().texture = hack.image.texture;
+                    print("Design on bottom.");
+                    red.SetActive(true);
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
         }
     }
+}
 
 
 
