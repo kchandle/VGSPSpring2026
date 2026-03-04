@@ -14,11 +14,13 @@ public class Card : PlayItem
     public InventoryCard inventoryCard; // reference to it's own inventory card
     public GameObject bottom;
     public GameObject top;
-    public Dictionary<DamageType, Image> cardImageDictionary;
+    public Dictionary<DamageType, Sprite> cardElementImageDictionary;
+    public Dictionary<damageType, Sprite> cardAttackTypeDictionary;
 
     public void Awake()
     {
-        cardImageDictionary = GameObject.Find("CardImageDictionary").GetComponent<CardImageDictionary>().cardImageDictionary;
+        cardElementImageDictionary = GameObject.Find("CardImageDictionary").GetComponent<CardImageDictionary>().cardElementImageDictionary;
+        cardAttackTypeDictionary = GameObject.Find("CardImageDictionary").GetComponent<CardImageDictionary>().cardAttackTypeDictionary;
     }
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
@@ -30,8 +32,9 @@ public class Card : PlayItem
             CardSprite = cardSO.image;
             cardNameDisplay.text = cardSO.displayName;
             foreach (BattleEffect battleEf in cardSO.cardEffects){
-                damageTypeImage = cardImageDictionary[battleEf.damageType];
+                damageTypeImage.sprite = cardElementImageDictionary[battleEf.damageType];
             }
+            attackTypeImage.sprite = cardAttackTypeDictionary[cardSO.damageType];
         }
     }
 
@@ -47,7 +50,8 @@ public class Card : PlayItem
     [SerializeField] public Image damageImage; // set in editor
 
     [SerializeField] public Image battleImage; // set in editor
-    [SerializeField] Image damageTypeImage;
+    [SerializeField] public Image damageTypeImage;
+    [SerializeField] public Image attackTypeImage;
 
     #region Sprites
     private Sprite cardSprite; 
