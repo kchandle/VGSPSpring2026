@@ -15,7 +15,11 @@ public class InventoryUIHandler : MonoBehaviour
 
     public Playspace invPlayspace;  //set in editor
     public Playspace deckPlayspace;  //set in editor
+    
+    public Playspace hackCombinePlayspace;
+    public Playspace cardCombinePlayspace;
 
+    
     public Playspace hackPlayspace;  //set in editor
     public Playspace trashPlayspace;
     public Image deleteCardPopup;
@@ -52,6 +56,8 @@ public class InventoryUIHandler : MonoBehaviour
             cardDragInput.AddActivePlayspace(deckPlayspace);
             cardDragInput.AddActivePlayspace(hackPlayspace);
             cardDragInput.AddActivePlayspace(trashPlayspace);
+            cardDragInput.AddActivePlayspace(hackCombinePlayspace);
+            cardDragInput.AddActivePlayspace(cardCombinePlayspace);
         
             // Ensure that inventory and deck have no duplicates
             //inventory.ValidateInventoryIntegrity(); 
@@ -220,6 +226,8 @@ public class InventoryUIHandler : MonoBehaviour
         if (button.name == "RetryButton") print("Retry");
        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
+    
+    
   
     }
 

@@ -6,7 +6,13 @@ using UnityEngine;
 public class PlayItem : MonoBehaviour
 
 {
-    
+    public enum ItemType
+    {
+        CARD,
+        HACK,
+    }
+    // What is this PlayItem
+    public ItemType itemType;
     // How quickly to move this GameObject
     public float moveSpeed = 15f;
     // Desired position to move to
