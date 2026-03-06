@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Quest
 {
-    private QuestInfoSO info;
+    public QuestInfoSO info { get; private set; }
     private QuestState state;
     private int currentStepIndex;
 
