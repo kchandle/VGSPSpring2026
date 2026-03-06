@@ -201,7 +201,7 @@ public class Enemy : MonoBehaviour
         {
             if(effect.setsNextCard)
             {
-                nextCard = new InventoryCard(effect.nextCard, new List<Hack_SO>(), 0);
+                nextCard = new InventoryCard(effect.nextCard, new Hack_SO[2], 0);
                 nextCardSet = true;
                 break;
             }

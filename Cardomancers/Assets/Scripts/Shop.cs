@@ -1,0 +1,250 @@
+/* Author: DerjenigeUberMensch
+ *
+ * Contact Group 1 For help or questions relating to this script.
+ */
+using UnityEngine;
+using UnityEditor;
+using UnityEngine.Networking;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+public class Shop : MonoBehaviour
+{
+    // Events
+    static public event Action PurchaseEvent;
+    static public event Action FailPurchaseEvent;
+    static public event Action SellEvent;
+    public event Action StockUpdate;
+
+    public GameObject shopUI;
+    /*[HideInInspector]*/ public List<ShopItem> stock = new();
+    /*[HideInInspector]*/ public List<Card_SO> cachedSOs = new();
+
+
+    // for some reason inventory isnt static...
+    // and isnt public...
+    // and I can just get it get{} then modify... so...
+    //private Inventory playerInventory;
+    private List<ShopItem> inventory = new();
+    private List<InventoryCard> playerInv;
+
+    private int _StockSize = -1;
+    public int StockSize 
+    { 
+        get
+        {   return this._StockSize;
+        }
+
+        set
+        {
+            if(stock.Count == value)
+            {   return;
+            }
+
+            if(value < 0)
+            {   
+                Debug.LogWarning($"MaxCardsInStock was set to {value}");
+                value = 0;
+            }
+
+            this._StockSize = value;
+
+            // if the stock is too big shrink.
+            while(stock.Count > this._StockSize)
+            {   this.stock.RemoveAt(stock.Count - 1);
+            }
+
+            // if the stock is too small grow it.
+            if(stock.Count < this._StockSize)
+            {
+                this.stock.AddRange(this.GenerateStock(this._StockSize, this.stock));
+            }
+        }
+    }
+
+
+    public bool IsShopOpenUI
+    {
+        // todo
+        get
+        {   return shopUI.activeSelf;
+        }
+        set
+        {   shopUI.SetActive(value);
+        }
+    }
+
+    private List<UnityEngine.Object> GetObjectsInPath(string path)
+    {
+        List<UnityEngine.Object> assets = new();
+
+        string []guids = AssetDatabase.FindAssets("", new[] { path });
+
+        foreach (string guid in guids)
+        {
+            path = AssetDatabase.GUIDToAssetPath(guid);
+            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+
+            if (asset != null)
+            {   assets.Add(asset);
+            }
+        }
+
+        return assets;
+    }
+
+    private void OnInventoryChange(object unused1, EventArgs unused2)
+    {
+        playerInv = Inventory.InventoryList;
+    }
+
+    void Start()
+    {
+        playerInv = Inventory.InventoryList;
+        Inventory.inventoryChanged += OnInventoryChange;
+    }
+
+    // Opens the shop UI.
+    public void OpenShop()
+    {   this.IsShopOpenUI = true;
+    }
+
+    // Closes the shop UI.
+    public void CloseShop()
+    {   this.IsShopOpenUI = false;
+    }
+
+    // Checks whether you can buy a card.
+    public bool CanBuyCard(ShopItem item)
+    {
+        // money is a int for some reason...
+        int playerBalance = Inventory.Money;
+
+        return item.PurchasePrice <= playerBalance;
+    }
+
+    // Check whether you can sell a card.
+    public bool CanSellCard(ShopItem item)
+    {
+        // return true for now.
+        return true;
+    }
+
+    // Purchases a card in the shop.
+    //
+    // RETURN: true on Succesful purchase.
+    // RETURN: false on failed to purchase.
+    public bool BuyCard(ShopItem item)
+    {
+        if(!this.CanBuyCard(item))
+        {   
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        if(playerInv == null)
+        {   
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        if(playerInv.Count >= Inventory.InventorySize + 1)
+        {
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        if(Inventory.Money < (int)item.PurchasePrice)
+        {   
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        Inventory.Money -= (int)item.PurchasePrice;
+        Inventory.AddCardToInventory(item.SO);
+        shopUI.GetComponent<ShopUI>().RemoveCardSOFromStock(item.SO);
+        Shop.PurchaseEvent?.Invoke();
+
+        return true;
+    }
+
+    // Sells a card in the sthop.
+    //
+    // RETURN: true on Succesful sell.
+    // RETURN: false on failed to sell 
+    public bool SellCard(ShopItem item)
+    {
+        if(!this.CanSellCard(item))
+        {   
+            return false;
+        }
+
+        if(playerInv == null)
+        {   
+            return false;
+        }
+
+        foreach(InventoryCard c in playerInv)
+        {
+            // still had to do this manually...
+            if(c.cardSO == item.SO)
+            {   
+                Inventory.RemoveCardFromInventory(c);
+                Inventory.Money += (int)item.SellPrice;
+                Shop.SellEvent?.Invoke();
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+
+    private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null)
+    { 
+        if(cachedSOs.Count == 0)
+        {   
+            cachedSOs = this.GetObjectsInPath("Assets/Resources/Card_SO")
+                .OfType<Card_SO>()
+                .Where(s => s.sellValue != 0 && s.price != 0)
+                .ToList();
+        }
+
+        List<ShopItem> generatedStock = new();
+
+        foreach(Card_SO obj in this.cachedSOs)
+        {
+            if(maxStockToGenerate <= 0)
+            {   break;
+            }
+
+            // exclude any in the exclude list.
+            if(exclude != null && exclude.Any(exc => exc.SO == obj))
+            {   continue;
+            }
+
+            
+            ShopItem item = new();
+
+            item.Init(obj);
+            print(item);
+
+            generatedStock.Add(item);
+            print(generatedStock);
+        }
+
+        return generatedStock;
+    }
+
+    public void ReplaceStock(ref List<ShopItem> list)
+    {
+        this.stock = list;
+        StockUpdate?.Invoke();
+    }
+}
