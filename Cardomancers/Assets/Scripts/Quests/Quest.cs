@@ -3,7 +3,7 @@ using UnityEngine;
 public class Quest
 {
     public QuestInfoSO info { get; private set; }
-    private QuestState state;
+    public QuestState state  { get; internal set; }
     private int currentStepIndex;
 
     public Quest(QuestInfoSO info)

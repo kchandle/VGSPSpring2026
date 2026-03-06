@@ -7,18 +7,18 @@ public class QuestInfoSO : ScriptableObject
     private string displayName;
 
     [Header("Requirements to start")] 
-    private int levelRequirement;
-    private QuestInfoSO[] prerequisiteQuests;
+    public int levelRequirement { get; }
+    public QuestInfoSO[] prerequisiteQuests { get; }
     
     [Header("Steps")]
     [Tooltip("Prefab containing the quest step script for each quest step")]
     public GameObject[] questSteps { get; }
 
     [Header("Rewards")] 
-    private int moneyReward;
-    private int expReward;
-    private Card_SO[] cardRewards;
-    private Hack_SO[] hackRewards;
+    public int moneyReward { get; }
+    public int expReward { get; }
+    public Card_SO[] cardRewards { get; }
+    public Hack_SO[] hackRewards { get; }
 
     private void OnValidate()
     {

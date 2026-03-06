@@ -35,7 +35,7 @@ public class QuestManager : MonoBehaviour
     {
         foreach (Quest quest in questMap.Values)
         {
-            if (GetQuestByID(quest.info.ID).Equals(QuestState.REQUIREMENTS_NOT_MET) && CheckRequirementsMet(GetQuestByID(quest.ID)))
+            if (GetQuestByID(quest.info.ID).Equals(QuestState.REQUIREMENTS_NOT_MET) && CheckRequirementsMet(GetQuestByID(quest.info.ID)))
             {
                 ChangeQuestState(quest.info.ID, QuestState.CAN_START);
             }
@@ -103,7 +103,47 @@ public class QuestManager : MonoBehaviour
         }
         return quest;
     }
-    
+
+    private void ChangeQuestState(string questID, QuestState newState)
+    {
+        Quest quest = GetQuestByID(questID);
+        quest.state = newState;
+        QuestEvents.QuestStateChanged(quest);
+    }
+
+    private bool CheckRequirementsMet(Quest quest)
+    {
+        bool meetsRequirements = true;
+
+        if (ExpLevels.CurrentLevel < quest.info.levelRequirement)
+        {
+            meetsRequirements = false;
+        }
+
+        foreach (QuestInfoSO info in quest.info.prerequisiteQuests)
+        {
+            if (GetQuestByID(info.ID).state != QuestState.FINISHED)
+            {
+                meetsRequirements = false;
+            }
+        }
+        return meetsRequirements;
+    }
+
+    private void ClaimRewards(Quest quest)
+    {
+        Inventory.Money += quest.info.moneyReward;
+        ExpLevels.CurrentExp += quest.info.expReward;
+        foreach (Card_SO card in quest.info.cardRewards)
+        {
+            Inventory.AddCardToInventory(card);
+        }
+
+        foreach (Hack_SO hack in quest.info.hackRewards)
+        {
+            Inventory.AddHackToInventory(hack);
+        }
+    }
     
     #endregion
 }
