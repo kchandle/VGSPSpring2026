@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Serialization;
@@ -82,13 +84,27 @@ public class Card : PlayItem
         cardNameDisplay.text = cardSO.displayName;
         blue = transform.GetChild(2).gameObject;
         red = transform.GetChild(0).gameObject;
+        if (hacks[0] != null)
+        {
+            red.GetComponent<RawImage>().texture = hacks[0].image.texture;
+            red.SetActive(true);
+        }
+        if (hacks[1] != null)
+        {
+            blue.GetComponent<RawImage>().texture = hacks[1].image.texture;
+            blue.SetActive(true);
+        }
     }
 
     public bool TryPlayCard(Enemy target)
     {
         bool returnVal = false;
         //Try to play the card on the target enemy
-        BattleEffect[] effects = cardSO.cardEffects;
+        List<BattleEffect> effects = cardSO.cardEffects.ToList();
+        foreach (Hack_SO hack in hacks)
+        {
+            if(hack) effects.AddRange(hack.hackEffects.ToList());
+        }
         foreach (BattleEffect effect in effects)
         {
             //Apply each effect to the target
@@ -151,8 +167,10 @@ public class Card : PlayItem
                 break;
             }
         }
-            //inventoryCard.hacks.Add(hack);
-        }
+
+        inventoryCard = new InventoryCard(cardSO, hacks, maxHacks);
+        //inventoryCard.hacks.Add(hack);
+    }
     }
 
 
