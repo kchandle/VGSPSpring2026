@@ -9,6 +9,8 @@ public class CardThrow : MonoBehaviour
     //where the mouse is on the screen
     private Vector2 mouseScreenPosition;
 
+    [SerializeField] Animator animator;
+
     [SerializeField] float cardForce = 10f;
 
     [SerializeField] private AudioClip[] throwWooshSounds;
@@ -43,6 +45,8 @@ public class CardThrow : MonoBehaviour
                 card.GetComponent<Rigidbody>().useGravity = false;
 
             }
+
+            animator.SetTrigger("Throw");
 
             SoundEffectManager.Instance.PlaySoundFXClip(throwGruntSounds, transform, 1f);
             SoundEffectManager.Instance.PlaySoundFXClip(throwWooshSounds, transform, 1f);
