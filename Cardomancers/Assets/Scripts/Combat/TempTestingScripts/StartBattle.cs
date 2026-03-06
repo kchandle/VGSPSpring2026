@@ -53,6 +53,11 @@ public class StartBattle : MonoBehaviour
         }
         battleSystem.StartBattle(battleToStart);
 
+        if (canvas == null)
+        {
+            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
+        }
+
         // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
         {
@@ -80,6 +85,7 @@ public class StartBattle : MonoBehaviour
         {
             videoPlayer = GetComponent<VideoPlayer>();
         }
+
 
         //Once the battle starts
         videoPlayer.prepareCompleted += OnVideoPrepared;
