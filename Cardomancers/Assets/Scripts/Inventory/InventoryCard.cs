@@ -7,7 +7,7 @@ public struct InventoryCard
 {
     
     public Card_SO cardSO; //The Card_SO this card gets its stats from
-    public List<Hack_SO> hacks; //All hacks that are attached to this card
+    public Hack_SO[] hacks; //All hacks that are attached to this card
     public int length;
 
     public string cardID;
@@ -21,7 +21,7 @@ public struct InventoryCard
         }
     }
 
-    public InventoryCard(Card_SO cardSO, List<Hack_SO> hacks, int length)
+    public InventoryCard(Card_SO cardSO, Hack_SO[] hacks, int length)
     {
         this.cardSO = cardSO;
         this.hacks = hacks;
@@ -29,13 +29,21 @@ public struct InventoryCard
         this.cardID = Guid.NewGuid().ToString();
     }
 
+    public InventoryCard(Card_SO cardSO)
+    {
+        this.cardSO = cardSO;
+        this.hacks = new Hack_SO[2];
+        this.length = 2; 
+        this.cardID = Guid.NewGuid().ToString();
+    }
+
     public void CheckLength()
     {
-        if (hacks.Count > length)
+        if (hacks.Length > length)
         {
-            while (hacks.Count > length)
+            while (hacks.Length > length)
             {
-                hacks.RemoveAt(hacks.Count - 1);
+                hacks[hacks.Length - 1] = null;
             }  
         }
     }

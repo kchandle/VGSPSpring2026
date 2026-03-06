@@ -1,11 +1,15 @@
+using JetBrains.Annotations;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterControllerMovement : MonoBehaviour
 {
     public float walkSpeed = 15f;
-	public float sprintSpeed = 50f;
+	public float sprintSpeed = 30f;
 	private float currentSpeed;
+	[SerializeField] float airDrag;
 
 	//the bool changed in playercontroller for whether the player is sprinting or not 
     public bool sprinting;
@@ -21,7 +25,8 @@ public class CharacterControllerMovement : MonoBehaviour
     [SerializeField] private float gravity = 9.8f; 
 	[SerializeField] private float jumpIntensity = 4f;
 	[SerializeField] private float maxFallSpeed = -30f;
-	public bool jumpWasPressed;
+
+    public bool jumpWasPressed;
 	private bool _jumping;
 	[HideInInspector] public float jumpMultiplier = 15f;
 
@@ -48,11 +53,15 @@ public class CharacterControllerMovement : MonoBehaviour
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
 		if(planarInput.x != 0 || planarInput.z != 0){
-			// triggers Run animator
-			animator.SetTrigger("Run");
+			animator.SetBool("Walking", true);
+		} else animator.SetBool("Walking", false);
+
+		if(!_characterController.isGrounded)
+		{
+			animator.SetBool("Jumping", true);
+		} else animator.SetBool("Jumping", false);
 
 
-		}
 
 		//if the character controller is off the ground accelerate the player downward and cap the downward velocity
 		if (!_characterController.isGrounded && _characterController.velocity.y > maxFallSpeed)
@@ -81,8 +90,14 @@ public class CharacterControllerMovement : MonoBehaviour
 		//changes the current speed to the speed of either sprinting or walking depending on if youre sprinting or not
 		currentSpeed = sprinting ? sprintSpeed : walkSpeed;
 
-		//combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
-        Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed;
+		//if character is not grounded, add drag to movement (0.4f)
+		float drag = _characterController.isGrounded ? 1f : airDrag;
+
+        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) planarInput = Vector3.zero;
+        //combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
+        Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed * drag;
+
+
 
         //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
         Vector3 finalMovement = transform.TransformDirection(moveDirection);
