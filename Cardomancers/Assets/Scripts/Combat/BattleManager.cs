@@ -82,9 +82,6 @@ public class BattleManager : MonoBehaviour
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
 
-    public int moneyDrops; //Money to be gained from winning the battle
-    public float xpDrops; //xP to be gained from winning the battle
-
     public enum BattleState //Indicates State of Gameplay. Can be START, END, PLAYER_TURN, ENEMIES_TURN, CHECK_PLAYER_HP, CHECK_ENEMIES_HP
     {
         START,
@@ -253,9 +250,6 @@ public class BattleManager : MonoBehaviour
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
         playerController.UpdateShield();
 
-        moneyDrops = 0;
-        xpDrops = 0f;
-
         foreach (Enemy_SO e in battle.enemies)
         {
             GameObject enemyPrefab = e.enemyPrefab;
@@ -264,73 +258,16 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
 
             //Player playspace allowed donors
+            
+
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
         }
 
+
         ResetEnemyPositions();
-    }
-
-    //Changes enemy positions on screen based on how many alive enemies there are
-    //To be called at the start of a battle, when an enemy is summoned, and when an enemy dies
-    //Handles 1, 2, 3, and 4 enemy battles.
-    void ResetEnemyPositions()
-    {
-        //Count number of alive enemies
-        int alive = 0;
-        foreach(GameObject e in currentEnemies)
-        {
-            if(e.GetComponent<Enemy>().currentHealth > 0)
-            {
-                alive++;
-            }
-        }
-
-        //Re-positions playspaces based on the number of alive enemies in the battle
-        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
-        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
-        float enemySpacing = canvasWidth/2 / (alive);
-
-        Vector3 position;
-        int i = 0;
-        foreach(GameObject e in currentEnemies)
-        {
-            //perform operation only on alive enemies
-            if(e.GetComponent<Enemy>().currentHealth > 0)
-            {
-                i++;
-                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
-                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
-                {
-                    if(i % 2 == 1)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); //2 is an arbitrary number just for testing
-                        e.transform.localPosition = position + Vector3.left * off;
-                    }
-                    else if(i % 2 == 0)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); 
-                        e.transform.localPosition = position + Vector3.right * off;
-                    }
-                }
-                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
-                {
-                    if(i % 2 == 1)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f); 
-                        e.transform.localPosition = position + Vector3.left * off;
-                    }
-                    else if(i % 2 == 0)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f); 
-                        e.transform.localPosition = position + Vector3.right * off;
-                    }
-                }
-                
-            }
-        }
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -404,8 +341,6 @@ public class BattleManager : MonoBehaviour
             {
                 winScreen.SetActive(true);
                 OnWin.Invoke();
-
-
                 break;
             }
             case (EndState.LOSE):
@@ -499,7 +434,6 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator StartEnemyTurn()
     {
-        int alive = 0;
         //Check if enemy is out of cards
         foreach (GameObject enemy in currentEnemies)
         {
@@ -507,11 +441,6 @@ public class BattleManager : MonoBehaviour
             if (enemy.GetComponent<Enemy>().deck.Count <= 0)
             {
                 enemy.GetComponent<Enemy>().ShuffleDeck();
-            }
-            //Get number of enemies alive
-            if (enemy.GetComponent<Enemy>().currentHealth > 0)
-            {
-                alive++;
             }
         }
 
@@ -525,50 +454,14 @@ public class BattleManager : MonoBehaviour
             InventoryCard card = enemyScript.currentCard;
 
             //Plays Card
+
             enemyScript.currentTimer--;
             enemyScript.UpdateTimer();
 
-
-            //print("About to check battle effects");
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
-                //print("ENTERED FOREACH LOOP: " + enemyScript.EnemySO.displayName);
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
-
-                //print("Evaluating Enemy Card Battle Effects");
-                //print("Summons enemies: " + effect.summonsEnemies);
-                //print("Card Name: " + card.cardSO.displayName);
-                //Summoning enemy logic
-                if(effect.summonsEnemies) 
-                {//Summon fails if four or more enemies are on the field
-                    if(alive >= 4)
-                    {
-                        print("Max enemies, summon failed");
-                    }
-                    else
-                    {
-                        print("Summoned enemy");
-                        //Selects random enemy from list of possible options set in the card's battle effect
-                        Enemy_SO newEnemy = effect.summonableEnemies[UnityEngine.Random.Range(0, effect.summonableEnemies.Count)];
-
-                        //Same code for creating an enemy object used in SetUpPlayspaces
-                        GameObject enemyPrefab = newEnemy.enemyPrefab;
-                        enemyPrefab = Instantiate(newEnemy.enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                        enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
-                        enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
-
-                        cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
-                        enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
-                        currentEnemies.Add(enemyPrefab);
-
-                        EnemiesChooseCards(currentEnemies.IndexOf(enemyPrefab));
-
-                        //Reposition all enemy playspaces to account for new one
-                        ResetEnemyPositions();
-                    }
-                    
-                }
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
@@ -582,11 +475,9 @@ public class BattleManager : MonoBehaviour
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
                     }
-
                 }
             }
 
-            print("reseting timer");
             if (enemyScript.currentTimer <= 0)
             {
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
@@ -613,7 +504,6 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator checkEndConditions()
     {
-        ResetEnemyPositions();
         //If player health <= 0, battleState = BattleState.LOST
         if (playerController.currentHealth <= 0)
         {
@@ -689,6 +579,63 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
+    
+    void ResetEnemyPositions()
+    {
+        //Count number of alive enemies
+        int alive = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
+            }
+        }
+
+        //Re-positions playspaces based on the number of alive enemies in the battle
+        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
+        float enemySpacing = canvasWidth/2 / (alive);
+
+        Vector3 position;
+        int i = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            //perform operation only on alive enemies
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                i++;
+                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
+                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); //2 is an arbitrary number just for testing
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2);
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f);
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f);
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+               
+            }
+        }
+    }
 
 
 
