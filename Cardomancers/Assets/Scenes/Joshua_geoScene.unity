@@ -3147,7 +3147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoadGame
   player: {fileID: 1853397258}
   testDefaultCard: {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
-  testDefaultHack: {fileID: 11400000, guid: db7b5e8caff12d048a80e7466620aead, type: 2}
+  testDefaultHack: {fileID: 11400000, guid: a3f60e4a8655f07458d300f04658f167, type: 2}
 --- !u!4 &1531519060
 Transform:
   m_ObjectHideFlags: 0
@@ -3729,7 +3729,16 @@ MonoBehaviour:
   PlayBackSpeed: 1
   PlaybackRampTime: 1
   FadeTime: 0.15
-  HistoryMax: 50
+  <Paused>k__BackingField: 0
+  playHistory: 
+  audioSource: {fileID: 0}
+  audioSourceBuff: {fileID: 0}
+  loopStartSample: 0
+  loopEndSample: 0
+  _CurrentTime: 0
+  fadeElapsed: 0
+  isNextPrevQueued: 0
+  reversed: 0
 --- !u!82 &1824351542
 AudioSource:
   m_ObjectHideFlags: 0

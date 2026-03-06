@@ -23,7 +23,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject sell_content; //set in editor
     //[SerializeField] private ShopPanel shopPanel; //set in editor
     [SerializeField] private GameObject cardShopPrefab; //set in editor, is the lone cardShopTemplate object under IgnoreContent. This was more convenient than making a prefab.
-    private MusicPlayer musicPlayer;
+    //private MusicPlayer musicPlayer;
 
     [SerializeField] private Shop shop = new();
     [SerializeField] private List<Card_SO> stock; //set in editor
@@ -78,14 +78,14 @@ public class ShopUI : MonoBehaviour
         this.viewport = root.Find("Scroll View/Viewport")?.gameObject;
         //this.content = root.Find("Scroll View/Viewport/Content")?.gameObject;
         //this.sell_content = root.Find("Scroll View/Viewport/Content(Sell)")?.gameObject; //*******
-        this.musicPlayer = gameObject.GetComponent<MusicPlayer>();
+        //this.musicPlayer = gameObject.GetComponent<MusicPlayer>();
 
         if(this.content)
         {   
             ContentChildCount = this.content.transform.childCount;
         }
 
-        this.musicPlayer.Play();
+        //this.musicPlayer.Play();
 
         shop.StockUpdate += OnStockUpdate;
 

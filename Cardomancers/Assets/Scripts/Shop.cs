@@ -208,11 +208,12 @@ public class Shop : MonoBehaviour
 
     private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null)
     { 
+        //We will need a concrete way to differentiate between cards for the player and cards only for enemies. For now, we'll use this
         if(cachedSOs.Count == 0)
         {   
             cachedSOs = this.GetObjectsInPath("Assets/Resources/Card_SO")
                 .OfType<Card_SO>()
-                .Where(s => s.sellValue != 0 && s.price != 0)
+                .Where(s => s.sellValue == 1000 && s.price == 99)
                 .ToList();
         }
 
