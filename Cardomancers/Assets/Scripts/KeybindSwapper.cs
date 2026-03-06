@@ -8,6 +8,7 @@ public class KeybindSwapper : MonoBehaviour
     public GameObject bindsWalking;
     public GameObject bindsBattling;
     public GameObject bindsInventory;
+    public GameObject questText;
 
     void Awake()
     {
@@ -28,6 +29,7 @@ public class KeybindSwapper : MonoBehaviour
         if (state == GameStateScript.GameState.WALKING)
         {
             bindsWalking.SetActive(true);
+            questText.SetActive(true);
             bindsBattling.SetActive(false);
             bindsInventory.SetActive(false);
         }
@@ -36,13 +38,16 @@ public class KeybindSwapper : MonoBehaviour
         if (state == GameStateScript.GameState.INVENTORY)
         {
             bindsWalking.SetActive(false);
+            questText.SetActive(false);
             bindsBattling.SetActive(false);
             bindsInventory.SetActive(true);
+
         }
 
         if (state == GameStateScript.GameState.BATTLE)
         {
             bindsWalking.SetActive(false);
+            questText.SetActive(false);
             bindsBattling.SetActive(true);
             bindsInventory.SetActive(false);
         }

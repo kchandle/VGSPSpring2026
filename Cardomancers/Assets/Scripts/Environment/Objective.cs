@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
 
 public class Objective : MonoBehaviour
 {
     [SerializeField] private string objectiveText;
     [SerializeField] private string completedText;
+    public TextMeshProUGUI questUI;
     // Text for when objective begins/is ended
 
     public UnityEvent OnCompleteObjective;
@@ -13,6 +16,7 @@ public class Objective : MonoBehaviour
     private void OnEnable()
     {
         Debug.Log(objectiveText);
+        questUI.text = objectiveText;
     }
 
     public void CompleteObjective()
