@@ -59,7 +59,6 @@ public class CharacterControllerMovement : MonoBehaviour
 		if(!_characterController.isGrounded)
 		{
 			animator.SetBool("Jumping", true);
-			print("FROTNITE JUMPNING");
 		} else animator.SetBool("Jumping", false);
 
 
