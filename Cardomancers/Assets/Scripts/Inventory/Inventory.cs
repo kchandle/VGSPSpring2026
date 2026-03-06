@@ -144,14 +144,14 @@ public static class Inventory
     /// <exception cref="InventoryFullException">Thrown if the inventory is already full.</exception>
     public static bool AddCardToInventory(Card_SO card)
     {
-            if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
-            {
-                throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
-            }
-            if (inventory.Count >= inventorySize)
-            {
-                throw new InventoryFullException("Inventory is full.");
-            }
+        if (cardsDatabase == null || !cardsDatabase.ContainsKey(card.name))
+        {
+            throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
+        }
+        if (inventory.Count >= inventorySize)
+        {
+            throw new InventoryFullException("Inventory is full.");
+        }
         InventoryCard newCard = new InventoryCard(card);
             
         inventory.Add(newCard);
@@ -465,13 +465,20 @@ public static class Inventory
     {
         Card card = cardSlot;
         Hack_SO hack = ((InventoryHack)hackSlot).HackSO;
+        
+        RemoveCardFromInventory(card.inventoryCard);
+        
         card.AddHackToCard(hack);
-
+        
         Debug.Log("hack added, deleting old hack");
         // Remove from inventory logic
         InventoryUIHandler invUIHand =
             (InventoryUIHandler)UnityEngine.Object.FindAnyObjectByType(typeof(InventoryUIHandler));
         invUIHand.hackCombinePlayspace.DestroyPlayItem(hackSlot);
+        
+        RemoveHackFromInventory(hack);
+        
+        AddCardToInventory(card.inventoryCard);
         
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
