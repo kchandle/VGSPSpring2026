@@ -842,6 +842,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874195278}
   m_CullTransparentMesh: 1
+--- !u!328 &906388027 stripped
+VideoPlayer:
+  m_CorrespondingSourceObject: {fileID: 3154767679855153091, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+  m_PrefabInstance: {fileID: 1133060998}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &932849241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,6 +1142,63 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &1133060998
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3485357250057770704, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_Name
+      value: Battle Transititon Video Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 388.36346
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 195.59348
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
 --- !u!1001 &1184046613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1732,7 +1794,7 @@ PrefabInstance:
     - target: {fileID: 5346295706196156714, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: videoPlayer
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 906388027}
     - target: {fileID: 9080275069776286763, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: m_Name
       value: BaseEnemy(NPC)
@@ -1985,3 +2047,4 @@ SceneRoots:
   - {fileID: 1548786890}
   - {fileID: 359033383}
   - {fileID: 1490704578}
+  - {fileID: 1133060998}
