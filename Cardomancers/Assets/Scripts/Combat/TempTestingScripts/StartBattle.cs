@@ -31,6 +31,17 @@ public class StartBattle : MonoBehaviour
 
     public void StartBattleNow()
     {
+        if (Inventory.Deck.Count == 0 && Inventory.InventoryList.Count > 0)
+        {
+            print("Add some cards to your deck and come back.");
+            return;
+        }
+
+        if (Inventory.InventoryList.Count == 0)
+        {
+            print("Pick up some cards and add them to your deck. Then come back.");
+            return;
+        }
         StartCoroutine(_Impl_StartBattleNow());
     }
 
