@@ -53,23 +53,7 @@ public class StartBattle : MonoBehaviour
 
     private IEnumerator _Impl_StartBattleNow()
     {
-        GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
-        // Updated to use the recommended method for finding objects
-        // Ensure the BattleManager prefab is instantiated in the scene
-        var battleSystem = FindFirstObjectByType<BattleManager>();
-        if (battleSystem == null)
-        {
-            Instantiate(battleManagerPrefab);
-            battleSystem = FindFirstObjectByType<BattleManager>();
-        }
-        battleSystem.StartBattle(battleToStart);
-
-        if (canvas == null)
-        {
-            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
-        }
-
-        // Prepares video, plays it, and sets the battle transition to unactive
+         // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
         {
             while (!videoPlayer.isPrepared)
@@ -86,6 +70,23 @@ public class StartBattle : MonoBehaviour
             canvas.SetActive(false);
         }
 
+        GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
+        // Updated to use the recommended method for finding objects
+        // Ensure the BattleManager prefab is instantiated in the scene
+        var battleSystem = FindFirstObjectByType<BattleManager>();
+        if (battleSystem == null)
+        {
+            Instantiate(battleManagerPrefab);
+            battleSystem = FindFirstObjectByType<BattleManager>();
+        }
+        battleSystem.StartBattle(battleToStart);
+
+        if (canvas == null)
+        {
+            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
+        }
+
+       
         yield break;
     }
 
