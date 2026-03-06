@@ -53,16 +53,9 @@ public class CharacterControllerMovement : MonoBehaviour
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
 		if(planarInput.x != 0 || planarInput.z != 0){
-			animator.SetBool("Walking", true);
-		} else animator.SetBool("Walking", false);
-
-		if(!_characterController.isGrounded)
-		{
-			animator.SetBool("Jumping", true);
-			print("FROTNITE JUMPNING");
-		} else animator.SetBool("Jumping", false);
-
-
+			// triggers Run animator
+			animator.SetTrigger("Run");
+		}
 
 		//if the character controller is off the ground accelerate the player downward and cap the downward velocity
 		if (!_characterController.isGrounded && _characterController.velocity.y > maxFallSpeed)
