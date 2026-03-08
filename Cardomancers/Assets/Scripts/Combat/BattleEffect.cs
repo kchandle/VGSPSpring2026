@@ -2,6 +2,8 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
+
+[ System.Serializable ]
 public enum DamageType
 {
     None,
@@ -112,7 +114,7 @@ public struct BattleEffect
                 target.isStunned = true;
             }
             // Causes stun to happen
-
+            enemy.UpdateHealthBar();
             return true;
         }
 
@@ -143,13 +145,14 @@ public struct BattleEffect
         //PlayParticles(pos);
         if (DamageDealt > 0)
             enemy.currentHealth -= DamageDealt;
-
         enemy.UpdateHealthBar();
+        
         if (enemy.currentHealth <= 0)
         {
             //Stops the player from interacting with the enemy once dead
             enemy.gameObject.GetComponentInChildren<Image>().enabled = false;
             enemy.gameObject.GetComponentInChildren<BoxCollider2D>().enabled = false;
+            enemy.Death();
             enemy.gameObject.SetActive(false);
         }
         return true;
