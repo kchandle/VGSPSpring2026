@@ -11,6 +11,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
@@ -20,7 +21,9 @@ public class ShopUI : MonoBehaviour
     private GameObject viewport;
     private GameObject cardTemplate;
     [SerializeField] private GameObject content; //set in editor
-    [SerializeField] private GameObject sell_content; //set in editor
+    [SerializeField] private GameObject sellContent; //set in editor
+    [SerializeField] private TMPro.TextMeshProUGUI moneyDisplay; //set in editor
+
     //[SerializeField] private ShopPanel shopPanel; //set in editor
     [SerializeField] private GameObject cardShopPrefab; //set in editor, is the lone cardShopTemplate object under IgnoreContent. This was more convenient than making a prefab.
     //private MusicPlayer musicPlayer;
@@ -77,7 +80,7 @@ public class ShopUI : MonoBehaviour
         this.scrollview = root.Find("Scroll View")?.gameObject;
         this.viewport = root.Find("Scroll View/Viewport")?.gameObject;
         //this.content = root.Find("Scroll View/Viewport/Content")?.gameObject;
-        //this.sell_content = root.Find("Scroll View/Viewport/Content(Sell)")?.gameObject; //*******
+        //this.sellContent = root.Find("Scroll View/Viewport/Content(Sell)")?.gameObject;
         //this.musicPlayer = gameObject.GetComponent<MusicPlayer>();
 
         if(this.content)
@@ -90,6 +93,7 @@ public class ShopUI : MonoBehaviour
         shop.StockUpdate += OnStockUpdate;
 
         shop.StockSize = 10;
+        moneyDisplay.text = "$" + Inventory.Money;
         UpdateBuyMenu();
         UpdateSellMenu();
     }
@@ -160,53 +164,12 @@ public class ShopUI : MonoBehaviour
 
 
 
-    //******
-    //Adds cards to stock. Currently unused.
-    public void AddCardSOToStock(Card_SO card, int amount = 1)
-    {
-        for(int i = 0; i < amount; i++)
-        {
-            stock.Add(card);
-        }
-    }
-
-    //Removes card from stock. Currently used when a card is bought.
-    public void RemoveCardSOFromStock(Card_SO card)
-    {
-        stock.Remove(card);
-    }
-
-
-    //Gets cards from the shop's stock and creates slots using the cardShopTemplate prefab to display them
-    /*public void UpdateBuyMenu(List<ShopItem> exclude = null)
-    { 
-        //Destroy old items to make way for new ones
-        while (content.transform.childCount > 0)
-        {
-            DestroyImmediate(content.transform.GetChild(0).gameObject);
-        }
-
-         
-        print("Generating stock");
-        foreach(Card_SO card in stock)
-        {
-            print("stock: " + card.displayName);
-            // exclude any in the exclude list.
-            if(exclude != null && exclude.Any(exc => exc.SO == card))
-            {   
-                continue;
-            }
-
-            GameObject cardSlot = Instantiate(cardShopPrefab, new Vector3(0,0,0), Quaternion.identity);
-            cardSlot.transform.SetParent(content.transform, false);
-            cardSlot.GetComponent<ShopItem>().Init(card);
-            cardSlot.SetActive(true);
-        }
-        print("Finished generating stock");
-    }*/
     
+    //Gets cards from the shop's stock and creates slots using the cardShopTemplate prefab to display them
     public void UpdateBuyMenu(List<ShopItem> exclude = null)
     { 
+        moneyDisplay.text = "$" + Inventory.Money;
+
         //Destroy old items to make way for new ones
         while (content.transform.childCount > 0)
         {
@@ -237,11 +200,13 @@ public class ShopUI : MonoBehaviour
     //Gets cards from the Inventory and creates slots using the cardShopTemplate prefab to display them
     public void UpdateSellMenu(List<ShopItem> exclude = null)
     { 
+        moneyDisplay.text = "$" + Inventory.Money;
+
         //Destroy all old items in the sell menu in order to create the new ones without issue
-        while (sell_content.transform.childCount > 0)
+        while (sellContent.transform.childCount > 0)
         {
             //print("Destroying the sell children");
-            DestroyImmediate(sell_content.transform.GetChild(0).gameObject);
+            DestroyImmediate(sellContent.transform.GetChild(0).gameObject);
         }
 
 
@@ -263,7 +228,7 @@ public class ShopUI : MonoBehaviour
                 //print("creating " + invCard.cardSO.displayName);
                 
                 GameObject cardSlot = Instantiate(cardShopPrefab, new Vector3(0,0,0), Quaternion.identity);
-                cardSlot.transform.SetParent(sell_content.transform, false);
+                cardSlot.transform.SetParent(sellContent.transform, false);
 
                 ShopItem item = new ShopItem();
                 item.Init(invCard.cardSO);
@@ -277,4 +242,52 @@ public class ShopUI : MonoBehaviour
 
         //print("test: " + Inventory.InventoryList[1].cardSO.displayName);
     }
+
+
+
+
+
+
+    //The following were for testing purposes and are not currently in usage
+    /*public void UpdateBuyMenu(List<ShopItem> exclude = null)
+    { 
+        //Destroy old items to make way for new ones
+        while (content.transform.childCount > 0)
+        {
+            DestroyImmediate(content.transform.GetChild(0).gameObject);
+        }
+
+         
+        print("Generating stock");
+        foreach(Card_SO card in stock)
+        {
+            print("stock: " + card.displayName);
+            // exclude any in the exclude list.
+            if(exclude != null && exclude.Any(exc => exc.SO == card))
+            {   
+                continue;
+            }
+
+            GameObject cardSlot = Instantiate(cardShopPrefab, new Vector3(0,0,0), Quaternion.identity);
+            cardSlot.transform.SetParent(content.transform, false);
+            cardSlot.GetComponent<ShopItem>().Init(card);
+            cardSlot.SetActive(true);
+        }
+        print("Finished generating stock");
+    }
+
+    //Adds cards to stock. Currently unused.
+    public void AddCardSOToStock(Card_SO card, int amount = 1)
+    {
+        for(int i = 0; i < amount; i++)
+        {
+            stock.Add(card);
+        }
+    }
+
+    //Removes card from stock. Currently used when a card is bought.
+    public void RemoveCardSOFromStock(Card_SO card)
+    {
+        stock.Remove(card);
+    }*/
 }

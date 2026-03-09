@@ -168,7 +168,6 @@ public class Shop : MonoBehaviour
 
         Inventory.Money -= (int)item.PurchasePrice;
         Inventory.AddCardToInventory(item.SO);
-        shopUI.GetComponent<ShopUI>().RemoveCardSOFromStock(item.SO);
         Shop.PurchaseEvent?.Invoke();
 
         return true;
