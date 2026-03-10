@@ -40,7 +40,7 @@ public class ShopPanel : MonoBehaviour
     //method called by the shop panel's Buy button onclick event
     public void ClickedBuyCard()
     {
-        print("Buying card...");
+        //print("Buying card...");
         if(shop.BuyCard(item))
         {
             shopUI.UpdateBuyMenu();
@@ -56,7 +56,7 @@ public class ShopPanel : MonoBehaviour
     //method called by the shop panel's Sell button onclick event
     public void ClickedSellCard()
     {
-        print("Selling card...");
+        //print("Selling card...");
         if(shop.SellCard(item))
         {
             shopUI.UpdateSellMenu();

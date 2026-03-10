@@ -168,7 +168,7 @@ public class Shop : MonoBehaviour
 
         Inventory.Money -= (int)item.PurchasePrice;
         Inventory.AddCardToInventory(item.SO);
-        shopUI.GetComponent<ShopUI>().RemoveCardSOFromStock(item.SO);
+        //shopUI.GetComponent<ShopUI>().RemoveCardSOFromStock(item.SO);
         Shop.PurchaseEvent?.Invoke();
 
         return true;
@@ -208,12 +208,13 @@ public class Shop : MonoBehaviour
 
     private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null)
     { 
-        //We will need a concrete way to differentiate between cards for the player and cards only for enemies. For now, we'll use this
+        //We will need a concrete way to differentiate between cards for the player and cards only for enemies.
+        //For now, the stock consists of all cards with a sell value of 5 and a price that isn't 0.
         if(cachedSOs.Count == 0)
         {   
             cachedSOs = this.GetObjectsInPath("Assets/Resources/Card_SO")
                 .OfType<Card_SO>()
-                .Where(s => s.sellValue == 1000 && s.price == 99)
+                .Where(s => s.sellValue == 5 && s.price != 0)
                 .ToList();
         }
 
@@ -234,10 +235,10 @@ public class Shop : MonoBehaviour
             ShopItem item = new();
 
             item.Init(obj);
-            print(item);
+            //print(item);
 
             generatedStock.Add(item);
-            print(generatedStock);
+            //print(generatedStock);
         }
 
         return generatedStock;
