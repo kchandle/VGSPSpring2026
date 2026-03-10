@@ -3,22 +3,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "QuestInfoSO", menuName = "Quests/QuestInfoSO")]
 public class QuestInfoSO : ScriptableObject
 {
-    public string ID { get;  private set; }
-    private string displayName;
+    public string ID; 
+    private readonly string displayName;
 
-    [Header("Requirements to start")] 
-    public int levelRequirement { get; }
-    public QuestInfoSO[] prerequisiteQuests { get; }
-    
-    [Header("Steps")]
+    [Header("Requirements to start")]
+    public int levelRequirement;
+    public QuestInfoSO[] prerequisiteQuests;
+
+    [Header("Steps")] 
     [Tooltip("Prefab containing the quest step script for each quest step")]
-    public GameObject[] questSteps { get; }
+    public GameObject[] questSteps;
 
     [Header("Rewards")] 
-    public int moneyReward { get; }
-    public int expReward { get; }
-    public Card_SO[] cardRewards { get; }
-    public Hack_SO[] hackRewards { get; }
+    public int moneyReward;
+    public int expReward;
+    public Card_SO[] cardRewards; 
+    public Hack_SO[] hackRewards;
 
     private void OnValidate()
     {

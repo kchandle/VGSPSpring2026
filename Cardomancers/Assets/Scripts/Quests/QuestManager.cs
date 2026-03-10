@@ -15,12 +15,16 @@ public class QuestManager : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        QuestEvents.OnStartQuest += StartQuest;
+        QuestEvents.OnAdvanceQuest += AdvanceQuest;
+        QuestEvents.OnFinishQuest += FinishQuest;
     }
 
     private void OnDisable()
     {
-        
+        QuestEvents.OnStartQuest -= StartQuest;
+        QuestEvents.OnAdvanceQuest -= AdvanceQuest;
+        QuestEvents.OnFinishQuest -= FinishQuest;
     }
 
     private void Start()
@@ -35,7 +39,7 @@ public class QuestManager : MonoBehaviour
     {
         foreach (Quest quest in questMap.Values)
         {
-            if (GetQuestByID(quest.info.ID).Equals(QuestState.REQUIREMENTS_NOT_MET) && CheckRequirementsMet(GetQuestByID(quest.info.ID)))
+            if (GetQuestByID(quest.info.ID).state.Equals(QuestState.REQUIREMENTS_NOT_MET) && CheckRequirementsMet(GetQuestByID(quest.info.ID)))
             {
                 ChangeQuestState(quest.info.ID, QuestState.CAN_START);
             }
@@ -85,12 +89,14 @@ public class QuestManager : MonoBehaviour
 
         foreach (QuestInfoSO quest in allQuests)
         {
-            if (!questMap.ContainsKey(quest.ID))
+            Debug.Log("2");
+            if (questMap.ContainsKey(quest.ID))
             {
                 Debug.LogWarning("Quest " + quest.ID + " duplicate detected");
             }
             newQuestMap.Add(quest.ID, new Quest(quest));
         }
+        Debug.Log(newQuestMap.Count);
         return newQuestMap;
     }
 

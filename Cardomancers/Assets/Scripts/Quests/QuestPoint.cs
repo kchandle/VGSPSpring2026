@@ -1,11 +1,12 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class QuestPoint : MonoBehaviour
 {
     private bool playerInRange;
     private string questID;
     private QuestState currentQuestState;
-    private QuestInfoSO questInfo;
+    [SerializeField] private QuestInfoSO questInfo;
 
     [Header("Config")] 
     [SerializeField] private bool startPoint = true;
@@ -14,6 +15,12 @@ public class QuestPoint : MonoBehaviour
     private void Awake()
     {
         questID = questInfo.ID;
+        GetComponent<Collider>().isTrigger = true;
+    }
+
+    private void Start()
+    {
+        StartOrFinishQuest();
     }
 
     private void OnEnable()
@@ -29,10 +36,12 @@ public class QuestPoint : MonoBehaviour
     public void StartOrFinishQuest()
     {
         if (!playerInRange) return;
+        Debug.Log(questID);
 
         if (currentQuestState == QuestState.CAN_START && startPoint)
         {
             QuestEvents.StartQuest(questID);
+            Debug.Log("Starting Quest");
         }
         else if (currentQuestState == QuestState.CAN_FINISH && endPoint)
         {
