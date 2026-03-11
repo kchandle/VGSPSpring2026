@@ -267,9 +267,9 @@ public class BattleManager : MonoBehaviour
             currentEnemies.Add(enemyPrefab);
             i++;
         }
+        
 
 
-        ResetEnemyPositions();
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -607,63 +607,6 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
-    
-    void ResetEnemyPositions()
-    {
-        //Count number of alive enemies
-        int alive = 0;
-        foreach(GameObject e in currentEnemies)
-        {
-            if(e.GetComponent<Enemy>().currentHealth > 0)
-            {
-                alive++;
-            }
-        }
-
-        //Re-positions playspaces based on the number of alive enemies in the battle
-        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
-        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
-        float enemySpacing = canvasWidth/2 / (alive);
-
-        Vector3 position;
-        int i = 0;
-        foreach(GameObject e in currentEnemies)
-        {
-            //perform operation only on alive enemies
-            if(e.GetComponent<Enemy>().currentHealth > 0)
-            {
-                i++;
-                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
-                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
-                {
-                    if(i % 2 == 1)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); //2 is an arbitrary number just for testing
-                        e.transform.localPosition = position + Vector3.left * off;
-                    }
-                    else if(i % 2 == 0)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2);
-                        e.transform.localPosition = position + Vector3.right * off;
-                    }
-                }
-                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
-                {
-                    if(i % 2 == 1)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f);
-                        e.transform.localPosition = position + Vector3.left * off;
-                    }
-                    else if(i % 2 == 0)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f);
-                        e.transform.localPosition = position + Vector3.right * off;
-                    }
-                }
-               
-            }
-        }
-    }
 
 
 
