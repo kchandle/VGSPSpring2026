@@ -54,6 +54,8 @@ public class BattleManager : MonoBehaviour
     public GameObject playerspacePlayOnSelf;
     private float playerMaxHealth; // reference to the player's max health
     private float playerCurrentHealth; // reference to the player's current health
+    private float attackAnimDelay = 0.5f; // How long the enemy moves down
+    private float attackOffset = 40f;
     #endregion
 
     #region Input Actions
@@ -480,6 +482,22 @@ public class BattleManager : MonoBehaviour
 
             if (enemyScript.currentTimer <= 0)
             {
+                if (player.transform.position.x < enemy.transform.position.x)
+                {
+                    
+                }
+                else if(player.transform.position.x > enemy.transform.position.x)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+                Vector3 moveAnim = new Vector3(0, 0, 0);
+                enemy.transform.GetChild(1).position += moveAnim * attackOffset;
+                yield return new WaitForSeconds(attackAnimDelay);
+                enemy.transform.GetChild(1).position -= moveAnim * attackOffset;
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
                 enemyScript.currentTimer = 3;
                 enemyScript.UpdateTimer();

@@ -31,6 +31,17 @@ public class StartBattle : MonoBehaviour
 
     public void StartBattleNow()
     {
+        if (Inventory.Deck.Count == 0 && Inventory.InventoryList.Count > 0)
+        {
+            print("Add some cards to your deck and come back.");
+            return;
+        }
+
+        if (Inventory.InventoryList.Count == 0)
+        {
+            print("Pick up some cards and add them to your deck. Then come back.");
+            return;
+        }
         StartCoroutine(_Impl_StartBattleNow());
     }
 
@@ -52,6 +63,11 @@ public class StartBattle : MonoBehaviour
             battleSystem = FindFirstObjectByType<BattleManager>();
         }
         battleSystem.StartBattle(battleToStart);
+
+        if (canvas == null)
+        {
+            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
+        }
 
         // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
@@ -80,6 +96,7 @@ public class StartBattle : MonoBehaviour
         {
             videoPlayer = GetComponent<VideoPlayer>();
         }
+
 
         //Once the battle starts
         videoPlayer.prepareCompleted += OnVideoPrepared;
