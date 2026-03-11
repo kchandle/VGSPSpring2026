@@ -133,6 +133,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
   m_ActionId: fb9e8ca4-c0ac-477b-b82e-897bd345152b
+--- !u!1 &152114421 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 766209913170813818, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+  m_PrefabInstance: {fileID: 6932833383383339901}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &166114443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -241,7 +246,7 @@ PrefabInstance:
     - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: inventoryUI
       value: 
-      objectReference: {fileID: 1732310650}
+      objectReference: {fileID: 152114421}
     - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: inventoryUIHandler
       value: 
@@ -1291,11 +1296,6 @@ PrefabInstance:
       addedObject: {fileID: 1512450238}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
---- !u!1 &1732310650 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2575587743821799826, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
-  m_PrefabInstance: {fileID: 6932833383383339901}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1733847694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 512649829450912818, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
@@ -1562,6 +1562,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1809233937348815782, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 73ee254cd1b757d45887afd477eac368, type: 2}
+    - target: {fileID: 1809233937348815782, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5207159986219737922, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
       propertyPath: playerTransform
       value: 
@@ -1570,6 +1578,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 590885757}
+    - target: {fileID: 8081860992575821564, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1562945976}
+    - target: {fileID: 8081860992575821564, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButtonClick
+      objectReference: {fileID: 0}
     - target: {fileID: 8898780816619731762, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
       propertyPath: m_Name
       value: Game Controller
