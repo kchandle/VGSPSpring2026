@@ -48,14 +48,14 @@ public class BattleManager : MonoBehaviour
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
-    private GameObject player; // reference to the player game object
-    private PlayerController playerController; // reference to the player controller
+    [SerializeField]private GameObject player; // reference to the player game object
+    [SerializeField]private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
-    private float playerMaxHealth; // reference to the player's max health
-    private float playerCurrentHealth; // reference to the player's current health
-    private float attackAnimDelay = 0.5f; // How long the enemy moves down
-    private float attackOffset = 40f;
+    [SerializeField]private float playerMaxHealth; // reference to the player's max health
+    [SerializeField]private float playerCurrentHealth; // reference to the player's current health
+    [SerializeField]private float attackAnimDelay = 0.5f; // How long the enemy moves down
+    [SerializeField] private float attackOffset = 0.25f;
     #endregion
 
     #region Input Actions
@@ -481,23 +481,33 @@ public class BattleManager : MonoBehaviour
             }
 
             if (enemyScript.currentTimer <= 0)
-            {
-                if (player.transform.position.x < enemy.transform.position.x)
-                {
-                    
-                }
-                else if(player.transform.position.x > enemy.transform.position.x)
-                {
-                    
-                }
-                else
-                {
-                    
-                }
-                Vector3 moveAnim = new Vector3(0, 0, 0);
-                enemy.transform.GetChild(1).position += moveAnim * attackOffset;
+            {  
+                #region attackAnim
+                float xOffset = 0;
+                float yOffset = 0;
+                float slope = 0;
+                
+                GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
+                
+                print("ps y: " + ps.transform.position.y);
+                print("enemy y: " + enemy.transform.position.y);
+                xOffset = -(enemy.transform.position.x - ps.transform.position.x);
+                yOffset = enemy.transform.position.y + ps.transform.position.y;
+                
+                slope = yOffset/xOffset;
+                if (float.IsInfinity(slope)) slope = yOffset;
+                
+                print("yOffset: " + yOffset);
+                print("XOffset: " + xOffset);
+                print("slope: " + slope);
+                if (xOffset == 0) xOffset = 1;
+                Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
+                
+                enemy.transform.GetChild(1).position += moveAnim;
                 yield return new WaitForSeconds(attackAnimDelay);
-                enemy.transform.GetChild(1).position -= moveAnim * attackOffset;
+                enemy.transform.GetChild(1).position -= moveAnim;
+                #endregion
+                
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
                 enemyScript.currentTimer = 3;
                 enemyScript.UpdateTimer();
