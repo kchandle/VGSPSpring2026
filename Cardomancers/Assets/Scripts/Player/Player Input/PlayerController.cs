@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
             inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         }
+        
     }
     public IEnumerator StatusEffects()
     {
