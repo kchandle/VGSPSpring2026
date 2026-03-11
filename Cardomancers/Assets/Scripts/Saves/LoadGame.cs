@@ -14,8 +14,9 @@ public class LoadGame : MonoBehaviour
         //SaveSystem.Load(player);
         if (Inventory.InventoryList.Count == 0)
         {
-            Inventory.AddCardToInventory(testDefaultCard, 3);
-            Inventory.AddHackToInventory(testDefaultHack, 1);
+            //Inventory.AddCardToInventory(testDefaultCard, 3);
+            //Inventory.AddHackToInventory(testDefaultHack, 1);
+            //mr chandlee told me to get rid of this s
         }
         Destroy(this);
     }
