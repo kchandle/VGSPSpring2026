@@ -10,7 +10,7 @@ public class popUpActive : MonoBehaviour
     }
     // Finds and sets the pop up
 
-    public void activate()
+    public void Activate()
     {
         popup.SetVariables(popSO);
     }
