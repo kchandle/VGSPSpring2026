@@ -436,6 +436,7 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator StartEnemyTurn()
     {
+        int alive = 0;
         //Check if enemy is out of cards
         foreach (GameObject enemy in currentEnemies)
         {
@@ -443,6 +444,12 @@ public class BattleManager : MonoBehaviour
             if (enemy.GetComponent<Enemy>().deck.Count <= 0)
             {
                 enemy.GetComponent<Enemy>().ShuffleDeck();
+            }
+
+            //Get number of enemies alive
+            if (enemy.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
             }
         }
 
@@ -464,6 +471,41 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
+
+                //print("Evaluating Enemy Card Battle Effects");
+                //print("Summons enemies: " + effect.summonsEnemies);
+                //print("Card Name: " + card.cardSO.displayName);
+                //Summoning enemy logic
+                if(effect.summonsEnemies) 
+                {//Summon fails if four or more enemies are on the field
+                    if(alive >= 4)
+                    {
+                        print("Max enemies, summon failed");
+                    }
+                    else
+                    {
+                        print("Summoned enemy");
+                        //Selects random enemy from list of possible options set in the card's battle effect
+                        Enemy_SO newEnemy = effect.summonableEnemies[UnityEngine.Random.Range(0, effect.summonableEnemies.Count)];
+
+                        //Same code for creating an enemy object used in SetUpPlayspaces
+                        GameObject enemyPrefab = newEnemy.enemyPrefab;
+                        enemyPrefab = Instantiate(newEnemy.enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                        enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
+                        enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
+
+                        cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+                        enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
+                        currentEnemies.Add(enemyPrefab);
+
+                        EnemiesChooseCards(currentEnemies.IndexOf(enemyPrefab));
+
+                        //Reposition all enemy playspaces to account for new one
+                        ResetEnemyPositions();
+                    }
+                    
+                }
+
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
