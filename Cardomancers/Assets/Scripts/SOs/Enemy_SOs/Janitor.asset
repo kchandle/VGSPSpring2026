@@ -35,10 +35,21 @@ MonoBehaviour:
     cardID: 
   maxHealth: 50
   displayName: Janitor
-  moneyDrops: 15
-  xpDrops: 15
   timer: 1
   energy: 3
   enemyPrefab: {fileID: 1754986763223118875, guid: 58e883a55141a4e4781e3160ca43035f, type: 3}
   resistances: 0200000003000000
   weaknesses: 070000000100000005000000
+  drops:
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 25
+    dropType: 3
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 15
+    dropType: 2
+  - weight: 4
+    item: {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
+    quantity: 2
+    dropType: 0
