@@ -130,11 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bced3ca921ac2f44ca84da3b4e2342fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Playspace
---- !u!1 &83969957 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9080275069776286763, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
-  m_PrefabInstance: {fileID: 232810391839085139}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &256597457
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -212,6 +207,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+--- !u!1 &324394086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 565181904193842473, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+  m_PrefabInstance: {fileID: 256597457}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &499439108 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4662365724418436681, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
@@ -228,40 +228,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 512649829450912818, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
   m_PrefabInstance: {fileID: 232810391839085139}
   m_PrefabAsset: {fileID: 0}
---- !u!328 &536833073
+--- !u!328 &536833073 stripped
 VideoPlayer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 214977083839685685, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
+  m_PrefabInstance: {fileID: 232810391839085139}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 83969957}
-  m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 10b51bcaa865caa4e875cf2e1c15b54a, type: 3}
-  m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 0}
-  m_TimeReference: 0
-  m_TargetMaterialRenderer: {fileID: 0}
-  m_TargetMaterialProperty: <noninit>
-  m_RenderMode: 3
-  m_AspectRatio: 2
-  m_DataSource: 0
-  m_TimeUpdateMode: 2
-  m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
-  m_TargetAudioSources: []
-  m_DirectAudioVolumes: []
-  m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
-  m_ControlledAudioTrackCount: 0
-  m_PlayOnAwake: 1
-  m_SkipOnDrop: 1
-  m_Looping: 0
-  m_WaitForFirstFrame: 1
-  m_FrameReadyEventEnabled: 0
-  m_VideoShaders: []
 --- !u!114 &565161585 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1752948765366573359, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
@@ -1099,6 +1070,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 792239738}
+    - target: {fileID: 7109868585482226995, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8898780816619731762, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
       propertyPath: m_Name
       value: Game Controller
@@ -1831,6 +1806,10 @@ PrefabInstance:
       value: StartDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 5346295706196156714, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 324394086}
+    - target: {fileID: 5346295706196156714, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: videoPlayer
       value: 
       objectReference: {fileID: 536833073}
@@ -1844,10 +1823,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 512649829450912818, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1512450238}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9080275069776286763, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 536833073}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1856,9 +1832,9 @@ SceneRoots:
   - {fileID: 683243295}
   - {fileID: 1451160390}
   - {fileID: 1368708259}
+  - {fileID: 1182841887}
   - {fileID: 256597457}
   - {fileID: 232810391839085139}
   - {fileID: 1832168811}
   - {fileID: 1548786890}
   - {fileID: 1216965340}
-  - {fileID: 1182841887}
