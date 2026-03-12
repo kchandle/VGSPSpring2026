@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using NUnit.Framework;
+//using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,6 +44,7 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
+    public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
     public BattleState battleState; // current state of the battle
     public EndState endState;
@@ -578,6 +579,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
@@ -586,6 +588,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
@@ -594,6 +597,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         Destroy(this.gameObject);
     }
 
@@ -603,6 +607,7 @@ public class BattleManager : MonoBehaviour
         OnFlee.Invoke();
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         Destroy(this.gameObject);
     }
 
