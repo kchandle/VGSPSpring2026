@@ -48,14 +48,12 @@ public class BattleManager : MonoBehaviour
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
-    [SerializeField]private GameObject player; // reference to the player game object
-    [SerializeField]private PlayerController playerController; // reference to the player controller
+    private GameObject player; // reference to the player game object
+    private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
-    [SerializeField]private float playerMaxHealth; // reference to the player's max health
-    [SerializeField]private float playerCurrentHealth; // reference to the player's current health
-    [SerializeField]private float attackAnimDelay = 0.5f; // How long the enemy moves down
-    [SerializeField] private float attackOffset = 0.25f;
+    private float playerMaxHealth; // reference to the player's max health
+    private float playerCurrentHealth; // reference to the player's current health
     #endregion
 
     #region Input Actions
@@ -83,6 +81,9 @@ public class BattleManager : MonoBehaviour
 
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
+
+    public int moneyDrops; //Money to be gained from winning the battle
+    public float xpDrops; //xP to be gained from winning the battle
 
     public enum BattleState //Indicates State of Gameplay. Can be START, END, PLAYER_TURN, ENEMIES_TURN, CHECK_PLAYER_HP, CHECK_ENEMIES_HP
     {
@@ -252,6 +253,9 @@ public class BattleManager : MonoBehaviour
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
         playerController.UpdateShield();
 
+        moneyDrops = 0;
+        xpDrops = 0f;
+
         foreach (Enemy_SO e in battle.enemies)
         {
             GameObject enemyPrefab = e.enemyPrefab;
@@ -260,16 +264,73 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
 
             //Player playspace allowed donors
-            
-
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
         }
-        
 
+        ResetEnemyPositions();
+    }
 
+    //Changes enemy positions on screen based on how many alive enemies there are
+    //To be called at the start of a battle, when an enemy is summoned, and when an enemy dies
+    //Handles 1, 2, 3, and 4 enemy battles.
+    void ResetEnemyPositions()
+    {
+        //Count number of alive enemies
+        int alive = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
+            }
+        }
+
+        //Re-positions playspaces based on the number of alive enemies in the battle
+        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
+        float enemySpacing = canvasWidth/2 / (alive);
+
+        Vector3 position;
+        int i = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            //perform operation only on alive enemies
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                i++;
+                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
+                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); //2 is an arbitrary number just for testing
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); 
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f); 
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f); 
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+                
+            }
+        }
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -343,6 +404,8 @@ public class BattleManager : MonoBehaviour
             {
                 winScreen.SetActive(true);
                 OnWin.Invoke();
+
+
                 break;
             }
             case (EndState.LOSE):
@@ -445,7 +508,6 @@ public class BattleManager : MonoBehaviour
             {
                 enemy.GetComponent<Enemy>().ShuffleDeck();
             }
-
             //Get number of enemies alive
             if (enemy.GetComponent<Enemy>().currentHealth > 0)
             {
@@ -463,12 +525,14 @@ public class BattleManager : MonoBehaviour
             InventoryCard card = enemyScript.currentCard;
 
             //Plays Card
-
             enemyScript.currentTimer--;
             enemyScript.UpdateTimer();
 
+
+            //print("About to check battle effects");
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
+                //print("ENTERED FOREACH LOOP: " + enemyScript.EnemySO.displayName);
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
 
@@ -506,7 +570,6 @@ public class BattleManager : MonoBehaviour
                     
                 }
 
-
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
                     case ("ATK"):
@@ -519,37 +582,13 @@ public class BattleManager : MonoBehaviour
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
                     }
+
                 }
             }
 
+            print("reseting timer");
             if (enemyScript.currentTimer <= 0)
-            {  
-                #region attackAnim
-                float xOffset = 0;
-                float yOffset = 0;
-                float slope = 0;
-                
-                GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
-                
-                print("ps y: " + ps.transform.position.y);
-                print("enemy y: " + enemy.transform.position.y);
-                xOffset = -(enemy.transform.position.x - ps.transform.position.x);
-                yOffset = enemy.transform.position.y + ps.transform.position.y;
-                
-                slope = yOffset/xOffset;
-                if (float.IsInfinity(slope)) slope = yOffset;
-                
-                print("yOffset: " + yOffset);
-                print("XOffset: " + xOffset);
-                print("slope: " + slope);
-                if (xOffset == 0) xOffset = 1;
-                Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
-                
-                enemy.transform.GetChild(1).position += moveAnim;
-                yield return new WaitForSeconds(attackAnimDelay);
-                enemy.transform.GetChild(1).position -= moveAnim;
-                #endregion
-                
+            {
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
                 enemyScript.currentTimer = 3;
                 enemyScript.UpdateTimer();
@@ -574,6 +613,7 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator checkEndConditions()
     {
+        ResetEnemyPositions();
         //If player health <= 0, battleState = BattleState.LOST
         if (playerController.currentHealth <= 0)
         {

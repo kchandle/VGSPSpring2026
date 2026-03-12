@@ -3,7 +3,8 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ System.Serializable ]
+using System.Collections.Generic;
+
 public enum DamageType
 {
     None,
@@ -35,6 +36,17 @@ public struct BattleEffect
     public bool isPerishable; //If status effect is perishable
     public int turnsActive; //Amount of turns active at start of effect    
 
+
+    //Summoning variables, only used if summonsEnemies is true
+    public bool summonsEnemies; //Whether or not this card summons enemies
+    public List<Enemy_SO> summonableEnemies; //The possible enemy types that can be summoned
+
+    //Variables for set-order cards
+    public bool setsNextCard;
+    public Card_SO nextCard;
+
+
+
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
 
@@ -46,13 +58,20 @@ public struct BattleEffect
     //    }
     //}
 
-    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, ParticleSystem[] particles)
+    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, List<Enemy_SO> summonableEnemies, bool setsNextCard, Card_SO nextCard, ParticleSystem[] particles)
     {
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
         this.isStatusEffect = isStatusEffect;
         this.isPerishable = isPerishable;
         this.turnsActive = turnsActive;
+
+        this.summonsEnemies = summonsEnemies;
+        this.summonableEnemies = new List<Enemy_SO>(summonableEnemies);
+
+        this.setsNextCard = setsNextCard;
+        this.nextCard = nextCard;
+
         this.particles = particles;
     }
 
@@ -101,8 +120,6 @@ public struct BattleEffect
         }
         int DamageDealt = StatusAmount;
         Enemy enemy = target.GetComponent<Enemy>();
-        
-        
 
         if (isStatusEffect)
         {

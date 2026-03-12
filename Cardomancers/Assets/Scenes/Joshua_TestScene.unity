@@ -969,7 +969,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 463501439}
-  - component: {fileID: 463501440}
+  - component: {fileID: 463501438}
   m_Layer: 0
   m_Name: cardadder
   m_TagString: Untagged
@@ -977,6 +977,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &463501438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463501437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d77c227b72555418ed1e6ac07ca203, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::test
+  card1:
+    cardSO: {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
 --- !u!4 &463501439
 Transform:
   m_ObjectHideFlags: 0
@@ -992,21 +1009,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &463501440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 463501437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef0282f6de59a10fbc8221f4eade06b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LoadGame
-  player: {fileID: 677749139}
-  testDefaultCard: {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
-  testDefaultHack: {fileID: 11400000, guid: a3f60e4a8655f07458d300f04658f167, type: 2}
 --- !u!1 &474682378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1403,11 +1405,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656299398}
   m_CullTransparentMesh: 1
---- !u!1 &677749139 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
-  m_PrefabInstance: {fileID: 12378215}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &757222634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7725921554011848750, guid: 60145b9622ff1f143b272009b5ccb210, type: 3}
@@ -4150,7 +4147,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
   m_PrefabInstance: {fileID: 12378215}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677749139}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dd89ae37295f3cf291c34a47294e18f, type: 3}
@@ -4161,7 +4158,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8805448749967120339, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
   m_PrefabInstance: {fileID: 12378215}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677749139}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
