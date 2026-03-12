@@ -19,7 +19,7 @@ public class ShopSlot : MonoBehaviour
         image.sprite = shopItem.SO.image;
     }
 
-    //called when the object is clicked on 
+    //called when the object is clicked on  
     public void UpdateShopPanel()
     {
         shopPanel.UpdatePanel(shopItem);

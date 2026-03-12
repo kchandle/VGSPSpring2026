@@ -153,7 +153,7 @@ public class ShopItem : ScriptableObject
         }
     }
 
-    public void Init(Card_SO so)
+    public void Init(Card_SO so) 
     {
         if(so == null)
         {   

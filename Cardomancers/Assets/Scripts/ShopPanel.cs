@@ -53,7 +53,7 @@ public class ShopPanel : MonoBehaviour
         }
     }
 
-    //method called by the shop panel's Sell button onclick event
+    //method called by the shop panel's Sell button onclick event 
     public void ClickedSellCard()
     {
         //print("Selling card...");

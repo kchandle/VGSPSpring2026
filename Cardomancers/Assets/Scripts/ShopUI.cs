@@ -167,7 +167,7 @@ public class ShopUI : MonoBehaviour
         UpdateBuyMenu();
     }
 
-    //Gets cards from the shop's stock and creates slots using the cardShopTemplate prefab to display them
+    //Gets cards from the shop's stock and creates slots using the cardShopTemplate prefab to display them 
     public void UpdateBuyMenu(List<ShopItem> exclude = null)
     { 
         print("UPDATING BUY MENU");

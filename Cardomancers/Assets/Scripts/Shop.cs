@@ -206,7 +206,7 @@ public class Shop : MonoBehaviour
         return false;
     }
 
-    private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null)
+    private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null) 
     { 
         //We will need a concrete way to differentiate between cards for the player and cards only for enemies.
         //For now, the stock consists of all cards with a sell value of 5 and a price that isn't 0.
