@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3266360750410126282}
   - component: {fileID: 6087050072207703753}
   - component: {fileID: 5593546972517742632}
-  - component: {fileID: 8349208983302218513}
   m_Layer: 0
   m_Name: BattleTransition
   m_TagString: Untagged
@@ -85,23 +84,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &8349208983302218513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 565181904193842473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 3
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &2892364732910197033
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,7 +816,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardThrow
   pool: {fileID: 0}
-  animator: {fileID: 0}
   cardForce: 20
   throwWooshSounds:
   - {fileID: 8300000, guid: ef9028466a2be154c94e7e1fdbb3949e, type: 3}

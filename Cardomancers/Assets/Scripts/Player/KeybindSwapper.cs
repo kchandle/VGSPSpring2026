@@ -9,6 +9,7 @@ public class KeybindSwapper : MonoBehaviour
     public GameObject bindsBattling;
     public GameObject bindsInventory;
     public GameObject questText;
+    public GameObject moneyUI;
 
     void Awake()
     {
@@ -32,6 +33,7 @@ public class KeybindSwapper : MonoBehaviour
             questText.SetActive(true);
             bindsBattling.SetActive(false);
             bindsInventory.SetActive(false);
+            moneyUI.SetActive(true);
         }
         // If other bind UI is added SET IT FALSE EXCEPT FOR WHATS SUPPOSED TO BE TRUE
 
@@ -41,6 +43,7 @@ public class KeybindSwapper : MonoBehaviour
             questText.SetActive(false);
             bindsBattling.SetActive(false);
             bindsInventory.SetActive(true);
+            moneyUI.SetActive(false);
 
         }
 
@@ -50,6 +53,7 @@ public class KeybindSwapper : MonoBehaviour
             questText.SetActive(false);
             bindsBattling.SetActive(true);
             bindsInventory.SetActive(false);
+            moneyUI.SetActive(false);
         }
        // For all of these, when a specific gamestate is opened, close other keybind UI and open the necessary keybind UI
        
