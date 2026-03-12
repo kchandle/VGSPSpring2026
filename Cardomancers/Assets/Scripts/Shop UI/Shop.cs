@@ -22,14 +22,11 @@ public class Shop : MonoBehaviour
     /*[HideInInspector]*/ public List<ShopItem> stock = new();
     /*[HideInInspector]*/ public List<Card_SO> cachedSOs = new();
 
-
-    // for some reason inventory isnt static...
-    // and isnt public...
-    // and I can just get it get{} then modify... so...
     //private Inventory playerInventory;
     private List<ShopItem> inventory = new();
     private List<InventoryCard> playerInv;
 
+    //StockSize is how many items will currently be in shop
     private int _StockSize = -1;
     public int StockSize 
     { 
@@ -64,7 +61,7 @@ public class Shop : MonoBehaviour
         }
     }
 
-
+    //Toggles the UI if true or false
     public bool IsShopOpenUI
     {
         // todo
@@ -76,6 +73,7 @@ public class Shop : MonoBehaviour
         }
     }
 
+    //Gets the cardSos from the folder they are stored in path, which is where the programmers put the cardSOs
     private List<UnityEngine.Object> GetObjectsInPath(string path)
     {
         List<UnityEngine.Object> assets = new();
@@ -95,11 +93,13 @@ public class Shop : MonoBehaviour
         return assets;
     }
 
+    //Updates our inventory when it's changed
     private void OnInventoryChange(object unused1, EventArgs unused2)
     {
         playerInv = Inventory.InventoryList;
     }
 
+    //Initializes inventory stuff
     void Start()
     {
         playerInv = Inventory.InventoryList;
@@ -119,7 +119,6 @@ public class Shop : MonoBehaviour
     // Checks whether you can buy a card.
     public bool CanBuyCard(ShopItem item)
     {
-        // money is a int for some reason...
         int playerBalance = Inventory.Money;
 
         return item.PurchasePrice <= playerBalance;
@@ -138,6 +137,7 @@ public class Shop : MonoBehaviour
     // RETURN: false on failed to purchase.
     public bool BuyCard(ShopItem item)
     {
+        //If the card can't be bought
         if(!this.CanBuyCard(item))
         {   
             Shop.FailPurchaseEvent?.Invoke();
@@ -145,6 +145,7 @@ public class Shop : MonoBehaviour
             return false;
         }
 
+        //Make sure inventory isn't null
         if(playerInv == null)
         {   
             Shop.FailPurchaseEvent?.Invoke();
@@ -152,6 +153,7 @@ public class Shop : MonoBehaviour
             return false;
         }
 
+        //Make sure there is enough space in inventory
         if(playerInv.Count >= Inventory.InventorySize + 1)
         {
             Shop.FailPurchaseEvent?.Invoke();
@@ -159,6 +161,7 @@ public class Shop : MonoBehaviour
             return false;
         }
 
+        //Make sure you have enough money
         if(Inventory.Money < (int)item.PurchasePrice)
         {   
             Shop.FailPurchaseEvent?.Invoke();
@@ -166,9 +169,9 @@ public class Shop : MonoBehaviour
             return false;
         }
 
+        //Buy the card, remove money
         Inventory.Money -= (int)item.PurchasePrice;
         Inventory.AddCardToInventory(item.SO);
-        //shopUI.GetComponent<ShopUI>().RemoveCardSOFromStock(item.SO);
         Shop.PurchaseEvent?.Invoke();
 
         return true;
@@ -190,9 +193,9 @@ public class Shop : MonoBehaviour
             return false;
         }
 
+        //Remove the corresponding card in the inventory
         foreach(InventoryCard c in playerInv)
         {
-            // still had to do this manually...
             if(c.cardSO == item.SO)
             {   
                 Inventory.RemoveCardFromInventory(c);
@@ -206,15 +209,16 @@ public class Shop : MonoBehaviour
         return false;
     }
 
+    //Generates a new random shop stock, ignores the cards in the exclude list
     private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null) 
     { 
         //We will need a concrete way to differentiate between cards for the player and cards only for enemies.
-        //For now, the stock consists of all cards with a sell value of 5 and a price that isn't 0.
+        //For now, the stock consists of only Jolt and Shield
         if(cachedSOs.Count == 0)
         {   
             cachedSOs = this.GetObjectsInPath("Assets/Resources/Card_SO")
                 .OfType<Card_SO>()
-                .Where(s => s.sellValue == 5 && s.price != 0)
+                .Where(s => s.displayName == "Jolt" || s.displayName == "Shield" && s.price != 0)
                 .ToList();
         }
 
@@ -244,6 +248,7 @@ public class Shop : MonoBehaviour
         return generatedStock;
     }
 
+    //replaces the shop stock with the passed in list
     public void ReplaceStock(ref List<ShopItem> list)
     {
         this.stock = list;

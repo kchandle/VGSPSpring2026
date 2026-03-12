@@ -17,24 +17,23 @@ public class ShopUI : MonoBehaviour
 {
     // ui elements
     private GameObject canvas;
-    private GameObject scrollview;
-    private GameObject viewport;
-    private GameObject cardTemplate;
     [SerializeField] private GameObject content; //set in editor
     [SerializeField] private GameObject sellContent; //set in editor
     [SerializeField] private TMPro.TextMeshProUGUI playerMoneyText; //set in editor
     [SerializeField] private GameObject shopSlotTemplate; //set in editor, is the lone cardShopTemplate object under IgnoreContent. This was more convenient than making a prefab.
+    
+    //Music Player
     private MusicPlayer musicPlayer;
 
+    //Ref to shop script, which controls stock and the core functionality of buying and selling cards.
     [SerializeField] private Shop shop = new();
-    //[SerializeField] private List<Card_SO> stock; //set in editor
-    [SerializeField] private List<(GameObject obj, ShopItem shopItem)> cards = new();
 
     [Tooltip("Volume when not inside the Shop UI")]
     public float UnfocusVolume = .65f;
     [Tooltip("Volume when inside the Shop UI")]
     public float FocusVolume = .9f;
 
+    //Just returns the UI Element under the mouse, only used in Update()
     public static GameObject GetUIElementUnderMouse()
     {
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
@@ -48,14 +47,10 @@ public class ShopUI : MonoBehaviour
         return results.Count > 0 ? results[0].gameObject : null;
     }
 
-    //private void 
-
+    //Initializes key variables
     void Start()
     {
         Transform root = gameObject.transform;
-        /*this.cardTemplate = root.Find("CardShopTemplate")?.gameObject;
-        this.scrollview = root.Find("Scroll View")?.gameObject;
-        this.viewport = root.Find("Scroll View/Viewport")?.gameObject;*/
 
         this.canvas = gameObject;
 
@@ -63,62 +58,26 @@ public class ShopUI : MonoBehaviour
 
         this.musicPlayer.Play();
 
-        shop.StockUpdate += OnStockUpdate;
-
         shop.StockSize = 10;
 
         CreateBuyMenu();
         CreateSellMenu();
     }
 
-    void OnStockUpdate()
-    {
-        // mark all cards as dirty unless we find them.
-        List<int> dirty = Enumerable.Range(0, this.cards.Count).ToList();
-
-        // try and find cards.
-        foreach(ShopItem item in shop.stock)
-        {
-            int index = this.cards.FindIndex(tuple => tuple.shopItem == item);
-            bool found = index != -1;
-
-            if(found)
-            {   dirty.Remove(index);
-            }
-            else
-            {   
-                GameObject clone = Instantiate(this.cardTemplate, this.content.transform.parent);
-
-                this.cards.Add((clone, item));
-            }
-        }
-
-        // sort to decending list.
-        dirty.Sort((a, b) => b.CompareTo(a));
-
-        foreach (int index in dirty)
-        {
-            if (index >= 0 && index < this.cards.Count)
-            {   
-                (GameObject obj, ShopItem unused) = this.cards[index];
-
-                Destroy(obj);
-
-                this.cards.RemoveAt(index);
-            }
-        }
-    }
-
+    
+    //Updates musicPlayer to make the volume go down and up
     void Update()
     {
         GameObject element = ShopUI.GetUIElementUnderMouse();
 
+        //Make the music quieter if mouse if over a ShopUI element
         if(element == null || !element.activeInHierarchy)
         {   
             this.musicPlayer.Volume = this.UnfocusVolume;
             return;
         }
 
+        //Make the music louder if mouse if over a ShopUI element
         if(element.transform.IsChildOf(this.canvas.transform))
         {   
             this.musicPlayer.Volume = this.FocusVolume;
@@ -131,6 +90,7 @@ public class ShopUI : MonoBehaviour
 
         // Element is part of content so that means its in the shop ui.
     }
+
 
 
     //=====================Buying menu=====================//
@@ -191,13 +151,13 @@ public class ShopUI : MonoBehaviour
     }
     
 
-    //Called by the test button OnClick event. 
+    //Only called by the test button OnClick event, can be removed when no longer needed for testing.
     public void GiveMoney() 
     {
         Inventory.Money += 1000;
         playerMoneyText.text = "$" + Inventory.Money;
         int i = 0;
-        print("Cards: ");
+        print("Cards in your inventory: ");
         foreach(InventoryCard card in Inventory.InventoryList)
         {
             i++;
@@ -206,8 +166,10 @@ public class ShopUI : MonoBehaviour
     }
     
 
+
     //=====================Selling menu=====================//
     //Gets cards from the Inventory and creates slots using the cardShopTemplate prefab to display them
+    //Note: Hacked cards currently can't be sold.
     public void CreateSellMenu(List<ShopItem> exclude = null)
     { 
         print("CREATING SELL MENU");
@@ -255,7 +217,7 @@ public class ShopUI : MonoBehaviour
                 continue;
             }
 
-            //Every card made has a default hack length of 2
+            //Every card made has a default hack length of 2. Assuming adding a hack increases the lenght to 3, hacked cards will not display
             if(invCard.hacks.Length <= 2)
             {
                 ShopItem item = new ShopItem();
@@ -269,13 +231,22 @@ public class ShopUI : MonoBehaviour
 
     
 
+    //==================Code not currently in use==================//
+
+    /*private GameObject scrollview;
+    private GameObject viewport;
+    private GameObject cardTemplate;*/
+
+    //[SerializeField] private List<Card_SO> stock; //set in editor
+    //[SerializeField] private List<(GameObject obj, ShopItem shopItem)> cards = new();
+
+    /*this.cardTemplate = root.Find("CardShopTemplate")?.gameObject;
+    this.scrollview = root.Find("Scroll View")?.gameObject;
+    this.viewport = root.Find("Scroll View/Viewport")?.gameObject;*/
+    //shop.StockUpdate += OnStockUpdate;
 
 
-
-
-
-    //Methods were for testing, no longer in use
-    /*//Adds cards to stock. Currently unused.
+    /*//Adds cards to stock.
     public void AddCardSOToStock(Card_SO card, int amount = 1)
     {
         for(int i = 0; i < amount; i++)
@@ -393,5 +364,47 @@ public class ShopUI : MonoBehaviour
         //print("finished creating sell menu");
 
         //print("test: " + Inventory.InventoryList[1].cardSO.displayName);
+    }*/
+
+
+
+
+    //Unused code
+    /*void OnStockUpdate()
+    {
+        // mark all cards as dirty unless we find them.
+        List<int> dirty = Enumerable.Range(0, this.cards.Count).ToList();
+
+        // try and find cards.
+        foreach(ShopItem item in shop.stock)
+        {
+            int index = this.cards.FindIndex(tuple => tuple.shopItem == item);
+            bool found = index != -1;
+
+            if(found)
+            {   dirty.Remove(index);
+            }
+            else
+            {   
+                GameObject clone = Instantiate(this.cardTemplate, this.content.transform.parent);
+
+                this.cards.Add((clone, item));
+            }
+        }
+
+        // sort to decending list.
+        dirty.Sort((a, b) => b.CompareTo(a));
+
+        foreach (int index in dirty)
+        {
+            if (index >= 0 && index < this.cards.Count)
+            {   
+                (GameObject obj, ShopItem unused) = this.cards[index];
+
+                Destroy(obj);
+
+                this.cards.RemoveAt(index);
+            }
+        }
     }*/
 }

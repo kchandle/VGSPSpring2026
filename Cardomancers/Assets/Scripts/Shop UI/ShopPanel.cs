@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
+//Shop Panel just displays the information of the card and allows the player to buy / sell it
 public class ShopPanel : MonoBehaviour
 {
     //Visual elements of the panel (all set in editor)

@@ -9,8 +9,11 @@ public class ShopItem : ScriptableObject
 {
     [SerializeField] private Card_SO so;
 
+    //Unused for now
     public int Stock { get; set; } = 0;
 
+
+    //All of this just makes sure the SO isn't null and retrieves the data from the cardSO
     public float SellPrice 
     { 
         get
