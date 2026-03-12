@@ -18,6 +18,7 @@ public class StartBattle : MonoBehaviour
 
 {
     public float timer = 2f;
+    public float videoTimer = 1f;
     public GameObject canvas;
     public VideoPlayer videoPlayer;
 
@@ -27,10 +28,23 @@ public class StartBattle : MonoBehaviour
 
     public static event Action OnPlayVideo;
 
+    public bool battleStarted = false;
+
     // The only reason this exists is to test the battle system quickly  
 
     public void StartBattleNow()
     {
+        if (Inventory.Deck.Count == 0 && Inventory.InventoryList.Count > 0)
+        {
+            print("Add some cards to your deck and come back.");
+            return;
+        }
+
+        if (Inventory.InventoryList.Count == 0)
+        {
+            print("Pick up some cards and add them to your deck. Then come back.");
+            return;
+        }
         StartCoroutine(_Impl_StartBattleNow());
     }
 
@@ -42,34 +56,57 @@ public class StartBattle : MonoBehaviour
 
     private IEnumerator _Impl_StartBattleNow()
     {
-        GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
-        // Updated to use the recommended method for finding objects
-        // Ensure the BattleManager prefab is instantiated in the scene
-        var battleSystem = FindFirstObjectByType<BattleManager>();
-        if (battleSystem == null)
-        {
-            Instantiate(battleManagerPrefab);
-            battleSystem = FindFirstObjectByType<BattleManager>();
-        }
-        battleSystem.StartBattle(battleToStart);
 
-        // Prepares video, plays it, and sets the battle transition to unactive
+
+
+
+        if (canvas == null)
+        {
+            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
+        }
+
+         // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
         {
             while (!videoPlayer.isPrepared)
-            {   yield return null;
+            {   
+                yield return null;
             }
 
             videoPlayer.Play(); // Starts playing the video
             canvas.SetActive(true);
 
+      
+        
             while(videoPlayer.isPlaying)
             {
+                yield return new WaitForSeconds(videoTimer);
+                if(!battleStarted){
+                
+                GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
+                // Updated to use the recommended method for finding objects
+                // Ensure the BattleManager prefab is instantiated in the scene
+                var battleSystem = FindFirstObjectByType<BattleManager>();
+                        if (battleSystem == null)
+                {
+                    Instantiate(battleManagerPrefab);
+
+                    battleSystem = FindFirstObjectByType<BattleManager>();
+                }
+                Debug.Log("dsfgsdfs");
+                battleSystem.StartBattle(battleToStart);
+                    battleStarted = true;
+
+                    
+
+                }
+              
                 yield return null;
             }
+            GameObject.FindWithTag("Player").gameObject.GetComponent<PlayerInteract>().interacting = false;
             canvas.SetActive(false);
         }
-
+       
         yield break;
     }
 
@@ -80,6 +117,7 @@ public class StartBattle : MonoBehaviour
         {
             videoPlayer = GetComponent<VideoPlayer>();
         }
+
 
         //Once the battle starts
         videoPlayer.prepareCompleted += OnVideoPrepared;
