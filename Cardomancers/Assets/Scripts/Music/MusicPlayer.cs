@@ -53,10 +53,6 @@ public class MusicPlayer : MonoBehaviour
     [Range(0f, 10f)]
     public float FadeTime = 0.15f;
 
-    [Tooltip("Playback History max length")]
-    [Range(0f, 256f)]
-    public int HistoryMax = 50;
-
     public float TrackLength 
     { 
         get 
@@ -101,15 +97,9 @@ public class MusicPlayer : MonoBehaviour
         }
         set
         {   
-            if(this.audioSource == null)
-            {   return;
-            }
-
-            if(this.audioSource == null || this.audioSource.clip == null)
+            if(this.audioSource.clip == null)
             {   
-                if(Clips.Count > 0)
-                {   this.audioSource.clip = Clips[this.AudioIndex];
-                }
+                this.audioSource.clip = Clips[this.AudioIndex];
             }
 
             if(this.audioSource != null && this.audioSource.clip != null)
@@ -142,6 +132,7 @@ public class MusicPlayer : MonoBehaviour
 
     // cant use new() because the type isnt enough to be descriptive ????
     private List<int> playHistory = new List<int>();
+    private const int TRIM_PLAY_HISTORY_LENGTH = 50;
 
     // These are the sources we need 2 to prevent choppy transitions.
 
@@ -160,6 +151,10 @@ public class MusicPlayer : MonoBehaviour
     private Coroutine fadeCoroutine;
     // this is just a hack to fix the Update() stuff we did to call Next and Prev when we end music.
     private bool isNextPrevQueued = false;
+
+    // This is not implemented yet...
+    private bool reversed = false;
+
 
     // Unused.
     private static float DbToVolume(float db)
@@ -288,16 +283,19 @@ public class MusicPlayer : MonoBehaviour
         // Play History
         playHistory.Add(this.AudioIndex);
 
-        if(playHistory.Count > this.HistoryMax)
+        if(playHistory.Count > TRIM_PLAY_HISTORY_LENGTH)
         {   playHistory.RemoveAt(0);
         }
+
+
 
         int prevIndex = this.AudioIndex;
 
         this.AudioIndex = audioIndex;
 
         if(fadeCoroutine != null)
-        {   StopCoroutine(fadeCoroutine);
+        {   
+            StopCoroutine(fadeCoroutine);
         }
 
         this.audioSourceBuff.clip = Clips[this.AudioIndex];
@@ -400,7 +398,7 @@ public class MusicPlayer : MonoBehaviour
     // Intiates a loopback to loop through in the song.
     public void SetLoopBack(float startTime, float endTime)
     {
-        if(this.audioSource == null || this.audioSource.clip == null)
+        if(audioSource == null || audioSource.clip == null)
         {   return;
         }
 
@@ -416,8 +414,8 @@ public class MusicPlayer : MonoBehaviour
             endTime = tmp;
         }
 
-        this.loopStartSample = (int)(startTime * this.audioSource.clip.frequency);
-        this.loopEndSample = (int)(endTime * this.audioSource.clip.frequency);
+        this.loopStartSample = (int)(startTime * audioSource.clip.frequency);
+        this.loopEndSample = (int)(endTime * audioSource.clip.frequency);
     }
 
     // unsets the set loopback.
@@ -467,16 +465,9 @@ public class MusicPlayer : MonoBehaviour
         {   AudioSizeTypeAssertion(clip);
         }
 
-        if(this.Clips.Count == 0)
-        {   this.AudioIndex = 0;
-        }
-        else
-        {
-            // make sure no random stuff
-            this.AudioIndex %= this.Clips.Count;
-            this.audioSource.clip = Clips[this.AudioIndex];
-        }
-
+        // make sure no random stuff
+        this.AudioIndex %= this.Clips.Count;
+        this.audioSource.clip = Clips[this.AudioIndex];
 
         if(this.PlayOnStart)
         {   this.Play();
@@ -486,10 +477,6 @@ public class MusicPlayer : MonoBehaviour
     // handles all the dynamic changes we have
     void Update()
     {
-        if(this.audioSource == null)
-        {   return;
-        }
-
         float playbackSpeed;
         float volume;
 
@@ -525,9 +512,21 @@ public class MusicPlayer : MonoBehaviour
             }
             else if(playbackSpeed > 0f)
             {
+                // make sampling back to normal.
+                if(reversed)
+                {
+                }
+
+                reversed = false;
             }
             else if(playbackSpeed < 0f)
             {
+                // reverse sampling.
+                if(!reversed)
+                {
+                }
+
+                reversed = true;
             }
         }
 

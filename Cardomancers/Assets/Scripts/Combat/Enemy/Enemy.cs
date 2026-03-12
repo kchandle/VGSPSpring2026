@@ -18,7 +18,6 @@ public class Enemy : MonoBehaviour
     private int currentShield = 0;
     public GameObject shieldPanel;
     public TMP_Text shieldText;
-    
 
     public int CurrentShield
     {
@@ -63,11 +62,8 @@ public class Enemy : MonoBehaviour
     public GameObject actionTypeATK;
     public GameObject actionTypeDEF;
     public GameObject actionTypeRST;
-
     public TMP_Text actionAmountText;
     public InventoryCard currentCard;
-    public InventoryCard nextCard;
-    public bool nextCardSet;
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -87,7 +83,6 @@ public class Enemy : MonoBehaviour
     public Sprite DefeatedSprite;
 
     public bool deathCalled = false;
-
 
 // variable for enum switch state
     bool currentValue;
@@ -187,30 +182,7 @@ public class Enemy : MonoBehaviour
     {
         // Pick random card from deck then remove from deck
         InventoryCard card = deck[Random.Range(0, deck.Count)];
-
-        //If the enemy's next action has been set by a different card, force that one to be drawn
-        if(nextCardSet)
-        {
-            card = nextCard;
-            nextCardSet = false; //go back to normal, random card selection
-            //return card;
-        }
-
-        //If the drawn card sets the next card, set the value of the next card to be played
-        foreach(BattleEffect effect in card.cardSO.cardEffects)
-        {
-            if(effect.setsNextCard)
-            {
-                nextCard = new InventoryCard(effect.nextCard, new Hack_SO[2], 0);
-                nextCardSet = true;
-                break;
-            }
-        }
-        
-        if(deck.Contains(card))
-        {
-            deck.Remove(card);
-        }
+        deck.Remove(card);
         return card;
     }
 
@@ -260,7 +232,6 @@ public class Enemy : MonoBehaviour
                 actionTypeRST.SetActive(true);
                 break;
             }
-
         }
         print(currentActionType);
 
