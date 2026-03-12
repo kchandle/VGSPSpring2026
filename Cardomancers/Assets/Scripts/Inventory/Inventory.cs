@@ -29,7 +29,7 @@ public static class Inventory
     #endregion
 
     #region Limiting Variables
-    private static int inventorySize = 5;
+    private static int inventorySize = 10;
     private static int deckSize = 5;
     private static int hackInventorySize = 5;
     #endregion
@@ -157,6 +157,7 @@ public static class Inventory
         inventory.Add(newCard);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        AddCardToDeck(newCard);
         return true;
     }
 
