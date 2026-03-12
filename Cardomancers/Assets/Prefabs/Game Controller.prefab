@@ -82,6 +82,7 @@ Transform:
   - {fileID: 3963641887726620804}
   - {fileID: 2675468507649153323}
   - {fileID: 1191096239937506308}
+  - {fileID: 532149823207400912}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &41107060439550070
@@ -248,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8515539906394194169, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8546133637974573755, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
@@ -343,6 +344,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f87ece01215b243b4d1566a4445da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryUIHandler
+--- !u!1001 &6618430596232635565
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1635003555382872514}
+    m_Modifications:
+    - target: {fileID: 3485357250057770704, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_Name
+      value: Battle Transititon Video Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -35.81329
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -16.54811
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -190.10492
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+--- !u!4 &532149823207400912 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+  m_PrefabInstance: {fileID: 6618430596232635565}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6884729239080875462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -391,6 +454,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1713888691432740484, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: ae00827df36e3aa49a22e5cb7526d353, type: 2}
     - target: {fileID: 5084784337856552544, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
       propertyPath: m_fontAsset
       value: 
