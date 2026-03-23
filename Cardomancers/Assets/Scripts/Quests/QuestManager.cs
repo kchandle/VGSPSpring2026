@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class QuestManager : MonoBehaviour
 {
@@ -168,8 +168,20 @@ public class QuestManager : MonoBehaviour
     #endregion
     
     #region UI
+    // First child of canvas should be a scr
     Canvas canvas;
-    
-    
+    GameObject questTextPrefab;
+    ScrollView scrollView;
+
+    private void UIStart()
+    {
+        
+    }
+
+    private void CreateQuestText(string ID)
+    {
+        Quest quest = GetQuestByID(ID);
+        Instantiate(questTextPrefab, canvas.transform.GetChild(0).transform);
+    }
     #endregion
 }
