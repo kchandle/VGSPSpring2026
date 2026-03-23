@@ -18,11 +18,14 @@ public class Shop : MonoBehaviour
     static public event Action SellEvent;
     public event Action StockUpdate;
 
-    public GameObject shopUI;
+    //Set in editor
+    [SerializeField] private GameObject player; 
+    public GameObject shopUI; 
+
+    //Not set in editor
     /*[HideInInspector]*/ public List<ShopItem> stock = new();
     /*[HideInInspector]*/ public List<Card_SO> cachedSOs = new();
 
-    //private Inventory playerInventory;
     private List<ShopItem> inventory = new();
     private List<InventoryCard> playerInv;
 
@@ -69,7 +72,11 @@ public class Shop : MonoBehaviour
         {   return shopUI.activeSelf;
         }
         set
-        {   shopUI.SetActive(value);
+        {   if(value)
+            {
+                SaveSystem.Load(player);
+            }
+            shopUI.SetActive(value);
         }
     }
 
@@ -172,7 +179,10 @@ public class Shop : MonoBehaviour
         //Buy the card, remove money
         Inventory.Money -= (int)item.PurchasePrice;
         Inventory.AddCardToInventory(item.SO);
+        SaveSystem.Save(player);
         Shop.PurchaseEvent?.Invoke();
+
+        
 
         return true;
     }
@@ -183,6 +193,7 @@ public class Shop : MonoBehaviour
     // RETURN: false on failed to sell 
     public bool SellCard(ShopItem item)
     {
+        
         if(!this.CanSellCard(item))
         {   
             return false;
@@ -201,10 +212,12 @@ public class Shop : MonoBehaviour
                 Inventory.RemoveCardFromInventory(c);
                 Inventory.Money += (int)item.SellPrice;
                 Shop.SellEvent?.Invoke();
+                SaveSystem.Save(player);
                 return true;
             }
         }
 
+        
 
         return false;
     }
