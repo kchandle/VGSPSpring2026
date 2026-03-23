@@ -299,7 +299,7 @@ public class CardDragInput : MonoBehaviour
             //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
             if (moveTarget.itemType == PlayItem.ItemType.CARD)
             {
-                if (to.battlePlayType == ((Card)moveTarget).CardSO.type ||
+                if (to.battlePlayType == ((Card)moveTarget).CardSO.CardType ||
                     to.gameObject.transform.parent.parent.gameObject.name == "BattleCanvas" ||
                     to.gameObject.transform.parent.parent.gameObject.name == "InventoryCanvas" ||
                     to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")

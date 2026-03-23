@@ -11,6 +11,7 @@ public class StatusEffectContainer
     public bool isPerishable;
     public int turnsLasting;
     public int turnsRemaining;
+    public BattleActionType actionType;
 
     public ParticleSystem[] particles;
 
@@ -30,7 +31,7 @@ public class StatusEffectContainer
     }
 
     //Setting up the status effect container
-    public StatusEffectContainer(DamageType damageType,int statusAmount, bool isPerishable, int turnsLasting, ParticleSystem[] particles)
+    public StatusEffectContainer(DamageType damageType,int statusAmount, bool isPerishable, int turnsLasting, ParticleSystem[] particles, BattleActionType actionType)
     {
         this.damageType = damageType;
         this.statusAmount = statusAmount;
@@ -38,5 +39,6 @@ public class StatusEffectContainer
         this.turnsLasting = turnsLasting;
         this.turnsRemaining = turnsLasting;
         this.particles = particles;
+        this.actionType = actionType;
     }
 }
