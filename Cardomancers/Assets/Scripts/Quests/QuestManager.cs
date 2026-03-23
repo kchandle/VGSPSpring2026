@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuestManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class QuestManager : MonoBehaviour
         questMap = CreateQuestMap();
     }
 
+    // Subscribes methods to their respective events
     private void OnEnable()
     {
         QuestEvents.OnStartQuest += StartQuest;
@@ -27,6 +29,7 @@ public class QuestManager : MonoBehaviour
         QuestEvents.OnFinishQuest -= FinishQuest;
     }
 
+    // Update the state of every quest on start
     private void Start()
     {
         foreach (Quest quest in questMap.Values)
@@ -39,6 +42,7 @@ public class QuestManager : MonoBehaviour
     {
         foreach (Quest quest in questMap.Values)
         {
+            // Constantly check every quest if it can be started
             if (GetQuestByID(quest.info.ID).state.Equals(QuestState.REQUIREMENTS_NOT_MET) && CheckRequirementsMet(GetQuestByID(quest.info.ID)))
             {
                 ChangeQuestState(quest.info.ID, QuestState.CAN_START);
@@ -49,6 +53,7 @@ public class QuestManager : MonoBehaviour
     
     #region Event Subscribers
 
+    // Instantiate first quest step prefab and assign the correct quest state
     private void StartQuest(string ID)
     {
         Quest quest = GetQuestByID(ID);
@@ -60,18 +65,23 @@ public class QuestManager : MonoBehaviour
     {
         Quest quest = GetQuestByID(ID);
 
+        // Increment quest step
         quest.MoveToNextQuestStep();
 
+        // Check if there is another quest step
         if (quest.CurrentQuestStepExists())
         {
+            // if there is, instantiate the step prefab
             quest.InstantiateCurrentStep(this.transform);
         }
         else
         {
+            // else make it so the quest can be finished
             ChangeQuestState(quest.info.ID, QuestState.CAN_FINISH);
         }
     }
 
+    // Claims the rewards of the quest and changes the state to finished
     private void FinishQuest(string ID)
     {
         Quest quest = GetQuestByID(ID);
@@ -82,6 +92,7 @@ public class QuestManager : MonoBehaviour
     
     #region Private Methods
 
+    // Call once on awake so all the quests are loaded
     private Dictionary<string, Quest> CreateQuestMap()
     {
         QuestInfoSO[] allQuests = Resources.LoadAll<QuestInfoSO>("Quests");
@@ -89,7 +100,6 @@ public class QuestManager : MonoBehaviour
 
         foreach (QuestInfoSO quest in allQuests)
         {
-            Debug.Log("2");
             if (questMap.ContainsKey(quest.ID))
             {
                 Debug.LogWarning("Quest " + quest.ID + " duplicate detected");
@@ -100,6 +110,7 @@ public class QuestManager : MonoBehaviour
         return newQuestMap;
     }
 
+    // Returns the quest associated with the ID passed
     private Quest GetQuestByID(string questID)
     {
         Quest quest = questMap[questID];
@@ -110,22 +121,25 @@ public class QuestManager : MonoBehaviour
         return quest;
     }
 
+    // Changes the state of the quest, and raises the quest state changed event
     private void ChangeQuestState(string questID, QuestState newState)
     {
         Quest quest = GetQuestByID(questID);
         quest.state = newState;
         QuestEvents.QuestStateChanged(quest);
     }
-
+    
     private bool CheckRequirementsMet(Quest quest)
     {
         bool meetsRequirements = true;
 
+        // Check level
         if (ExpLevels.CurrentLevel < quest.info.levelRequirement)
         {
             meetsRequirements = false;
         }
 
+        // Check prerequisite quests
         foreach (QuestInfoSO info in quest.info.prerequisiteQuests)
         {
             if (GetQuestByID(info.ID).state != QuestState.FINISHED)
@@ -150,6 +164,12 @@ public class QuestManager : MonoBehaviour
             Inventory.AddHackToInventory(hack);
         }
     }
+    
+    #endregion
+    
+    #region UI
+    Canvas canvas;
+    
     
     #endregion
 }
