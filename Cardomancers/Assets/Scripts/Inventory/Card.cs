@@ -79,17 +79,22 @@ public class Card : PlayItem
 
     void Start()
     {
+        if (hacks == null)
+        {
+            hacks = new Hack_SO[maxHacks];
+        }
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
         blue = transform.GetChild(2).gameObject;
         red = transform.GetChild(0).gameObject;
-        if (hacks[0] != null)
+        if (hacks.Length > 0 && hacks[0])
         {
             red.GetComponent<RawImage>().texture = hacks[0].image.texture;
             red.SetActive(true);
         }
-        if (hacks[1] != null)
+
+        if (hacks.Length > 1 && hacks[1])
         {
             blue.GetComponent<RawImage>().texture = hacks[1].image.texture;
             blue.SetActive(true);

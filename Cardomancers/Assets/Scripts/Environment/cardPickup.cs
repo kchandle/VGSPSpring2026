@@ -19,6 +19,6 @@ public class cardPickup : MonoBehaviour
     
 
     // Puts card in inventroy and deletes :)
-    // getCard is called by playerInteract
+    // GetCardNow is called by playerInteract
 
 }

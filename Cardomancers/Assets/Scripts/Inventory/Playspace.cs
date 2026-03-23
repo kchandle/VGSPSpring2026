@@ -101,7 +101,7 @@ public class Playspace : MonoBehaviour
     // with inventoryCard
     public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard)
     {
-        if (cardSO == null) return null;
+        if (!cardSO) return null; 
         if(playItems.Count >= maxItems) return null;
         print("Spawning this Card: " + cardSO.name);
         GameObject newPlayItem = Instantiate(prefab);

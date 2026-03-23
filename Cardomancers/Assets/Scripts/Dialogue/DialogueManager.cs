@@ -128,12 +128,16 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+            
             textElement.text = string.Empty;
             canvas.SetActive(false);
             if(dialogue.startsBattle)
             {
                 reference.StartBattleNow();
+            }
+            else
+            {
+                playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
             }
             //if (!reactive)
             //{
