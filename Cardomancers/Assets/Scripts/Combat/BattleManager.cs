@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using NUnit.Framework;
+//using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,16 +44,19 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
+    public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
-    private GameObject player; // reference to the player game object
-    private PlayerController playerController; // reference to the player controller
+    [SerializeField]private GameObject player; // reference to the player game object
+    [SerializeField]private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
-    private float playerMaxHealth; // reference to the player's max health
-    private float playerCurrentHealth; // reference to the player's current health
+    [SerializeField]private float playerMaxHealth; // reference to the player's max health
+    [SerializeField]private float playerCurrentHealth; // reference to the player's current health
+    [SerializeField]private float attackAnimDelay = 0.5f; // How long the enemy moves down
+    [SerializeField] private float attackOffset = 0.25f;
     #endregion
 
     #region Input Actions
@@ -265,9 +268,9 @@ public class BattleManager : MonoBehaviour
             currentEnemies.Add(enemyPrefab);
             i++;
         }
+        
 
 
-        ResetEnemyPositions();
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -479,7 +482,33 @@ public class BattleManager : MonoBehaviour
             }
 
             if (enemyScript.currentTimer <= 0)
-            {
+            {  
+                #region attackAnim
+                float xOffset = 0;
+                float yOffset = 0;
+                float slope = 0;
+                
+                GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
+                
+                print("ps y: " + ps.transform.position.y);
+                print("enemy y: " + enemy.transform.position.y);
+                xOffset = -(enemy.transform.position.x - ps.transform.position.x);
+                yOffset = enemy.transform.position.y + ps.transform.position.y;
+                
+                slope = yOffset/xOffset;
+                if (float.IsInfinity(slope)) slope = yOffset;
+                
+                print("yOffset: " + yOffset);
+                print("XOffset: " + xOffset);
+                print("slope: " + slope);
+                if (xOffset == 0) xOffset = 1;
+                Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
+                
+                enemy.transform.GetChild(1).position += moveAnim;
+                yield return new WaitForSeconds(attackAnimDelay);
+                enemy.transform.GetChild(1).position -= moveAnim;
+                #endregion
+                
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
                 enemyScript.currentTimer = 3;
                 enemyScript.UpdateTimer();
@@ -550,6 +579,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
@@ -558,6 +588,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
@@ -566,6 +597,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         Destroy(this.gameObject);
     }
 
@@ -575,67 +607,11 @@ public class BattleManager : MonoBehaviour
         OnFlee.Invoke();
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         Destroy(this.gameObject);
     }
 
     #endregion
-    
-    void ResetEnemyPositions()
-    {
-        //Count number of alive enemies
-        int alive = 0;
-        foreach(GameObject e in currentEnemies)
-        {
-            if(e.GetComponent<Enemy>().currentHealth > 0)
-            {
-                alive++;
-            }
-        }
-
-        //Re-positions playspaces based on the number of alive enemies in the battle
-        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
-        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
-        float enemySpacing = canvasWidth/2 / (alive);
-
-        Vector3 position;
-        int i = 0;
-        foreach(GameObject e in currentEnemies)
-        {
-            //perform operation only on alive enemies
-            if(e.GetComponent<Enemy>().currentHealth > 0)
-            {
-                i++;
-                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
-                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
-                {
-                    if(i % 2 == 1)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); //2 is an arbitrary number just for testing
-                        e.transform.localPosition = position + Vector3.left * off;
-                    }
-                    else if(i % 2 == 0)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2);
-                        e.transform.localPosition = position + Vector3.right * off;
-                    }
-                }
-                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
-                {
-                    if(i % 2 == 1)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f);
-                        e.transform.localPosition = position + Vector3.left * off;
-                    }
-                    else if(i % 2 == 0)
-                    {
-                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f);
-                        e.transform.localPosition = position + Vector3.right * off;
-                    }
-                }
-               
-            }
-        }
-    }
 
 
 
