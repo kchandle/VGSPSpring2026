@@ -1,4 +1,5 @@
 using UnityEngine;
+#if Unity_Editor
 using NUnit.Framework;
 using UnityEngine.TestTools;
 
@@ -45,3 +46,4 @@ public class ExpLevelsUnitTest
        Assert.IsTrue(ExpLevels.SkillPoints == expectedLevel * 5);
     }
 }
+#endif
