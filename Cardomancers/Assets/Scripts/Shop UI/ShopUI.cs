@@ -97,7 +97,7 @@ public class ShopUI : MonoBehaviour
     //Create list of shopSlotTemplates, This method should only be called at start
     public void CreateBuyMenu(List<ShopItem> exclude = null)
     {
-        print("CREATING BUY MENU");
+        //print("CREATING BUY MENU");
         playerMoneyText.text = "$" + Inventory.Money;
 
         //Destroy any possible existing shop slots
@@ -130,7 +130,7 @@ public class ShopUI : MonoBehaviour
     //Gets cards from the shop's stock and creates slots using the cardShopTemplate prefab to display them 
     public void UpdateBuyMenu(List<ShopItem> exclude = null)
     { 
-        print("UPDATING BUY MENU");
+        //print("UPDATING BUY MENU");
         playerMoneyText.text = "$" + Inventory.Money;
         
         //Set all shop slots inactive to begin with
@@ -172,7 +172,7 @@ public class ShopUI : MonoBehaviour
     //Note: Hacked cards currently can't be sold.
     public void CreateSellMenu(List<ShopItem> exclude = null)
     { 
-        print("CREATING SELL MENU");
+        //print("CREATING SELL MENU");
         playerMoneyText.text = "$" + Inventory.Money;
 
         //Destroy any possible existing shop slots
@@ -196,7 +196,7 @@ public class ShopUI : MonoBehaviour
     //Activates and deactivates shopSlotTemplates as needed according to the cards in the player's inventory
     public void UpdateSellMenu(List<ShopItem> exclude = null)
     {
-        print("UPDATING SELL MENU");
+        //print("UPDATING SELL MENU");
         playerMoneyText.text = "$" + Inventory.Money;
 
         //Set all shop slots inactive to begin with
