@@ -86,16 +86,17 @@ public class StartBattle : MonoBehaviour
                 GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
                 // Updated to use the recommended method for finding objects
                 // Ensure the BattleManager prefab is instantiated in the scene
-                var battleSystem = FindFirstObjectByType<BattleManager>();
-                        if (battleSystem == null)
+                BattleManager battleSystem = FindFirstObjectByType<BattleManager>();
+                if (battleSystem == null)
                 {
                     Instantiate(battleManagerPrefab);
 
                     battleSystem = FindFirstObjectByType<BattleManager>();
+                    battleSystem.startBattle = this;
                 }
                 Debug.Log("dsfgsdfs");
                 battleSystem.StartBattle(battleToStart);
-                    battleStarted = true;
+                battleStarted = true;
 
                     
 

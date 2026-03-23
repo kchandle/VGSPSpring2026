@@ -7,9 +7,6 @@ using UnityEngine.InputSystem.XR.Haptics;
 
 public class PlayerInteract : MonoBehaviour
 {
-
-    //gets interact key reference from the input system:
-    public InputActionReference Interact;
     public bool interacting = false;
     // the range of the area player can interact with things in:
      public int range = 5;
@@ -17,6 +14,7 @@ public class PlayerInteract : MonoBehaviour
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
     public void OnInteract(InputAction.CallbackContext obj)
     {
+        if (!obj.started) return;
         if(interacting) return;
         // Checking CurrentState to make sure you can't interact while in battle
         if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;

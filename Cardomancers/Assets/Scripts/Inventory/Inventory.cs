@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using InventoryExceptions;
 using Unity.VisualScripting.FullSerializer;
 using Random = System.Random;
+using TMPro;
 
 /// <summary>
 /// Static class that manages the player's inventory, deck, hacks, and money.
@@ -112,7 +113,11 @@ public static class Inventory
     public static int Money
     {
         get => money;
-        set => money = value;
+        set
+        {
+            money = value;
+            GameObject.FindWithTag("MoneyUI").transform.GetChild(0).GetComponent<TMP_Text>().text = money.ToString();
+        }
     }
 
     public static int InventorySize
