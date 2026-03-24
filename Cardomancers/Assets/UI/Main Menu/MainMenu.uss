@@ -6,5 +6,21 @@
     background-color: rgb(108, 178, 154);
     scale: 1.1 1.1 1.1;
     transition-timing-function: ease-in-back;
-    transition-duration: 0.5s;
+    transition-duration: 0.25s;
+}
+
+.Button:active {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgb(108, 178, 154);
+    scale: 0.9 0.9 0.9;
+    transition-timing-function: ease-out-back;
+    transition-duration: 0.25s;
+}
+
+.Button {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgb(108, 178, 154);
+    scale: 1 1;
+    transition-timing-function: ease-in-back;
+    transition-duration: 0.25s;
 }
