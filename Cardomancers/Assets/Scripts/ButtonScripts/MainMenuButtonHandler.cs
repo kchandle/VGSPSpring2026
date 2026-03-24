@@ -1,38 +1,46 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class MainMenuButtonHandler : MonoBehaviour
 {
     [SerializeField] private GameObject confirmQuitPanel;
+    Button startGameButton;
+    Button quitButton;
+    [SerializeField] UIDocument uiDocument;
 
-    public void OnPlayButtonClick(string scene)
+    private void Awake()
     {
-        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        startGameButton = uiDocument.rootVisualElement.Q<Button>("StartGameButton");
+        quitButton = uiDocument.rootVisualElement.Q<Button>("QuitGameButton");
+        
+        if (startGameButton == null)
+            Debug.LogError("StartGameButton not found!");
+
+        if (quitButton == null)
+            Debug.LogError("QuitButton not found!"); 
     }
 
-    public void OnQuitButtonClick(string name)
+    private void OnEnable()
     {
-        switch(name)
-        {
-            case "Quit":
-            {
-                confirmQuitPanel.SetActive(true);
-                break;
-            }
-            case "Cancel":
-            {
-                confirmQuitPanel.SetActive(false);
-                break;
-            }
-            case "Confirm":
-            {
-                Application.Quit();
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
+        startGameButton.clicked += OnPlayButtonClick;
+        quitButton.clicked += OnQuitButtonClick;
+    }
+
+    private void OnDisable()
+    {
+        startGameButton.clicked -= OnPlayButtonClick;
+        quitButton.clicked -= OnQuitButtonClick;
+        
+    }
+
+    private void OnPlayButtonClick(/*string scene*/)
+    {
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
+    }
+
+    private void OnQuitButtonClick()
+    {
+        Application.Quit();
     }
 }
