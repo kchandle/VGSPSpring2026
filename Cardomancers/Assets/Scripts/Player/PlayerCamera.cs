@@ -55,12 +55,14 @@ public class PlayerCamera : MonoBehaviour
     // update camera position...
     void Update()
     {
-        // Contact Group-1 team lead for this they added it, and I dont know what it does.
+        if (player == null) player = GameObject.FindGameObjectWithTag("Player");
+
+        // Doesnt already the camera to scroll when not in the walking state
 
         if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING)
         {   return;
         }
-        
+
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();
 

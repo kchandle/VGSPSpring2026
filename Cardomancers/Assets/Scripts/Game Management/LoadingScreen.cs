@@ -1,6 +1,7 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadingScreen : MonoBehaviour
@@ -29,6 +30,7 @@ public class LoadingScreen : MonoBehaviour
 
     private IEnumerator WaitForSceneToFinishLoading(SceneLoaderAsync async)
     {
+        bool isready = false;
         do
         {
             StartCoroutine(LoadingScreen.Instance.UpdateLoadingBar(async.LoadProgress / 100f));
@@ -39,8 +41,14 @@ public class LoadingScreen : MonoBehaviour
                 yield return null;
             }
 
-            if(!async.IsLoading())
-            {   SceneLoader.Load(async);
+            if(async.IsReady())
+            {
+                if (!isready)
+                {
+                    FindFirstObjectByType<PlayerInput>().gameObject.SetActive(false);
+                    SceneLoader.Load(async);
+                    isready = true;
+                }
             }
 
         } while(!async.IsLoaded());
@@ -52,9 +60,12 @@ public class LoadingScreen : MonoBehaviour
         StartCoroutine(LoadingScreen.Instance.UpdateLoadingBar(1f));
     }
 
-    private IEnumerator UpdateLoadingBar(float fillPercent)
-    {
-        float fillMult = 4f;
+    public Coroutine alphaCor;
+    public IEnumerator UpdateLoadingBar(float fillPercent)
+    {   
+
+            float fillMult = 4f;
+        GameStateScript.CurrentState = GameStateScript.GameState.LOADINGSCREEN;
 
         updating = true;
 
@@ -69,13 +80,16 @@ public class LoadingScreen : MonoBehaviour
         yield return null;
 
         if (loadBar.fillAmount == 1f)
-        {   StartCoroutine(ChangeAlpha(0f));
+        {
+            alphaCor = StartCoroutine(ChangeAlpha(0f));
         }
 
         updating = false;
+        GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+        FindFirstObjectByType<PlayerInteract>().interacting = false;
     }
 
-    private IEnumerator ChangeAlpha(float alpha)
+    public IEnumerator ChangeAlpha(float alpha)
     {
         float fillMult = 3f;
 

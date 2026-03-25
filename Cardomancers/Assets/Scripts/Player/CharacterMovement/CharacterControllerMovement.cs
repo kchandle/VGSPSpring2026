@@ -31,7 +31,7 @@ public class CharacterControllerMovement : MonoBehaviour
 	[HideInInspector] public float jumpMultiplier = 15f;
 
 	//reference to the character controller component
-    private CharacterController _characterController;
+    public CharacterController _characterController;
 
 	//different audioclips for different actions
 	[SerializeField] AudioClip[] footstepClips;
