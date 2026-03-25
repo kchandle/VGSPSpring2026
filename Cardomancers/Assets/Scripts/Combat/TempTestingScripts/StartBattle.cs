@@ -56,7 +56,7 @@ public class StartBattle : MonoBehaviour
 
     private IEnumerator _Impl_StartBattleNow()
     {
-
+        print(battleToStart.ToString());
 
 
 
@@ -94,7 +94,6 @@ public class StartBattle : MonoBehaviour
                     battleSystem = FindFirstObjectByType<BattleManager>();
                     battleSystem.startBattle = this;
                 }
-                Debug.Log("dsfgsdfs");
                 battleSystem.StartBattle(battleToStart);
                 battleStarted = true;
 
