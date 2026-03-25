@@ -1,0 +1,37 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class PauseMenuExit : MonoBehaviour
+{
+    popUp PopUp;
+    popUpActive PopUpActive;
+    Objective objective;
+
+    public void Awake()
+    {
+      PopUp = GameObject.Find("PopUpSystem").GetComponent<popUp>();
+      PopUpActive = GetComponent<popUpActive>();
+      objective = GetComponent<Objective>();
+    }
+
+    public void OnActivate()
+    {
+        PopUpActive.Activate();
+    }
+
+    void Update()
+    {
+        if(!(PopUp.choice == 0))
+        {
+            if (PopUp.choice == 1)
+            {
+                Debug.Log("Exit");
+                SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            }
+            else if (PopUp.choice == 2)
+            {
+                Debug.Log("or stay for eternity");
+            }
+        }
+    }
+}
