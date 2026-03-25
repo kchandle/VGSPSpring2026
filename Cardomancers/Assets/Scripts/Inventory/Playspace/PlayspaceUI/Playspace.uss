@@ -1,0 +1,20 @@
+VisualElement {}
+
+.playspace{
+    display: flex;
+    flex-direction: row;
+}
+
+.playspace.grid{
+    flex-wrap: wrap;
+}
+
+.play-item{
+    width: 100px;
+    height: 200px;
+    margin: 4px;
+}
+
+.play-item:hover{
+    translate: 0 -20px;
+}
