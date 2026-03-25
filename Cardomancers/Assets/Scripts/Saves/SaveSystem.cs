@@ -13,6 +13,7 @@ public static class SaveSystem
     // Takes in an inventory SO and the game object for the player and turns it into a JSON file
     public static void Save(GameObject player)
     {
+        Debug.Log("Saving");
         // Creates an instance of the InventoryData class using the input
         SaveData data = new SaveData(player);
 
@@ -32,6 +33,7 @@ public static class SaveSystem
         Debug.Log(File.Exists(DataPath));
         // Ends function if there is no save data
         if (!File.Exists(DataPath)) return;
+        Debug.Log(DataPath);
 
         // where data is assigned
         SaveData data = JsonUtility.FromJson<SaveData>(encryption.Decrypt(File.ReadAllText(DataPath)));
