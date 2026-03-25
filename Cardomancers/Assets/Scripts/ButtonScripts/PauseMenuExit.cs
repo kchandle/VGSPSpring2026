@@ -1,17 +1,22 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.UI;
 
 public class PauseMenuExit : MonoBehaviour
 {
     popUp PopUp;
     popUpActive PopUpActive;
     Objective objective;
+    GraphicRaycaster graphicRaycaster;
+    
 
     public void Awake()
     {
       PopUp = GameObject.Find("PopUpSystem").GetComponent<popUp>();
       PopUpActive = GetComponent<popUpActive>();
       objective = GetComponent<Objective>();
+      graphicRaycaster = transform.parent.parent.gameObject.GetComponent<GraphicRaycaster>();
     }
 
     public void OnActivate()
@@ -31,6 +36,7 @@ public class PauseMenuExit : MonoBehaviour
             else if (PopUp.choice == 2)
             {
                 Debug.Log("or stay for eternity");
+                graphicRaycaster.enabled = true;
             }
         }
     }
