@@ -13,7 +13,7 @@ public partial class PlayspaceUIT : VisualElement
 
     public static PlayItemUIT currentlyDragged;
     
-    public List<PlayspaceUIT> allowedDonors = new List<PlayspaceUIT>();
+    [UxmlAttribute] public List<PlayspaceUIT> allowedDonors = new List<PlayspaceUIT>();
 
     public PlayspaceUIT()
     {

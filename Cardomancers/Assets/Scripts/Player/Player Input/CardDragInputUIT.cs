@@ -31,9 +31,8 @@ public class CardDragInputUIT : PointerManipulator
     void OnMove(PointerMoveEvent evt)
     {
         if (!dragging) return;
-        
-        target.style.left = evt.position.x;
-        target.style.top = evt.position.y;
+
+        target.style.translate = evt.position; 
         target.style.position = Position.Absolute;
     }
 
@@ -41,6 +40,7 @@ public class CardDragInputUIT : PointerManipulator
     {
         dragging = false;
         target.ReleasePointer(evt.pointerId);
+        target.style.translate = start;
         var ps = target.parent as PlayspaceUIT;
         ps?.UpdateLayout();
     }
