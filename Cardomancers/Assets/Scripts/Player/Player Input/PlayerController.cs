@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public InventoryUIHandler inventoryUIHandler;
     [SerializeField] private int shield = 0;
 
+    public GameObject pauseMenu;
+
     public int Shield
     {
         get { return shield; }
@@ -101,6 +103,17 @@ public class PlayerController : MonoBehaviour
     public void OnEscape(InputAction.CallbackContext context)
     {
         print("pressed escape");
+        pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+        switch(GameStateScript.CurrentState)
+        {
+            case GameStateScript.GameState.WALKING:
+                GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+                break;
+            case GameStateScript.GameState.INVENTORY:
+                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+                break;
+
+        }
     }
 
     public void OnSprinting(InputAction.CallbackContext context)
