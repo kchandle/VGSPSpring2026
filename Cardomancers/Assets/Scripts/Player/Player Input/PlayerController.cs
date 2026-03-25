@@ -98,6 +98,11 @@ public class PlayerController : MonoBehaviour
         _characterControllerMovement.jumpWasPressed = true;
     }
 
+    public void OnEscape(InputAction.CallbackContext context)
+    {
+        print("pressed escape");
+    }
+
     public void OnSprinting(InputAction.CallbackContext context)
     {
         if (context.performed)
