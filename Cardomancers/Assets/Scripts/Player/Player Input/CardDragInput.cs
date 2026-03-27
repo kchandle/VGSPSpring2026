@@ -238,8 +238,7 @@ public class CardDragInput : MonoBehaviour
                             //yield break;
                         }
                     }
-
-                    
+ 
                     if (dragTarget.itemType == PlayItem.ItemType.CARD) ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
                     if (dragTarget.itemType == PlayItem.ItemType.HACK) ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = false; // revert back to normal sorting when no longer being dragged
                     dragTarget = null;
