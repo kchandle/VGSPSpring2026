@@ -56,15 +56,11 @@ public class StartBattle : MonoBehaviour
 
     private IEnumerator _Impl_StartBattleNow()
     {
-        print(battleToStart.ToString());
+        Debug.Log("Script is running on: " + gameObject.name + ". Starting battle: "+ battleToStart.ToString());
 
 
 
-        if (canvas == null)
-        {
-            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
-        }
-
+        
          // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
         {
@@ -103,6 +99,12 @@ public class StartBattle : MonoBehaviour
               
                 yield return null;
             }
+
+            if (canvas == null)
+            {
+                canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
+            }
+
             GameObject.FindWithTag("Player").gameObject.GetComponent<PlayerInteract>().interacting = false;
             canvas.SetActive(false);
         }
