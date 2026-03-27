@@ -53,5 +53,11 @@ public static class SaveSystem
 
         //GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateDeckIntegrity();
         //GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateInventoryIntegrity();
+
+        QuestManager questManager = player.GetComponent<QuestManager>();
+        foreach(QuestData questData in data.questData)
+        {
+            questManager.LoadQuest(questData);
+        }
     }
 }

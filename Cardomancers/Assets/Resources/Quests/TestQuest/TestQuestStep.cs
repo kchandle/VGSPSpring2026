@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class TestQuestStep : QuestStep
 {
+   private int cardsPickedUp;
+   private int cardsToPickUp = 2;
+   
    private void OnEnable()
    {
       cardPickup[] cardPickups = FindObjectsByType<cardPickup>(FindObjectsSortMode.None);
 
       foreach (cardPickup c in cardPickups)
       {
-         c.GetCard.AddListener(FinishQuestStep);
+         c.GetCard.AddListener(IncrementCardsNumber);
       }
    }
 
@@ -17,7 +20,25 @@ public class TestQuestStep : QuestStep
       cardPickup[] cardPickups = FindObjectsByType<cardPickup>(FindObjectsSortMode.None);
       foreach (cardPickup c in cardPickups)
       {
-         c.GetCard.RemoveListener(FinishQuestStep);
+         c.GetCard.RemoveListener(IncrementCardsNumber);
       }
    }
+
+   private void IncrementCardsNumber()
+   {
+      cardsPickedUp++;
+   }
+
+   private void UpdateState()
+   {
+      string state = cardsPickedUp.ToString();
+      ChangeState(state);
+   }
+
+   protected override void SetQuestStepState(string str)
+   {
+      this.cardsPickedUp = System.Int32.Parse(str);
+      UpdateState();
+   }
+   
 }

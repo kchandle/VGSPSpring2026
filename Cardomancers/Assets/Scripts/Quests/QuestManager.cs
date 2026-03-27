@@ -7,6 +7,8 @@ public class QuestManager : MonoBehaviour
 {
     private Dictionary<string, Quest> questMap = new Dictionary<string, Quest>();
     
+    public Dictionary<string, Quest> QuestMap { get { return questMap; } }
+    
     #region Unity Methods
 
     private void Awake()
@@ -34,6 +36,10 @@ public class QuestManager : MonoBehaviour
     {
         foreach (Quest quest in questMap.Values)
         {
+            if (quest.state == QuestState.IN_PROGRESS)
+            {
+                quest.InstantiateCurrentStep(this.transform);
+            }
             QuestEvents.QuestStateChanged(GetQuestByID(quest.info.ID));
         }
     }
@@ -166,22 +172,25 @@ public class QuestManager : MonoBehaviour
     }
     
     #endregion
-    
-    #region UI
-    // First child of canvas should be a scr
-    Canvas canvas;
-    GameObject questTextPrefab;
-    ScrollView scrollView;
 
-    private void UIStart()
+    #region Saving
+
+    private void QuestStepStateChange(string questID, int stepIndex, QuestStepState newState)
     {
+        Quest quest = GetQuestByID(questID);
+        quest.StoreQuestStepState(newState, stepIndex);
+        ChangeQuestState(quest.info.ID, quest.state);
+    }
+
+    public void LoadQuest(QuestData questData)
+    {
+        Quest quest = GetQuestByID(questData.ID);
         
+        quest.OverrideQuestData(quest.info, questData.state, questData.questStepIndex, questData.questStepStates);
     }
+    
 
-    private void CreateQuestText(string ID)
-    {
-        Quest quest = GetQuestByID(ID);
-        Instantiate(questTextPrefab, canvas.transform.GetChild(0).transform);
-    }
     #endregion
+    
+    
 }
