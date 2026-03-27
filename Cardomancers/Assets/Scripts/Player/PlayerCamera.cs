@@ -19,6 +19,7 @@ public class PlayerCamera : MonoBehaviour
     private CinemachineCamera cam;
     // Orbital sphere object magical thing from player, see radius for stuff.
     private CinemachineOrbitalFollow orbital;
+    private CinemachineInputAxisController axisController;
     // Scroll delta is just lerping holder.
     private float scrollDelta = 0f;
     // Scroll position, self explanatory.
@@ -37,6 +38,7 @@ public class PlayerCamera : MonoBehaviour
         cam = GetComponent<CinemachineCamera>();
         // get the orbital attached this is like the sphere around the player that looks at them in third person..
         orbital = cam.GetComponent<CinemachineOrbitalFollow>();
+        axisController = cam.GetComponent<CinemachineInputAxisController>();
         // This is just the player.
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -57,7 +59,9 @@ public class PlayerCamera : MonoBehaviour
     {
         if (player == null) player = GameObject.FindGameObjectWithTag("Player");
 
+
         // Doesnt already the camera to scroll when not in the walking state
+        axisController.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING;
 
         if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING)
         {   return;

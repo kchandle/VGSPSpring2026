@@ -64,7 +64,7 @@ public class LoadingScreen : MonoBehaviour
     public IEnumerator UpdateLoadingBar(float fillPercent)
     {   
 
-            float fillMult = 4f;
+            float fillMult = 6.7f;
         GameStateScript.CurrentState = GameStateScript.GameState.LOADINGSCREEN;
 
         updating = true;
@@ -91,7 +91,7 @@ public class LoadingScreen : MonoBehaviour
 
     public IEnumerator ChangeAlpha(float alpha)
     {
-        float fillMult = 3f;
+        float fillMult = 6.7f;
 
         while (Mathf.Abs(canvasGroup.alpha - alpha) > 0.01)
         {
