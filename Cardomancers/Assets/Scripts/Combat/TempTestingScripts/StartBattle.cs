@@ -56,7 +56,7 @@ public class StartBattle : MonoBehaviour
 
     private IEnumerator _Impl_StartBattleNow()
     {
-        print(battleToStart.ToString());
+        Debug.Log("Script is running on: " + gameObject.name + ". Starting battle: "+ battleToStart.ToString());
 
 
 
