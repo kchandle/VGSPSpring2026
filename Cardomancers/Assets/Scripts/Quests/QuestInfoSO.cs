@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "QuestInfoSO", menuName = "Quests/QuestInfoSO")]
 public class QuestInfoSO : ScriptableObject
 {
+    //TODO: private setter, public getter
     public string ID; 
-    private readonly string displayName;
+    //TODO: revert to readonly
+    public string displayName;
 
     [Header("Requirements to start")]
     public int levelRequirement;
@@ -17,8 +20,8 @@ public class QuestInfoSO : ScriptableObject
     [Header("Rewards")] 
     public int moneyReward;
     public int expReward;
-    public Card_SO[] cardRewards; 
-    public Hack_SO[] hackRewards;
+    public DictionaryOfCardSOandInt cardRewards; 
+    public DictionaryOfHackSOandInt hackRewards;
 
     private void OnValidate()
     {

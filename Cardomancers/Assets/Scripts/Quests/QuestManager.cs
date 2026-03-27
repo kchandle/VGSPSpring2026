@@ -117,7 +117,8 @@ public class QuestManager : MonoBehaviour
     }
 
     // Returns the quest associated with the ID passed
-    private Quest GetQuestByID(string questID)
+    //TODO make private again
+    public Quest GetQuestByID(string questID)
     {
         Quest quest = questMap[questID];
         if (quest == null)
@@ -160,14 +161,14 @@ public class QuestManager : MonoBehaviour
     {
         Inventory.Money += quest.info.moneyReward;
         ExpLevels.CurrentExp += quest.info.expReward;
-        foreach (Card_SO card in quest.info.cardRewards)
+        foreach (Card_SO card in quest.info.cardRewards.Keys)
         {
-            Inventory.AddCardToInventory(card);
+            Inventory.AddCardToInventory(card, quest.info.cardRewards[card]);
         }
 
-        foreach (Hack_SO hack in quest.info.hackRewards)
+        foreach (Hack_SO hack in quest.info.hackRewards.Keys)
         {
-            Inventory.AddHackToInventory(hack);
+            Inventory.AddHackToInventory(hack, quest.info.hackRewards[hack]);
         }
     }
     
