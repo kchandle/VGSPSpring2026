@@ -15,7 +15,7 @@ public class popUp : MonoBehaviour
     // "Decision" if the pop up has a yes or no
     private bool decision = false;
     // choice depends on which button hit
-    public bool choice;
+    public int choice = 0;
     private float timer;
     private bool responseMade = false;
 
@@ -32,15 +32,22 @@ public class popUp : MonoBehaviour
 
     public void OnYesClick()
     {
-        choice = true;
+        choice = 1;
         responseMade = true;
     }
 
     public void OnNoClick()
     {
-        choice = false;
+        choice = 2;
         responseMade = true;
     }
+
+    public void ChoiceReset()
+    {
+        choice = 0;
+        responseMade = false;
+    }
+    // Upon choice being used, reset for other scripts that may need it
 
     // Set by yes/no buttons, Decision can be used by script that calls and responseMade lets the coroutine pass through
 
@@ -52,11 +59,11 @@ public class popUp : MonoBehaviour
             yes.SetActive(true);
             no.SetActive(true);
         }
-        StartCoroutine(popUpTimer(timer));
+        StartCoroutine(PopUpTimer(timer));
     }
     // Sets canvas active and starts coroutine, if "decision" active turn on the yes/no
 
-    IEnumerator popUpTimer(float Timer)
+    IEnumerator PopUpTimer(float Timer)
     {
         if (!decision)
         {
@@ -71,6 +78,7 @@ public class popUp : MonoBehaviour
             yield return new WaitUntil(() => responseMade);
         }
 
+        ChoiceReset();
         canvas.SetActive(false);
         popUpText.text = string.Empty;
         yes.SetActive(false);
