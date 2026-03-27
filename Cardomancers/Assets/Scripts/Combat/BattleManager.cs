@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using NUnit.Framework;
+//using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +21,10 @@ public class BattleManager : MonoBehaviour
     public Camera mainCamera; // the main camera used outside of battles
     #endregion
 
+    #region Drops
+    public List<Drop> allDrops;
+    public List<Drop> chanceDrops;
+    #endregion
 
     #region Public Events 
     //May be used, will implement later?
@@ -40,17 +44,19 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
+    public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
-    private GameObject player; // reference to the player game object
-    private PlayerController playerController; // reference to the player controller
+    [SerializeField]private GameObject player; // reference to the player game object
+    [SerializeField]private PlayerController playerController; // reference to the player controller
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
-    private Inventory playerInventory; // reference to the player's inventory
-    private float playerMaxHealth; // reference to the player's max health
-    private float playerCurrentHealth; // reference to the player's current health
+    [SerializeField]private float playerMaxHealth; // reference to the player's max health
+    [SerializeField]private float playerCurrentHealth; // reference to the player's current health
+    [SerializeField]private float attackAnimDelay = 0.5f; // How long the enemy moves down
+    [SerializeField] private float attackOffset = 0.25f;
     #endregion
 
     #region Input Actions
@@ -73,8 +79,6 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
-
-    public int turnCount = 0; // counter for the number of turns taken in the battle
 
     public GameObject cardPrefab; // Generic prefab for the cards used in battle
 
@@ -110,10 +114,9 @@ public class BattleManager : MonoBehaviour
 
         // Otherwise, set the instance to this object
         instance = this;
-
+        allDrops = new List<Drop>();
 
         player = GameObject.FindGameObjectWithTag("Player");
-        playerInventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>();
         playerController = player.GetComponent<PlayerController>();
         // player.GetComponent<PlayerInteract>().interacting = true;
 
@@ -125,7 +128,7 @@ public class BattleManager : MonoBehaviour
     {
         OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
         OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        OnWin.AddListener(() => Debug.Log("You Win!")); //Occurs on Win
+        OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
         PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
         EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
         OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
@@ -137,8 +140,66 @@ public class BattleManager : MonoBehaviour
         mainCamera.enabled = true;
         GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         player.GetComponent<PlayerInteract>().interacting = false;
+
+        
     }
     #endregion
+
+    public void Win()
+    {
+        float totalWeights = 0;
+        foreach(Drop drop in allDrops)
+        {
+            if(drop.weight <= 0)
+            {
+                if(drop.dropType == Drop.DropType.EXP)
+                {
+                    ExpLevels.CurrentExp += drop.quantity;
+                }
+                else if(drop.dropType == Drop.DropType.MONEY)
+                {
+                    Inventory.Money += drop.quantity;
+                }
+            }
+            else
+            {
+                totalWeights += drop.weight;
+                chanceDrops.Add(drop);
+            }
+        }
+        float randVal = UnityEngine.Random.Range(0, totalWeights);
+        foreach (Drop drop in chanceDrops)
+        {
+            if(randVal < drop.weight)
+            {
+                switch(drop.dropType)
+                {
+                    case(Drop.DropType.CARD):
+                    {
+                        Inventory.AddCardToInventory((Card_SO)drop.item);
+                        break;
+                    }
+                    case(Drop.DropType.HACK):
+                    {
+                        Inventory.AddHackToInventory((Hack_SO)drop.item);
+                        break;
+                    }
+                    case(Drop.DropType.MISC):
+                    {
+                        Debug.Log("Add this type of functionality.");
+                        break;
+                    }
+                    default:
+                    {
+                        Debug.Log("This should never print. (BattleManager.Win)");
+                        break;
+                    }
+                }
+            }
+            randVal -= drop.weight;
+        }
+        
+    }
 
     #region Startup
     //Function called by an outside force to start a battle, must pass in battle_SO
@@ -152,7 +213,7 @@ public class BattleManager : MonoBehaviour
         battleCamera.enabled = true;
         battleUI.gameObject.SetActive(true);
         //Get the player set up (not in awake cause it ran before the player Inventory was set
-        playerDeckCopyInitial = new List<InventoryCard>(playerInventory.Deck);
+        playerDeckCopyInitial = new List<InventoryCard>(Inventory.Deck);
 
         playerMaxHealth = playerController.maxPlayerHealth;
         playerCurrentHealth = playerController.currentHealth;
@@ -161,7 +222,6 @@ public class BattleManager : MonoBehaviour
 
         SetupPlayspaces();
 
-        turnCount = 0;
         battleState = BattleState.START; //So that it finishes setup correctly.
         isBattling = true;
         OnBattleStart.Invoke();
@@ -219,7 +279,6 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator BattleStateManager()
     {
-        int turnCount = 0;
         while(isBattling)
         {
             switch (battleState)
@@ -353,7 +412,7 @@ public class BattleManager : MonoBehaviour
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
         {
-            playerDeckCopyActive = playerInventory.Shuffle(new List<InventoryCard>(playerInventory.Deck));
+            playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
 
             //Add NewPlayItem from playsapce for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
@@ -423,7 +482,33 @@ public class BattleManager : MonoBehaviour
             }
 
             if (enemyScript.currentTimer <= 0)
-            {
+            {  
+                #region attackAnim
+                float xOffset = 0;
+                float yOffset = 0;
+                float slope = 0;
+                
+                GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
+                
+                print("ps y: " + ps.transform.position.y);
+                print("enemy y: " + enemy.transform.position.y);
+                xOffset = -(enemy.transform.position.x - ps.transform.position.x);
+                yOffset = enemy.transform.position.y + ps.transform.position.y;
+                
+                slope = yOffset/xOffset;
+                if (float.IsInfinity(slope)) slope = yOffset;
+                
+                print("yOffset: " + yOffset);
+                print("XOffset: " + xOffset);
+                print("slope: " + slope);
+                if (xOffset == 0) xOffset = 1;
+                Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
+                
+                enemy.transform.GetChild(1).position += moveAnim;
+                yield return new WaitForSeconds(attackAnimDelay);
+                enemy.transform.GetChild(1).position -= moveAnim;
+                #endregion
+                
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
                 enemyScript.currentTimer = 3;
                 enemyScript.UpdateTimer();
@@ -491,15 +576,19 @@ public class BattleManager : MonoBehaviour
 
     public void MainMenu()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     public void Retry()
     {
+        player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
@@ -508,6 +597,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         Destroy(this.gameObject);
     }
 
@@ -517,6 +607,7 @@ public class BattleManager : MonoBehaviour
         OnFlee.Invoke();
         mainCamera.enabled = true;
         battleCamera.enabled = false;
+        startBattle.battleStarted = false;
         Destroy(this.gameObject);
     }
 

@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
 
 // The physical cards that appear when in combat or inventory
@@ -11,8 +14,8 @@ public class Card : PlayItem
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
-    public GameObject bottom;
-    public GameObject top;
+    public GameObject red;
+    public GameObject blue;
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
@@ -24,11 +27,10 @@ public class Card : PlayItem
             cardNameDisplay.text = cardSO.displayName;
         }
     }
-
     
-    public List<Hack_SO> hacks; //TO BE REMOVED IN A LATER ITERATION OF THE GAME
+    public Hack_SO[] hacks; //The array, max length 2, of hacks on the card.
 
-    public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
+    public int maxHacks = 2; // Int containing the maximum number of hacks that can be applied to this card.
 
     [Header("UI Components")]
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
@@ -77,16 +79,37 @@ public class Card : PlayItem
 
     void Start()
     {
+        if (hacks == null)
+        {
+            hacks = new Hack_SO[maxHacks];
+        }
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
+        blue = transform.GetChild(2).gameObject;
+        red = transform.GetChild(0).gameObject;
+        if (hacks.Length > 0 && hacks[0])
+        {
+            red.GetComponent<RawImage>().texture = hacks[0].image.texture;
+            red.SetActive(true);
+        }
+
+        if (hacks.Length > 1 && hacks[1])
+        {
+            blue.GetComponent<RawImage>().texture = hacks[1].image.texture;
+            blue.SetActive(true);
+        }
     }
 
     public bool TryPlayCard(Enemy target)
     {
         bool returnVal = false;
         //Try to play the card on the target enemy
-        BattleEffect[] effects = cardSO.cardEffects;
+        List<BattleEffect> effects = cardSO.cardEffects.ToList();
+        foreach (Hack_SO hack in hacks)
+        {
+            if(hack) effects.AddRange(hack.hackEffects.ToList());
+        }
         foreach (BattleEffect effect in effects)
         {
             //Apply each effect to the target
@@ -118,38 +141,41 @@ public class Card : PlayItem
     }
 
 
-    public void AddHackToCard(Hack_SO hack, Inventory inventory)
+    public void AddHackToCard(Hack_SO hack)
     {
-        if (hack != null && inventory != null && inventoryCard.hacks.Count < maxHacks)
+        print(hack.sideOfCard);
+        switch (hack.sideOfCard)
         {
-            hacks.Add(hack);
-            foreach (InventoryCard invCard in inventory.Deck)
+            case(Hack_SO.Layer.TOP):
             {
-                if (invCard.cardID == inventoryCard.cardID)
-                {
-                    invCard.hacks.Add(hack); 
-                    switch (hack.sideOfCard)
-                    {
-                        case(Hack_SO.Layer.TOP):
-                        {
-                            top.SetActive(true);
-                            break;
-                        }
-                        case(Hack_SO.Layer.BOTTOM):
-                        {
-                            bottom.SetActive(true);
-                            break;
-                        }
-                        default:
-                        {
-                            break;
-                        }
-                    }
-                }
+                hacks[1] = hack;
+                inventoryCard.hacks[1] = hack;
+                print("hack added");
+                blue.GetComponent<RawImage>().texture = hack.image.texture;
+                print("Design on top.");
+                blue.SetActive(true);
+                break;
+            }
+            case(Hack_SO.Layer.BOTTOM):
+            {
+                hacks[0] = hack;
+                inventoryCard.hacks[0] = hack;
+                print("hack added");
+                print(hack.image.name);
+                red.GetComponent<RawImage>().texture = hack.image.texture;
+                print("Design on bottom.");
+                red.SetActive(true);
+                break;
+            }
+            default:
+            {
+                break;
             }
         }
-            //inventoryCard.hacks.Add(hack);
-        }
+
+        inventoryCard = new InventoryCard(cardSO, hacks, maxHacks);
+        //inventoryCard.hacks.Add(hack);
+    }
     }
 
 
