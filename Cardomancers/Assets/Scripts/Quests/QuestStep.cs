@@ -29,5 +29,7 @@ public abstract class QuestStep : MonoBehaviour
     }
 
     protected abstract void SetQuestStepState(string state);
+    
+    public abstract string GetQuestStepState();
 
 }

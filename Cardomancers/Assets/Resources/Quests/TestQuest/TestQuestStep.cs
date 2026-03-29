@@ -3,7 +3,7 @@ using UnityEngine;
 public class TestQuestStep : QuestStep
 {
    private int cardsPickedUp;
-   private int cardsToPickUp = 2;
+   private readonly int cardsToPickUp = 2;
    
    private void OnEnable()
    {
@@ -40,5 +40,9 @@ public class TestQuestStep : QuestStep
       this.cardsPickedUp = System.Int32.Parse(str);
       UpdateState();
    }
-   
+
+   public override string GetQuestStepState()
+   {
+      return "Cards Picked Up: " + cardsPickedUp.ToString() + "/" + cardsToPickUp.ToString();
+   }
 }

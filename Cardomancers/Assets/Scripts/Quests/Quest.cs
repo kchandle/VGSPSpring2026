@@ -2,10 +2,13 @@ using UnityEngine;
 
 public class Quest
 {
+    // Scriptable object that contains the data for the quest
     public QuestInfoSO info { get; private set; }
-    //TODO internal set
-    public QuestState state  { get; set; }
-    private int currentStepIndex;
+    // Enum containing the current state of the quest
+    public QuestState state  { get; internal set; }
+    // The index of the current step
+    public int currentStepIndex { get; private set; }
+    // An array, containing the state of each quest step
     private QuestStepState[] questStepStates;
 
     public Quest(QuestInfoSO info)
@@ -20,6 +23,9 @@ public class Quest
         }
     }
 
+    /// <summary>
+    /// ONLY USED FOR LOADING QUEST DATA FROM SAVE FILES DO NOT USE ELSEWHERE
+    /// </summary>
     public void OverrideQuestData(QuestInfoSO info, QuestState state, int currentStepIndex, QuestStepState[] questStepStates)
     {
         this.info = info;
@@ -29,15 +35,17 @@ public class Quest
 
         if (this.questStepStates.Length != info.questSteps.Length)
         {
-            Debug.LogWarning("Quest Step Prefabs and Quest Step States are of different length. . This indicates something hanged with the Quest info and the saved data");
+            Debug.LogWarning("Quest Step Prefabs and Quest Step States are of different length. This indicates something happened with the Quest info and the saved data");
         }
     }
 
+    // Increments the current step index by 1
     public void MoveToNextQuestStep()
     {
         currentStepIndex++;
     }
 
+    // Checks if attempting to access the current quest step will cause an error.
     public bool CurrentQuestStepExists()
     {
         if (currentStepIndex < info.questSteps.Length)
@@ -47,6 +55,7 @@ public class Quest
         return false;
     }
 
+    // Instantiates the current step prefab as a child of the input transform, then initializes the step.
     public void InstantiateCurrentStep(Transform parentTransform)
     {
         GameObject questStepPrefab = GetCurrentQuestStepPrefab();
@@ -57,6 +66,7 @@ public class Quest
         }
     }
 
+    // Returns the prefab associated with the current quest step.
     private GameObject GetCurrentQuestStepPrefab()
     {
         GameObject currentQuestStepPrefab = null;
@@ -71,6 +81,7 @@ public class Quest
         return currentQuestStepPrefab;
     }
 
+    // Stores the state data for the player's progress on the current step
     public void StoreQuestStepState(QuestStepState state, int index)
     {
         if (index < questStepStates.Length)
@@ -83,6 +94,7 @@ public class Quest
         }
     }
 
+    // Returns a quest data object based on the current state of the quest
     public QuestData GetQuestData()
     {
         return new QuestData(state, currentStepIndex, this.info.ID, questStepStates);

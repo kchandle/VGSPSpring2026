@@ -25,6 +25,7 @@ public class QuestLogUI : MonoBehaviour
         QuestEvents.OnQuestStateChanged -= QuestStateChange;
     }
 
+    // Whenever a quest's state changes, if it has the right state, create a button and change the color based on the state
     private void QuestStateChange(Quest quest)
     {
         QuestLogButton questLogButton;
@@ -39,6 +40,19 @@ public class QuestLogUI : MonoBehaviour
             return;
         }
 
+        switch (quest.state)
+        {
+            case QuestState.CAN_START:
+                questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.yellowNice;
+                break;
+            case QuestState.IN_PROGRESS:
+                questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.blue;
+                break;
+            case QuestState.CAN_FINISH:
+                questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.chartreuse;
+                break;
+        }
+
         if (firstSelectedButton == null)
         {
             firstSelectedButton = questLogButton.button;
@@ -47,15 +61,18 @@ public class QuestLogUI : MonoBehaviour
 
     private void SetQuestLogInfo(Quest quest)
     {
+        // Name
         questDisplayNameText.text = quest.info.displayName;
         
-        //TODO - Status
+        //Status
+        questDescriptionText.text = quest.info.questSteps[quest.currentStepIndex].GetComponent<QuestStep>().GetQuestStepState();
         
-        moneyRewardText.text = quest.info.moneyReward.ToString();
-        experienceRewardText.text = quest.info.expReward.ToString();
+        // Rewards
+        moneyRewardText.text = "Wizard Money: " + (quest.info.moneyReward > 0 ? quest.info.moneyReward : "None");
+        experienceRewardText.text = "Experience: " + (quest.info.expReward > 0 ? quest.info.expReward : "None");
 
         string cardRewards = "";
-        if (quest.info.cardRewards != null)
+        if (quest.info.cardRewards.Keys.Count > 0)
         {
             cardRewards += "Card Rewards: \n";
             
@@ -65,7 +82,7 @@ public class QuestLogUI : MonoBehaviour
             }
         }
 
-        if (quest.info.hackRewards != null)
+        if (quest.info.hackRewards.Keys.Count > 0)
         {
             cardRewards += "Hack Rewards: \n";
 

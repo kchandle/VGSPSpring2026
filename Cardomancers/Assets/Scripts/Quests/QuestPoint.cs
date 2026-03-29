@@ -18,11 +18,6 @@ public class QuestPoint : MonoBehaviour
         GetComponent<Collider>().isTrigger = true;
     }
 
-    private void Start()
-    {
-        StartOrFinishQuest();
-    }
-
     private void OnEnable()
     {
         QuestEvents.OnQuestStateChanged += QuestStateChange;
@@ -32,23 +27,26 @@ public class QuestPoint : MonoBehaviour
     {
         QuestEvents.OnQuestStateChanged -= QuestStateChange;
     }
-
+    
     public void StartOrFinishQuest()
     {
         if (!playerInRange) return;
         Debug.Log(questID);
 
+        // If you can start the quest and this is where you start it, start the quest
         if (currentQuestState == QuestState.CAN_START && startPoint)
         {
             QuestEvents.StartQuest(questID);
             Debug.Log("Starting Quest");
         }
+        // If you can finish the quest and theis is where you end it, end the quest
         else if (currentQuestState == QuestState.CAN_FINISH && endPoint)
         {
             QuestEvents.FinishQuest(questID);
         }
     }
 
+    // Keeps the state synced with the quest state
     private void QuestStateChange(Quest quest)
     {
         if (quest.info.ID == questInfo.ID)

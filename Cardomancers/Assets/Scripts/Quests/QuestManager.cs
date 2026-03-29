@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// A MonoBehaviour which manages the quests.
+/// </summary>
 public class QuestManager : MonoBehaviour
 {
     private Dictionary<string, Quest> questMap = new Dictionary<string, Quest>();
@@ -22,6 +25,7 @@ public class QuestManager : MonoBehaviour
         QuestEvents.OnStartQuest += StartQuest;
         QuestEvents.OnAdvanceQuest += AdvanceQuest;
         QuestEvents.OnFinishQuest += FinishQuest;
+        QuestEvents.OnQuestStepStateChanged += QuestStepStateChange;
     }
 
     private void OnDisable()
@@ -29,6 +33,7 @@ public class QuestManager : MonoBehaviour
         QuestEvents.OnStartQuest -= StartQuest;
         QuestEvents.OnAdvanceQuest -= AdvanceQuest;
         QuestEvents.OnFinishQuest -= FinishQuest;
+        QuestEvents.OnQuestStepStateChanged -= QuestStepStateChange;
     }
 
     // Update the state of every quest on start
@@ -117,8 +122,7 @@ public class QuestManager : MonoBehaviour
     }
 
     // Returns the quest associated with the ID passed
-    //TODO make private again
-    public Quest GetQuestByID(string questID)
+    private Quest GetQuestByID(string questID)
     {
         Quest quest = questMap[questID];
         if (quest == null)
@@ -138,13 +142,8 @@ public class QuestManager : MonoBehaviour
     
     private bool CheckRequirementsMet(Quest quest)
     {
-        bool meetsRequirements = true;
-
-        // Check level
-        if (ExpLevels.CurrentLevel < quest.info.levelRequirement)
-        {
-            meetsRequirements = false;
-        }
+        // Check level requirements
+        bool meetsRequirements = !(ExpLevels.CurrentLevel < quest.info.levelRequirement);
 
         // Check prerequisite quests
         foreach (QuestInfoSO info in quest.info.prerequisiteQuests)
@@ -159,15 +158,19 @@ public class QuestManager : MonoBehaviour
 
     private void ClaimRewards(Quest quest)
     {
+        // Increase the money by the money reward
         Inventory.Money += quest.info.moneyReward;
+        // Adds the exp reward to the player's exp
         ExpLevels.CurrentExp += quest.info.expReward;
         foreach (Card_SO card in quest.info.cardRewards.Keys)
         {
+            // Add the amount of cards based on each card so
             Inventory.AddCardToInventory(card, quest.info.cardRewards[card]);
         }
 
         foreach (Hack_SO hack in quest.info.hackRewards.Keys)
         {
+            // Add the amount of hacks based on each hack so
             Inventory.AddHackToInventory(hack, quest.info.hackRewards[hack]);
         }
     }
@@ -175,7 +178,7 @@ public class QuestManager : MonoBehaviour
     #endregion
 
     #region Saving
-
+    
     private void QuestStepStateChange(string questID, int stepIndex, QuestStepState newState)
     {
         Quest quest = GetQuestByID(questID);

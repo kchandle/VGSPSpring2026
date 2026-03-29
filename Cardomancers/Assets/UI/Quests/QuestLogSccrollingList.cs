@@ -12,7 +12,8 @@ public class QuestLogScrollingList : MonoBehaviour
     
     private Dictionary<string, QuestLogButton> idToButtonMap = new Dictionary<string, QuestLogButton>();
 
-    /*private void Start()
+    /* Test code, no longer needed
+    private void Start()
     {
         for (int i = 0; i < 20; i++)
         {
@@ -36,6 +37,9 @@ public class QuestLogScrollingList : MonoBehaviour
         }
     }*/
 
+    /// <summary>
+    /// Creates a new quest log button if one does not already exist, and returns the quest log button associated with quest passed
+    /// </summary>
     public QuestLogButton CreateButtonIfNotExists(Quest quest, UnityAction selectAction)
     {
         QuestLogButton questLogButton = null;
@@ -50,6 +54,12 @@ public class QuestLogScrollingList : MonoBehaviour
         return questLogButton;
     }
     
+    /// <summary>
+    /// Instantiates a new quest log button
+    /// </summary>
+    /// <param name="quest">The quest object for the button</param>
+    /// <param name="selectAction"></param>
+    /// <returns>The quest log button that was created</returns>
     private QuestLogButton InstantiateQuestLogButton(Quest quest, UnityAction selectAction)
     {
         QuestLogButton questLogButton = Instantiate(
