@@ -8,9 +8,9 @@ public class DecisionPopupTest : MonoBehaviour
 
     public void Awake()
     {
-      PopUp = GameObject.Find("PopUpSystem").GetComponent<popUp>();
-      PopUpActive = GetComponent<popUpActive>();
-      objective = GetComponent<Objective>();
+        PopUp = GameObject.Find("PopUpSystem").GetComponent<popUp>();
+        PopUpActive = GetComponent<popUpActive>();
+        objective = GetComponent<Objective>();
     }
 
     public void OnActivate()
