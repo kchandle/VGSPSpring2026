@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
 
 // The physical cards that appear when in combat or inventory
@@ -10,8 +14,9 @@ public class Card : PlayItem
 
     private Card_SO cardSO;
 
-    public InventoryCard inventoryCard; // reference to it's own inventory card\
-
+    public InventoryCard inventoryCard; // reference to it's own inventory card
+    public GameObject backHack;
+    public GameObject frontHack;
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
@@ -23,11 +28,10 @@ public class Card : PlayItem
             cardNameDisplay.text = cardSO.displayName;
         }
     }
-
     
-    public List<Hack_SO> hacks;
+    public Hack_SO[] hacks; //The array, max length 2, of hacks on the card.
 
-    public int maxHacks; // Int containing the maximum number of hacks that can be applied to this card.
+    public int maxHacks = 2; // Int containing the maximum number of hacks that can be applied to this card.
 
     [Header("UI Components")]
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
@@ -76,21 +80,102 @@ public class Card : PlayItem
 
     void Start()
     {
+        if (hacks == null)
+        {
+            hacks = new Hack_SO[maxHacks];
+        }
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
-    }
-
-    public void TryPlayCard(Enemy target)
-    {
-        //Try to play the card on the target enemy
-        BattleEffect[] effects = cardSO.cardEffects;
-        foreach (BattleEffect effect in effects)
+        frontHack = transform.GetChild(2).gameObject;
+        backHack = transform.GetChild(0).gameObject;
+        if (hacks.Length > 0 && hacks[0])
         {
-            //Apply each effect to the target
-            effect.TriggerEffect(target, target.gameObject.transform.position);
+            backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
+            backHack.SetActive(true);
+        }
+
+        if (hacks.Length > 1 && hacks[1])
+        {
+            frontHack.GetComponent<RawImage>().texture = hacks[1].image.texture;
+            frontHack.SetActive(true);
         }
     }
 
+    public bool TryPlayCard(Enemy enemy)
+    {
+        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        bool returnVal = false;
+        //Try to play the card on the target enemy
+        List<BattleEffect> effects = cardSO.cardEffects.ToList();
+        foreach (Hack_SO hack in hacks)
+        {
+            if(hack) effects.AddRange(hack.hackEffects.ToList());
+        }
+        foreach (BattleEffect effect in effects)
+        {
+            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true; continue;}
+            //Apply each effect to the target
+            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO)) returnVal = true;
+        }
+        return returnVal;
+    }
 
-}
+    public bool TryPlayCard(PlayerController player)
+    {
+        bool returnVal = false;
+        // Try to play the card on the player
+        BattleEffect[] effects = cardSO.cardEffects;
+        foreach (Hack_SO hack in hacks)
+        {
+            if(hack) effects.AddRange(hack.hackEffects.ToList());
+        }
+        foreach (BattleEffect effect in effects)
+        {
+            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
+            //Apply each effect to the target
+            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+        }
+        return returnVal;
+    }
+
+
+    public void AddHackToCard(Hack_SO hack)
+    {
+        print(hack.sideOfCard);
+        switch (hack.sideOfCard)
+        {
+            case(Hack_SO.Layer.TOP):
+            {
+                hacks[1] = hack;
+                inventoryCard.hacks[1] = hack;
+                print("hack added");
+                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
+                print("Design on top.");
+                frontHack.SetActive(true);
+                break;
+            }
+            case(Hack_SO.Layer.BOTTOM):
+            {
+                hacks[0] = hack;
+                inventoryCard.hacks[0] = hack;
+                print("hack added");
+                print(hack.image.name);
+                backHack.GetComponent<RawImage>().texture = hack.image.texture;
+                print("Design on bottom.");
+                backHack.SetActive(true);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        inventoryCard = new InventoryCard(cardSO, hacks, maxHacks);
+        //inventoryCard.hacks.Add(hack);
+    }
+    }
+
+
+
