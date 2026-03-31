@@ -11,7 +11,7 @@ public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
     public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
-    public string battlePlayType = "NULL";
+    public CardType battlePlayType = CardType.NULL;
     public List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
     public int maxItems = Int32.MaxValue;
 //PlaySpaces that this PlaySpace can accept PlayItems from
@@ -41,7 +41,10 @@ public class Playspace : MonoBehaviour
 
     private PlayItem dragTarget; // the currently PlayItem being dragged
     private Vector3 dragTargetPosition; // position of the dragTarget PlayItem
-
+    
+    Vector3 defaultPosition = new Vector3(0,0,0);
+    private PlayItem currentTarget = null;
+    public float selectionBuffer = 0.4f; // Adjust this "stickiness" value as needed
     
 
     
@@ -75,9 +78,8 @@ public class Playspace : MonoBehaviour
 
     // Create a new PlayItem in this playspace
 
-    Vector3 defaultPosition = new Vector3(0,0,0);
-
-
+    
+    
 
 
         // without position
@@ -252,48 +254,47 @@ public class Playspace : MonoBehaviour
 
 // If the player is hovering over this playspace, get the playItem closest to the player's cursor
 // and highlight it
-private PlayItem currentTarget = null;
-public float selectionBuffer = 0.4f; // Adjust this "stickiness" value as needed
+
 
 // Function edits generated with Gemini
-public PlayItem GetNearestPlayItem(Vector3 position)
-{
-    if (!InPlayArea(position)) return null;
-
-    PlayItem nearest = null;
-    // Use sqrMagnitude for better performance (avoids expensive square root)
-    float minSqrDistance = 1000f;
-
-    // 1. Find the absolute closest item
-    foreach (PlayItem p in playItems)
+    public PlayItem GetNearestPlayItem(Vector3 position)
     {
-        float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
-        if (sqrDistance < minSqrDistance)
+        if (!InPlayArea(position)) return null;
+
+        PlayItem nearest = null;
+        // Use sqrMagnitude for better performance (avoids expensive square root)
+        float minSqrDistance = 1000f;
+
+        // 1. Find the absolute closest item
+        foreach (PlayItem p in playItems)
         {
-            minSqrDistance = sqrDistance;
-            nearest = p;
+            float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
+            if (sqrDistance < minSqrDistance)
+            {
+                minSqrDistance = sqrDistance;
+                nearest = p;
+            }
         }
-    }
 
-    // Sticky Target: Function favors previously selected target to stop visual jittering
-    if (currentTarget != null && nearest != null && currentTarget != nearest)
-    {
-        float distToCurrent = (position - currentTarget.transform.position).magnitude;
-        float distToNew = (position - nearest.transform.position).magnitude;
+        // Sticky Target: Function favors previously selected target to stop visual jittering
+        if (currentTarget != null && nearest != null && currentTarget != nearest)
+        {
+            float distToCurrent = (position - currentTarget.transform.position).magnitude;
+            float distToNew = (position - nearest.transform.position).magnitude;
 
-        // Only switch if the new item is significantly closer than the current one
-        if (distToNew < distToCurrent - selectionBuffer)
+            // Only switch if the new item is significantly closer than the current one
+            if (distToNew < distToCurrent - selectionBuffer)
+            {
+                currentTarget = nearest;
+            }
+        }
+        else
         {
             currentTarget = nearest;
         }
-    }
-    else
-    {
-        currentTarget = nearest;
-    }
 
-    return currentTarget;
-}
+        return currentTarget;
+    }
 
     // Sets the DragTarget. Can be used by other scripts for drag functionality
     public void SetDragTarget(PlayItem dragTarget, Vector3 dragTargetPosition)
