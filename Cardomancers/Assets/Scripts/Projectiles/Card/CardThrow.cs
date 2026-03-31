@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 public class CardThrow : MonoBehaviour
 {
     //the object pool the throw is getting objects from
-    [SerializeField] ObjectPool pool; 
+    [SerializeField] ObjectPool pool;
+    public Animator animator;
 
     //where the mouse is on the screen
     private Vector2 mouseScreenPosition;
@@ -24,6 +25,8 @@ public class CardThrow : MonoBehaviour
     {
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
+
+        animator.SetTrigger("Throw");
 
         //gets a ray from the camera position to the mouse position on the screen
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
