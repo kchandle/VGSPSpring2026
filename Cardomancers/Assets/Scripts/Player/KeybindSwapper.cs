@@ -8,7 +8,7 @@ public class KeybindSwapper : MonoBehaviour
     public GameObject bindsWalking;
     public GameObject bindsBattling;
     public GameObject bindsInventory;
-    public GameObject questText;
+    public GameObject questUI;
     public GameObject moneyUI;
 
     void Awake()
@@ -30,7 +30,7 @@ public class KeybindSwapper : MonoBehaviour
         if (state == GameStateScript.GameState.WALKING)
         {
             bindsWalking.SetActive(true);
-            questText.SetActive(true);
+            questUI.SetActive(true);
             bindsBattling.SetActive(false);
             bindsInventory.SetActive(false);
             moneyUI.SetActive(true);
@@ -40,7 +40,7 @@ public class KeybindSwapper : MonoBehaviour
         if (state == GameStateScript.GameState.INVENTORY)
         {
             bindsWalking.SetActive(false);
-            questText.SetActive(false);
+            questUI.SetActive(false);
             bindsBattling.SetActive(false);
             bindsInventory.SetActive(true);
             moneyUI.SetActive(false);
@@ -50,7 +50,7 @@ public class KeybindSwapper : MonoBehaviour
         if (state == GameStateScript.GameState.BATTLE)
         {
             bindsWalking.SetActive(false);
-            questText.SetActive(false);
+            questUI.SetActive(false);
             bindsBattling.SetActive(true);
             bindsInventory.SetActive(false);
             moneyUI.SetActive(false);
