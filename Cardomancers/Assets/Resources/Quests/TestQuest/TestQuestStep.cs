@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class TestQuestStep : QuestStep
@@ -12,6 +13,7 @@ public class TestQuestStep : QuestStep
       foreach (cardPickup c in cardPickups)
       {
          c.GetCard.AddListener(IncrementCardsNumber);
+         
       }
    }
 
@@ -27,6 +29,17 @@ public class TestQuestStep : QuestStep
    private void IncrementCardsNumber()
    {
       cardsPickedUp++;
+      UpdateState();
+      Debug.Log(cardsPickedUp);
+      if (cardsPickedUp == cardsToPickUp)
+      {
+         FinishQuestStep();
+      }
+   }
+
+   private void Start()
+   {
+      UpdateState();
    }
 
    private void UpdateState()

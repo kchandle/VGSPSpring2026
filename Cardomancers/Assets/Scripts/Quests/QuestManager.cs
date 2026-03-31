@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// A MonoBehaviour which manages the quests.
@@ -115,7 +115,7 @@ public class QuestManager : MonoBehaviour
             {
                 Debug.LogWarning("Quest " + quest.ID + " duplicate detected");
             }
-            newQuestMap.Add(quest.ID, new Quest(quest));
+            newQuestMap.Add(quest.ID, LoadQuest(quest));
         }
         Debug.Log(newQuestMap.Count);
         return newQuestMap;
@@ -186,11 +186,50 @@ public class QuestManager : MonoBehaviour
         ChangeQuestState(quest.info.ID, quest.state);
     }
 
-    public void LoadQuest(QuestData questData)
+    private static Quest LoadQuest(QuestInfoSO info)
     {
-        Quest quest = GetQuestByID(questData.ID);
-        
-        quest.OverrideQuestData(quest.info, questData.state, questData.questStepIndex, questData.questStepStates);
+        Quest quest = null;
+        try
+        {
+            if (SaveSystem.QuestDataExists(info.ID))
+            {
+                quest = new Quest(info, SaveSystem.LoadQuestData(info.ID));
+            }
+            else
+            {
+                quest = new Quest(info);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Failed to load quest " + info.ID + ": " + e.Message);
+            throw;
+        }
+
+        return quest;
+    }
+
+    private void SaveQuest(Quest quest)
+    {
+        try
+        {
+            QuestData questData = quest.GetQuestData();
+            string serializedData = JsonUtility.ToJson(questData);
+            Debug.Log(serializedData);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        foreach (Quest quest in questMap.Values)
+        {
+            SaveQuest(quest);
+        }
     }
     
 

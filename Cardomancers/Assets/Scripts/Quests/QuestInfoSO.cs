@@ -7,7 +7,7 @@ public class QuestInfoSO : ScriptableObject
     // The ID of the quest, matches the name of the file
     public string ID { get; private set; }
     // The name displayed to the player
-    public readonly string displayName;
+    public string displayName;
 
     [Header("Requirements to start")]
     // The level the player must have to start

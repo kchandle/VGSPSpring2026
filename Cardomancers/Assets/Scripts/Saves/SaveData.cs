@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 //Contains all the data in a serializable form
 [System.Serializable]
@@ -43,13 +45,17 @@ public class SaveData
        currentExp = ExpLevels.CurrentExp;
        skillPoints = ExpLevels.CurrentLevel * 5;
 
-       QuestManager questManager = player.GetComponent<QuestManager>();
+       QuestManager questManager = Object.FindFirstObjectByType<QuestManager>();
        if (questManager != null)
        {
            foreach (Quest quest in questManager.QuestMap.Values)
            {
                questData.Add(quest.GetQuestData());
            }
+       }
+       else
+       {
+           throw new NullReferenceException();
        }
     }
 }

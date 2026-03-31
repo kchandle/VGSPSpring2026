@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Quest
@@ -9,7 +10,7 @@ public class Quest
     // The index of the current step
     public int currentStepIndex { get; private set; }
     // An array, containing the state of each quest step
-    private QuestStepState[] questStepStates;
+    private readonly QuestStepState[] questStepStates;
 
     public Quest(QuestInfoSO info)
     {
@@ -23,15 +24,23 @@ public class Quest
         }
     }
 
-    /// <summary>
-    /// ONLY USED FOR LOADING QUEST DATA FROM SAVE FILES DO NOT USE ELSEWHERE
-    /// </summary>
-    public void OverrideQuestData(QuestInfoSO info, QuestState state, int currentStepIndex, QuestStepState[] questStepStates)
+    public Quest(QuestInfoSO info, QuestData data)
     {
         this.info = info;
-        this.state = state;
-        this.currentStepIndex = currentStepIndex;
-        this.questStepStates = questStepStates;
+        this.state = data.state;
+        this.currentStepIndex = data.questStepIndex;
+        this.questStepStates = data.questStepStates;
+        Debug.Log(data.state);
+        Debug.Log(data.questStepIndex);
+        Debug.Log(data.questStepStates);
+        if (this.questStepStates == null)
+        {
+            this.questStepStates = new QuestStepState[info.questSteps.Length];
+            for (int i = 0; i < info.questSteps.Length; i++)
+            {
+                this.questStepStates[i] = new QuestStepState();
+            }
+        }
 
         if (this.questStepStates.Length != info.questSteps.Length)
         {
@@ -97,6 +106,6 @@ public class Quest
     // Returns a quest data object based on the current state of the quest
     public QuestData GetQuestData()
     {
-        return new QuestData(state, currentStepIndex, this.info.ID, questStepStates);
+        return new QuestData(state, currentStepIndex, this.info.ID, this.questStepStates);
     }
 }

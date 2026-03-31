@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class QuestStep : MonoBehaviour
 {
     private bool isFinished = false;
@@ -14,6 +16,7 @@ public abstract class QuestStep : MonoBehaviour
         {
             this.SetQuestStepState(questStepState);
         }
+        
     }
 
     protected void FinishQuestStep()
