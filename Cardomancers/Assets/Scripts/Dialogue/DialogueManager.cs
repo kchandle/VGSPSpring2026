@@ -62,7 +62,9 @@ public class DialogueManager : MonoBehaviour
 
     public void AssignStartBattle(StartBattle starter)
     {
+        print("assigned " + starter.name);
         reference = starter;
+        print(reference.name);
     }
 
     //void Start()
