@@ -205,6 +205,7 @@ public class BattleManager : MonoBehaviour
     //Function called by an outside force to start a battle, must pass in battle_SO
     public void StartBattle(Battle_SO battle)
     {
+        print(battle.name);
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
