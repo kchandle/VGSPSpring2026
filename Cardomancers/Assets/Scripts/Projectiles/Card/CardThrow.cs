@@ -5,6 +5,7 @@ public class CardThrow : MonoBehaviour
 {
     //the object pool the throw is getting objects from
     [SerializeField] ObjectPool pool;
+    [SerializeField] CharacterController cc;
     public Animator animator;
 
     //where the mouse is on the screen
@@ -14,6 +15,11 @@ public class CardThrow : MonoBehaviour
 
     [SerializeField] private AudioClip[] throwWooshSounds;
     [SerializeField] private AudioClip[] throwGruntSounds;
+
+    private void Awake()
+    {
+        cc = GetComponent<CharacterController>(); 
+    }
 
     void Update()
     {
@@ -65,7 +71,7 @@ public class CardThrow : MonoBehaviour
 
             //flatens the direction to ignore the y axis and adds force to the card in that direction
             cardDir = Vector3.ProjectOnPlane(cardDir, Vector3.up);
-            cardRB.linearVelocity = cardDir * cardForce;
+            cardRB.linearVelocity = (cardDir * cardForce) + (new Vector3(cc.velocity.x, 0f, cc.velocity.z) / 2);
             cardRB.angularVelocity = new(0, 30, 0);
         }
     }
