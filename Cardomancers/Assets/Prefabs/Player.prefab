@@ -678,6 +678,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3f7d8b47-b4d4-422d-81c6-8c15cf7d724f
     m_ActionName: 'MapWalking/Sprinting[/Keyboard/leftShift]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7bac9007-56e0-4963-93d4-3c112c48b6c7
+    m_ActionName: 'MapWalking/Escape[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: MapWalking
@@ -762,6 +766,7 @@ MonoBehaviour:
   shieldText: {fileID: 0}
   inventoryUIHandler: {fileID: 0}
   shield: 0
+  pauseMenu: {fileID: 0}
   statusEffects: []
   isShielded: 0
   inventoryUI: {fileID: 0}
@@ -778,7 +783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc6235ecd817dea4a824aa070e2402eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
-  Interact: {fileID: 0}
   interacting: 0
   range: 5
 --- !u!95 &9020132958950900259

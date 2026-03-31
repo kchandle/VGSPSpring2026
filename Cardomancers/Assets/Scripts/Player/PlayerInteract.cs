@@ -86,7 +86,7 @@ public class PlayerInteract : MonoBehaviour
  
     }
 
-    //Just for testing, until the DialogueManager is more widely implemented
+    //Just for testing, the DialogueManager will set interacting to true later
     public void ReEnableInteract()
     {
         interacting = false;
