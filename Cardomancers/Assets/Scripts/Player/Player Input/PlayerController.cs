@@ -102,7 +102,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnEscape(InputAction.CallbackContext context)
     {
-        print("pressed escape");
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         switch(GameStateScript.CurrentState)
         {
