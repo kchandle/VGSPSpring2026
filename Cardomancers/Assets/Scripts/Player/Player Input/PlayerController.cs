@@ -107,9 +107,11 @@ public class PlayerController : MonoBehaviour
         {
             case GameStateScript.GameState.WALKING:
                 GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+                Time.timeScale = 0.0f;
                 break;
             case GameStateScript.GameState.INVENTORY:
                 GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+                Time.timeScale = 1.0f;
                 break;
 
         }
