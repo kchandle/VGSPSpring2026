@@ -252,7 +252,7 @@ public class BattleManager : MonoBehaviour
         playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
         playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
-        playerController.UpdateShield();
+        playerController.Shield = 0;
 
         foreach (Enemy_SO e in battle.enemies)
         {
@@ -415,7 +415,7 @@ public class BattleManager : MonoBehaviour
         {
             playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
 
-            //Add NewPlayItem from playsapce for each card in deck copy
+            //Add NewPlayItem from playspace for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
             {
                 GameObject playerCard = playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
@@ -456,7 +456,8 @@ public class BattleManager : MonoBehaviour
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript.currentHealth <= 0) continue; //Skip turn if enemy is dead
             InventoryCard card = enemyScript.currentCard;
-
+            
+            // Image nextCardDisplay = card.image;
             //Plays Card
 
             enemyScript.currentTimer--;
