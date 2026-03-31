@@ -180,21 +180,25 @@ PrefabInstance:
     - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7673622593982134315, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
+      objectReference: {fileID: 1713888691432740484, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
     - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 7673622593982134315, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
+      objectReference: {fileID: 1713888691432740484, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
     - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: AssignStartBattle
       objectReference: {fileID: 0}
     - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2120601622568041316, guid: 6a34ad01d7dc7154c86beaab746e12b1, type: 3}
@@ -1260,6 +1264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd4134ed566b91449c97f6a81659f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionShowing
+  hasCollided: 0
   labelText: Press E to Interact with Conjoined Twins
 --- !u!135 &835815004
 SphereCollider:
@@ -2636,6 +2641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd4134ed566b91449c97f6a81659f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionShowing
+  hasCollided: 0
   labelText: 
 --- !u!1001 &1832168811
 PrefabInstance:
@@ -2940,6 +2946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd4134ed566b91449c97f6a81659f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionShowing
+  hasCollided: 0
   labelText: 
 --- !u!65 &2102375529
 BoxCollider:
