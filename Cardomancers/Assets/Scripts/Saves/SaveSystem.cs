@@ -50,12 +50,12 @@ public static class SaveSystem
         foreach (Quest quest in questManager.QuestMap.Values)
         {
             QuestData questData = quest.GetQuestData();
-            Debug.Log(questData.questStepStates[0]);
             
             string questDataJSON = questManager.SaveQuest(quest);
             Debug.Log(questDataJSON);
             Debug.Log(QuestDataPath(questData.ID));
-            File.WriteAllText(QuestDataPath(questData.ID),  questDataJSON);
+            string encryptedQuestDataJSON = encryption.Encrypt(questDataJSON);
+            File.WriteAllText(QuestDataPath(questData.ID),  encryptedQuestDataJSON);
         }
     }
 
@@ -101,7 +101,7 @@ public static class SaveSystem
         
         Debug.Log(QuestDataPath(ID));
         
-        QuestData data = JsonUtility.FromJson<QuestData>(File.ReadAllText(QuestDataPath(ID)));
+        QuestData data = JsonUtility.FromJson<QuestData>(encryption.Decrypt(File.ReadAllText(QuestDataPath(ID))));
 
         return data;
 
