@@ -17,6 +17,7 @@ public class QuestManager : MonoBehaviour
     private void Awake()
     {
         questMap = CreateQuestMap();
+        DontDestroyOnLoad(this);
     }
 
     // Subscribes methods to their respective events
