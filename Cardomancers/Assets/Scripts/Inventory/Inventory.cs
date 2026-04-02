@@ -116,7 +116,11 @@ public static class Inventory
         set
         {
             money = value;
-            GameObject.FindWithTag("MoneyUI").transform.GetChild(0).GetComponent<TMP_Text>().text = money.ToString();
+            TMP_Text t = GameObject.FindWithTag("MoneyUI")?.transform.GetComponentInChildren<TMP_Text>();
+
+            if (t != null)
+            {   t.text = money.ToString();
+            }
         }
     }
 
