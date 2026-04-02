@@ -34,13 +34,13 @@ public class CardDragInput : MonoBehaviour
         }
     }
 
-    PlayItem dragTarget; // the current PlayItem being dragged (if any)
+    [SerializeField] PlayItem dragTarget; // the current PlayItem being dragged (if any)
     public  Playspace dragPlayspace; // the Playspace that dragTarget is in
 
     public Vector3 dragTargetStartPos; // starting position of the dragTarget
     public bool isDragging = false; // if a playItem being dragged
 
-    private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
+    [SerializeField] private List<Playspace> activePlayspaces = new List<Playspace>(); // Playspaces that are currently active on the screen
 
     public event Action<PlayItem, Playspace, Playspace> PlayitemMoved; // PlayItem being moved, To, From
     
