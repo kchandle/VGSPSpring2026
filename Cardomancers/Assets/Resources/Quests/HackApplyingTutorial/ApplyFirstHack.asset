@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e321ed277a0e0410cbcbcec6ecbece41, type: 3}
+  m_Name: ApplyFirstHack
+  m_EditorClassIdentifier: Assembly-CSharp::QuestInfoSO
+  displayName: Hack first card!
+  levelRequirement: 0
+  prerequisiteQuests:
+  - {fileID: 11400000, guid: e0b32dd14317a4d4cb66c9ac3ab8ec4d, type: 2}
+  questSteps:
+  - {fileID: 6589663994243534171, guid: 8b81d9e981e93d948873baf71bf386fe, type: 3}
+  - {fileID: 4810032126482503707, guid: 1aac4b29050421045a3dc10d922208a1, type: 3}
+  moneyReward: 25
+  expReward: 50
+  cardRewards:
+    keys:
+    - {fileID: 11400000, guid: 57c8daa2006d06c47931d58dec9d8ebf, type: 2}
+    values: 01000000
+  hackRewards:
+    keys: []
+    values: 

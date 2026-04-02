@@ -486,6 +486,8 @@ public static class Inventory
         
         AddCardToInventory(card.inventoryCard);
         
+        InventoryEvents.CardHacked();
+        
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
     #endregion

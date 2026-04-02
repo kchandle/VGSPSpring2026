@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
+[CreateAssetMenu(fileName = "QuestStep", menuName = "Quests/QuestStep")]
 public abstract class QuestStep : MonoBehaviour
 {
     private bool isFinished = false;
