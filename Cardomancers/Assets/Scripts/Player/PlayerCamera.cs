@@ -19,7 +19,8 @@ public class PlayerCamera : MonoBehaviour
     private CinemachineCamera cam;
     // Orbital sphere object magical thing from player, see radius for stuff.
     private CinemachineOrbitalFollow orbital;
-    private CinemachineInputAxisController axisController;
+    // Decollider component on the Cinemachine camera, controls smoothing time
+    private CinemachineDecollider decollider;
     // Scroll delta is just lerping holder.
     private float scrollDelta = 0f;
     // Scroll position, self explanatory.
@@ -35,10 +36,19 @@ public class PlayerCamera : MonoBehaviour
     void Start()
     {
         // get the cinemachine attached.
+        //*set the decollider smoothing time to 2 in the inspector
         cam = GetComponent<CinemachineCamera>();
         // get the orbital attached this is like the sphere around the player that looks at them in third person..
         orbital = cam.GetComponent<CinemachineOrbitalFollow>();
-        axisController = cam.GetComponent<CinemachineInputAxisController>();
+
+        //get the decollider attached
+        decollider = cam.GetComponent<CinemachineDecollider>();
+
+        //Optimal settings to reduce motion sickness
+        decollider.Decollision.Damping = 10f;
+        decollider.Decollision.SmoothingTime = 2f;
+        ZoomLerpSpeed = 5f;
+
         // This is just the player.
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -57,16 +67,12 @@ public class PlayerCamera : MonoBehaviour
     // update camera position...
     void Update()
     {
-        if (player == null) player = GameObject.FindGameObjectWithTag("Player");
-
-
-        // Doesnt already the camera to scroll when not in the walking state
-        axisController.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING;
+        // Contact Group-1 team lead for this they added it, and I dont know what it does.
 
         if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING)
         {   return;
         }
-
+        
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();
 
