@@ -126,12 +126,12 @@ public class BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
-        OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
-        PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
-        EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
-        OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
+        // OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
+        // OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
+        // OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
+        // PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
+        // EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
+        // OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
     }
 
     private void OnDestroy() //Swap camera back to main at end of battle.

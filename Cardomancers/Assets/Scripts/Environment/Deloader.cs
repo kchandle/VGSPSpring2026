@@ -4,7 +4,6 @@ using UnityEngine;
 public class Deloader : MonoBehaviour
 {
     private Deloader instance;
-    
     public void Awake()
     {
         if (instance == null)
@@ -16,7 +15,7 @@ public class Deloader : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    
     public void RegionToggleActive(GameObject region)
     {
         region.SetActive(!region.activeSelf);
