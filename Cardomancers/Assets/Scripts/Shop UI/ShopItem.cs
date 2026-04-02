@@ -135,17 +135,17 @@ public class ShopItem : ScriptableObject
         }
     }
 
-    public string Type
+    public CardType Type
     {
         get
         {   
             if(so == null)
             {   
                 Debug.LogError("Shop Item SO is null");
-                return "";
+                return CardType.NULL;
             }
 
-            return so.type;
+            return so.CardType;
         }
     }
 
