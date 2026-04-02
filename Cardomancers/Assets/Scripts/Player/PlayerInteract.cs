@@ -17,7 +17,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Awake()
     {
-        interactPrompt.SetActive(false);
+        //interactPrompt.SetActive(false);
         interactableInRange = false;
     }
 
@@ -38,8 +38,8 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-        //If there is an interactable object in range and the prompt isn't already active
-        if(interactableInRange && !interactPrompt.active && !interacting)
+        //If there is an interactable object in range, the prompt isn't already active, and we're in the overworld
+        if(interactableInRange && !interactPrompt.active && !interacting && GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
         {  
             interactPrompt.SetActive(true);
             //print("set prompt active");

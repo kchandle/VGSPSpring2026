@@ -27,7 +27,7 @@ public class CardPickupPrompt : MonoBehaviour
 
     void Awake()
     {
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
     }
 
     //Note, the prompt game object will have to be activset active by the GetCard() event of the card it's picking up 
