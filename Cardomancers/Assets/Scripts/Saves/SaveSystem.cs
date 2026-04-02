@@ -52,7 +52,7 @@ public static class SaveSystem
             QuestData questData = quest.GetQuestData();
             Debug.Log(questData.questStepStates[0]);
             
-            string questDataJSON = JsonUtility.ToJson(questData);
+            string questDataJSON = questManager.SaveQuest(quest);
             Debug.Log(questDataJSON);
             Debug.Log(QuestDataPath(questData.ID));
             File.WriteAllText(QuestDataPath(questData.ID),  questDataJSON);
@@ -101,7 +101,7 @@ public static class SaveSystem
         
         Debug.Log(QuestDataPath(ID));
         
-        QuestData data = JsonUtility.FromJson<QuestData>(encryption.Decrypt(File.ReadAllText(DataPath)));
+        QuestData data = JsonUtility.FromJson<QuestData>(File.ReadAllText(QuestDataPath(ID)));
 
         return data;
 

@@ -209,13 +209,14 @@ public class QuestManager : MonoBehaviour
         return quest;
     }
 
-    private void SaveQuest(Quest quest)
+    public string SaveQuest(Quest quest)
     {
         try
         {
             QuestData questData = quest.GetQuestData();
             string serializedData = JsonUtility.ToJson(questData);
             Debug.Log(serializedData);
+            return serializedData;
         }
         catch (Exception e)
         {
@@ -223,16 +224,6 @@ public class QuestManager : MonoBehaviour
             throw;
         }
     }
-
-    private void OnApplicationQuit()
-    {
-        foreach (Quest quest in questMap.Values)
-        {
-            SaveQuest(quest);
-        }
-    }
-    
-
     #endregion
     
     

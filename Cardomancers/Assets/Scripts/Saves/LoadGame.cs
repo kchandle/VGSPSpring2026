@@ -18,6 +18,6 @@ public class LoadGame : MonoBehaviour
             //Inventory.AddHackToInventory(testDefaultHack, 1);
             //mr chandlee told me to get rid of this s
         }
-        Destroy(this);
+        Destroy(this.gameObject);
     }
 }
