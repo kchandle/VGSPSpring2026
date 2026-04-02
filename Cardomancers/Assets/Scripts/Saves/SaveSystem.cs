@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.IO;
 
@@ -6,6 +7,11 @@ public static class SaveSystem
 {
     // The file path data is saved to
     private static string DataPath =>  Path.Combine(Application.persistentDataPath, "save-data.json");
+
+    private static string QuestDataPath(string ID)
+    {
+        return Path.Combine(Application.persistentDataPath, $"quest-data-{ID}.json");
+    }
 
     private static readonly string key = "cardomancers";
     private static readonly EncryptionService encryption = new EncryptionService(key);
@@ -25,6 +31,32 @@ public static class SaveSystem
         Debug.Log(DataPath);
         // Creates or overwrites save file with readable file structure
         File.WriteAllText(DataPath, encryptedJson);
+    }
+    public static void Save(GameObject player, QuestManager questManager)
+    {
+        Debug.Log("Saving");
+        // Creates an instance of the InventoryData class using the input
+        SaveData data = new SaveData(player);
+
+        // Serialize save data into JSON
+        string json = JsonUtility.ToJson(data);
+
+        string encryptedJson = encryption.Encrypt(json);
+        
+        Debug.Log(DataPath);
+        // Creates or overwrites save file with readable file structure
+        File.WriteAllText(DataPath, encryptedJson);
+
+        foreach (Quest quest in questManager.QuestMap.Values)
+        {
+            QuestData questData = quest.GetQuestData();
+            Debug.Log(questData.questStepStates[0]);
+            
+            string questDataJSON = questManager.SaveQuest(quest);
+            Debug.Log(questDataJSON);
+            Debug.Log(QuestDataPath(questData.ID));
+            File.WriteAllText(QuestDataPath(questData.ID),  questDataJSON);
+        }
     }
 
     // Takes in an inventory SO and assigns its data based on the saved data
@@ -55,5 +87,28 @@ public static class SaveSystem
 
         //GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateDeckIntegrity();
         //GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<Inventory>().ValidateInventoryIntegrity();
+
+        //QuestManager questManager = Object.FindFirstObjectByType<QuestManager>();
+        foreach(QuestData questData in data.questData)
+        {
+        //    questManager.LoadQuest(questData);
+        }
+    }
+
+    public static QuestData LoadQuestData(string ID)
+    {
+        if (!File.Exists(QuestDataPath(ID))) throw new FileNotFoundException();
+        
+        Debug.Log(QuestDataPath(ID));
+        
+        QuestData data = JsonUtility.FromJson<QuestData>(File.ReadAllText(QuestDataPath(ID)));
+
+        return data;
+
+    }
+    
+    public static bool QuestDataExists(string ID)
+    {
+        return File.Exists(QuestDataPath(ID));
     }
 }
