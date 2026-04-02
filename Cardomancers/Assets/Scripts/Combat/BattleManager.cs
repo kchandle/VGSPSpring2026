@@ -269,7 +269,7 @@ public class BattleManager : MonoBehaviour
             i++;
         }
         
-
+        ResetEnemyPositions();
 
     }
     #endregion 
@@ -407,7 +407,7 @@ public class BattleManager : MonoBehaviour
     #region Turns
     public IEnumerator StartPlayerTurn()
     {
-
+        ResetEnemyPositions();
         PlayerTurn.Invoke();
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
@@ -449,9 +449,16 @@ public class BattleManager : MonoBehaviour
 
         EnemyTurn.Invoke();
 
+        //***List to contain all of the BattleEffects that summon enemies
+        //List<BattleEffect> summonEffects = new List<BattleEffect>();
+        //print("Made summonEffects list");
+
         //Enemy picks card from card list
-        foreach (GameObject enemy in currentEnemies)
+        //foreach (GameObject enemy in currentEnemies)
+        int count = currentEnemies.Count;
+        for(int i = 0; i < count; i++)
         {
+            GameObject enemy = currentEnemies[i];
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript.currentHealth <= 0) continue; //Skip turn if enemy is dead
             InventoryCard card = enemyScript.currentCard;
@@ -465,6 +472,15 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
+
+                //***Add summoning effects to the list
+                if(effect.summonsEnemies)
+                {
+                    //summonEffects.Add(effect);
+                    //print("Added to summonEffects list");
+
+                    TrySummonEnemy(effect);
+                }
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
@@ -481,6 +497,14 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
+            //***Summoning enemies can't be done with a foreach loop
+            /*print("Starting to try summoning enemies");
+            foreach(BattleEffect effect in summonEffects)
+            {
+                TrySummonEnemy(effect);
+            }*/
+
+
             if (enemyScript.currentTimer <= 0)
             {  
                 #region attackAnim
@@ -490,17 +514,17 @@ public class BattleManager : MonoBehaviour
                 
                 GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
                 
-                print("ps y: " + ps.transform.position.y);
-                print("enemy y: " + enemy.transform.position.y);
+                //print("ps y: " + ps.transform.position.y);
+                //print("enemy y: " + enemy.transform.position.y);
                 xOffset = -(enemy.transform.position.x - ps.transform.position.x);
                 yOffset = enemy.transform.position.y + ps.transform.position.y;
                 
                 slope = yOffset/xOffset;
                 if (float.IsInfinity(slope)) slope = yOffset;
                 
-                print("yOffset: " + yOffset);
-                print("XOffset: " + xOffset);
-                print("slope: " + slope);
+                //print("yOffset: " + yOffset);
+                //print("XOffset: " + xOffset);
+                //print("slope: " + slope);
                 if (xOffset == 0) xOffset = 1;
                 Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
                 
@@ -614,5 +638,114 @@ public class BattleManager : MonoBehaviour
     #endregion
 
 
+    #region Enemy Manipulation
+    //Repositions enemies
+    void ResetEnemyPositions()
+    {
+        //Count number of alive enemies
+        int alive = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
+            }
+        }
+
+        //Re-positions playspaces based on the number of alive enemies in the battle
+        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
+        float enemySpacing = canvasWidth/2 / (alive);
+
+        Vector3 position;
+        int i = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            //perform operation only on alive enemies
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                i++;
+                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
+                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); 
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2);
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f);
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f);
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+               
+            }
+        }
+    }
+
+
+    //Summons enemies
+    private void TrySummonEnemy(BattleEffect effect)
+    {
+        if(!effect.summonsEnemies || effect.summonableEnemies.Length == 0)
+        {
+            return;
+        }
+        //print("Evaluating Enemy Card Battle Effects");
+        //print("Summons enemies: " + effect.summonsEnemies);
+        //print("Card Name: " + card.cardSO.displayName);
+        print("Attempting to summon enemy");
+        //Summoning enemy logic
+
+        //Get number of enemies alive
+        int alive = 0;
+        foreach (GameObject enemy in currentEnemies)
+        {
+            if (enemy.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
+            }
+        }
+
+        //Summon fails if six or more enemies are on the field
+        if(alive >= 6)
+        {
+            print("Max enemies, summon failed");
+        }
+        else
+        {
+            print("Summoned enemy");
+            //Selects random enemy from list of possible options set in the card's battle effect
+            Enemy_SO newEnemy = effect.summonableEnemies[UnityEngine.Random.Range(0, effect.summonableEnemies.Length)];
+
+            //Same code for creating an enemy object used in SetUpPlayspaces
+            GameObject enemyPrefab = newEnemy.enemyPrefab;
+            enemyPrefab = Instantiate(newEnemy.enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
+            enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
+
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+            enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
+            currentEnemies.Add(enemyPrefab);
+
+            EnemiesChooseCards(currentEnemies.IndexOf(enemyPrefab));
+            ResetEnemyPositions();
+        }
+    }
+    #endregion
 
 }
