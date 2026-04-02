@@ -125,11 +125,11 @@ public class CharacterControllerMovement : MonoBehaviour
 			if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
 		}
 
-		if (sprinting != _sprintingLastFrame) Destroy(footstepSource.gameObject);
-		_sprintingLastFrame = sprinting;
+			if (sprinting != _sprintingLastFrame) Destroy(footstepSource.gameObject);
+				_sprintingLastFrame = sprinting;
 
-        //resets the jump bool that is set in the player controller script to true whenever space is pressed
-        jumpWasPressed = false; 
+		//resets the jump bool that is set in the player controller script to true whenever space is pressed
+		jumpWasPressed = false; 
     }
 	
 }

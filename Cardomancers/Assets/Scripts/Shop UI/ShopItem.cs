@@ -38,14 +38,14 @@ public class ShopItem : ScriptableObject
         }
     }
 
-    public float PurchasePrice 
+    public int PurchasePrice 
     { 
         get
         {   
             if(so == null)
             {   
                 Debug.LogError("Shop Item SO is null");
-                return 0f;
+                return 0;
             }
 
             return so.price;
