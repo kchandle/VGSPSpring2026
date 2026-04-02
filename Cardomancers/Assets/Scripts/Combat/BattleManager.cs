@@ -484,12 +484,12 @@ public class BattleManager : MonoBehaviour
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
-                    case ("ATK"):
+                    case (CardType.ATK):
                     {
                         effect.TriggerEffect(playerController, player.transform.position);
                         break;
                     }
-                    case ("DEF"):
+                    case (CardType.DEF):
                     {
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
