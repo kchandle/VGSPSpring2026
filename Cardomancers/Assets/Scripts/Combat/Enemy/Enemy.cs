@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private int currentShield = 0;
     public GameObject shieldPanel;
     public TMP_Text shieldText;
+    public TMP_Text healthText;
 
     public int CurrentShield
     {
@@ -82,6 +83,8 @@ public class Enemy : MonoBehaviour
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
 
+    public Image enemyImage;
+
     public bool deathCalled = false;
 
 // variable for enum switch state
@@ -108,11 +111,12 @@ public class Enemy : MonoBehaviour
         currentTimer = Random.Range(1, 4);
         UpdateTimer();
         UpdateShield();
+        UpdateHealthBar();
         currentMana = 5;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
-
+        enemyImage.sprite = enemySO.enemyImage;
         animator = GetComponent<Animator>();
     }
 
@@ -191,6 +195,7 @@ public class Enemy : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
+            healthText.text = currentHealth + "/" + maxHealth;
         }
         if(currentHealth <= 0)
         {
