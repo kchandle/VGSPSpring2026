@@ -14,7 +14,7 @@ public class Card : PlayItem
 
     private Card_SO cardSO;
 
-    public InventoryCard inventoryCard; // reference to it's own inventory card
+    public InventoryCard inventoryCard; // reference to its own inventory card
     public GameObject backHack;
     public GameObject frontHack;
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
@@ -132,7 +132,7 @@ public class Card : PlayItem
         }
         foreach (BattleEffect effect in effects)
         {
-            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
+            if(cardSO.CardType != CardType.ATK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
             //Apply each effect to the target
             if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
         }

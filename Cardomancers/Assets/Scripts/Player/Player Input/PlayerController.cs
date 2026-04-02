@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
+    public TMP_Text currentHealthText;
 
     public bool TestingFastMode = false;
 
@@ -184,6 +185,7 @@ public class PlayerController : MonoBehaviour
     public void UpdateHealthbar()
     {
         healthbar.fillAmount = currentHealth / maxPlayerHealth;
+        currentHealthText.text = currentHealth + "/" + maxPlayerHealth;
     }
 
     public void UpdateShield()

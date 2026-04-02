@@ -18,7 +18,7 @@ public class CardDragInput : MonoBehaviour
 
     public bool DragDropActive // getter setter for activating dragDropAbility
     {
-        get {return dragDropActive;}
+        get => dragDropActive;
         set
         {
             dragDropActive = value;
@@ -117,7 +117,7 @@ public class CardDragInput : MonoBehaviour
 
 
 
-            // get the current focusTarget (Playitem closests to the mouse INSIDE the playspace they are hovering over)
+            // get the current focusTarget (Playitem closest to the mouse INSIDE the playspace they are hovering over)
             
             if (isDragging == false)
             {
@@ -128,7 +128,7 @@ public class CardDragInput : MonoBehaviour
                     //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
                     focusTarget = p.GetNearestPlayItem(mousePosition);
 
-                    //if(p.InPlayArea(mousePositionWorld) == true) print(p.name+" is being hovered over");
+                    //if(p.InPlayArea(mousePositionWorld) == true) print(p.name + " is being hovered over");
     
                     
                     p.focusTarget = focusTarget;
@@ -166,13 +166,13 @@ public class CardDragInput : MonoBehaviour
                     {
                         if (dragTarget.itemType == PlayItem.ItemType.CARD)
                         {
-                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
-                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
+                            ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside a scrollable playspace
+                            ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
 
                         }
                         else if (dragTarget.itemType == PlayItem.ItemType.HACK)
                         {
-                            ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside of a scrollable playspace
+                            ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting = true; // override sorting so the card doesn't dissapear when dragged outside a scrollable playspace
                             ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().sortingOrder = 3;
 
                         }
@@ -204,7 +204,7 @@ public class CardDragInput : MonoBehaviour
                         // New Playspace must not be the current parent of the dragTarget
                         if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
                         {
-                            // move dragTarget from it's parent to Playspace p
+                            // move dragTarget from its parent to Playspace p
                            
                             
 
@@ -219,7 +219,7 @@ public class CardDragInput : MonoBehaviour
                                         bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                         dragPlayspace.DestroyPlayItem(dragTarget);
                                         dragDropActive = false;
-                                        }
+                                    }
                                 } 
                             } else {
                                 if (dragTarget.itemType == PlayItem.ItemType.CARD)
@@ -249,8 +249,7 @@ public class CardDragInput : MonoBehaviour
                 isDragging = false;
                 dragPlayspace = null;
             }
-        
-        yield return null;
+            yield return null;
         }
        
     }
