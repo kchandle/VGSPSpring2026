@@ -19,7 +19,7 @@ public class GameStateScript
     }
 
     //state
-    private static GameState currentState;
+    private static GameState currentState = GameState.WALKING;
 
     public static GameState CurrentState
     {

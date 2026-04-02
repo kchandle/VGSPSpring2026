@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
     }
 
     public int currentActionAmount;
-    public string currentActionType;
+    public CardType currentActionType;
     
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -235,25 +235,25 @@ public class Enemy : MonoBehaviour
 
     public void UpdateActionState()
     {
-        currentActionType = currentCard.cardSO.type;
+        currentActionType = currentCard.cardSO.CardType;
         //actionTypeText.text = currentActionType;
         switch (currentActionType)
         {
-            case ("DEF"):
+            case (CardType.DEF):
             {
                 actionTypeDEF.SetActive(true);
                 actionTypeATK.SetActive(false);
                 actionTypeRST.SetActive(false);
                 break;
             }
-            case ("ATK"):
+            case (CardType.ATK):
             {
                 actionTypeDEF.SetActive(false);
                 actionTypeATK.SetActive(true);
                 actionTypeRST.SetActive(false);
                 break;
             }
-            case ("RST"):
+            case (CardType.RST):
             {
                 actionTypeDEF.SetActive(false);
                 actionTypeATK.SetActive(false);
@@ -264,7 +264,7 @@ public class Enemy : MonoBehaviour
         print(currentActionType);
 
         currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
-        if (currentActionType != "RST")
+        if (currentActionType != CardType.RST)
         {
             actionAmountText.text = "" + currentActionAmount;
         }

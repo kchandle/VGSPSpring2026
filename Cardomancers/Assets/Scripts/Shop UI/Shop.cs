@@ -2,14 +2,15 @@
  *
  * Contact Group 1 For help or questions relating to this script.
  */
-using UnityEngine;
-using UnityEditor;
-using UnityEngine.Networking;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Networking;
+using static GameStateScript;
 public class Shop : MonoBehaviour
 {
     // Events
@@ -74,7 +75,7 @@ public class Shop : MonoBehaviour
         set
         {   if(value)
             {
-                SaveSystem.Load(player);
+                //SaveSystem.Load(player);
             }
             shopUI.SetActive(value);
         }
@@ -116,11 +117,23 @@ public class Shop : MonoBehaviour
     // Opens the shop UI.
     public void OpenShop()
     {   this.IsShopOpenUI = true;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        GameStateScript.CurrentState = GameState.MENU;
+
+        player.GetComponent<PlayerInteract>().interacting = false;
     }
 
     // Closes the shop UI.
     public void CloseShop()
     {   this.IsShopOpenUI = false;
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+        GameStateScript.CurrentState = GameState.WALKING;
+
+        player.GetComponent<PlayerInteract>().interacting = false;
     }
 
     // Checks whether you can buy a card.

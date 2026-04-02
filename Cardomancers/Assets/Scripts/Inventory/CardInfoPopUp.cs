@@ -50,16 +50,16 @@ public class CardInfoPopUp : PlayItem
     {
         cardName.text = card.CardSO.displayName;
         description.text = card.CardSO.description;
-        cardType.text = card.CardSO.cardType.ToString();
-        switch (card.CardSO.cardType)
+        cardType.text = card.CardSO.CardType.ToString();
+        switch (card.CardSO.CardType)
         {
-            case global::cardType.ATK:
+            case global::CardType.ATK:
                 typeImage = ATKImage;
                 break;
-            case global::cardType.DEF:
+            case global::CardType.DEF:
                 typeImage = DEFImage;
                 break;
-            case global::cardType.RST:
+            case global::CardType.RST:
                 typeImage = RSTImage;
                 break;
         }
