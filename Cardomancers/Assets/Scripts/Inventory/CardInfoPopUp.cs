@@ -18,7 +18,7 @@ public class CardInfoPopUp : PlayItem
     // a silly tagline for the card
     [SerializeField] private TextMeshProUGUI tagLine;
     // the image that goes with the card type
-    /*[SerializeField] private Image typeImage;
+    [SerializeField] private Image typeImage;
     // the image associated with the damage type
     [SerializeField] private Image damageImage;
     // the background
@@ -33,7 +33,7 @@ public class CardInfoPopUp : PlayItem
     [SerializeField] private Image InstantDamageImage;
     [SerializeField] private Image DamageOverTimeImage;
     [SerializeField] private Image InstantHealImage;
-    [SerializeField] private Image HealOverTimeImage;*/
+    [SerializeField] private Image HealOverTimeImage;
 
     [Tooltip("Distance from the center of the card the popup is giving info about")]
     [SerializeField] private float padding;
@@ -50,16 +50,16 @@ public class CardInfoPopUp : PlayItem
     {
         cardName.text = card.CardSO.displayName;
         description.text = card.CardSO.description;
-        cardType.text = card.CardSO.cardType.ToString();
-        /*switch (card.CardSO.cardType)
+        cardType.text = card.CardSO.CardType.ToString();
+        switch (card.CardSO.CardType)
         {
-            case global::cardType.ATK:
+            case global::CardType.ATK:
                 typeImage = ATKImage;
                 break;
-            case global::cardType.DEF:
+            case global::CardType.DEF:
                 typeImage = DEFImage;
                 break;
-            case global::cardType.RST:
+            case global::CardType.RST:
                 typeImage = RSTImage;
                 break;
         }
@@ -81,24 +81,32 @@ public class CardInfoPopUp : PlayItem
                 damageType.text = "Heal Over Time";
                 damageImage = HealOverTimeImage;
                 break;
-        }*/
+        }
         tagLine.text = card.CardSO.tagLine;
     }
 
     private void OpenPopup()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
-        {
-            this.transform.GetChild(i).gameObject.SetActive(true);
-        }
+        cardName.gameObject.SetActive(true);
+        description.gameObject.SetActive(true);
+        cardType.gameObject.SetActive(true);
+        damageType.gameObject.SetActive(true);
+        tagLine.gameObject.SetActive(true);
+        typeImage.gameObject.SetActive(true);
+        damageImage.gameObject.SetActive(true);
+        backgroundImage.gameObject.SetActive(true);
     }
 
     private void ClosePopup()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
-        {
-            this.transform.GetChild(i).gameObject.SetActive(false);
-        }
+        cardName.gameObject.SetActive(false);
+        description.gameObject.SetActive(false);
+        cardType.gameObject.SetActive(false);
+        damageType.gameObject.SetActive(false);
+        tagLine.gameObject.SetActive(false);
+        typeImage.gameObject.SetActive(false);
+        damageImage.gameObject.SetActive(false);
+        backgroundImage.gameObject.SetActive(false);
     }
 
     private Vector3 GetPopUpLocation()

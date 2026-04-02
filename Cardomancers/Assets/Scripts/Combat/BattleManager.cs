@@ -126,12 +126,12 @@ public class BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
-        OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
-        PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
-        EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
-        OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
+        // OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
+        // OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
+        // OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
+        // PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
+        // EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
+        // OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
     }
 
     private void OnDestroy() //Swap camera back to main at end of battle.
@@ -252,7 +252,7 @@ public class BattleManager : MonoBehaviour
         playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
         playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
-        playerController.UpdateShield();
+        playerController.Shield = 0;
 
         foreach (Enemy_SO e in battle.enemies)
         {
@@ -415,7 +415,7 @@ public class BattleManager : MonoBehaviour
         {
             playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
 
-            //Add NewPlayItem from playsapce for each card in deck copy
+            //Add NewPlayItem from playspace for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
             {
                 GameObject playerCard = playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
@@ -456,7 +456,8 @@ public class BattleManager : MonoBehaviour
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript.currentHealth <= 0) continue; //Skip turn if enemy is dead
             InventoryCard card = enemyScript.currentCard;
-
+            
+            // Image nextCardDisplay = card.image;
             //Plays Card
 
             enemyScript.currentTimer--;
@@ -469,12 +470,12 @@ public class BattleManager : MonoBehaviour
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
-                    case ("ATK"):
+                    case (CardType.ATK):
                     {
                         effect.TriggerEffect(playerController, player.transform.position);
                         break;
                     }
-                    case ("DEF"):
+                    case (CardType.DEF):
                     {
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
@@ -546,6 +547,7 @@ public class BattleManager : MonoBehaviour
 
         //Loops through list of all active enemies to check if their health is <= 0
         //loop through all enemies
+        ResetEnemyPositions();
         bool allDead = true;
         foreach (GameObject e in currentEnemies)
         {
@@ -614,6 +616,61 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+    void ResetEnemyPositions()
+    {
+        //Count number of alive enemies
+        int alive = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
+            }
+        }
 
+        //Re-positions playspaces based on the number of alive enemies in the battle
+        float canvasWidth = battleUI.GetComponent<RectTransform>().rect.width;
+        float canvasHeight = battleUI.GetComponent<RectTransform>().rect.height;
+        float enemySpacing = canvasWidth/2 / (alive);
+
+        Vector3 position;
+        int i = 0;
+        foreach(GameObject e in currentEnemies)
+        {
+            //perform operation only on alive enemies
+            if(e.GetComponent<Enemy>().currentHealth > 0)
+            {
+                i++;
+                position = new Vector3(0, (canvasHeight * 1 / 4), 0);
+                if(alive % 2 == 1) //for odd number battles, enemies are positioned as: (side  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2); 
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (int)(i/2);
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+                else if(alive % 2 == 0) //for even number battles, enemies are positioned as: (side  mid  mid  side)
+                {
+                    if(i % 2 == 1)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * (i/2f);
+                        e.transform.localPosition = position + Vector3.left * off;
+                    }
+                    else if(i % 2 == 0)
+                    {
+                        float off =  2 * ((canvasWidth/2) / alive) * ((i-1)/2f);
+                        e.transform.localPosition = position + Vector3.right * off;
+                    }
+                }
+               
+            }
+        }
+    }
 
 }
