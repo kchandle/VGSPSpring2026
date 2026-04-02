@@ -21,6 +21,5 @@ public class CardProjectile : MonoBehaviour
 
         //destroys the rigidbody if the card hits anything even without the CardInteractable
         Destroy(gameObject.GetComponent<Rigidbody>());
-     
     }
 }
