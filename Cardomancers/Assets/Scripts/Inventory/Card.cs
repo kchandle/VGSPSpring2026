@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 
@@ -14,8 +15,8 @@ public class Card : PlayItem
     private Card_SO cardSO;
 
     public InventoryCard inventoryCard; // reference to it's own inventory card
-    public GameObject red;
-    public GameObject blue;
+    public GameObject backHack;
+    public GameObject frontHack;
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
     public Card_SO CardSO
     {
@@ -79,25 +80,31 @@ public class Card : PlayItem
 
     void Start()
     {
+        if (hacks == null)
+        {
+            hacks = new Hack_SO[maxHacks];
+        }
         position = transform.position;
         CardSprite = cardSO.image;
         cardNameDisplay.text = cardSO.displayName;
-        blue = transform.GetChild(2).gameObject;
-        red = transform.GetChild(0).gameObject;
-        if (hacks[0] != null)
+        frontHack = transform.GetChild(2).gameObject;
+        backHack = transform.GetChild(0).gameObject;
+        if (hacks.Length > 0 && hacks[0])
         {
-            red.GetComponent<RawImage>().texture = hacks[0].image.texture;
-            red.SetActive(true);
+            backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
+            backHack.SetActive(true);
         }
-        if (hacks[1] != null)
+
+        if (hacks.Length > 1 && hacks[1])
         {
-            blue.GetComponent<RawImage>().texture = hacks[1].image.texture;
-            blue.SetActive(true);
+            frontHack.GetComponent<RawImage>().texture = hacks[1].image.texture;
+            frontHack.SetActive(true);
         }
     }
 
-    public bool TryPlayCard(Enemy target)
+    public bool TryPlayCard(Enemy enemy)
     {
+        PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         bool returnVal = false;
         //Try to play the card on the target enemy
         List<BattleEffect> effects = cardSO.cardEffects.ToList();
@@ -107,8 +114,9 @@ public class Card : PlayItem
         }
         foreach (BattleEffect effect in effects)
         {
+            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true; continue;}
             //Apply each effect to the target
-            if(effect.TriggerEffect(target, target.gameObject.transform.position, cardSO)) returnVal = true;
+            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO)) returnVal = true;
         }
         return returnVal;
     }
@@ -117,20 +125,16 @@ public class Card : PlayItem
     {
         bool returnVal = false;
         // Try to play the card on the player
-        if(cardSO.type == "DEF")
+        BattleEffect[] effects = cardSO.cardEffects;
+        foreach (Hack_SO hack in hacks)
         {
-            print(cardSO.cardEffects[0].StatusAmount);
-            player.Shield += cardSO.cardEffects[0].StatusAmount;
-            returnVal = true;
+            if(hack) effects.AddRange(hack.hackEffects.ToList());
         }
-        else
+        foreach (BattleEffect effect in effects)
         {
-            BattleEffect[] effects = cardSO.cardEffects;
-            foreach (BattleEffect effect in effects)
-            {
-                //Apply each effect to the target
-                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
-            }
+            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
+            //Apply each effect to the target
+            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
         }
         return returnVal;
     }
@@ -146,9 +150,9 @@ public class Card : PlayItem
                 hacks[1] = hack;
                 inventoryCard.hacks[1] = hack;
                 print("hack added");
-                blue.GetComponent<RawImage>().texture = hack.image.texture;
+                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
                 print("Design on top.");
-                blue.SetActive(true);
+                frontHack.SetActive(true);
                 break;
             }
             case(Hack_SO.Layer.BOTTOM):
@@ -157,9 +161,9 @@ public class Card : PlayItem
                 inventoryCard.hacks[0] = hack;
                 print("hack added");
                 print(hack.image.name);
-                red.GetComponent<RawImage>().texture = hack.image.texture;
+                backHack.GetComponent<RawImage>().texture = hack.image.texture;
                 print("Design on bottom.");
-                red.SetActive(true);
+                backHack.SetActive(true);
                 break;
             }
             default:

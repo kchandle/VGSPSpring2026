@@ -63,6 +63,7 @@ public class CardThrow : MonoBehaviour
             //flatens the direction to ignore the y axis and adds force to the card in that direction
             cardDir = Vector3.ProjectOnPlane(cardDir, Vector3.up);
             cardRB.linearVelocity = cardDir * cardForce;
+            cardRB.angularVelocity = new(0, 30, 0);
         }
     }
 }

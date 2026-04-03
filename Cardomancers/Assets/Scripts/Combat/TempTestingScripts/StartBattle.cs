@@ -56,15 +56,11 @@ public class StartBattle : MonoBehaviour
 
     private IEnumerator _Impl_StartBattleNow()
     {
+        Debug.Log("Script is running on: " + gameObject.name + ". Starting battle: "+ battleToStart.ToString());
 
 
 
-
-        if (canvas == null)
-        {
-            canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
-        }
-
+        
          // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
         {
@@ -86,16 +82,16 @@ public class StartBattle : MonoBehaviour
                 GameStateScript.CurrentState = GameStateScript.GameState.BATTLE;
                 // Updated to use the recommended method for finding objects
                 // Ensure the BattleManager prefab is instantiated in the scene
-                var battleSystem = FindFirstObjectByType<BattleManager>();
-                        if (battleSystem == null)
+                BattleManager battleSystem = FindFirstObjectByType<BattleManager>();
+                if (battleSystem == null)
                 {
                     Instantiate(battleManagerPrefab);
 
                     battleSystem = FindFirstObjectByType<BattleManager>();
+                    battleSystem.startBattle = this;
                 }
-                Debug.Log("dsfgsdfs");
                 battleSystem.StartBattle(battleToStart);
-                    battleStarted = true;
+                battleStarted = true;
 
                     
 
@@ -103,6 +99,12 @@ public class StartBattle : MonoBehaviour
               
                 yield return null;
             }
+
+            if (canvas == null)
+            {
+                canvas = GameObject.FindWithTag("BattleManager").transform.GetChild(2).gameObject;
+            }
+
             GameObject.FindWithTag("Player").gameObject.GetComponent<PlayerInteract>().interacting = false;
             canvas.SetActive(false);
         }
@@ -125,9 +127,10 @@ public class StartBattle : MonoBehaviour
         videoPlayer.renderMode = VideoRenderMode.RenderTexture;
         videoPlayer.Prepare();
     }
+
     private void OnVideoPrepared(VideoPlayer vp) //Debugging
     {
-        Debug.Log("Video prepared successfully.");
+        // Debug.Log("Video prepared successfully.");
     }
 }
 

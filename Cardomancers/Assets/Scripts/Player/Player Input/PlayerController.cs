@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public InventoryUIHandler inventoryUIHandler;
     [SerializeField] private int shield = 0;
 
+    public GameObject pauseMenu;
+
     public int Shield
     {
         get { return shield; }
@@ -98,6 +100,29 @@ public class PlayerController : MonoBehaviour
         _characterControllerMovement.jumpWasPressed = true;
     }
 
+    public void OnEscape(InputAction.CallbackContext context)
+    {
+        pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+        if (Time.timeScale == 1f){
+                Time.timeScale = 0f;
+        } else
+            {
+              Time.timeScale = 1.0f;  
+            }
+        switch(GameStateScript.CurrentState)
+        {
+            case GameStateScript.GameState.WALKING:
+                GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+                break;
+            case GameStateScript.GameState.INVENTORY:
+                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+                break;
+
+
+
+        }
+    }
+
     public void OnSprinting(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -110,6 +135,10 @@ public class PlayerController : MonoBehaviour
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
+        if(pauseMenu.activeSelf)
+        {
+            return;
+        }
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
