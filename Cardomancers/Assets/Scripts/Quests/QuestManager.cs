@@ -102,7 +102,7 @@ public class QuestManager : MonoBehaviour
     }
     #endregion
     
-    #region Private Methods
+    #region Utility Methods
 
     // Call once on awake so all the quests are loaded
     private Dictionary<string, Quest> CreateQuestMap()
@@ -123,7 +123,7 @@ public class QuestManager : MonoBehaviour
     }
 
     // Returns the quest associated with the ID passed
-    private Quest GetQuestByID(string questID)
+    public Quest GetQuestByID(string questID)
     {
         Quest quest = questMap[questID];
         if (quest == null)
