@@ -36,6 +36,7 @@ public enum damageType
     damageInstant,
     healOverTime,
     healInstant,
+    rest
     
 }
 

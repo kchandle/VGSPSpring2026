@@ -20,6 +20,9 @@ public class Enemy : MonoBehaviour
     public TMP_Text shieldText;
     public TMP_Text healthText;
 
+    public Playspace cardToPlayspace;
+    public Playspace enemyPlayspace;
+
     public int CurrentShield
     {
         get { return currentShield; }
@@ -65,6 +68,7 @@ public class Enemy : MonoBehaviour
     public GameObject actionTypeRST;
     public TMP_Text actionAmountText;
     public InventoryCard currentCard;
+    public GameObject cardPrefab;
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -238,6 +242,10 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
+        
+        cardToPlayspace.DestroyPlayItem(cardToPlayspace.playItems[0]);
+        cardToPlayspace.NewPlayItem(cardPrefab, currentCard.cardSO, currentCard);
+        cardToPlayspace.playItems[0].draggable = false;
         print(currentActionType);
 
         currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
