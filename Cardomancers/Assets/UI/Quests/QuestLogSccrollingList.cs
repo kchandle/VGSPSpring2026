@@ -12,6 +12,11 @@ public class QuestLogScrollingList : MonoBehaviour
     
     private Dictionary<string, QuestLogButton> idToButtonMap = new Dictionary<string, QuestLogButton>();
 
+    public Dictionary<string, QuestLogButton> IDToButtonMap
+    {
+        get { return this.idToButtonMap; }
+    }
+
     /* Test code, no longer needed
     private void Start()
     {
@@ -53,6 +58,18 @@ public class QuestLogScrollingList : MonoBehaviour
         }
         return questLogButton;
     }
+
+    public QuestLogButton GetQuestLogButton(Quest quest)
+    {
+        QuestLogButton questLogButton = null;
+        if (!idToButtonMap.ContainsKey(quest.info.ID))
+        {
+            return null;
+        }
+
+        questLogButton = idToButtonMap[quest.info.ID];
+        return questLogButton;
+    }
     
     /// <summary>
     /// Instantiates a new quest log button
@@ -67,6 +84,7 @@ public class QuestLogScrollingList : MonoBehaviour
             contentParent.transform).GetComponent<QuestLogButton>();
         questLogButton.gameObject.name = quest.info.ID + "_button";
         questLogButton.Initialize(quest.info.displayName, selectAction);
+        questLogButton.QuestID = quest.info.ID;
         idToButtonMap[quest.info.ID] = questLogButton;
         return questLogButton;
     }

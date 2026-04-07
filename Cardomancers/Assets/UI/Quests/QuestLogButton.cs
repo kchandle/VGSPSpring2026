@@ -8,8 +8,14 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
 {
     public Button button { get; private set; }
     private UnityAction onSelectAction;
-    
     private TextMeshProUGUI buttonText;
+    private string questID;
+
+    public string QuestID
+    {
+        get { return questID; }
+        set { if (string.IsNullOrEmpty(questID)) questID = value; }
+    }
 
     public void Initialize(string displayName, UnityAction selectAction)
     {
