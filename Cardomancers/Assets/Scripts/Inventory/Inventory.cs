@@ -166,8 +166,18 @@ public static class Inventory
         inventory.Add(newCard);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
-        AddCardToDeck(newCard);
+        //AddCardToDeck(newCard);
         return true;
+    }
+
+    public static int Cardscount()
+    {
+        return inventory.Count;
+    }
+
+    public static bool IsInventoryFull()
+    {
+        return inventory.Count >= inventorySize;
     }
 
     /// <summary>
