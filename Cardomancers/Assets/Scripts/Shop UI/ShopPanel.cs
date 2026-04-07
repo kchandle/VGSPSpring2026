@@ -10,14 +10,19 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI cardName;
     [SerializeField] private TMPro.TextMeshProUGUI cardDesc;
     [SerializeField] private TMPro.TextMeshProUGUI cardValue;
-    
+
+    [SerializeField] private TMP_Text CardAmountText;
+
     //other
     private ShopItem item;
     private Card_SO cardSO;
-    
-    private int cardCost;
+
+    public int cardCost;
     private int cardSellValue;
-    
+
+    int cardAmount = 1;
+
+
     [SerializeField] private Shop shop; //set in editor
     [SerializeField] private ShopUI shopUI; //set in editor
 
@@ -35,29 +40,69 @@ public class ShopPanel : MonoBehaviour
         cardSellValue = cardSO.sellValue;
 
         cardValue.text = "Buy: " + cardCost + " currency.\nSell: " + cardSellValue + " currency.";
+
     }
+
+    void Update()
+    {
+       // CardAmountText = GetComponent<TMP_Text>();
+        CardAmountText.text = (cardAmount.ToString());;
+       
+    }
+
+
+    public void AddCard()
+    {
+        cardAmount++;
+    }
+    public void RemoveCard()
+    {
+        if(cardAmount > 1)
+        {
+            cardAmount--; 
+        }
+    }
+
 
     //method called by the shop panel's Buy button onclick event
     public void ClickedBuyCard()
     {
-        //print("Buying card...");
-        if(shop.BuyCard(item))
+        for (int i = cardAmount;  i > 0; i--)
         {
-            shopUI.UpdateBuyMenu();
-            print("Card bought!");
-            shopUI.UpdateSellMenu();
+            //print("Buying card...");
+            // Debug.unityLogger.logEnabled = false;
+            if (Inventory.IsInventoryFull()) print("full: " + Inventory.Cardscount());
+            if (!Inventory.IsInventoryFull())
+            {
+                print("no-full: " + Inventory.Cardscount());
+                if (shop.BuyCard(item))
+                {
+                    shopUI.UpdateBuyMenu();
+                    print("Card bought!");
+                    shopUI.UpdateSellMenu();
+                }
+                else
+                {
+                    print("you're broke");
+                }
+            }
+           // Debug.unityLogger.logEnabled = true;
         }
-        else
-        {
-            print("you're broke");
-        }
+
+
+    }
+
+    public void SetCardAmountToOne()
+    {
+        cardAmount = 1;
     }
 
     //method called by the shop panel's Sell button onclick event 
     public void ClickedSellCard()
     {
+     
         //print("Selling card...");
-        if(shop.SellCard(item))
+        if (shop.SellCard(item))
         {
             shopUI.UpdateSellMenu();
             print("Card sold!");
