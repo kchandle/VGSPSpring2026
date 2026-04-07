@@ -54,8 +54,6 @@ public class CharacterControllerMovement : MonoBehaviour
 
     private void Update()
     {
-
-
 		//makes a vector3 with the movement input WASD 
 		Vector3 planarInput = new Vector3(inputDirectionInput.x, 0f, inputDirectionInput.z);
 
@@ -82,9 +80,6 @@ public class CharacterControllerMovement : MonoBehaviour
 			_jumping = true;
 			SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 0.25f);
             _moveDirection.y = Mathf.Sqrt(jumpIntensity); 
-
-			// triggers jump animation
-			animator.SetTrigger("Jump");
 		}
 
 		//if the player was jumping and they became grounded on a frame where the jumpkey wasnt pressed then it plays a sound for the player landing
@@ -104,14 +99,11 @@ public class CharacterControllerMovement : MonoBehaviour
         //combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
         Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed * drag;
 
-
-
         //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
         Vector3 finalMovement = transform.TransformDirection(moveDirection);
 
         //actaully moves the character controller with the direction set 
         _characterController.Move(finalMovement * Time.deltaTime);
-
 
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
 		if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
@@ -125,11 +117,11 @@ public class CharacterControllerMovement : MonoBehaviour
 			if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
 		}
 
-			if (sprinting != _sprintingLastFrame) Destroy(footstepSource.gameObject);
-				_sprintingLastFrame = sprinting;
+		if (sprinting != _sprintingLastFrame && footstepSource != null) Destroy(footstepSource.gameObject);
+		_sprintingLastFrame = sprinting;
 
-		//resets the jump bool that is set in the player controller script to true whenever space is pressed
-		jumpWasPressed = false; 
+        //resets the jump bool that is set in the player controller script to true whenever space is pressed
+        jumpWasPressed = false; 
     }
 	
 }
