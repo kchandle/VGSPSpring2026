@@ -678,9 +678,37 @@ MonoBehaviour:
     m_ActionId: 3f7d8b47-b4d4-422d-81c6-8c15cf7d724f
     m_ActionName: 'MapWalking/Sprinting[/Keyboard/leftShift]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8277037704298673333}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnEscape
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7bac9007-56e0-4963-93d4-3c112c48b6c7
     m_ActionName: 'MapWalking/Escape[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8277037704298673333}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnQuest
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e2f15a4d-aabe-4e3e-8684-40f4d370d95a
+    m_ActionName: 'MapWalking/Quest[/Keyboard/i]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: MapWalking
@@ -746,7 +774,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a2300cbd9d7ef7e43a22ec22ced80162, type: 3}
   jumpLandClips:
   - {fileID: 8300000, guid: 7e75a3eea6376964d872d3b58f387dc2, type: 3}
-  sprintingClip: {fileID: 8300000, guid: 0be1353f3dd56434ab57641cbc2f6dba, type: 3}
+  sprintingClip: {fileID: 8300000, guid: 355c7625f9607a748b937a0622ec0dec, type: 3}
 --- !u!114 &8277037704298673333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,12 +790,14 @@ MonoBehaviour:
   maxPlayerHealth: 100
   currentHealth: 0
   healthbar: {fileID: 0}
+  currentHealthText: {fileID: 0}
   TestingFastMode: 0
   shieldPanel: {fileID: 0}
   shieldText: {fileID: 0}
   inventoryUIHandler: {fileID: 0}
   shield: 0
   pauseMenu: {fileID: 0}
+  questMenu: {fileID: 0}
   statusEffects: []
   isShielded: 0
   inventoryUI: {fileID: 0}
@@ -786,6 +816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
   interacting: 0
   range: 5
+  currentHighlight: {fileID: 0}
 --- !u!114 &9106127963584501081
 MonoBehaviour:
   m_ObjectHideFlags: 0
