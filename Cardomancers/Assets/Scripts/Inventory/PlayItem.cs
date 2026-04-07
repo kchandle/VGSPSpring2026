@@ -13,6 +13,8 @@ public class PlayItem : MonoBehaviour
     }
     // What is this PlayItem
     public ItemType itemType;
+    // Can this card be dragged?
+    public bool draggable = true;
     // How quickly to move this GameObject
     public float moveSpeed = 15f;
     // Desired position to move to

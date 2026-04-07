@@ -116,7 +116,11 @@ public static class Inventory
         set
         {
             money = value;
-            GameObject.FindWithTag("MoneyUI").transform.GetChild(0).GetComponent<TMP_Text>().text = money.ToString();
+            TMP_Text t = GameObject.FindWithTag("MoneyUI")?.transform.GetComponentInChildren<TMP_Text>();
+
+            if (t != null)
+            {   t.text = money.ToString();
+            }
         }
     }
 
@@ -351,7 +355,12 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    private static Random rng = new Random();
+    private static readonly Random rng = new Random();
+    /// <summary>
+    ///  Randomizes the order of a list of inventory cards
+    /// </summary>
+    /// <param name="input"> The list of inventory cards to be randomized</param>
+    /// <returns>A list of inventory cards with random order</returns>
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
         List<InventoryCard> copyInput = new List<InventoryCard>(input);
@@ -480,6 +489,8 @@ public static class Inventory
         RemoveHackFromInventory(hack);
         
         AddCardToInventory(card.inventoryCard);
+        
+        InventoryEvents.CardHacked();
         
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
