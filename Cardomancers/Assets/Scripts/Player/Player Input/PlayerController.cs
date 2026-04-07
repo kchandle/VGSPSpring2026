@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int shield = 0;
 
     public GameObject pauseMenu;
+    public GameObject questMenu;
 
     public int Shield
     {
@@ -153,6 +154,12 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    public void OnQuest(InputAction.CallbackContext context)
+    {
+        questMenu.SetActive(!questMenu.activeSelf);
+    }
+
     public IEnumerator StatusEffects()
     {
         for(int i = 0; i < statusEffects.Count; i++)
