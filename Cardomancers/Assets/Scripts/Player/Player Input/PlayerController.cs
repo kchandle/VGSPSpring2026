@@ -103,6 +103,12 @@ public class PlayerController : MonoBehaviour
     public void OnEscape(InputAction.CallbackContext context)
     {
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+        if (Time.timeScale == 1f){
+                Time.timeScale = 0f;
+        } else
+            {
+              Time.timeScale = 1.0f;  
+            }
         switch(GameStateScript.CurrentState)
         {
             case GameStateScript.GameState.WALKING:
@@ -111,6 +117,8 @@ public class PlayerController : MonoBehaviour
             case GameStateScript.GameState.INVENTORY:
                 GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
                 break;
+
+
 
         }
     }
@@ -127,6 +135,10 @@ public class PlayerController : MonoBehaviour
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
+        if(pauseMenu.activeSelf)
+        {
+            return;
+        }
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
