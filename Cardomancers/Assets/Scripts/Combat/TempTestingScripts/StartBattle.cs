@@ -127,9 +127,10 @@ public class StartBattle : MonoBehaviour
         videoPlayer.renderMode = VideoRenderMode.RenderTexture;
         videoPlayer.Prepare();
     }
+
     private void OnVideoPrepared(VideoPlayer vp) //Debugging
     {
-        Debug.Log("Video prepared successfully.");
+        // Debug.Log("Video prepared successfully.");
     }
 }
 
