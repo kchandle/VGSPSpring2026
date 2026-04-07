@@ -449,14 +449,11 @@ public class BattleManager : MonoBehaviour
 
         EnemyTurn.Invoke();
 
-        //***List to contain all of the BattleEffects that summon enemies
-        //List<BattleEffect> summonEffects = new List<BattleEffect>();
-        //print("Made summonEffects list");
-
+        
         //Enemy picks card from card list
         //foreach (GameObject enemy in currentEnemies)
         int count = currentEnemies.Count;
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++) //Changed from foreach loop to account for summoning enemies
         {
             GameObject enemy = currentEnemies[i];
             Enemy enemyScript = enemy.GetComponent<Enemy>();
@@ -473,12 +470,8 @@ public class BattleManager : MonoBehaviour
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
 
-                //***Add summoning effects to the list
                 if(effect.summonsEnemies)
                 {
-                    //summonEffects.Add(effect);
-                    //print("Added to summonEffects list");
-
                     TrySummonEnemy(effect);
                 }
 
@@ -496,13 +489,6 @@ public class BattleManager : MonoBehaviour
                     }
                 }
             }
-
-            //***Summoning enemies can't be done with a foreach loop
-            /*print("Starting to try summoning enemies");
-            foreach(BattleEffect effect in summonEffects)
-            {
-                TrySummonEnemy(effect);
-            }*/
 
 
             if (enemyScript.currentTimer <= 0)
@@ -721,7 +707,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        //Summon fails if six or more enemies are on the field
+        //Summon fails if six or more enemies are on the field, just so they don't start overlapping
         if(alive >= 6)
         {
             print("Max enemies, summon failed");
