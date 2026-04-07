@@ -80,6 +80,7 @@ public class Card : PlayItem
 
     void Start()
     {
+        cardSO = inventoryCard.cardSO;
         if (hacks == null)
         {
             hacks = new Hack_SO[maxHacks];

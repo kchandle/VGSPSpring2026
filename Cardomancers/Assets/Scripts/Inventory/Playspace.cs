@@ -22,6 +22,7 @@ public class Playspace : MonoBehaviour
 
     public int columnCount = 3; // The number of columns the grid will have, if playItems are arranged in a grid
 
+    public bool cardDisplay; //Whether this playspace just displays a card
         
 
     // Width and padding for the horizontal layout
@@ -260,7 +261,7 @@ public class Playspace : MonoBehaviour
     public PlayItem GetNearestPlayItem(Vector3 position)
     {
         if (!InPlayArea(position)) return null;
-
+        if (cardDisplay) return playItems[0];
         PlayItem nearest = null;
         // Use sqrMagnitude for better performance (avoids expensive square root)
         float minSqrDistance = 1000f;

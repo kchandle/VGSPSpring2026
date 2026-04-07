@@ -147,7 +147,7 @@ public class CardDragInput : MonoBehaviour
             }
 
             // If the player is currently dragging a PlayItem, move that playItem towards the mousePosition
-            if (Pointer.current.press.IsPressed() && isDragging == true && dragPlayspace)
+            if (Pointer.current.press.IsPressed() && isDragging == true && dragPlayspace && dragTarget.draggable)
             {
                 dragPlayspace.SetDragTarget(dragTarget, mousePosition);
             }
@@ -190,52 +190,59 @@ public class CardDragInput : MonoBehaviour
                 if (dragTarget)
                 {
                     // Gets the Playspace component of the dragTargets parent Playspace
-
-                    GameObject dragTargetParent = dragTarget.gameObject.transform.parent.gameObject;
-                    // checking to see which playSpace, if any, the player released the drag target into
-                    foreach (Playspace p in activePlayspaces)
+                    if(dragTarget.draggable)
                     {
-                        //float distanceToPlane = Mathf.Abs(p.transform.position.z - Camera.main.transform.position.z);
-                        //mousePosition.z = distanceToPlane;
-                        //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
-
-                        // Conditions to successfully move a dragtarget to a new playspace
-                        // Player must be hovering their mouse over the New Playspace
-                        // New Playspace must not be the current parent of the dragTarget
-                        if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
+                        GameObject dragTargetParent = dragTarget.gameObject.transform.parent.gameObject;
+                        // checking to see which playSpace, if any, the player released the drag target into
+                        foreach (Playspace p in activePlayspaces)
                         {
-                            // move dragTarget from its parent to Playspace p
-                           
-                            
+                            //float distanceToPlane = Mathf.Abs(p.transform.position.z - Camera.main.transform.position.z);
+                            //mousePosition.z = distanceToPlane;
+                            //Vector3 mousePositionWorld = MouseToWorldWithDistance(mousePosition, p.gameObject);
 
-                            // If battling, stop the coroutine if the player successfully plays a card
-                            // This prevents them from playing more cards than they are allowed
-                            if (FindFirstObjectByType<BattleManager>() != null)
+                            // Conditions to successfully move a dragtarget to a new playspace
+                            // Player must be hovering their mouse over the New Playspace
+                            // New Playspace must not be the current parent of the dragTarget
+                            if (p.InPlayArea(mousePosition) && dragTargetParent != p.gameObject)
                             {
-                                BattleManager bm = FindFirstObjectByType<BattleManager>();
-                                if (FindFirstObjectByType<BattleManager>().isBattling)
+                                // move dragTarget from its parent to Playspace p
+
+
+
+                                // If battling, stop the coroutine if the player successfully plays a card
+                                // This prevents them from playing more cards than they are allowed
+                                if (FindFirstObjectByType<BattleManager>() != null)
                                 {
-                                    if (AttemptPlay((Card)dragTarget, p)) {
-                                        bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
-                                        dragPlayspace.DestroyPlayItem(dragTarget);
-                                        dragDropActive = false;
+                                    BattleManager bm = FindFirstObjectByType<BattleManager>();
+                                    if (FindFirstObjectByType<BattleManager>().isBattling)
+                                    {
+                                        if (AttemptPlay((Card)dragTarget, p))
+                                        {
+                                            bm.PlayerDeckCopyActive.Remove(((Card)dragTarget)
+                                                .inventoryCard); // remove played card from deck copy
+                                            dragPlayspace.DestroyPlayItem(dragTarget);
+                                            dragDropActive = false;
+                                        }
                                     }
-                                } 
-                            } else {
-                                if (dragTarget.itemType == PlayItem.ItemType.CARD)
-                                {
-                                    ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting =
-                                        false;
-                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
                                 }
-                                else if (dragTarget.itemType == PlayItem.ItemType.HACK)
+                                else
                                 {
-                                    ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>().overrideSorting =
-                                        false;
-                                    MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                    if (dragTarget.itemType == PlayItem.ItemType.CARD)
+                                    {
+                                        ((Card)dragTarget).cardImage.gameObject.GetComponent<Canvas>().overrideSorting =
+                                            false;
+                                        MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                    }
+                                    else if (dragTarget.itemType == PlayItem.ItemType.HACK)
+                                    {
+                                        ((InventoryHack)dragTarget).hackImage.gameObject.GetComponent<Canvas>()
+                                            .overrideSorting =
+                                            false;
+                                        MoveToNewPlayspace(dragTarget, p, dragTargetParent.GetComponent<Playspace>());
+                                    }
                                 }
+                                //yield break;
                             }
-                            //yield break;
                         }
                     }
 
