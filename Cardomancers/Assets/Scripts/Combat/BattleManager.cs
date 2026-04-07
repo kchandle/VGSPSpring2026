@@ -227,7 +227,7 @@ public class BattleManager : MonoBehaviour
         isBattling = true;
         OnBattleStart.Invoke();
         StartCoroutine(BattleStateManager());
-        print("BattleStateManager has run.");
+        // print("BattleStateManager has run.");
     }
 
 
@@ -249,7 +249,8 @@ public class BattleManager : MonoBehaviour
         playerspacePlayOnSelf.GetComponent<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
         
         //Shows player HP and Mana
-        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
+        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        playerController.currentHealthText = playerspacePrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
         playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
         playerController.Shield = 0;
@@ -268,10 +269,9 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
+            
         }
-        
-
-
+        ResetEnemyPositions();
     }
     #endregion 
     //Player based defense needs to be fixed.

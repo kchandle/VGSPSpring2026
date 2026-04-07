@@ -82,7 +82,7 @@ public struct BattleEffect
     public bool TriggerEffect(PlayerController target, Vector3 pos, Card_SO card = null)
     {
         PlayerController player = target.GetComponent<PlayerController>();
-        if(card)
+        if(card != null)
         {
             if(card.CardType != CardType.DEF)
             {
