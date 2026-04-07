@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
-  m_Name: AcidShot
+  m_Name: Recover
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 40
-  price: 200
+  sellValue: 50
+  price: 250
   energyCost: 0
-  image: {fileID: 21300000, guid: ec28680255f86724a965f7243bd255e8, type: 3}
+  image: {fileID: 21300000, guid: 477cf90ae3f2cd843a0029234934f2ea, type: 3}
   cardEffects:
-  - StatusAmount: 30
-    damageType: 8
-    actionType: 0
+  - StatusAmount: 25
+    damageType: 6
+    actionType: 2
     isStatusEffect: 0
     isPerishable: 0
     turnsActive: 0
@@ -28,8 +28,8 @@ MonoBehaviour:
     setsNextCard: 0
     nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: Acid Shot
-  description: Deal medium Poison Damage to one Enemy with a chance to inflict Poisoned.
+  displayName: Recover
+  description: 'Heals for a high amount and removes negative status effects. '
   tagLine: 
-  cardType: 0
-  damageType: 1
+  cardType: 3
+  damageType: 3

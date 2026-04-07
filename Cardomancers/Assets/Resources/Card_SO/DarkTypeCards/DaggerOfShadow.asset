@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
-  m_Name: AcidShot
+  m_Name: DaggerOfShadow
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 40
-  price: 200
+  sellValue: 0
+  price: 0
   energyCost: 0
-  image: {fileID: 21300000, guid: ec28680255f86724a965f7243bd255e8, type: 3}
+  image: {fileID: 21300000, guid: 1ba4d20fa547c534c96d8d0f99979cbc, type: 3}
   cardEffects:
   - StatusAmount: 30
-    damageType: 8
+    damageType: 9
     actionType: 0
     isStatusEffect: 0
     isPerishable: 0
@@ -28,8 +28,9 @@ MonoBehaviour:
     setsNextCard: 0
     nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: Acid Shot
-  description: Deal medium Poison Damage to one Enemy with a chance to inflict Poisoned.
+  displayName: Dagger of Shadow
+  description: "Deal medium Dark Damage to one Enemy. Reduces the Target\u2019s attack
+    by 25% for the next 2 turns. "
   tagLine: 
   cardType: 0
   damageType: 1

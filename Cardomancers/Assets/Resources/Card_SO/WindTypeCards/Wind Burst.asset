@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
-  m_Name: AcidShot
+  m_Name: Wind Burst
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 40
-  price: 200
+  sellValue: 30
+  price: 150
   energyCost: 0
-  image: {fileID: 21300000, guid: ec28680255f86724a965f7243bd255e8, type: 3}
+  image: {fileID: 21300000, guid: c62c444d442e1ac418542702e715ae18, type: 3}
   cardEffects:
-  - StatusAmount: 30
-    damageType: 8
+  - StatusAmount: 10
+    damageType: 5
     actionType: 0
     isStatusEffect: 0
     isPerishable: 0
@@ -28,8 +28,8 @@ MonoBehaviour:
     setsNextCard: 0
     nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: Acid Shot
-  description: Deal medium Poison Damage to one Enemy with a chance to inflict Poisoned.
+  displayName: Wind Burst
+  description: Deal minor Wind Damage to all Enemies
   tagLine: 
   cardType: 0
   damageType: 1

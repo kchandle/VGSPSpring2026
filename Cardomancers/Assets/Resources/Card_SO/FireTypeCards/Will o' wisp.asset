@@ -10,22 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
-  m_Name: Jolt
+  m_Name: Will o' wisp
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
   sellValue: 0
   price: 0
   energyCost: 0
-  type: ATK
-  image: {fileID: 21300000, guid: 4d5bfba6d9eab114bba57ad2feb69ef7, type: 3}
+  image: {fileID: 21300000, guid: 5f2b6e8975a96cd429d2b3665bc69fe4, type: 3}
   cardEffects:
-  - StatusAmount: 5
-    damageType: 7
+  - StatusAmount: 24
+    damageType: 2
+    actionType: 0
     isStatusEffect: 0
     isPerishable: 0
     turnsActive: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+  - StatusAmount: 8
+    damageType: 2
+    actionType: 2
+    isStatusEffect: 0
+    isPerishable: 0
+    turnsActive: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: Jolt
-  description: forgotten extra caffeine cola
+  displayName: Will o' Wisp
+  description: Deal medium Fire Damage to one Enemy. Heals for 1/3 of the Damage
+    dealt.
   tagLine: 
   cardType: 0
   damageType: 1

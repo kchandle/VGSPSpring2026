@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
-  m_Name: AcidShot
+  m_Name: Earth Spike
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 40
-  price: 200
+  sellValue: 0
+  price: 0
   energyCost: 0
-  image: {fileID: 21300000, guid: ec28680255f86724a965f7243bd255e8, type: 3}
+  image: {fileID: 21300000, guid: 189186c5cdc6b03489d977e2242b331f, type: 3}
   cardEffects:
   - StatusAmount: 30
-    damageType: 8
+    damageType: 4
     actionType: 0
     isStatusEffect: 0
     isPerishable: 0
@@ -27,9 +27,19 @@ MonoBehaviour:
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+  - StatusAmount: 1
+    damageType: 12
+    actionType: 0
+    isStatusEffect: 1
+    isPerishable: 1
+    turnsActive: 3
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: Acid Shot
-  description: Deal medium Poison Damage to one Enemy with a chance to inflict Poisoned.
+  displayName: Earth Spike
+  description: Deal medium Earth Damage to one Enemy with a chance to Stun.
   tagLine: 
   cardType: 0
   damageType: 1
