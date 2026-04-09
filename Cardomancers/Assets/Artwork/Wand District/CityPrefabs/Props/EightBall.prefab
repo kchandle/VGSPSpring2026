@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 1e43e404f67ab904bb22661de76d95a4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: e19fd3faebce3214d8607eba7a43fcd3, type: 2}
+      objectReference: {fileID: 2100000, guid: e9dcb28891798c642ac434c22a85b55c, type: 2}
     - target: {fileID: 919132149155446097, guid: 1e43e404f67ab904bb22661de76d95a4, type: 3}
       propertyPath: m_Name
       value: EightBall
@@ -59,5 +59,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1e43e404f67ab904bb22661de76d95a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4916426078812827403}
   m_SourcePrefab: {fileID: 100100000, guid: 1e43e404f67ab904bb22661de76d95a4, type: 3}
+--- !u!1 &3985774021456300079 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1e43e404f67ab904bb22661de76d95a4, type: 3}
+  m_PrefabInstance: {fileID: 4292275190029563262}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &-4916426078812827403
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3985774021456300079}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2314364274881225659, guid: 1e43e404f67ab904bb22661de76d95a4, type: 3}
