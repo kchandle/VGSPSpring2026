@@ -12,6 +12,7 @@ public class popUpActive : MonoBehaviour
 
     public void Activate()
     {
+        print("Go my popup");
         popup.SetVariables(popSO);
     }
     // Activates the pop up
