@@ -649,6 +649,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc24d920440dbcd47811c7be6ac192fc, type: 3}
+--- !u!1 &580059863 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8656727922824673164, guid: e700b1fb09f7cec4e8c08c98ff64d1dd, type: 3}
+  m_PrefabInstance: {fileID: 1884571095}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &584865900 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3491346100970315752, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
@@ -1681,12 +1686,33 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4673009445914105553, guid: e700b1fb09f7cec4e8c08c98ff64d1dd, type: 3}
   m_PrefabInstance: {fileID: 1884571095}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 580059863}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0054cff2bc23d9d45ac7569ab0353caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartBattle
+--- !u!65 &991645549
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580059863}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.6886559, y: 4.505968, z: 2.8432617}
+  m_Center: {x: 0.0061588287, y: 0.4864931, z: -0.07237244}
 --- !u!1 &1116024888
 GameObject:
   m_ObjectHideFlags: 0
@@ -2678,7 +2704,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
+<<<<<<< HEAD
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8656727922824673164, guid: e700b1fb09f7cec4e8c08c98ff64d1dd, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 991645549}
+=======
     m_AddedComponents: []
+>>>>>>> origin/David
   m_SourcePrefab: {fileID: 100100000, guid: e700b1fb09f7cec4e8c08c98ff64d1dd, type: 3}
 --- !u!1 &1909516034
 GameObject:
