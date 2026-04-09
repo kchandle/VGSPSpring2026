@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -61.77556
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 46.35132
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -58,41 +58,17 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2188931182771722006}
+      addedObject: {fileID: 103957075368850321}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3025505067626755633}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6726145308505581535}
+      addedObject: {fileID: 4673009445914105553}
   m_SourcePrefab: {fileID: 100100000, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
 --- !u!1 &8656727922824673164 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 637dd311bc09e9846a1aa97792b9466d, type: 3}
   m_PrefabInstance: {fileID: 8422727459931572957}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &2188931182771722006
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8656727922824673164}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.0261552, y: 1.8004918, z: 2.945159}
-  m_Center: {x: -0.085774995, y: 0.11412695, z: 0.43928495}
---- !u!114 &3025505067626755633
+--- !u!114 &103957075368850321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,42 +85,42 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueScripts.DialogueManager, Assembly-CSharp
-        m_MethodName: StartDialogue
-        m_Mode: 2
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 5be38271918aa0a4ca0973c883dd8fb8, type: 2}
-          m_ObjectArgumentAssemblyTypeName: DialogueScripts.DialogueSO, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DialogueScripts.DialogueManager, Assembly-CSharp
-        m_MethodName: AssignStartBattle
-        m_Mode: 2
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: StartBattle, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Objective, Assembly-CSharp
-        m_MethodName: CompleteObjective
-        m_Mode: 1
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6726145308505581535
+--- !u!114 &4673009445914105553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,10 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0054cff2bc23d9d45ac7569ab0353caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartBattle
-  timer: 4.5
+  timer: 4
   videoTimer: 1
   canvas: {fileID: 0}
   videoPlayer: {fileID: 0}
-  battleToStart: {fileID: 11400000, guid: 49a35b1f3c76d634d922d66e9f72c32b, type: 2}
-  battleManagerPrefab: {fileID: 2964704237051563936, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
+  battleToStart: {fileID: 0}
+  battleManagerPrefab: {fileID: 0}
   battleStarted: 0
