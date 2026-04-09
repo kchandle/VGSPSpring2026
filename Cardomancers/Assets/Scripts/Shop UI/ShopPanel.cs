@@ -11,10 +11,15 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI cardDesc;
     [SerializeField] private TMPro.TextMeshProUGUI cardValue;
     
+    
     //other
     private ShopItem item;
     private Card_SO cardSO;
-    
+
+    public int cardAmount = 1;
+    public TMP_Text totalCardAmount;
+
+
     private int cardCost;
     private int cardSellValue;
     
@@ -35,21 +40,52 @@ public class ShopPanel : MonoBehaviour
         cardSellValue = cardSO.sellValue;
 
         cardValue.text = "Buy: " + cardCost + " currency.\nSell: " + cardSellValue + " currency.";
+        totalCardAmount.text = cardAmount.ToString();
+    }
+
+
+    public void PlusCard()
+    {
+        cardAmount += 1;
+        print("CardAmount: " + cardAmount);
+        totalCardAmount.text = cardAmount.ToString();
+    }
+
+    public void MinusCard()
+    {
+        if (cardAmount >= 2)
+        {
+            cardAmount -= 1;
+        }
+        else
+        {
+            cardAmount = 1;
+        }
+        totalCardAmount.text = cardAmount.ToString();
     }
 
     //method called by the shop panel's Buy button onclick event
     public void ClickedBuyCard()
     {
         //print("Buying card...");
-        if(shop.BuyCard(item))
+        for (int i = 0; i < cardAmount; i++)
         {
-            shopUI.UpdateBuyMenu();
-            print("Card bought!");
-            shopUI.UpdateSellMenu();
-        }
-        else
-        {
-            print("you're broke");
+            if (Inventory.IsInventoryFull()) print("full: " + Inventory.Cardscount());
+
+            if (!Inventory.IsInventoryFull())
+            {
+                print("no-full: " + Inventory.Cardscount());
+                if (shop.BuyCard(item))
+                {
+                    shopUI.UpdateBuyMenu();
+                    print("Card bought!");
+                    shopUI.UpdateSellMenu();
+                }
+                else
+                {
+                    print("you're broke");
+                }
+            }
         }
     }
 
