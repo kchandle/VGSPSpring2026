@@ -265,7 +265,8 @@ public class BattleManager : MonoBehaviour
             //Player playspace allowed donors
             
 
-            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().cardToPlayspace);
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().enemyPlayspace);
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
@@ -506,9 +507,9 @@ public class BattleManager : MonoBehaviour
                 if (xOffset == 0) xOffset = 1;
                 Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
                 
-                enemy.transform.GetChild(1).position += moveAnim;
+                enemyScript.enemyImage.transform.position += moveAnim;
                 yield return new WaitForSeconds(attackAnimDelay);
-                enemy.transform.GetChild(1).position -= moveAnim;
+                enemyScript.enemyImage.transform.position -= moveAnim;
                 #endregion
                 
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));

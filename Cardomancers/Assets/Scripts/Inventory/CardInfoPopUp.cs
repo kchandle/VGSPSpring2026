@@ -9,6 +9,8 @@ public class CardInfoPopUp : PlayItem
 {
     // name of the card
     [SerializeField] private TextMeshProUGUI cardName; 
+    // the image of the card
+    [SerializeField] private Image cardImage;
     // the description of the card
     [SerializeField] private TextMeshProUGUI description;
     // the type of the card (ice, fire, etc.)
@@ -50,10 +52,11 @@ public class CardInfoPopUp : PlayItem
 
     private void SetDescriptions(Card card)
     {
-        cardName.text = card.CardSO.displayName;
-        description.text = card.CardSO.description;
-        cardType.text = card.CardSO.CardType.ToString();
-        switch (card.CardSO.CardType)
+        cardName.text = card.inventoryCard.cardSO.displayName;
+        cardImage.sprite = card.cardImage.sprite;
+        description.text = card.inventoryCard.cardSO.description;
+        cardType.text = card.inventoryCard.cardSO.CardType.ToString();
+        switch (card.inventoryCard.cardSO.CardType)
         {
             case global::CardType.ATK:
                 typeImage.sprite = ATKImage;
@@ -65,7 +68,7 @@ public class CardInfoPopUp : PlayItem
                 typeImage.sprite = RSTImage;
                 break;
         }
-        switch (card.CardSO.damageType)
+        switch (card.inventoryCard.cardSO.damageType)
         {
             case global::damageType.damageInstant:
                 damageType.text = "Instant Damage";
@@ -84,7 +87,7 @@ public class CardInfoPopUp : PlayItem
                 damageImage.sprite = HealOverTimeImage;
                 break;
         }
-        tagLine.text = card.CardSO.tagLine;
+        tagLine.text = card.inventoryCard.cardSO.tagLine;
     }
 
     private void OpenPopup()
