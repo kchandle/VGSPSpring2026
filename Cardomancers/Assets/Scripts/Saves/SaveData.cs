@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 //Contains all the data in a serializable form
 [System.Serializable]
@@ -24,6 +26,10 @@ public class SaveData
     public int skillPoints;
     #endregion
     
+    #region Quests
+    public List<QuestData> questData = new List<QuestData>();
+    #endregion
+    
     public  SaveData(GameObject player)
     {
        inventory = Inventory.InventoryList;
@@ -38,5 +44,18 @@ public class SaveData
        expToNextLevel = ExpLevels.CurrentLevel * 50;
        currentExp = ExpLevels.CurrentExp;
        skillPoints = ExpLevels.CurrentLevel * 5;
+
+       QuestManager questManager = Object.FindFirstObjectByType<QuestManager>();
+       if (questManager != null)
+       {
+           foreach (Quest quest in questManager.QuestMap.Values)
+           {
+               questData.Add(quest.GetQuestData());
+           }
+       }
+       else
+       {
+           throw new NullReferenceException();
+       }
     }
 }

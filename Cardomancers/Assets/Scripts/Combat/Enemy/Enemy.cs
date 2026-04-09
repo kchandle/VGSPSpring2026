@@ -18,6 +18,10 @@ public class Enemy : MonoBehaviour
     private int currentShield = 0;
     public GameObject shieldPanel;
     public TMP_Text shieldText;
+    public TMP_Text healthText;
+
+    public Playspace cardToPlayspace;
+    public Playspace enemyPlayspace;
 
     public int CurrentShield
     {
@@ -64,6 +68,7 @@ public class Enemy : MonoBehaviour
     public GameObject actionTypeRST;
     public TMP_Text actionAmountText;
     public InventoryCard currentCard;
+    public GameObject cardPrefab;
 
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
@@ -81,6 +86,8 @@ public class Enemy : MonoBehaviour
     public Sprite AttackedSprite;
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
+
+    public Image enemyImage;
 
     public bool deathCalled = false;
 
@@ -108,11 +115,12 @@ public class Enemy : MonoBehaviour
         currentTimer = Random.Range(1, 4);
         UpdateTimer();
         UpdateShield();
+        UpdateHealthBar();
         currentMana = 5;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
-
+        enemyImage.sprite = enemySO.enemyImage;
         animator = GetComponent<Animator>();
     }
 
@@ -191,6 +199,7 @@ public class Enemy : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
+            healthText.text = currentHealth + "/" + maxHealth;
         }
         if(currentHealth <= 0)
         {
@@ -233,6 +242,10 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
+        
+        cardToPlayspace.DestroyPlayItem(cardToPlayspace.playItems[0]);
+        cardToPlayspace.NewPlayItem(cardPrefab, currentCard.cardSO, currentCard);
+        cardToPlayspace.playItems[0].draggable = false;
         print(currentActionType);
 
         currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
