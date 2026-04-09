@@ -43,7 +43,8 @@ public class DialogueManager : MonoBehaviour
 
     //Gets player action map to react to player input
     private void Awake()
-    { 
+    {
+        playerTransform = GameObject.FindWithTag("Player").transform;
         nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");  
         // Check if an instance already exists
         if (instance != null && instance != this)
