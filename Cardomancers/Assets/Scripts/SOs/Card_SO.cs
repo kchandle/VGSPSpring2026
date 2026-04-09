@@ -75,4 +75,5 @@ public class Card_SO : ScriptableObject
         set { cardType = value; }
     }
     public damageType damageType;
+    //***public DamageType damageType;
 }
