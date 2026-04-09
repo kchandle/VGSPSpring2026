@@ -44,7 +44,7 @@ public class PlayerInteract : MonoBehaviour
             interactPrompt.SetActive(true);
             //print("set prompt active");
         }  //If there isn't an interactable object in range but the prompt is active. The prompt is also disabled when mid interaction
-        else if(!interactableInRange && interactPrompt.active || interacting)
+        else if(!interactableInRange && interactPrompt.active || interacting || (GameStateScript.CurrentState != GameStateScript.GameState.WALKING))
         {
             interactPrompt.SetActive(false);
             //print("set prompt inactive");

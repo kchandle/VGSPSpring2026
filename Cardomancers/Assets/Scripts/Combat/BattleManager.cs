@@ -46,6 +46,7 @@ public class BattleManager : MonoBehaviour
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
     public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
+    public FieldEffect_SO fieldCondition; //*******The current active field condition
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
@@ -84,6 +85,7 @@ public class BattleManager : MonoBehaviour
 
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
+
 
     public enum BattleState //Indicates State of Gameplay. Can be START, END, PLAYER_TURN, ENEMIES_TURN, CHECK_PLAYER_HP, CHECK_ENEMIES_HP
     {
@@ -469,6 +471,13 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
+
+
+                //********
+                if(fieldCondition)
+                {
+                    print(fieldCondition.name + "Is active!");
+                }
 
                 if(effect.summonsEnemies)
                 {

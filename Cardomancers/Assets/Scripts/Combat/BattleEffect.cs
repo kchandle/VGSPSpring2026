@@ -64,6 +64,9 @@ public struct BattleEffect
     public bool setsNextCard;
     public Card_SO nextCard;
 
+    //Variables for Field Effects
+    public FieldEffect_SO fieldEffect;
+
 
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
@@ -87,7 +90,7 @@ public struct BattleEffect
         this.actionType = actionType;
     }*/
 
-    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, FieldEffect_SO fieldEffect, ParticleSystem[] particles, BattleActionType actionType)
     {
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
@@ -100,6 +103,9 @@ public struct BattleEffect
         this.summonableEnemies = summonableEnemies;
         this.setsNextCard = setsNextCard;
         this.nextCard = nextCard;
+
+        //Field effects
+        this.fieldEffect = fieldEffect;
 
         this.particles = particles;
         this.actionType = actionType;
