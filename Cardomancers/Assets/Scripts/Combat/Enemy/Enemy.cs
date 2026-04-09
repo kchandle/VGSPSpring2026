@@ -13,11 +13,18 @@ public class Enemy : MonoBehaviour
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
     public bool isStunned; // f the enemy is stunned, they cannot take actions.
+    public int maxTimer = 3;
     public int currentTimer;
     public int currentMana = 5;
     private int currentShield = 0;
     public GameObject shieldPanel;
     public TMP_Text shieldText;
+    public TMP_Text healthText;
+
+    public Animator hourglassAnim;
+
+    public Playspace cardToPlayspace;
+    public Playspace enemyPlayspace;
 
     public int CurrentShield
     {
@@ -64,6 +71,7 @@ public class Enemy : MonoBehaviour
     public GameObject actionTypeRST;
     public TMP_Text actionAmountText;
     public InventoryCard currentCard;
+    public GameObject cardPrefab;
 
     //
     public InventoryCard nextCard;
@@ -86,6 +94,8 @@ public class Enemy : MonoBehaviour
     public Sprite AttackedSprite;
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
+
+    public Image enemyImage;
 
     public bool deathCalled = false;
 
@@ -113,11 +123,12 @@ public class Enemy : MonoBehaviour
         currentTimer = Random.Range(1, 4);
         UpdateTimer();
         UpdateShield();
+        UpdateHealthBar();
         currentMana = 5;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
-
+        enemyImage.sprite = enemySO.enemyImage;
         animator = GetComponent<Animator>();
     }
 
@@ -218,6 +229,7 @@ public class Enemy : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
+            healthText.text = currentHealth + "/" + maxHealth;
         }
         if(currentHealth <= 0)
         {
@@ -260,6 +272,10 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
+        
+        cardToPlayspace.DestroyPlayItem(cardToPlayspace.playItems[0]);
+        cardToPlayspace.NewPlayItem(cardPrefab, currentCard.cardSO, currentCard);
+        cardToPlayspace.playItems[0].draggable = false;
         print(currentActionType);
 
         currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
@@ -277,17 +293,8 @@ public class Enemy : MonoBehaviour
     public void UpdateTimer()
     {
         timerText.text = "" + currentTimer;
-        //float rotateTime = 2f;  // This should eventually rotate the timer on update.
-        //float amount = -180f; // 
-        //float currentTime = 0f;
-        //float amountPerMillis = amount/rotateTime;
-        //while (currentTime < rotateTime)
-        //{
-        //    print("rotating, current angle: " + timerText.transform.parent.GetChild(1).rotation.z);
-        //    timerText.transform.parent.GetChild(1).Rotate(0, 0, ((amount/rotateTime) * currentTime));
-        //    currentTime += Time.deltaTime;
-        //}
-        //timerText.transform.parent.GetChild(1).Rotate(0, 0, 180);
+        if (currentTimer == maxTimer) return;
+        hourglassAnim.SetTrigger("HourglassRotate");
     }
 
     public IEnumerator StatusEffects()

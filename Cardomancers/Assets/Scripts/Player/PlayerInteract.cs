@@ -17,7 +17,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Awake()
     {
-        //interactPrompt.SetActive(false);
+        interactPrompt.SetActive(false);
         interactableInRange = false;
     }
 
@@ -79,6 +79,7 @@ public class PlayerInteract : MonoBehaviour
                     print(inter);
                     interacting = true;
                     inter.interactable.Invoke();
+                    print("INTERACTING    " + c.gameObject.name);
                 }
             }  
         }

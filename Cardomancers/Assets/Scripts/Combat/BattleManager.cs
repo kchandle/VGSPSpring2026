@@ -46,7 +46,6 @@ public class BattleManager : MonoBehaviour
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
     public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
-    public FieldEffect_SO fieldCondition; //*******The current active field condition
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
@@ -85,7 +84,6 @@ public class BattleManager : MonoBehaviour
 
 
     public bool isBattling = false; // flag to indicate if a battle is currently ongoing
-
 
     public enum BattleState //Indicates State of Gameplay. Can be START, END, PLAYER_TURN, ENEMIES_TURN, CHECK_PLAYER_HP, CHECK_ENEMIES_HP
     {
@@ -128,12 +126,12 @@ public class BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
-        OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
-        PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
-        EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
-        OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
+        // OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
+        // OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
+        // OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
+        // PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
+        // EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
+        // OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
     }
 
     private void OnDestroy() //Swap camera back to main at end of battle.
@@ -207,6 +205,7 @@ public class BattleManager : MonoBehaviour
     //Function called by an outside force to start a battle, must pass in battle_SO
     public void StartBattle(Battle_SO battle)
     {
+        print(battle.name);
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
@@ -228,7 +227,7 @@ public class BattleManager : MonoBehaviour
         isBattling = true;
         OnBattleStart.Invoke();
         StartCoroutine(BattleStateManager());
-        print("BattleStateManager has run.");
+        // print("BattleStateManager has run.");
     }
 
 
@@ -250,10 +249,11 @@ public class BattleManager : MonoBehaviour
         playerspacePlayOnSelf.GetComponent<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
         
         //Shows player HP and Mana
-        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
+        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        playerController.currentHealthText = playerspacePrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
         playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
-        playerController.UpdateShield();
+        playerController.Shield = 0;
 
         foreach (Enemy_SO e in battle.enemies)
         {
@@ -265,14 +265,14 @@ public class BattleManager : MonoBehaviour
             //Player playspace allowed donors
             
 
-            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().cardToPlayspace);
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().enemyPlayspace);
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
+            
         }
-        
         ResetEnemyPositions();
-
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -409,14 +409,14 @@ public class BattleManager : MonoBehaviour
     #region Turns
     public IEnumerator StartPlayerTurn()
     {
-        ResetEnemyPositions();
+
         PlayerTurn.Invoke();
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
         {
             playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
 
-            //Add NewPlayItem from playsapce for each card in deck copy
+            //Add NewPlayItem from playspace for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
             {
                 GameObject playerCard = playerspacePrefab.GetComponent<Playspace>().NewPlayItem(cardPrefab, card.cardSO);
@@ -451,17 +451,14 @@ public class BattleManager : MonoBehaviour
 
         EnemyTurn.Invoke();
 
-        
         //Enemy picks card from card list
-        //foreach (GameObject enemy in currentEnemies)
-        int count = currentEnemies.Count;
-        for(int i = 0; i < count; i++) //Changed from foreach loop to account for summoning enemies
+        foreach (GameObject enemy in currentEnemies)
         {
-            GameObject enemy = currentEnemies[i];
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript.currentHealth <= 0) continue; //Skip turn if enemy is dead
             InventoryCard card = enemyScript.currentCard;
-
+            
+            // Image nextCardDisplay = card.image;
             //Plays Card
 
             enemyScript.currentTimer--;
@@ -471,18 +468,6 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
-
-
-                //********
-                if(fieldCondition)
-                {
-                    print(fieldCondition.name + "Is active!");
-                }
-
-                if(effect.summonsEnemies)
-                {
-                    TrySummonEnemy(effect);
-                }
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
@@ -499,7 +484,6 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
-
             if (enemyScript.currentTimer <= 0)
             {  
                 #region attackAnim
@@ -509,23 +493,23 @@ public class BattleManager : MonoBehaviour
                 
                 GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
                 
-                //print("ps y: " + ps.transform.position.y);
-                //print("enemy y: " + enemy.transform.position.y);
+                print("ps y: " + ps.transform.position.y);
+                print("enemy y: " + enemy.transform.position.y);
                 xOffset = -(enemy.transform.position.x - ps.transform.position.x);
                 yOffset = enemy.transform.position.y + ps.transform.position.y;
                 
                 slope = yOffset/xOffset;
                 if (float.IsInfinity(slope)) slope = yOffset;
                 
-                //print("yOffset: " + yOffset);
-                //print("XOffset: " + xOffset);
-                //print("slope: " + slope);
+                print("yOffset: " + yOffset);
+                print("XOffset: " + xOffset);
+                print("slope: " + slope);
                 if (xOffset == 0) xOffset = 1;
                 Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
                 
-                enemy.transform.GetChild(1).position += moveAnim;
+                enemyScript.enemyImage.transform.position += moveAnim;
                 yield return new WaitForSeconds(attackAnimDelay);
-                enemy.transform.GetChild(1).position -= moveAnim;
+                enemyScript.enemyImage.transform.position -= moveAnim;
                 #endregion
                 
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));
@@ -564,6 +548,7 @@ public class BattleManager : MonoBehaviour
 
         //Loops through list of all active enemies to check if their health is <= 0
         //loop through all enemies
+        ResetEnemyPositions();
         bool allDead = true;
         foreach (GameObject e in currentEnemies)
         {
@@ -632,9 +617,6 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
-
-    #region Enemy Manipulation
-    //Repositions enemies
     void ResetEnemyPositions()
     {
         //Count number of alive enemies
@@ -691,56 +673,5 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
-
-    //Summons enemies
-    private void TrySummonEnemy(BattleEffect effect)
-    {
-        if(!effect.summonsEnemies || effect.summonableEnemies.Length == 0)
-        {
-            return;
-        }
-        //print("Evaluating Enemy Card Battle Effects");
-        //print("Summons enemies: " + effect.summonsEnemies);
-        //print("Card Name: " + card.cardSO.displayName);
-        print("Attempting to summon enemy");
-        //Summoning enemy logic
-
-        //Get number of enemies alive
-        int alive = 0;
-        foreach (GameObject enemy in currentEnemies)
-        {
-            if (enemy.GetComponent<Enemy>().currentHealth > 0)
-            {
-                alive++;
-            }
-        }
-
-        //Summon fails if six or more enemies are on the field, just so they don't start overlapping
-        if(alive >= 6)
-        {
-            print("Max enemies, summon failed");
-        }
-        else
-        {
-            print("Summoned enemy");
-            //Selects random enemy from list of possible options set in the card's battle effect
-            Enemy_SO newEnemy = effect.summonableEnemies[UnityEngine.Random.Range(0, effect.summonableEnemies.Length)];
-
-            //Same code for creating an enemy object used in SetUpPlayspaces
-            GameObject enemyPrefab = newEnemy.enemyPrefab;
-            enemyPrefab = Instantiate(newEnemy.enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
-            enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
-
-            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
-            enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
-            currentEnemies.Add(enemyPrefab);
-
-            EnemiesChooseCards(currentEnemies.IndexOf(enemyPrefab));
-            ResetEnemyPositions();
-        }
-    }
-    #endregion
 
 }
