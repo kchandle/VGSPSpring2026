@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Reflection;
+
 
 
 // some parts of this script are commented out because they were part of this script on a previous project
@@ -27,6 +29,11 @@ public class DialogueManager : MonoBehaviour
 
     private int index; //Current line being displayed
     [SerializeField] GameObject canvas; // the canvas containing the dialogue GUI
+
+    public GameObject textBoxHolder; // the text box holder
+    public GameObject titleBoxHolder; // title box holder.
+    public GameObject spriteBorder; // the sprite border.
+
 
     public TextMeshProUGUI textElement; // the current text box the dialogue text is being loaded into
     public TextMeshProUGUI titleElement; // the current text box the dialogue speaker is being loaded into
@@ -94,18 +101,41 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    
-
 
     // Starts a Dialogue scene based 
     public void StartDialogue(DialogueSO newDialogue)
     {
         index = 0;
 
+        #if UNITY_EDITOR
+            FieldInfo[] fields = newDialogue.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var field in fields)
+            {
+                if (field.FieldType == typeof(Color))
+                {
+                    Color c = (Color)field.GetValue(dialogue);
+
+                    Debug.Log("let go my eggo");
+
+                    if(c.a == 0f)
+                    {   Debug.LogWarning($"Field {field.Name} is a TRANSPARENT, you probably dont want this.");
+                    }
+                }
+            }
+        #endif
+
+        textBoxHolder.GetComponent<Image>().color = newDialogue.textBackgroundColorDefault;
+        textElement.color = newDialogue.textColorDefault;
+        titleBoxHolder.GetComponent<Image>().color = newDialogue.titleBackgroundColorDefault;
+        titleElement.color = newDialogue.titleTextColorDefault;
+        spriteBorder.GetComponent<Image>().color = newDialogue.spriteColorDefault;
+
         dialogue = newDialogue;
         canvas.SetActive(true);
 
         DialogueEvents.StartDialogue(newDialogue);
+
 
         StartCoroutine(TypeLine());
     }
@@ -177,16 +207,6 @@ public class DialogueManager : MonoBehaviour
         }
         return closestObject;
     }
-
-        #region Depriecated Methods
-
-        // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-        //     canvas.SetActive(true);
-        //     StartDialogue();
-        // }
-
-        #endregion
     }
 
 }
