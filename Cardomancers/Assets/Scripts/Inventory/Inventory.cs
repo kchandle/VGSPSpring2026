@@ -17,14 +17,14 @@ public static class Inventory
     // Enforce good file organization 
     private static Dictionary<string, Card_SO> cardsDatabase;
     private static Dictionary<string, Hack_SO> hacksDatabase;
-
+    
     // Inventory, contains all cards the player currently has
     private static List<InventoryCard> inventory = new List<InventoryCard>();
     // Deck, contains all cards the player can play in battle
     private static List<InventoryCard> deck = new List<InventoryCard>();
     // Hack Inventory, contains all the hacks the player has yet to apply to a card
-    private static List<Hack_SO> hackInventory = new List<Hack_SO>();
-
+    private static List<Hack_SO> hackInventory = new  List<Hack_SO>();
+    
     private static PlayItem hackSlot;
     private static Card cardSlot;
     #endregion
@@ -34,7 +34,7 @@ public static class Inventory
     private static int deckSize = 5;
     private static int hackInventorySize = 5;
     #endregion
-
+    
     /// <summary>
     /// Raised whenever the inventory, deck, or hack inventory is modified.
     /// </summary>
@@ -72,8 +72,8 @@ public static class Inventory
         get => inventory;
         set => inventory = value;
     }
-
-
+    
+    
     /// <summary>
     /// List of cards in the hack creator.
     /// </summary>
@@ -82,20 +82,20 @@ public static class Inventory
         get => cardSlot;
         set => cardSlot = value;
     }
-
+    
     public static PlayItem HackSlot
     {
         get => hackSlot;
         set => hackSlot = value;
     }
-
+    
     /// <summary>
     /// List of cards currently in the player's active deck.
     /// </summary>
     public static List<InventoryCard> Deck
     {
         get => deck;
-        set => deck = value;
+        set =>  deck = value;
     }
 
     /// <summary>
@@ -116,8 +116,11 @@ public static class Inventory
         set
         {
             money = value;
-            GameObject.FindWithTag("MoneyUI").GetComponentInChildren<TMP_Text>().text = money.ToString();
-            Debug.Log(money);
+            TMP_Text t = GameObject.FindWithTag("MoneyUI")?.transform.GetComponentInChildren<TMP_Text>();
+
+            if (t != null)
+            {   t.text = money.ToString();
+            }
         }
     }
 
@@ -139,7 +142,7 @@ public static class Inventory
         set => hackInventorySize = value;
     }
     #endregion
-
+    
     #region Inventory Management
 
     /// <summary>
@@ -155,28 +158,16 @@ public static class Inventory
             throw new CardNotInDatabaseException($"Card \"{card.name}\" not found in the database.");
         }
         if (inventory.Count >= inventorySize)
-        { throw new InventoryFullException("Inventory is full.");
+        {
+            throw new InventoryFullException("Inventory is full.");
         }
         InventoryCard newCard = new InventoryCard(card);
-
+            
         inventory.Add(newCard);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
-        //AddCardToDeck(newCard);
+        AddCardToDeck(newCard);
         return true;
-    }
-
-    public static int Cardscount()
-    {
-        return inventory.Count;
-    }
-        
- 
-
-
-    public static bool IsInventoryFull()
-    {
-        return inventory.Count >= inventorySize;
     }
 
     /// <summary>
@@ -364,7 +355,12 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    private static Random rng = new Random();
+    private static readonly Random rng = new Random();
+    /// <summary>
+    ///  Randomizes the order of a list of inventory cards
+    /// </summary>
+    /// <param name="input"> The list of inventory cards to be randomized</param>
+    /// <returns>A list of inventory cards with random order</returns>
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
         List<InventoryCard> copyInput = new List<InventoryCard>(input);
@@ -493,6 +489,8 @@ public static class Inventory
         RemoveHackFromInventory(hack);
         
         AddCardToInventory(card.inventoryCard);
+        
+        InventoryEvents.CardHacked();
         
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }

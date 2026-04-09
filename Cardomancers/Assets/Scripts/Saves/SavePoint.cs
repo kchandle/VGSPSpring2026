@@ -5,12 +5,15 @@ using UnityEngine;
 public class SavePoint : MonoBehaviour
 {
     [SerializeField] private SphereCollider trigger;
+    [SerializeField] private QuestManager questManager;
 
     //automatically assign sphere collider component and make it a trigger
     private void Awake()
     {
         trigger = GetComponent<SphereCollider>();
         trigger.isTrigger = true;
+        
+        questManager = FindFirstObjectByType<QuestManager>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,7 +22,7 @@ public class SavePoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Saving");
-            SaveSystem.Save(other.gameObject);
+            SaveSystem.Save(other.gameObject, questManager);
         }
     }
 }

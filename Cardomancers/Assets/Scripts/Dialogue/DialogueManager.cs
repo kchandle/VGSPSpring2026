@@ -104,6 +104,7 @@ public class DialogueManager : MonoBehaviour
         dialogue = newDialogue;
         canvas.SetActive(true);
 
+        DialogueEvents.StartDialogue(newDialogue);
 
         StartCoroutine(TypeLine());
     }
