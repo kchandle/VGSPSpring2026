@@ -21,7 +21,7 @@ public class Shop : MonoBehaviour
 
     //Set in editor
     [SerializeField] private GameObject player; 
-    public GameObject shopUI;
+    public GameObject shopUI; 
 
     //Not set in editor
     /*[HideInInspector]*/ public List<ShopItem> stock = new();
@@ -29,10 +29,6 @@ public class Shop : MonoBehaviour
 
     private List<ShopItem> inventory = new();
     private List<InventoryCard> playerInv;
-
- 
-   
-    
 
     //StockSize is how many items will currently be in shop
     private int _StockSize = -1;
@@ -164,7 +160,6 @@ public class Shop : MonoBehaviour
         //If the card can't be bought
         if(!this.CanBuyCard(item))
         {   
-
             Shop.FailPurchaseEvent?.Invoke();
 
             return false;
@@ -196,8 +191,7 @@ public class Shop : MonoBehaviour
 
         //Buy the card, remove money
         Inventory.Money -= (int)item.PurchasePrice;
-        
-        Inventory.AddCardToInventory(item.SO);   
+        Inventory.AddCardToInventory(item.SO);
         SaveSystem.Save(player);
         Shop.PurchaseEvent?.Invoke();
 

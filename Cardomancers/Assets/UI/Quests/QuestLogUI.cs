@@ -60,7 +60,8 @@ public class QuestLogUI : MonoBehaviour
         });
         else
         {
-            return;
+            questLogButton = scrollingList.GetQuestLogButton(quest);
+            if(questLogButton == null) return;
         }
 
         switch (quest.state)
@@ -73,6 +74,9 @@ public class QuestLogUI : MonoBehaviour
                 break;
             case QuestState.CAN_FINISH:
                 questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.chartreuse;
+                break;
+            default:
+                Destroy(questLogButton.gameObject);
                 break;
         }
 
