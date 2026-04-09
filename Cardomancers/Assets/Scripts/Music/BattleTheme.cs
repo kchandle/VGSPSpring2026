@@ -4,11 +4,12 @@ using UnityEngine;
 public class BattleTheme : MonoBehaviour
 {
    public AudioClip battleTheme;
-    public AudioClip battleTheme2;
-    public AudioClip wandDistrictTheme;
-    AudioSource audioSource;
+   public AudioClip battleTheme2;
+   public AudioClip wandDistrictTheme;
+   public AudioClip wandDistrictThemeV2;
+   public AudioClip cardShopTheme;
 
-    
+    AudioSource audioSource;
 
     GameStateScript.GameState soundState;
      void Awake()
@@ -17,16 +18,32 @@ public class BattleTheme : MonoBehaviour
         GameStateScript.OnGameStateChanged += OnStateChange;
     }
 
+
+
     private void Start()
     {
+        int randomInt = Random.Range(1, 3);
+
         audioSource.volume = 0.067f;
-        audioSource.clip = wandDistrictTheme;
+        if (randomInt == 1)
+        {
+            audioSource.volume = 0.067f;
+            audioSource.clip = wandDistrictTheme;
+            this.audioSource.Play();
+        }
+        else
+        {
+            audioSource.volume = 0.067f;
+            audioSource.clip = wandDistrictThemeV2;
+            this.audioSource.Play();
+        }
         audioSource.volume = 0.05f;
         this.audioSource.Play();
     }
     void OnStateChange(GameStateScript.GameState state)
     {
         int randomInt = Random.Range(1, 3);
+
 
         if (state == soundState) return;
         if (state == GameStateScript.GameState.SPEAKING || state == GameStateScript.GameState.INVENTORY) return;
@@ -51,9 +68,17 @@ public class BattleTheme : MonoBehaviour
         }
         else if(state == GameStateScript.GameState.WALKING)
         {
-            audioSource.volume = 0.067f;
-            audioSource.clip = wandDistrictTheme;
-            this.audioSource.Play();
+            if (randomInt == 1) {
+                audioSource.volume = 0.067f;
+                audioSource.clip = wandDistrictTheme;
+                this.audioSource.Play();
+            }
+            else
+            {
+                audioSource.volume = 0.067f;
+                audioSource.clip = wandDistrictThemeV2;
+                this.audioSource.Play();
+            }
         }
     }
 }

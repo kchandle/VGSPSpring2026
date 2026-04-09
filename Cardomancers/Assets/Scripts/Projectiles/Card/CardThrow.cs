@@ -58,13 +58,6 @@ public class CardThrow : MonoBehaviour
             SoundEffectManager.Instance.PlaySoundFXClip(throwWooshSounds, transform, 1f);
 
             //resets the card instance position, sets it to actives and gets the rigidbody
-            if (card.activeSelf == true)
-            {
-                ParticleSystem particles = card.GetComponent<CardProjectile>().effect;
-                particles.Stop();
-                particles.Clear();
-            }
-
             card.transform.position = transform.position;
             card.transform.rotation = Quaternion.Euler(Vector3.zero);
 
