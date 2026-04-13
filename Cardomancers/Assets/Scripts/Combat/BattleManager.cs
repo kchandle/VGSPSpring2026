@@ -79,6 +79,10 @@ public class BattleManager : MonoBehaviour
     public InventoryCard restCard;
     #endregion
 
+    #region utility References
+    public bool tutorial = false;
+    #endregion
+
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
 
     public GameObject cardPrefab; // Generic prefab for the cards used in battle
@@ -215,6 +219,8 @@ public class BattleManager : MonoBehaviour
         {
             this.fieldCondition = battle.fieldCondition;
         }
+
+        if (battle.isTutorial) tutorial = true;
 
         //Switches Camera to Battle camera
         mainCamera.enabled = false;
