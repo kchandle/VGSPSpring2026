@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51846fc53971bb248b593873882ab722, type: 3}
   m_Name: Blizzard_Weather
   m_EditorClassIdentifier: Assembly-CSharp::FieldEffect_SO
-  turnsActive: 0
-  turnsRemaining: 0
+  turnsActive: 999
+  turnsRemaining: 999
   name: Blizzard
-  active: 0
+  description: Watch what happens when I cast a spell I don't know!
+  active: 1
+  boostsDamage: 1
+  chipDamage: 0
   effects:
-  - boostedTypes: 
-    boostAmount: 0
+  - boostedTypes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000b000000
+    boostAmount: 1.25
+    dealsChipDamage: 0
+    chipDamageCard: {fileID: 0}
   fieldType: 0

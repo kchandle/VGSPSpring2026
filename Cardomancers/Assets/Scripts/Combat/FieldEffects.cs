@@ -20,7 +20,9 @@ using System.Collections.Generic;
     ALL_TYPES
 }*/
 
-//This script will handle field effects like rain and blizzards
+//***
+
+//This script will handle field effects like rain and blizzards in conjunction with FieldEffect_SO
 [ System.Serializable ]
 public struct FieldEffects
 {
@@ -31,18 +33,21 @@ public struct FieldEffects
     public float boostAmount;
 
 
-    //Amount of chip damage done to all targets on the field per turn
-    public int chipDamage;
+    //Card containing the type and amount of chip damage to be dealt per turn to all targets on the field
+    //This could cause issues down the line, but it works fine at the moment
+    public bool dealsChipDamage;
+    public Card_SO chipDamageCard;
+    
 
-
-    public FieldEffects(DamageType[] types, int amount, int chip)
+    public FieldEffects(DamageType[] boostedTypes, int boostAmount, bool dealsChipDamage, Card_SO chipDamageCard)
     {
-        boostedTypes = types;
-        boostAmount = amount;
+        //
+        this.boostedTypes = boostedTypes;
+        this.boostAmount = boostAmount;
 
-        chipDamage = chip;
-
-
+        //
+        this.dealsChipDamage = dealsChipDamage;
+        this.chipDamageCard = chipDamageCard;
     }
 
     

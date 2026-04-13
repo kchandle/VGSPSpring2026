@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
     public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
-    public FieldEffect_SO fieldCondition; //*******The current active field condition
+    public FieldEffect_SO fieldCondition; //***The current active field condition
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
@@ -210,7 +210,7 @@ public class BattleManager : MonoBehaviour
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
-        //******
+        //***
         if (battle.fieldCondition)
         {
             this.fieldCondition = battle.fieldCondition;
@@ -265,9 +265,7 @@ public class BattleManager : MonoBehaviour
         foreach (Enemy_SO e in battle.enemies)
         {
             GameObject enemyPrefab = e.enemyPrefab;
-            //******print("sfaserrg");
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0 + (enemySpacing * (i - 1)), (canvasHeight * 1 / 4), 0), Quaternion.identity);
-            //*******print("ssdvjb");
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
 
@@ -443,7 +441,7 @@ public class BattleManager : MonoBehaviour
         yield return StartCoroutine(playerController.StatusEffects());
 
 
-        //******** Decrease field condition turn count
+        //***Decrease field condition turn count
         if(fieldCondition && fieldCondition.active)
         {
             fieldCondition.turnsRemaining--;
@@ -454,7 +452,43 @@ public class BattleManager : MonoBehaviour
             {
                 fieldCondition.active = false;
             }
+
+
+            //*** If an active field condition deals chip damage (just acid rain for now)
+            //optimize later please
+            if(fieldCondition.chipDamage)
+            {
+
+                foreach(FieldEffects effect in fieldCondition.effects)
+                {
+
+                    if(effect.dealsChipDamage && effect.chipDamageCard)
+                    {
+
+                        //if you thought 2 nested foreach loops was bad
+                        foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                        {
+
+                            bEffect.TriggerEffect(playerController, player.transform.position);
+                            print("Damaging player with acid rain");
+                            foreach(GameObject e in currentEnemies)
+                            {
+                                bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);
+                                print("Damaging enemies with acid rain");
+                            }
+
+                        }
+                        
+                    }
+
+                }
+
+            }
+
         }
+
+        
+        
 
 
         yield return null;
@@ -497,13 +531,14 @@ public class BattleManager : MonoBehaviour
                 
 
 
-                //********
+                //***
                 if(fieldCondition)
                 {
                     print(fieldCondition.name + "field condition Is active!");
                 }
-                else{
-                    print("no field cond");
+                else
+                {
+                    print("no field condition is active");
                 }
 
                 if(effect.summonsEnemies)

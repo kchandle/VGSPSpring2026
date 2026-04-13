@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51846fc53971bb248b593873882ab722, type: 3}
   m_Name: Rainstorm
   m_EditorClassIdentifier: Assembly-CSharp::FieldEffect_SO
-  turnsActive: 99
-  turnsRemaining: 99
+  turnsActive: 5
+  turnsRemaining: 2
   name: Rainstorm
-  description: kill all pelipper fans
-  active: 0
+  description: kill all pelipper basculegion users
+  active: 1
+  boostsDamage: 1
+  chipDamage: 0
   effects:
   - boostedTypes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000b000000
     boostAmount: 0.75
-    chipDamage: 0
+    dealsChipDamage: 0
+    chipDamageCard: {fileID: 0}
   fieldType: 0

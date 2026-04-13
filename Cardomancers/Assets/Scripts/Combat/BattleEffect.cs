@@ -81,16 +81,6 @@ public struct BattleEffect
     //    }
     //}
 
-    /*public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, ParticleSystem[] particles, BattleActionType actionType)
-    {
-        this.StatusAmount = statusAmount;
-        this.damageType = damageType;
-        this.isStatusEffect = isStatusEffect;
-        this.isPerishable = isPerishable;
-        this.turnsActive = turnsActive;
-        this.particles = particles;
-        this.actionType = actionType;
-    }*/
 
     public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
     {
@@ -136,26 +126,26 @@ public struct BattleEffect
                 int dmgToDo = StatusAmount;
                 int shieldAmount = player.Shield;
 
-                //******If there is a field condition active (such as rain), evaluate the effects it may have on damage.
+                //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
                 FieldEffect_SO condition = BattleManager.instance.fieldCondition;
-                Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
-                if(condition && condition.active)
+                //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
+                if(condition && condition.active && condition.boostsDamage)
                 {
-                    Debug.Log("Evaluating " + condition.name + " effects on player");
+                    Debug.Log("Evaluating " + condition.name + " effects on damage to player");
                     foreach(FieldEffects effect in condition.effects)
                     {
                         //decreases / increases damage if the type of damage is affected by the field condition
                         if(System.Array.IndexOf(effect.boostedTypes, damageType) != -1)
                         {
-                            Debug.Log("Initial Damage to deal on player: " + dmgToDo);
+                           // Debug.Log("Initial Damage to deal on player: " + dmgToDo);
                             dmgToDo = (int)(dmgToDo * effect.boostAmount); 
-                            Debug.Log("Weather-boosted Damage to deal on player: " + dmgToDo);
-                            Debug.Log(condition.name + " has affected damage dealt");      
+                            //Debug.Log("Weather-boosted Damage to deal on player: " + dmgToDo);
+                            //Debug.Log(condition.name + " has affected damage dealt");      
                         }
                     }
                 }
 
-                //******If the played card sets a new field condition.
+                //***If the played card sets a new field condition.
                 if(setsFieldCondition)
                 {
                     fieldCondition.active = true;
@@ -233,27 +223,27 @@ public struct BattleEffect
 
                 
 
-                //******If there is a field condition active (such as rain), evaluate the effects it may have on damage.
+                //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
                 FieldEffect_SO condition = BattleManager.instance.fieldCondition;
                 //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
                 if(condition && condition.active)
                 {
-                    //Debug.Log("Evaluating " + condition.name + " effects on player");
+                    Debug.Log("Evaluating " + condition.name + " effects damage to enemy");
                     foreach(FieldEffects effect in condition.effects)
                     {
                         //decreases / increases damage if the type of damage is affected by the field condition
                         if(System.Array.IndexOf(effect.boostedTypes, damageType) != -1)
                         {
-                            Debug.Log("Initial damage to be dealt on enemy: " + DamageDealt);
+                            //Debug.Log("Initial damage to be dealt on enemy: " + DamageDealt);
                             DamageDealt = (int)(DamageDealt * effect.boostAmount); 
-                            Debug.Log("Weather-Boosted damage to be dealt enemy: " + DamageDealt);
-                            Debug.Log(condition.name + " has affected damage dealt");      
+                            //Debug.Log("Weather-Boosted damage to be dealt enemy: " + DamageDealt);
+                            //Debug.Log(condition.name + " has affected damage dealt");      
                         }
                     }
                 }
-                Debug.Log("last check: " + DamageDealt);
+                //Debug.Log("last check: " + DamageDealt);
 
-                //******If the played card sets a new field condition.
+                //***If the played card sets a new field condition.
                 if(setsFieldCondition)
                 {
                     fieldCondition.active = true;

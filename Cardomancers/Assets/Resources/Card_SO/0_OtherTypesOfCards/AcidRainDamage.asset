@@ -10,29 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
-  m_Name: Blizzard
+  m_Name: AcidRainDamage
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 100
-  price: 500
+  sellValue: 0
+  price: 0
   energyCost: 0
-  image: {fileID: 21300000, guid: 6e2eed19dc3d0bb4d85d31b974afb29b, type: 3}
+  image: {fileID: 0}
   cardEffects:
-  - StatusAmount: 0
-    damageType: 1
+  - StatusAmount: 3
+    damageType: 8
     actionType: 0
     isStatusEffect: 0
     isPerishable: 0
-    turnsActive: 5
+    turnsActive: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
-    setsFieldCondition: 1
-    fieldCondition: {fileID: 11400000, guid: 39572009e8442954baa664c24568da9e, type: 2}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: Blizzard
-  description: Summons a Blizzard for five turns, inflicitng Frostbite on Everyone.
-    During the Blizzard, Everyone takes 25% more Damage.
+  displayName: balavyfgjwfyvgq2iluvbh
+  description: this is just the card the Acid Rain weather uses to deal damage. Not
+    meant to be put on player or enemies
   tagLine: 
   cardType: 0
-  damageType: 0
+  damageType: 1

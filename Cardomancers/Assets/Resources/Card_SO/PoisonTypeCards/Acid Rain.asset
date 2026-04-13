@@ -19,20 +19,21 @@ MonoBehaviour:
   cardEffects:
   - StatusAmount: 0
     damageType: 8
-    actionType: 4
+    actionType: 0
     isStatusEffect: 0
     isPerishable: 0
-    turnsActive: 0
+    turnsActive: 3
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
-    fieldEffect: {fileID: 0}
+    setsFieldCondition: 1
+    fieldCondition: {fileID: 11400000, guid: 57041abe50f28c942bfc9fdd1ed23f90, type: 2}
   particleSystem: {fileID: 0}
   displayName: Acid Rain
   description: Summons Acid Rain for 3 turns. While Acid Rain is active, deals minor
     Poison Damage to Everyone.
   tagLine: This will be a romantic 999+ errors like none that has come before. You
     think so too, right?
-  cardType: 4
+  cardType: 0
   damageType: 0
