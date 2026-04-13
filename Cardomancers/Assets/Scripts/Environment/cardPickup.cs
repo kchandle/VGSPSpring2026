@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+
 public class cardPickup : MonoBehaviour
 {
      public InventoryCard card;
@@ -13,7 +15,7 @@ public class cardPickup : MonoBehaviour
 
         // Deletes the object because you only get the card ONCE!!!!!!!
         Debug.Log("Card Got!");
-        FindFirstObjectByType<TextPopup>().DisplayPopup("Card Picked up", new Vector2(0f,5f), 1.5f);
+        if (added) GetCard.Invoke();
     }
     
 
