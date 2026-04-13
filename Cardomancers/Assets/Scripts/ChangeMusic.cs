@@ -8,7 +8,7 @@ public class ChangeMusic : MonoBehaviour
         if (musicPlayer == null) return;
         if (!musicPlayer.Clips.Contains(clip)) musicPlayer.Clips.Add(clip);
         musicPlayer.Pause();
-        
+
         while (musicPlayer.AudioIndex != musicPlayer.Clips.IndexOf(clip))
         {
             musicPlayer.Next();
