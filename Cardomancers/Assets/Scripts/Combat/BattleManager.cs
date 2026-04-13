@@ -265,9 +265,9 @@ public class BattleManager : MonoBehaviour
         foreach (Enemy_SO e in battle.enemies)
         {
             GameObject enemyPrefab = e.enemyPrefab;
-            //print("sfaserrg");
+            //******print("sfaserrg");
             enemyPrefab = Instantiate(e.enemyPrefab, new Vector3(0 + (enemySpacing * (i - 1)), (canvasHeight * 1 / 4), 0), Quaternion.identity);
-            //print("ssdvjb");
+            //*******print("ssdvjb");
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
             enemyPrefab.GetComponent<Enemy>().SetUp(e);
 
@@ -441,6 +441,20 @@ public class BattleManager : MonoBehaviour
 
         //Status Effects get activated
         yield return StartCoroutine(playerController.StatusEffects());
+
+
+        //******** Decrease field condition turn count
+        if(fieldCondition && fieldCondition.active)
+        {
+            fieldCondition.turnsRemaining--;
+            print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
+
+            //If the field's duration is up, deactivate it
+            if(fieldCondition.turnsRemaining == -1)
+            {
+                fieldCondition.active = false;
+            }
+        }
 
 
         yield return null;

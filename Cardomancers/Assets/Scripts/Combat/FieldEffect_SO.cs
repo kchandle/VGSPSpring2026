@@ -16,7 +16,7 @@ public enum FieldType
 [CreateAssetMenu(fileName = "FieldEffect_SO", menuName = "Scriptable Objects/FieldEffect_SO")]
 public class FieldEffect_SO : ScriptableObject
 {
-    //Number of turns the field will last
+    //Number of turns the field will last. 
     public int turnsActive;
 
     //Number of turns left the field has
