@@ -127,6 +127,7 @@ public class DialogueManager : MonoBehaviour
         textElement.text = string.Empty;
         titleElement.text = dialogue.lines[index].displayName;
         talkspriteImage.sprite = dialogue.lines[index].talksprite;
+
         foreach (char c in dialogue.lines[index].text.ToCharArray())
         {
             textElement.text += c;
