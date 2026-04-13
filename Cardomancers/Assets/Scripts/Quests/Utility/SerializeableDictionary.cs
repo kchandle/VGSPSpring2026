@@ -12,7 +12,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
      public void OnBeforeSerialize()
      {
           if(Keys.Count > 0) keys.Clear();
-          values.Clear();
+          if(values.Count > 0) values.Clear();
           foreach (KeyValuePair<TKey, TValue> pair in this)
           {
                keys.Add(pair.Key);

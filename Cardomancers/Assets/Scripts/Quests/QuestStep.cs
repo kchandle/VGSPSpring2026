@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "QuestStep", menuName = "Quests/QuestStep")]
 public abstract class QuestStep : MonoBehaviour
 {
     private bool isFinished = false;
@@ -31,9 +30,16 @@ public abstract class QuestStep : MonoBehaviour
     {
         QuestEvents.QuestStepStateChanged(ID, stepIndex, new QuestStepState(newState));
     }
-
+    
+    /// <summary>
+    /// Used for loading the quest step state data
+    /// </summary>
     protected abstract void SetQuestStepState(string state);
     
+    /// <summary>
+    /// Used for displaying the current quest step state to the player
+    /// </summary>
+    /// <returns>A string which is shown to the player in the Quest UI</returns>
     public abstract string GetQuestStepState();
 
 }
