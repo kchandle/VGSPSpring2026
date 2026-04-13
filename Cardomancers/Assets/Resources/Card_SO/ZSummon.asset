@@ -15,24 +15,23 @@ MonoBehaviour:
   sellValue: 0
   price: 0
   energyCost: -1
-  type: DEF
   image: {fileID: 0}
   cardEffects:
   - StatusAmount: 0
     damageType: 0
+    actionType: 0
     isStatusEffect: 0
     isPerishable: 0
     turnsActive: 0
     summonsEnemies: 1
     summonableEnemies:
     - {fileID: 11400000, guid: e4acecb00a5e4fd45b53c612345b572a, type: 2}
-    - {fileID: 11400000, guid: e4acecb00a5e4fd45b53c612345b572a, type: 2}
-    - {fileID: 11400000, guid: e4acecb00a5e4fd45b53c612345b572a, type: 2}
     setsNextCard: 0
     nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: 
-  description: 
-  tagLine: 
+  description: When this card is played by an enemy, they pick a random enemy from
+    Summonable Enemies and summons it to the battle
+  tagLine: Enemy only
   cardType: 1
   damageType: 0

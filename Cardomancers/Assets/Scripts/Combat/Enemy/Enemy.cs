@@ -13,12 +13,15 @@ public class Enemy : MonoBehaviour
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
     public bool isStunned; // f the enemy is stunned, they cannot take actions.
+    public int maxTimer = 3;
     public int currentTimer;
     public int currentMana = 5;
     private int currentShield = 0;
     public GameObject shieldPanel;
     public TMP_Text shieldText;
     public TMP_Text healthText;
+
+    public Animator hourglassAnim;
 
     public Playspace cardToPlayspace;
     public Playspace enemyPlayspace;
@@ -200,8 +203,7 @@ public class Enemy : MonoBehaviour
         if(nextCardSet)
         {
             card = nextCard;
-            nextCardSet = false; //go back to normal, random card selection
-            //return card;
+            nextCardSet = false;
         }
 
         //If the drawn card sets the next card, set the value of the next card to be played.
@@ -291,17 +293,8 @@ public class Enemy : MonoBehaviour
     public void UpdateTimer()
     {
         timerText.text = "" + currentTimer;
-        //float rotateTime = 2f;  // This should eventually rotate the timer on update.
-        //float amount = -180f; // 
-        //float currentTime = 0f;
-        //float amountPerMillis = amount/rotateTime;
-        //while (currentTime < rotateTime)
-        //{
-        //    print("rotating, current angle: " + timerText.transform.parent.GetChild(1).rotation.z);
-        //    timerText.transform.parent.GetChild(1).Rotate(0, 0, ((amount/rotateTime) * currentTime));
-        //    currentTime += Time.deltaTime;
-        //}
-        //timerText.transform.parent.GetChild(1).Rotate(0, 0, 180);
+        if (currentTimer == maxTimer) return;
+        hourglassAnim.SetTrigger("HourglassRotate");
     }
 
     public IEnumerator StatusEffects()
