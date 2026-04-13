@@ -126,16 +126,16 @@ public class DialogueManager : MonoBehaviour
         #endif
 
         textBoxHolder.GetComponent<Image>().color = newDialogue.textBackgroundColorDefault;
-        textElement.color = newDialogue.textColorDefault;
         titleBoxHolder.GetComponent<Image>().color = newDialogue.titleBackgroundColorDefault;
-        titleElement.color = newDialogue.titleTextColorDefault;
         spriteBorder.GetComponent<Image>().color = newDialogue.spriteColorDefault;
+
+        textElement.color = newDialogue.textColorDefault;
+        titleElement.color = newDialogue.titleTextColorDefault;
 
         dialogue = newDialogue;
         canvas.SetActive(true);
 
         DialogueEvents.StartDialogue(newDialogue);
-
 
         StartCoroutine(TypeLine());
     }

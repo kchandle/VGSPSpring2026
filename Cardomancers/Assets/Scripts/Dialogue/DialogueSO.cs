@@ -10,15 +10,14 @@ public class DialogueSO : ScriptableObject
     public DialogueLine[] lines;
     public bool startsBattle;
 
+    public Color textColorDefault = new Color(1f, 1f, 1f, 1f);
+    public Color textBackgroundColorDefault = new Color(1f, 1f, 1f, 1f);
 
-    public Color textColorDefault;
-    public Color textBackgroundColorDefault;
+    public Color titleBackgroundColorDefault = new Color(1f, 1f, 1f, 1f);
+    public Color titleTextColorDefault = new Color(1f, 1f, 1f, 1f);
 
-    public Color titleBackgroundColorDefault;
-    public Color titleTextColorDefault;
-
-    public Color spriteColorDefault;
-    public Color spriteBorderColorDefault;
+    public Color spriteColorDefault = new Color(1f, 1f, 1f, 1f);
+    public Color spriteBorderColorDefault = new Color(1f, 1f, 1f, 1f);
 }
 
 [System.Serializable]
