@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Battle_SO", menuName = "Scriptable Objects/Battle_SO")]
 public class Battle_SO : ScriptableObject
@@ -8,5 +8,5 @@ public class Battle_SO : ScriptableObject
     public FieldEffect_SO fieldCondition; //*****  
     public bool isTutorial;
     
-    public list<DialogueScripts.DialogueSO> dialogueSO;
+    public List<DialogueScripts.DialogueSO> dialogueSO;
 }

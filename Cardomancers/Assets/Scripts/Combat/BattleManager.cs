@@ -300,6 +300,7 @@ public class BattleManager : MonoBehaviour
             {
                 case BattleState.START:
                 {
+                    // if (tutorial) battle_SO.
                     EnemiesChooseCards();
                     //print("EnemiesChooseCards has run.");
                     battleState = BattleState.PLAYER_TURN;
