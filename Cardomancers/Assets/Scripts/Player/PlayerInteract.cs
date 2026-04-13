@@ -16,7 +16,8 @@ public class PlayerInteract : MonoBehaviour
     private void Update()
     {
         InteractHighlight();
-        interactPrompt.SetActive(inRange);
+        if (interacting == false) interactPrompt.SetActive(inRange);
+        else interactPrompt.SetActive(false);
     }
 
 
