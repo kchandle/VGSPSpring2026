@@ -8,19 +8,18 @@ using System.Collections.Generic;
 public enum DamageType
 {
     None,
-Ice,
-Fire,
-Water,
-Earth,
-Wind,
-Light,
-Lightning,
-Poison,
-Dark,
-DamageBlock,
-Psychic,
-Stun,
-
+    Ice,
+    Fire,
+    Water,
+    Earth,
+    Wind,
+    Light,
+    Lightning,
+    Poison,
+    Dark,
+    DamageBlock,
+    Psychic,
+    Stun,
 }
 
 public enum BattleActionType
@@ -38,38 +37,60 @@ public enum damageType
     healOverTime,
     healInstant,
     rest
-    
 }
+
+//***
+public enum StatusEffectType
+{
+    None,
+
+    OnFire,
+    Poisoned,
+    Stun,
+    Regeneration,
+    CleanseNegative,
+    CleanseAll,
+
+
+    Other
+}
+
 
 [ System.Serializable ]
 public struct BattleEffect 
 {
     #region VARIABLES
+    [Header("Basic Damage Info")]
     // The amount of damage/heal/stun/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
     public DamageType damageType;
     public BattleActionType actionType;
 
+    [Header("Status Effects")]
     // Status effect related variables, only used if isStatusEffect is true
     public bool isStatusEffect; // Whether this BattleEffect is a status effect
     public bool isPerishable; //If status effect is perishable
-    public int turnsActive; //Amount of turns active at start of effect    
+    public bool isNegative; //If the status effect is negative, and can thus be cleansed
+    public int turnsActive; //Amount of turns active at start of effect   
+    public StatusEffectType statusType; //***
 
-
+    [Header("Enemy Summoning")]
     //Summoning variables, only used if summonsEnemies is true
     public bool summonsEnemies; //Whether or not this card summons enemies
     public Enemy_SO[] summonableEnemies; //The possible enemy types that can be summoned
 
+    [Header("Set-Order")]
     //Variables for set-order cards
     public bool setsNextCard;
     public Card_SO nextCard;
 
+    [Header("Field Conditions")]
     //Variables for Field Effects
     public bool setsFieldCondition;
     public FieldEffect_SO fieldCondition;
 
-
+    [Header("Particle Effects")]
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
 
@@ -82,13 +103,18 @@ public struct BattleEffect
     //}
 
 
-    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
     {
+        //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
+
+        //Status Effect attributes. turnsActive is also used to define how long field conditions last
         this.isStatusEffect = isStatusEffect;
         this.isPerishable = isPerishable;
+        this.isNegative = isNegative;
         this.turnsActive = turnsActive;
+        this.statusType = statusType;
 
         //These effects apply to the enemies only. Players using cards with these effects will have nothing happen.
         this.summonsEnemies = summonsEnemies;
@@ -100,6 +126,7 @@ public struct BattleEffect
         this.setsFieldCondition = setsFieldCondition;
         this.fieldCondition = fieldCondition;
 
+        //other
         this.particles = particles;
         this.actionType = actionType;
     }
@@ -157,7 +184,7 @@ public struct BattleEffect
 
                 if (isStatusEffect)
                 {
-                    player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles, actionType));
+                    player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
                     return true;
                 }
                 if (shieldAmount > 0)
@@ -179,6 +206,12 @@ public struct BattleEffect
             }
             case (BattleActionType.HEAL):
             {
+                if (isStatusEffect)
+                {
+                    player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                    return true;
+                }
+
                 player.currentHealth += StatusAmount;
                 return true;
             }
@@ -209,7 +242,7 @@ public struct BattleEffect
                 int DamageDealt = StatusAmount;
                 if (isStatusEffect)
                 {
-                    enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles, actionType));
+                    enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
             
                     if (damageType == DamageType.Stun) 
                     {

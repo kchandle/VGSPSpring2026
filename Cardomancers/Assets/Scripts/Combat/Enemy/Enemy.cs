@@ -299,31 +299,96 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator StatusEffects()
     {
+        //*** Add to PlayerController too
         for (int i = 0; i < statusEffects.Count; i++)
         {
-            // Apply the status effect to the player
-            foreach (ParticleSystem particle in (statusEffects[i].particles))
+            //Apply the status effect to the Enemy
+            StatusEffectContainer status = statusEffects[i];
+            foreach (ParticleSystem particle in (status.particles))
             {
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
 
-            if (weaknesses.Contains(statusEffects[i].damageType) )
+            //Big totally efficient switch statement to handle EVERY status effect
+            bool cleanse = false;
+            switch(status.statusType)
             {
-                currentHealth -= Mathf.FloorToInt(statusEffects[i].statusAmount*DamageMult);  
+                case(StatusEffectType.None):
+                    print("no statusEffect");
+                    break;
+
+                case(StatusEffectType.OnFire):
+                    print("OnFire statusEffect");
+
+                    //Do burn damage
+                    if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
+                    else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
+                    else{ currentHealth -= status.statusAmount; }
+
+                    break;
+
+                case(StatusEffectType.Poisoned):
+                    print("Poisoned statusEffect");
+
+                    //Do poison damage (exact same as burn)
+                    if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
+                    else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
+                    else{ currentHealth -= status.statusAmount; }
+
+                    break;
+
+                case(StatusEffectType.Stun):
+                    print("Stun statusEffect");
+
+                    //Handled elsewhere
+
+                    break;
+
+                case(StatusEffectType.CleanseNegative):
+                    print("Cleanse negative statusEffects");
+
+                    cleanse = true;
+                    //go through statusEffects and remove all elements where isNegative is true
+
+                    break;
+
+                case(StatusEffectType.Regeneration):
+                    print("Regeneration statusEffect");
+
+                    //Do heal
+                    currentHealth += status.statusAmount;
+
+                    break;
+
+                default:
+                    print("idk");
+                    break;
             }
-            else if (resistances.Contains(statusEffects[i].damageType))
+
+            /*if(cleanse)
             {
-                currentHealth -= Mathf.FloorToInt(statusEffects[i].statusAmount * DamageReduct);
-            }
+                for (int i = 0; i < statusEffects.Count; i++)
+                {
+                    //Apply the status effect to the Enemy
+                    if(status.isNegative)
+                    {
+                        statusEffects.Remove(statusEffects[i]);
+                        i--;
+                    }
+                }
+            }*/
+
             // Decrement the turn count for perishable effects
             if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
                 if (statusEffects[i].damageType == DamageType.Stun) isStunned = false;
                 statusEffects.Remove(statusEffects[i]);
-                i++;
-                Debug.Log("A status effect has expired.");
+                Debug.Log("The Status Effect " + status.statusType + " has expired on an Enemy");
+                i--;
             }
+
+            UpdateHealthBar();
             yield return new WaitForSeconds(0.1f);
         }
         yield return null;

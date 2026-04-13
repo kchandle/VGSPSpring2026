@@ -164,23 +164,68 @@ public class PlayerController : MonoBehaviour
     {
         for(int i = 0; i < statusEffects.Count; i++)
         {
-            // Apply the status effect to the player
+            //Apply the status effect to the Player
+            StatusEffectContainer status = statusEffects[i];
             foreach (ParticleSystem particle in statusEffects[i].particles)
             {
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
-            currentHealth -= statusEffects[i].statusAmount;
-            print("Status Effects did " + statusEffects[i].statusAmount + " damage to the player");
+
+            //Big totally efficient switch statement to handle EVERY status effect
+            switch(status.statusType)
+            {
+                case(StatusEffectType.None):
+                    print("no statusEffect");
+                    break;
+
+                case(StatusEffectType.OnFire):
+                    print("OnFire statusEffect");
+
+                    //Do burn damage
+                    currentHealth -= status.statusAmount;
+                    print("A Status Effect did " + status.statusAmount + " damage to the Player");
+
+                    break;
+
+                case(StatusEffectType.Poisoned):
+                    print("Poisoned statusEffect");
+
+                    //Do poison damage (exact same as burn)
+                    currentHealth -= status.statusAmount;
+                    print("A Status Effect did " + status.statusAmount + " damage to the Player");
+
+                    break;
+
+                case(StatusEffectType.Stun):
+                    print("Stun statusEffect");
+
+                    //Handled elsewhere
+
+                    break;
+
+                case(StatusEffectType.Regeneration):
+                    print("Regeneration statusEffect");
+
+                    //Do heal
+                    currentHealth += status.statusAmount;
+                    print("A Status Effect healed the Player for " + status.statusAmount + " hp");
+
+                    break;
+
+                default:
+                    print("idk");
+                    break;
+            }
+
             UpdateHealthbar();
-            // statusEffects[i].turnsRemaining--;
-            // Decrement the turn count for perishable effects
             if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
                 statusEffects.Remove(statusEffects[i]);
-                Debug.Log("A status effect has expired.");
-                i++;
+                Debug.Log("The Status Effect " + status.statusType + " has expired on the Player");
+                i--;
             }
+
             if(TestingFastMode)
                 yield return null;
             else
