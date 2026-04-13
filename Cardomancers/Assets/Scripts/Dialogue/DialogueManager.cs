@@ -107,24 +107,6 @@ public class DialogueManager : MonoBehaviour
     {
         index = 0;
 
-        #if UNITY_EDITOR
-            FieldInfo[] fields = newDialogue.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-
-            foreach (var field in fields)
-            {
-                if (field.FieldType == typeof(Color))
-                {
-                    Color c = (Color)field.GetValue(dialogue);
-
-                    Debug.Log("let go my eggo");
-
-                    if(c.a == 0f)
-                    {   Debug.LogWarning($"Field {field.Name} is a TRANSPARENT, you probably dont want this.");
-                    }
-                }
-            }
-        #endif
-
         textBoxHolder.GetComponent<Image>().color = newDialogue.textBackgroundColorDefault;
         titleBoxHolder.GetComponent<Image>().color = newDialogue.titleBackgroundColorDefault;
         spriteBorder.GetComponent<Image>().color = newDialogue.spriteColorDefault;
