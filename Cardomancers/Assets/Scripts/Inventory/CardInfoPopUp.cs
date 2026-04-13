@@ -9,6 +9,8 @@ public class CardInfoPopUp : PlayItem
 {
     // name of the card
     [SerializeField] private TextMeshProUGUI cardName; 
+    // the image of the card
+    [SerializeField] private Image cardImage;
     // the description of the card
     [SerializeField] private TextMeshProUGUI description;
     // the type of the card (ice, fire, etc.)
@@ -25,18 +27,20 @@ public class CardInfoPopUp : PlayItem
     [SerializeField] private Image backgroundImage;
     
     [Header("Card type images")]
-    [SerializeField] private Image ATKImage;
-    [SerializeField] private Image DEFImage;
-    [SerializeField] private Image RSTImage;
+    [SerializeField] private Sprite ATKImage;
+    [SerializeField] private Sprite DEFImage;
+    [SerializeField] private Sprite RSTImage;
     
     [Header("Damage images")]
-    [SerializeField] private Image InstantDamageImage;
-    [SerializeField] private Image DamageOverTimeImage;
-    [SerializeField] private Image InstantHealImage;
-    [SerializeField] private Image HealOverTimeImage;
+    [SerializeField] private Sprite InstantDamageImage;
+    [SerializeField] private Sprite DamageOverTimeImage;
+    [SerializeField] private Sprite InstantHealImage;
+    [SerializeField] private Sprite HealOverTimeImage;
 
     [Tooltip("Distance from the center of the card the popup is giving info about")]
     [SerializeField] private float padding;
+
+    [SerializeField] private bool fixedPosition;
 
     
     
@@ -48,41 +52,42 @@ public class CardInfoPopUp : PlayItem
 
     private void SetDescriptions(Card card)
     {
-        cardName.text = card.CardSO.displayName;
-        description.text = card.CardSO.description;
-        cardType.text = card.CardSO.CardType.ToString();
-        switch (card.CardSO.CardType)
+        cardName.text = card.inventoryCard.cardSO.displayName;
+        cardImage.sprite = card.cardImage.sprite;
+        description.text = card.inventoryCard.cardSO.description;
+        cardType.text = card.inventoryCard.cardSO.CardType.ToString();
+        switch (card.inventoryCard.cardSO.CardType)
         {
             case global::CardType.ATK:
-                typeImage = ATKImage;
+                typeImage.sprite = ATKImage;
                 break;
             case global::CardType.DEF:
-                typeImage = DEFImage;
+                typeImage.sprite = DEFImage;
                 break;
             case global::CardType.RST:
-                typeImage = RSTImage;
+                typeImage.sprite = RSTImage;
                 break;
         }
-        switch (card.CardSO.damageType)
+        switch (card.inventoryCard.cardSO.damageType)
         {
             case global::damageType.damageInstant:
                 damageType.text = "Instant Damage";
-                damageImage = InstantDamageImage;
+                damageImage.sprite = InstantDamageImage;
                 break;
             case global::damageType.damageOverTime:
                 damageType.text = "Damage Over Time";
-                damageImage = DamageOverTimeImage;
+                damageImage.sprite = DamageOverTimeImage;
                 break;
             case global::damageType.healInstant:
                 damageType.text = "Instant Heal";
-                damageImage = InstantHealImage;
+                damageImage.sprite = InstantHealImage;
                 break;
             case global::damageType.healOverTime:
                 damageType.text = "Heal Over Time";
-                damageImage = HealOverTimeImage;
+                damageImage.sprite = HealOverTimeImage;
                 break;
         }
-        tagLine.text = card.CardSO.tagLine;
+        tagLine.text = card.inventoryCard.cardSO.tagLine;
     }
 
     private void OpenPopup()
@@ -111,6 +116,7 @@ public class CardInfoPopUp : PlayItem
 
     private Vector3 GetPopUpLocation()
     {
+        
         Vector3 basePosition = Vector3.zero;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         
@@ -118,13 +124,14 @@ public class CardInfoPopUp : PlayItem
 
         if (CardDragInput.focusTarget && CardDragInput.focusTarget is Card)
         {
-            basePosition = CardDragInput.focusTarget.transform.position;
+            if(fixedPosition) basePosition = transform.position;
+            else basePosition = CardDragInput.focusTarget.transform.position;
             SetDescriptions(CardDragInput.focusTarget.GetComponent<Card>());
         }
         else
         {
             ClosePopup();
-            return Vector3.zero;
+            return transform.position;
         }
 
         Vector3[] potentialPositions = new Vector3[4];

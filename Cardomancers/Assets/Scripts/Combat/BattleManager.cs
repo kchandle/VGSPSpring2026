@@ -227,7 +227,7 @@ public class BattleManager : MonoBehaviour
         isBattling = true;
         OnBattleStart.Invoke();
         StartCoroutine(BattleStateManager());
-        print("BattleStateManager has run.");
+        // print("BattleStateManager has run.");
     }
 
 
@@ -249,7 +249,8 @@ public class BattleManager : MonoBehaviour
         playerspacePlayOnSelf.GetComponent<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
         
         //Shows player HP and Mana
-        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetComponent<Image>();
+        playerController.healthbar = playerspacePrefab.transform.GetChild(0).GetChild(0).GetComponent<Image>();
+        playerController.currentHealthText = playerspacePrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
         playerController.shieldText = playerspacePrefab.transform.GetChild(1).GetChild(1).GetComponent<TMP_Text>();
         playerController.shieldPanel = playerspacePrefab.transform.GetChild(1).gameObject;
         playerController.Shield = 0;
@@ -264,14 +265,14 @@ public class BattleManager : MonoBehaviour
             //Player playspace allowed donors
             
 
-            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().cardToPlayspace);
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().enemyPlayspace);
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
             i++;
+            
         }
-        
-
-
+        ResetEnemyPositions();
     }
     #endregion 
     //Player based defense needs to be fixed.
@@ -506,9 +507,9 @@ public class BattleManager : MonoBehaviour
                 if (xOffset == 0) xOffset = 1;
                 Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
                 
-                enemy.transform.GetChild(1).position += moveAnim;
+                enemyScript.enemyImage.transform.position += moveAnim;
                 yield return new WaitForSeconds(attackAnimDelay);
-                enemy.transform.GetChild(1).position -= moveAnim;
+                enemyScript.enemyImage.transform.position -= moveAnim;
                 #endregion
                 
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));

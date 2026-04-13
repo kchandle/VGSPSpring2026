@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
+    public TMP_Text currentHealthText;
 
     public bool TestingFastMode = false;
 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int shield = 0;
 
     public GameObject pauseMenu;
+    public GameObject questMenu;
 
     public int Shield
     {
@@ -152,6 +154,12 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    public void OnQuest(InputAction.CallbackContext context)
+    {
+        questMenu.SetActive(!questMenu.activeSelf);
+    }
+
     public IEnumerator StatusEffects()
     {
         for(int i = 0; i < statusEffects.Count; i++)
@@ -184,6 +192,7 @@ public class PlayerController : MonoBehaviour
     public void UpdateHealthbar()
     {
         healthbar.fillAmount = currentHealth / maxPlayerHealth;
+        currentHealthText.text = currentHealth + "/" + maxPlayerHealth;
     }
 
     public void UpdateShield()
