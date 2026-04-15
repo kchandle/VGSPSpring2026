@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Reflection;
+
 
 
 // some parts of this script are commented out because they were part of this script on a previous project
@@ -27,6 +29,11 @@ public class DialogueManager : MonoBehaviour
 
     private int index; //Current line being displayed
     [SerializeField] GameObject canvas; // the canvas containing the dialogue GUI
+
+    public GameObject textBoxHolder; // the text box holder
+    public GameObject titleBoxHolder; // title box holder.
+    public GameObject spriteBorder; // the sprite border.
+
 
     public TextMeshProUGUI textElement; // the current text box the dialogue text is being loaded into
     public TextMeshProUGUI titleElement; // the current text box the dialogue speaker is being loaded into
@@ -94,12 +101,18 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
- 
 
     // Starts a Dialogue scene based 
     public void StartDialogue(DialogueSO newDialogue)
     {
         index = 0;
+
+        textBoxHolder.GetComponent<Image>().color = newDialogue.textBackgroundColorDefault;
+        titleBoxHolder.GetComponent<Image>().color = newDialogue.titleBackgroundColorDefault;
+        spriteBorder.GetComponent<Image>().color = newDialogue.spriteColorDefault;
+
+        textElement.color = newDialogue.textColorDefault;
+        titleElement.color = newDialogue.titleTextColorDefault;
 
         dialogue = newDialogue;
         canvas.SetActive(true);
@@ -114,13 +127,14 @@ public class DialogueManager : MonoBehaviour
         textElement.text = string.Empty;
         titleElement.text = dialogue.lines[index].displayName;
         talkspriteImage.sprite = dialogue.lines[index].talksprite;
+
         foreach (char c in dialogue.lines[index].text.ToCharArray())
         {
             textElement.text += c;
             yield return new WaitForSeconds(dialogue.lines[index].textDelay);
         }
     }
-    void NextLine()
+    void NextLine( )
     {
         if (index < dialogue.lines.Length - 1)
         {
@@ -176,16 +190,6 @@ public class DialogueManager : MonoBehaviour
         }
         return closestObject;
     }
-
-        #region Depriecated Methods
-
-        // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-        //     canvas.SetActive(true);
-        //     StartDialogue();
-        // }
-
-        #endregion
     }
 
 }
