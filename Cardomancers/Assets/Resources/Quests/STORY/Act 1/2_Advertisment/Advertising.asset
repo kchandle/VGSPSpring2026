@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e321ed277a0e0410cbcbcec6ecbece41, type: 3}
-  m_Name: BuyCard
+  m_Name: Advertising
   m_EditorClassIdentifier: Assembly-CSharp::QuestInfoSO
-  displayName: Buy Card
+  displayName: Advertisement
   levelRequirement: 0
   prerequisiteQuests:
-  - {fileID: 11400000, guid: e0b32dd14317a4d4cb66c9ac3ab8ec4d, type: 2}
-  questSteps: []
-  moneyReward: 0
-  expReward: 0
+  - {fileID: 11400000, guid: 9b0325c643c03f343a491c0701ca1222, type: 2}
+  questSteps:
+  - {fileID: 6253081811098275570, guid: d5037395bf5262a4eb90c4a6cf417abe, type: 3}
+  - {fileID: 6672401550709111790, guid: 0b04a01b67fa73847a8d223bfbe526a7, type: 3}
+  moneyReward: 200
+  expReward: 250
   cardRewards:
     keys: []
     values: 
