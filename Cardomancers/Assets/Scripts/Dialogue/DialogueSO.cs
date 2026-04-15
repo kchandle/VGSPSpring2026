@@ -21,5 +21,10 @@ public class DialogueLine
     public string displayName; // name to be displayed during this dialogue line
     public float textDelay;
     [TextArea(3, 5)] public string text;
+
+    public bool doesCameraMove;
+    public Vector3 playerMovePosition;
+    public Vector3 cameraMovePosition;
+    public Vector3 cameraRotation;
 }
 }

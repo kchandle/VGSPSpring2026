@@ -94,8 +94,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    
-
+ 
 
     // Starts a Dialogue scene based 
     public void StartDialogue(DialogueSO newDialogue)
@@ -121,7 +120,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(dialogue.lines[index].textDelay);
         }
     }
-    void NextLine( )
+    void NextLine()
     {
         if (index < dialogue.lines.Length - 1)
         {

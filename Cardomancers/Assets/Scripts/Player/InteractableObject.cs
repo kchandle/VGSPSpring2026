@@ -5,4 +5,5 @@ public class InteractableObject : MonoBehaviour
 {
     public new string name;
     public UnityEvent interactable;
+    public GameObject[] highlightables;
 }
