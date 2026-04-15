@@ -12,14 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
   m_Name: ColdSnap
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 0
-  price: 0
+  sellValue: 25
+  price: 125
   energyCost: 0
   image: {fileID: 21300000, guid: 067b730bad5d013419c63d015c59c0c1, type: 3}
-  cardEffects: []
+  cardEffects:
+  - StatusAmount: 10
+    damageType: 1
+    actionType: 0
+    isStatusEffect: 0
+    isPerishable: 0
+    turnsActive: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
   particleSystem: {fileID: 0}
-  displayName: 
+  displayName: Deal minor Ice Damage and inflict Frostbite on an Enemy.
   description: 
   tagLine: 
-  cardType: 4
-  damageType: 0
+  cardType: 0
+  damageType: 1

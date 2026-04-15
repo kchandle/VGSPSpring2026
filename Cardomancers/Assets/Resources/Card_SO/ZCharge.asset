@@ -15,21 +15,22 @@ MonoBehaviour:
   sellValue: 0
   price: 0
   energyCost: -2
-  type: Def
   image: {fileID: 0}
   cardEffects:
   - StatusAmount: 0
     damageType: 0
+    actionType: 1
     isStatusEffect: 0
     isPerishable: 0
     turnsActive: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 1
-    nextCard: {fileID: 0}
+    nextCard: {fileID: 11400000, guid: 1fa371a7e77754d4b8f8e85100c01eeb, type: 2}
   particleSystem: {fileID: 0}
   displayName: 
-  description: 
-  tagLine: 
+  description: If the enemy chooses this card, they lock themselves in to using the
+    card in the Next Card slot next. This can create entire set attack patterns.
+  tagLine: Enemy only
   cardType: 1
   damageType: 0
