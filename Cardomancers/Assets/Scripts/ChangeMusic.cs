@@ -1,7 +1,9 @@
 using UnityEngine;
+using System.Collections;
 
 public class ChangeMusic : MonoBehaviour
 {
+
     public void ChangeMusicMethod(AudioClip clip)
     {
         MusicPlayer musicPlayer = FindFirstObjectByType<MusicPlayer>();
@@ -14,5 +16,10 @@ public class ChangeMusic : MonoBehaviour
             musicPlayer.Next();
         }
         musicPlayer.Play();
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        SoundEffectManager.Instance.PlaySoundFXClip(clip, this.transform, 1f);
     }
 }
