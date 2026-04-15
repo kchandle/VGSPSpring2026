@@ -107,9 +107,9 @@ public class DialogueManager : MonoBehaviour
     {
         index = 0;
 
-        textBoxHolder.GetComponent<Image>().color = newDialogue.textBackgroundColorDefault;
-        titleBoxHolder.GetComponent<Image>().color = newDialogue.titleBackgroundColorDefault;
-        spriteBorder.GetComponent<Image>().color = newDialogue.spriteColorDefault;
+        // textBoxHolder.GetComponent<Image>().color = newDialogue.textBackgroundColorDefault;
+        // titleBoxHolder.GetComponent<Image>().color = newDialogue.titleBackgroundColorDefault;
+        // spriteBorder.GetComponent<Image>().color = newDialogue.spriteColorDefault;
 
         textElement.color = newDialogue.textColorDefault;
         titleElement.color = newDialogue.titleTextColorDefault;

@@ -65,6 +65,10 @@ public struct BattleEffect
     public bool setsNextCard;
     public Card_SO nextCard;
 
+    //Variables for Field Effects
+    public bool setsFieldCondition;
+    public FieldEffect_SO fieldCondition;
+
 
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
@@ -77,18 +81,8 @@ public struct BattleEffect
     //    }
     //}
 
-    /*public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, ParticleSystem[] particles, BattleActionType actionType)
-    {
-        this.StatusAmount = statusAmount;
-        this.damageType = damageType;
-        this.isStatusEffect = isStatusEffect;
-        this.isPerishable = isPerishable;
-        this.turnsActive = turnsActive;
-        this.particles = particles;
-        this.actionType = actionType;
-    }*/
 
-    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, int turnsActive, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
     {
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
@@ -102,6 +96,10 @@ public struct BattleEffect
         this.setsNextCard = setsNextCard;
         this.nextCard = nextCard;
 
+        //Field effects / conditions (weather)
+        this.setsFieldCondition = setsFieldCondition;
+        this.fieldCondition = fieldCondition;
+
         this.particles = particles;
         this.actionType = actionType;
     }
@@ -111,6 +109,7 @@ public struct BattleEffect
     //The function that is called when the card is played: Change into Overload function for player and enemy respectively
     public bool TriggerEffect(PlayerController target, Vector3 pos, Card_SO card = null)
     {
+        //Debug.Log("test helooooooooo test");
         PlayerController player = target.GetComponent<PlayerController>();
         if(card != null)
         {
@@ -126,6 +125,36 @@ public struct BattleEffect
             {
                 int dmgToDo = StatusAmount;
                 int shieldAmount = player.Shield;
+
+                //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
+                FieldEffect_SO condition = BattleManager.instance.fieldCondition;
+                //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
+                if(condition && condition.active && condition.boostsDamage)
+                {
+                    Debug.Log("Evaluating " + condition.name + " effects on damage to player");
+                    foreach(FieldEffects effect in condition.effects)
+                    {
+                        //decreases / increases damage if the type of damage is affected by the field condition
+                        if(System.Array.IndexOf(effect.boostedTypes, damageType) != -1)
+                        {
+                           // Debug.Log("Initial Damage to deal on player: " + dmgToDo);
+                            dmgToDo = (int)(dmgToDo * effect.boostAmount); 
+                            //Debug.Log("Weather-boosted Damage to deal on player: " + dmgToDo);
+                            //Debug.Log(condition.name + " has affected damage dealt");      
+                        }
+                    }
+                }
+
+                //***If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name);       
+                } 
+
                 if (isStatusEffect)
                 {
                     player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, turnsActive, particles, actionType));
@@ -192,8 +221,42 @@ public struct BattleEffect
                     return true;
                 }
 
+                
+
+                //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
+                FieldEffect_SO condition = BattleManager.instance.fieldCondition;
+                //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
+                if(condition && condition.active)
+                {
+                    Debug.Log("Evaluating " + condition.name + " effects damage to enemy");
+                    foreach(FieldEffects effect in condition.effects)
+                    {
+                        //decreases / increases damage if the type of damage is affected by the field condition
+                        if(System.Array.IndexOf(effect.boostedTypes, damageType) != -1)
+                        {
+                            //Debug.Log("Initial damage to be dealt on enemy: " + DamageDealt);
+                            DamageDealt = (int)(DamageDealt * effect.boostAmount); 
+                            //Debug.Log("Weather-Boosted damage to be dealt enemy: " + DamageDealt);
+                            //Debug.Log(condition.name + " has affected damage dealt");      
+                        }
+                    }
+                }
+                //Debug.Log("last check: " + DamageDealt);
+
+                //***If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name);       
+                } 
+
+
                 int dmgToDeal = DamageDealt;
                 int shieldAmount = enemy.CurrentShield;
+    
                 if (shieldAmount > 0)
                 {
                     enemy.CurrentShield -= dmgToDeal;
