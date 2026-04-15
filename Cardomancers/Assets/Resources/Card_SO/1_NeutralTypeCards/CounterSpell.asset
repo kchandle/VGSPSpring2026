@@ -16,10 +16,25 @@ MonoBehaviour:
   price: 100
   energyCost: 0
   image: {fileID: 21300000, guid: 12047309896789043b70d8378277ef5b, type: 3}
-  cardEffects: []
+  cardEffects:
+  - StatusAmount: 0
+    damageType: 0
+    actionType: 1
+    isStatusEffect: 1
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 1
+    statusType: 7
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: Counter Spell
   description: Reverses the next spell cast on the user back at the attacker.
   tagLine: 
-  cardType: 4
+  cardType: 1
   damageType: 1

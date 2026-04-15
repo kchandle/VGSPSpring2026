@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+
 [ System.Serializable ]
 public enum DamageType
 {
@@ -30,6 +31,7 @@ public enum BattleActionType
     REST_ENEMY_ONLY,
     OTHER
 }
+
 public enum damageType
 {
     damageOverTime,
@@ -44,15 +46,37 @@ public enum StatusEffectType
 {
     None,
 
+    //---Implemented
+    Regeneration,
     OnFire,
     Poisoned,
+    //---
+
+    //---Not Yet Implemented
+    Frostbite,
+    Awestruck,
     Stun,
-    Regeneration,
+    CounterSpell,
+    EyeOfTheStorm,
+    AntiHeal,
+    //---
+
+    //---Statuses that cleanse other statuses. For a one time cleanse, just use a turn count of 0 or 1.
     CleanseNegative,
     CleanseAll,
-
+    //---
 
     Other
+}
+
+//Not used as of now
+public enum TargetingType
+{
+    SingleTarget,
+    BlastTarget, //Main and adjacent enemies with lower output
+    AOETarget,
+
+    SelfTarget,
 }
 
 
@@ -60,7 +84,7 @@ public enum StatusEffectType
 public struct BattleEffect 
 {
     #region VARIABLES
-    [Header("Basic Damage Info")]
+    [Header("Basic Card Info")]
     // The amount of damage/heal/stun/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
@@ -73,14 +97,15 @@ public struct BattleEffect
     public bool isPerishable; //If status effect is perishable
     public bool isNegative; //If the status effect is negative, and can thus be cleansed
     public int turnsActive; //Amount of turns active at start of effect   
-    public StatusEffectType statusType; //***
+    public float probability; //The chance of inflicting the status effect (0-1)
+    public StatusEffectType statusType;
 
-    [Header("Enemy Summoning")]
+    [Header("Enemy Summoning (For enemies only)")] //Will have no effect if used by player
     //Summoning variables, only used if summonsEnemies is true
     public bool summonsEnemies; //Whether or not this card summons enemies
     public Enemy_SO[] summonableEnemies; //The possible enemy types that can be summoned
 
-    [Header("Set-Order")]
+    [Header("Set-Order (For enemies only)")] //Will have no effect if used by player
     //Variables for set-order cards
     public bool setsNextCard;
     public Card_SO nextCard;
@@ -103,17 +128,19 @@ public struct BattleEffect
     //}
 
 
-    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
     {
         //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
+        //this.attackTargetType = attackTargetType;
 
         //Status Effect attributes. turnsActive is also used to define how long field conditions last
         this.isStatusEffect = isStatusEffect;
         this.isPerishable = isPerishable;
         this.isNegative = isNegative;
         this.turnsActive = turnsActive;
+        this.probability = probability;
         this.statusType = statusType;
 
         //These effects apply to the enemies only. Players using cards with these effects will have nothing happen.
@@ -132,7 +159,9 @@ public struct BattleEffect
     }
     #endregion
 
-    #region TriggerEffects
+
+
+    #region TriggerEffects - Player
     //The function that is called when the card is played: Change into Overload function for player and enemy respectively
     public bool TriggerEffect(PlayerController target, Vector3 pos, Card_SO card = null)
     {
@@ -184,8 +213,18 @@ public struct BattleEffect
 
                 if (isStatusEffect)
                 {
-                    player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                    return true;
+                    float statusRoll = Random.Range(0, 1);
+                    Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on player");
+                    }
                 }
                 if (shieldAmount > 0)
                 {
@@ -200,16 +239,44 @@ public struct BattleEffect
             }
             case (BattleActionType.DEFEND):
             {
+                //For friendly status effects to be applied on self
+                if (isStatusEffect)
+                {
+                    float statusRoll = Random.Range(0, 1);
+                    Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on player");
+                    }
+                }
+
                 player.Shield += StatusAmount;
                 return true;
                 break;
             }
             case (BattleActionType.HEAL):
             {
+                //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                    return true;
+                    float statusRoll = Random.Range(0, 1);
+                    Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on player");
+                    }
                 }
 
                 player.currentHealth += StatusAmount;
@@ -222,7 +289,11 @@ public struct BattleEffect
         }
         return false;
     }
+    #endregion
 
+
+
+    #region TriggerEffects - Enemy
     public bool TriggerEffect(Enemy target, Vector3 pos, Card_SO card = null)
     {
         if(card)
@@ -242,16 +313,25 @@ public struct BattleEffect
                 int DamageDealt = StatusAmount;
                 if (isStatusEffect)
                 {
-                    enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-            
-                    if (damageType == DamageType.Stun) 
-                    {
+                    float statusRoll = Random.Range(0f, 1f);
+                    Debug.Log(statusRoll);
 
-                        target.isStunned = true;
+                    if(statusRoll <= probability)
+                    {
+                        enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                        if (damageType == DamageType.Stun) 
+                        {
+                            target.isStunned = true;
+                        }
+                        // Causes stun to happen
+                        enemy.UpdateHealthBar();
                     }
-                    // Causes stun to happen
-                    enemy.UpdateHealthBar();
+                    else
+                    {
+                        Debug.Log("Unlucky womp womp");
+                    }
                     return true;
+                    
                 }
 
                 
@@ -320,12 +400,47 @@ public struct BattleEffect
             }
             case (BattleActionType.HEAL):
             {
+                //For friendly status effects to be applied on self
+                if (isStatusEffect)
+                {
+                    float statusRoll = Random.Range(0, 1);
+                    Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on Enemy");
+                    }
+                    return true;
+                }
+
                 enemy.currentHealth += StatusAmount;
                 enemy.UpdateHealthBar();
                 break;
             }
             case (BattleActionType.DEFEND):
             {
+                //For friendly status effects to be applied on self
+                if (isStatusEffect)
+                {
+                    float statusRoll = Random.Range(0, 1);
+                    Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        //Debug.Log(statusType + " WHY WHY WHY WHY");
+                        enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on Enemy");
+                    }
+                    return true;
+                }
+
                 enemy.CurrentShield += StatusAmount;
                 break;
             }

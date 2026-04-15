@@ -19,34 +19,49 @@ MonoBehaviour:
   cardEffects:
   - StatusAmount: 0
     damageType: 6
-    actionType: 4
+    actionType: 0
     isStatusEffect: 1
-    isPerishable: 0
-    turnsActive: 0
+    isPerishable: 1
+    isNegative: 1
+    turnsActive: 67
+    probability: 1
+    statusType: 5
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
-  - StatusAmount: 0
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 1
     damageType: 12
     actionType: 0
     isStatusEffect: 1
-    isPerishable: 0
-    turnsActive: 0
+    isPerishable: 1
+    isNegative: 1
+    turnsActive: 1
+    probability: 1
+    statusType: 6
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   - StatusAmount: 5
     damageType: 6
     actionType: 0
-    isStatusEffect: 1
+    isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 0
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: Binding Light
   description: 'Applies  Awestruck  to an enemy and stuns them for 1 turn. '

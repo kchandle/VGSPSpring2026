@@ -162,6 +162,42 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator StatusEffects()
     {
+        //---Exceptions that need to be evaluated before other status effects (Cleanses)
+        bool cleanseNeg = false;
+        for (int i = 0; i < statusEffects.Count; i++)
+        {
+            StatusEffectContainer status = statusEffects[i];
+            print("Test: " + status.statusType);
+            switch(status.statusType)
+            {
+                case(StatusEffectType.CleanseAll):
+                    print("Player cleansing ALL status effects");
+                    statusEffects.Clear();
+                    break;
+                case(StatusEffectType.CleanseNegative):
+                    cleanseNeg = true;
+                    break;
+            }
+        }
+
+        if(cleanseNeg)
+        {
+            print("Cleansing NEGATIVE status effects");
+            for (int i = 0; i < statusEffects.Count; i++)
+            {
+                StatusEffectContainer status = statusEffects[i];
+                if(status.isNegative)
+                {
+                    statusEffects.Remove(status);
+                    i--;
+                    print("Player cleansed " + status.statusType);
+                }
+            }
+        }
+        //---
+
+
+        //=====Start Loop=====//
         for(int i = 0; i < statusEffects.Count; i++)
         {
             //Apply the status effect to the Player
@@ -171,51 +207,95 @@ public class PlayerController : MonoBehaviour
                 Instantiate(particle, transform.position, Quaternion.identity);
             }
 
-            //Big totally efficient switch statement to handle EVERY status effect
+            //==Big switch statement to handle EVERY status effect==//
             switch(status.statusType)
             {
                 case(StatusEffectType.None):
-                    print("no statusEffect");
+                    print("No statusEffect. If this is printing, you accidentally triggered isStatusEffect on a card.");
                     break;
 
+                //---Simple DOTs
+                case(StatusEffectType.Regeneration):
+                    print("Regeneration statusEffect at index: " + i);
+
+                    //Do heal
+                    currentHealth += status.statusAmount;
+                    print("Regeneration Status Effect healed the Player for " + status.statusAmount + " hp");
+
+                    break;
                 case(StatusEffectType.OnFire):
-                    print("OnFire statusEffect");
+                    print("OnFire statusEffect at index: " + i);
 
                     //Do burn damage
                     currentHealth -= status.statusAmount;
-                    print("A Status Effect did " + status.statusAmount + " damage to the Player");
+                    print("OnFire Status Effect did " + status.statusAmount + " damage to the Player");
 
                     break;
-
                 case(StatusEffectType.Poisoned):
-                    print("Poisoned statusEffect");
+                    print("Poisoned statusEffect at index: " + i);
 
                     //Do poison damage (exact same as burn)
-                    currentHealth -= status.statusAmount;
-                    print("A Status Effect did " + status.statusAmount + " damage to the Player");
+                    currentHealth -= status.statusAmount; 
+                    print("Poisoned Status Effect did " + status.statusAmount + " damage to the Player");
 
                     break;
+                //---
 
+                //---More complicated
+                case(StatusEffectType.Frostbite):
+                    print("Frostbite statusEffect at index: " + i);
+                    //
+
+                    break;
+                case(StatusEffectType.Awestruck):
+                    print("Awestruck statusEffect at index: " + i);
+
+                    //
+
+                    break;
                 case(StatusEffectType.Stun):
-                    print("Stun statusEffect");
+                    print("Stun statusEffect at index: " + i);
 
                     //Handled elsewhere
 
                     break;
+                case(StatusEffectType.CounterSpell):
+                    print("CounterSpell statusEffect at index: " + i);
 
-                case(StatusEffectType.Regeneration):
-                    print("Regeneration statusEffect");
-
-                    //Do heal
-                    currentHealth += status.statusAmount;
-                    print("A Status Effect healed the Player for " + status.statusAmount + " hp");
+                    //
 
                     break;
+                case(StatusEffectType.EyeOfTheStorm):
+                    print("EyeOfTheStorm statusEffect at index: " + i);
+
+                    //
+
+                    break;
+                case(StatusEffectType.AntiHeal):
+                    print("AntiHeal statusEffect at index: " + i);
+
+                    //
+
+                    break;
+                //---
+
+                //---Cleanses
+                case(StatusEffectType.CleanseNegative):
+                    print("Cleanse negative statusEffects at index: " + i);
+                    //Handled above
+                    break;
+                case(StatusEffectType.CleanseAll):
+                    print("Cleanse all statusEffects at index: " + i);
+                    //Handled above
+                    break;
+                //---
 
                 default:
                     print("idk");
                     break;
             }
+            //==End of big switch statement to handle EVERY status effect==//
+            
 
             UpdateHealthbar();
             if (statusEffects[i].DecrementTurn() <= 0)
@@ -231,6 +311,8 @@ public class PlayerController : MonoBehaviour
             else
                 yield return new WaitForSeconds(0.1f);
         }
+        //=====End Loop=====//
+
         yield return null;
     }
 
