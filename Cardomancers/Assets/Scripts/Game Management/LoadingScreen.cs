@@ -86,6 +86,7 @@ public class LoadingScreen : MonoBehaviour
 
         updating = false;
         GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+        FindFirstObjectByType<PlayerInteract>().interacting = false;
     }
 
     public IEnumerator ChangeAlpha(float alpha)
