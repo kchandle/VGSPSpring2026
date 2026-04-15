@@ -203,8 +203,7 @@ public class Enemy : MonoBehaviour
         if(nextCardSet)
         {
             card = nextCard;
-            nextCardSet = false; //go back to normal, random card selection
-            //return card;
+            nextCardSet = false;
         }
 
         //If the drawn card sets the next card, set the value of the next card to be played.

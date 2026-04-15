@@ -37,6 +37,7 @@ public class StartBattle : MonoBehaviour
         if (Inventory.Deck.Count == 0 && Inventory.InventoryList.Count > 0)
         {
             print("Add some cards to your deck and come back.");
+            FindFirstObjectByType<PlayerInteract>().interacting = false;
             return;
         }
 
