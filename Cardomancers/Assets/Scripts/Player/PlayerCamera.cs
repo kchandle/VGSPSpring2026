@@ -21,6 +21,7 @@ public class PlayerCamera : MonoBehaviour
     private CinemachineOrbitalFollow orbital;
     // Decollider component on the Cinemachine camera, controls smoothing time
     private CinemachineDecollider decollider;
+    private CinemachineInputAxisController input;
     // Scroll delta is just lerping holder.
     private float scrollDelta = 0f;
     // Scroll position, self explanatory.
@@ -43,10 +44,9 @@ public class PlayerCamera : MonoBehaviour
 
         //get the decollider attached
         decollider = cam.GetComponent<CinemachineDecollider>();
+        input = cam.GetComponent<CinemachineInputAxisController>();
 
         //Optimal settings to reduce motion sickness
-        decollider.Decollision.Damping = 10f;
-        decollider.Decollision.SmoothingTime = 2f;
         ZoomLerpSpeed = 5f;
 
         // This is just the player.
@@ -68,11 +68,8 @@ public class PlayerCamera : MonoBehaviour
     void Update()
     {
         // Contact Group-1 team lead for this they added it, and I dont know what it does.
+        input.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING ? true : false;
 
-        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING)
-        {   return;
-        }
-        
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();
 
