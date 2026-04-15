@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR.Haptics;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -11,45 +8,16 @@ public class PlayerInteract : MonoBehaviour
     // the range of the area player can interact with things in:
     public int range = 5;
 
-    //The prompt that appears to indicate an object is interactable
-    [SerializeField] public GameObject interactPrompt; //set in inspector
-    private bool interactableInRange;
+    bool inRange = false;
 
-    void Awake()
+    public InteractableObject currentHighlight = null;
+    public GameObject interactPrompt;
+
+    private void Update()
     {
-        interactPrompt.SetActive(false);
-        interactableInRange = false;
-    }
-
-    void Update()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
-
-        interactableInRange = false;
-        foreach(Collider collider in colliders)
-        {
-            if(!collider.gameObject.TryGetComponent(out InteractableObject interactable))
-            {
-                continue;
-            }
-            else
-            {
-                interactableInRange = true;
-            }
-        }
-
-        //If there is an interactable object in range, the prompt isn't already active, and we're in the overworld
-        if(interactableInRange && !interactPrompt.active && !interacting && GameStateScript.CurrentState == GameStateScript.GameState.WALKING)
-        {  
-            interactPrompt.SetActive(true);
-            //print("set prompt active");
-        }  //If there isn't an interactable object in range but the prompt is active. The prompt is also disabled when mid interaction
-        else if(!interactableInRange && interactPrompt.active || interacting || (GameStateScript.CurrentState != GameStateScript.GameState.WALKING))
-        {
-            interactPrompt.SetActive(false);
-            //print("set prompt inactive");
-        }
-        
+        InteractHighlight();
+        if (interacting == false) interactPrompt.SetActive(inRange);
+        else interactPrompt.SetActive(false);
     }
 
 
@@ -57,12 +25,7 @@ public class PlayerInteract : MonoBehaviour
     public void OnInteract(InputAction.CallbackContext obj)
     {
         if (!obj.started) return;
-        if(interacting) 
-        {
-            interactPrompt.SetActive(false);
-            print("Already interacting with an object");
-            return;
-        }
+        if(interacting) return;
         // Checking CurrentState to make sure you can't interact while in battle
         if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
         if (GameStateScript.CurrentState == GameStateScript.GameState.BATTLE) return;
@@ -71,26 +34,85 @@ public class PlayerInteract : MonoBehaviour
         // sends an array thing to get all objects:
         Collider[] col = Physics.OverlapSphere(transform.position, range);
         {
+            float minRange = 1000f;
             //If object is interactable, so basically if it has the interactable object script, do what it needs to do:
+            InteractableObject interactable = null;
             foreach (Collider c in col)
             {
                 if (c.TryGetComponent(out InteractableObject inter))
                 {
-                    print(inter);
-                    interacting = true;
-                    inter.interactable.Invoke();
-                    print("INTERACTING    " + c.gameObject.name);
+                    float range = (inter.transform.position - transform.position).magnitude;
+                    if (range < minRange)
+                    {
+                        interactable = inter;
+                        minRange = range;
+                    }
                 }
-            }  
+
+                if (interactable != null)
+                {
+                    interacting = true;
+                    interactable.interactable.Invoke();
+                }
+            }
         }
-        
- 
     }
 
-    //Just for testing, the DialogueManager will set interacting to true later
-    public void ReEnableInteract()
+    public void InteractHighlight()
     {
-        interacting = false;
+        Collider[] col = Physics.OverlapSphere(transform.position, range);
+        {
+            float minRange = 1000f;
+            //If object is interactable, so basically if it has the interactable object script, do what it needs to do:
+            InteractableObject interactable = null;
+            inRange = false;
+            foreach (Collider c in col)
+            {
+                if (c.TryGetComponent(out InteractableObject inter))
+                {
+                    float range = (inter.transform.position - transform.position).magnitude;
+                    if (range < minRange)
+                    {
+                        interactable = inter;
+                        minRange = range;
+                    }
+                    if (currentHighlight != null)
+                    {
+                        ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                        if (currentHighlight.highlightables.Length > 0) foreach (GameObject g in currentHighlight.highlightables) ChangeAllChildrenLayer(g, "Default");
+                    }
+
+                    ChangeAllChildrenLayer(interactable.gameObject, "Outline");
+                    if (inter.highlightables.Length > 0) foreach(GameObject g in inter.highlightables) ChangeAllChildrenLayer(g, "Outline");
+                    currentHighlight = interactable;
+                    inRange = true;
+                }
+                else if (currentHighlight != null && !inRange)
+                {
+                    ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    if (currentHighlight.highlightables.Length > 0) foreach (GameObject g in currentHighlight.highlightables) ChangeAllChildrenLayer(g, "Default");
+                    currentHighlight = null;
+                }
+            }
+
+        }
+    }
+
+    public void ChangeAllChildrenLayer(GameObject target, string layer)
+    {
+        target.gameObject.layer = LayerMask.NameToLayer(layer);
+        foreach (Transform child in target.transform)
+        {
+            bool ignoreTag = child.CompareTag("IgnoreHighlight");
+            if (ignoreTag && child.childCount <= 0) continue;
+            else if (ignoreTag)
+            {
+                ChangeAllChildrenLayer(child.gameObject, layer);
+                continue;
+            }
+            child.gameObject.layer = LayerMask.NameToLayer(layer);
+            if (child.childCount > 0) ChangeAllChildrenLayer(child.gameObject, layer);
+        }
     }
 
 }
