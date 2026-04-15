@@ -32,5 +32,10 @@ public class DialogueLine
 
 
     [TextArea(3, 5)] public string text;
+
+    public bool doesCameraMove;
+    public Vector3 playerMovePosition;
+    public Vector3 cameraMovePosition;
+    public Vector3 cameraRotation;
 }
 }
