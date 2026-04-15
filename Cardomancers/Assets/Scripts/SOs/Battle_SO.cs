@@ -8,5 +8,23 @@ public class Battle_SO : ScriptableObject
     public FieldEffect_SO fieldCondition; //*****  
     public bool isTutorial;
     
-    public List<DialogueScripts.DialogueSO> dialogueSO;
+    public List<BattleDialogue> dialogueSOs;
+}
+
+[System.Serializable]
+public struct BattleDialogue
+{
+    public int turnToPlay;
+    public DialogueScripts.DialogueSO dialogue;
+
+    public BattleDialogue(int ttp, DialogueScripts.DialogueSO dia)
+    {
+        turnToPlay = ttp;
+        dialogue = dia;
+    }
+
+    public int GetTurn()
+    {
+        return turnToPlay;
+    }
 }

@@ -965,6 +965,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2699413464071478142}
   - component: {fileID: 6862682295009153447}
+  - component: {fileID: 4473357178020718100}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: BattleManager
@@ -1014,10 +1015,34 @@ MonoBehaviour:
       m_Calls: []
   OnLose:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4473357178020718100}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: a06b2b81d0d893343ba0effefd7253a1, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnWin:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4473357178020718100}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: f082992312d48ce429230b4ebdbbaf59, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   PlayerTurn:
     m_PersistentCalls:
       m_Calls: []
@@ -1026,10 +1051,34 @@ MonoBehaviour:
       m_Calls: []
   OnEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4473357178020718100}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnFlee:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4473357178020718100}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   battleUI: {fileID: 2787398504783767383}
   winScreen: {fileID: 2385186474803261252}
   loseScreen: {fileID: 2348843615193485533}
@@ -1057,6 +1106,18 @@ MonoBehaviour:
   currentEnemies: []
   cardPrefab: {fileID: 7278841492920612246, guid: ad9cfff1982a9484bac552ed07009f6c, type: 3}
   isBattling: 0
+--- !u!114 &4473357178020718100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2964704237051563936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdbacfb2910e134d97d2d41dfc13f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChangeMusic
 --- !u!1 &3050942708236776463
 GameObject:
   m_ObjectHideFlags: 0
@@ -1665,6 +1726,7 @@ GameObject:
   - component: {fileID: 3083387727046617612}
   - component: {fileID: 8739554766687193332}
   - component: {fileID: 7702204690834412737}
+  - component: {fileID: 4931018331265678545}
   m_Layer: 5
   m_Name: WinButton
   m_TagString: Untagged
@@ -1786,6 +1848,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4931018331265678545}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4931018331265678545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5752563193326630341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdbacfb2910e134d97d2d41dfc13f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChangeMusic
 --- !u!1 &7187872070858521487
 GameObject:
   m_ObjectHideFlags: 0

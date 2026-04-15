@@ -81,6 +81,8 @@ public class BattleManager : MonoBehaviour
 
     #region utility References
     public bool tutorial = false;
+    public DialogueScripts.DialogueManager dialogueManager;
+    public int turnCount = 0;
     #endregion
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
@@ -127,6 +129,7 @@ public class BattleManager : MonoBehaviour
 
         //Assign Variables for Cameras and UI
         mainCamera = Camera.main;
+        dialogueManager = GameObject.Find("DialogueScreen").GetComponent<DialogueScripts.DialogueManager>();
     }
 
     private void OnEnable()
@@ -291,6 +294,20 @@ public class BattleManager : MonoBehaviour
     //Player based defense needs to be fixed.
 
     #region Battle Flow
+    public void PlayDialogue()
+    {
+        if (tutorial)
+        {
+            for  (int i = 0; i < battle.dialogueSOs.Count; i++)
+            {
+                if (turnCount == battle.dialogueSOs[i].GetTurn())
+                {
+                    dialogueManager.StartDialogue(battle.dialogueSOs[i].dialogue);
+                }
+            }
+        }
+    }
+
 
     IEnumerator BattleStateManager()
     {
@@ -300,7 +317,6 @@ public class BattleManager : MonoBehaviour
             {
                 case BattleState.START:
                 {
-                    // if (tutorial) battle_SO.
                     EnemiesChooseCards();
                     //print("EnemiesChooseCards has run.");
                     battleState = BattleState.PLAYER_TURN;
@@ -316,6 +332,8 @@ public class BattleManager : MonoBehaviour
                 }
                 case BattleState.PLAYER_TURN:
                 {
+                    PlayDialogue();
+                    turnCount++;
                     PlayerTurn.Invoke();
                     yield return StartCoroutine(StartPlayerTurn());
                     battleState = BattleState.CHECK_ENEMIES_HP;
