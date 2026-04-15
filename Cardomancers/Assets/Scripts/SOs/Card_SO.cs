@@ -31,6 +31,8 @@ public class Card_SO : ScriptableObject
     public string tagLine; // short tag line
     [SerializeField] private CardType cardType =  CardType.NULL;
 
+    [SerializeField] GameObject VFXPrefab;
+
     public CardType CardType
     {
         get
