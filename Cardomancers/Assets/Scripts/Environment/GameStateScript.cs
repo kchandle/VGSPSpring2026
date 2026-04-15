@@ -12,6 +12,7 @@ public class GameStateScript
         BATTLE,
         SPEAKING,
         MENU,
+        PAUSE,
         INVENTORY,
         DEAD,
         LOADINGSCREEN,
