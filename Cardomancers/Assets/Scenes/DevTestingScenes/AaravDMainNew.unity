@@ -1998,6 +1998,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2070023566}
@@ -2008,7 +2012,7 @@ PrefabInstance:
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1013771264}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: AssignStartBattle
@@ -2019,7 +2023,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: CompleteObjective
+      value: PlayWhenBattling
+      objectReference: {fileID: 0}
+    - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: RandomBattleMusic, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6033705312515947022, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2076,8 +2088,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6325943818239239212, guid: 41b9293480433204f933101e791277af, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1013771264}
   m_SourcePrefab: {fileID: 100100000, guid: 41b9293480433204f933101e791277af, type: 3}
+--- !u!1 &1013771263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6325943818239239212, guid: 41b9293480433204f933101e791277af, type: 3}
+  m_PrefabInstance: {fileID: 1013771262}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1013771264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013771263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0463eb6023006a4ab64081c55895824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomBattleMusic
+  OneBattleTheme: {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+  TwoBattleTheme: {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
 --- !u!1 &1066147865
 GameObject:
   m_ObjectHideFlags: 0
@@ -2965,6 +2999,7 @@ GameObject:
   - component: {fileID: 1352867434}
   - component: {fileID: 1352867433}
   - component: {fileID: 1352867432}
+  - component: {fileID: 1352867438}
   m_Layer: 0
   m_Name: CardShopDoor
   m_TagString: Untagged
@@ -2988,6 +3023,18 @@ MonoBehaviour:
   interactable:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1352867438}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 997e4a37b8bb4b44a8f0e9746548a014, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1352867433}
         m_TargetAssemblyTypeName: DoorInteractable, Assembly-CSharp
         m_MethodName: OpenDoor
@@ -3105,6 +3152,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0.193, z: 0}
+--- !u!114 &1352867438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352867431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdbacfb2910e134d97d2d41dfc13f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChangeMusic
 --- !u!1001 &1380779175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3558,6 +3617,7 @@ GameObject:
   - component: {fileID: 1568481579}
   - component: {fileID: 1568481578}
   - component: {fileID: 1568481577}
+  - component: {fileID: 1568481583}
   m_Layer: 0
   m_Name: Interior Door
   m_TagString: Untagged
@@ -3581,6 +3641,18 @@ MonoBehaviour:
   interactable:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1568481583}
+        m_TargetAssemblyTypeName: ChangeMusic, Assembly-CSharp
+        m_MethodName: ChangeMusicMethod
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1568481578}
         m_TargetAssemblyTypeName: DoorInteractable, Assembly-CSharp
         m_MethodName: OpenDoor
@@ -3698,6 +3770,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -41.563, z: 0}
+--- !u!114 &1568481583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568481576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdbacfb2910e134d97d2d41dfc13f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChangeMusic
 --- !u!1 &1601608976 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6311963466393561165, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
@@ -4336,6 +4420,140 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
   m_PrefabInstance: {fileID: 2028168934}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1883894413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883894403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22ae53bcd9e605b4e9801b97b47fb5c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicPlayer
+  Clips:
+  - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
+  - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+  - {fileID: 8300000, guid: 997e4a37b8bb4b44a8f0e9746548a014, type: 3}
+  - {fileID: 8300000, guid: e86a72a547ee55f45b8df0a073148fe6, type: 3}
+  - {fileID: 8300000, guid: a06b2b81d0d893343ba0effefd7253a1, type: 3}
+  - {fileID: 8300000, guid: f082992312d48ce429230b4ebdbbaf59, type: 3}
+  - {fileID: 8300000, guid: 55762714a9354724ab291052698cfed2, type: 3}
+  - {fileID: 8300000, guid: 738a22d60e7399e4bb6429a7079470df, type: 3}
+  - {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+  - {fileID: 8300000, guid: 4eded3dc4f6a7a341a6d82fc659815be, type: 3}
+  - {fileID: 8300000, guid: c64f904913a025141902416d1d2ce10b, type: 3}
+  - {fileID: 8300000, guid: d2277de77f83a9f4cb187aa207477d64, type: 3}
+  - {fileID: 8300000, guid: 4e2e5c0b10d05304ba00c4204bc9aede, type: 3}
+  AudioIndex: 0
+  StartDelay: 0
+  PlayOnStart: 0
+  Shuffle: 0
+  LoopMode: 0
+  Volume: 1
+  VolumeRampTime: 1
+  PlayBackSpeed: 1
+  PlaybackRampTime: 1
+  FadeTime: 0.15
+  HistoryMax: 50
+--- !u!82 &1883894421
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883894403}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2000553364 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3617912545361952458, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
@@ -4544,10 +4762,17 @@ PrefabInstance:
       propertyPath: pool
       value: 
       objectReference: {fileID: 600035994}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7640498981376258451, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1883894413}
+    - targetCorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1883894421}
   m_SourcePrefab: {fileID: 100100000, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
 --- !u!114 &2070023566 stripped
 MonoBehaviour:
