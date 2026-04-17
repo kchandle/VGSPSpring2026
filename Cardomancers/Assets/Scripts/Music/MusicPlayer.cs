@@ -463,6 +463,9 @@ public class MusicPlayer : MonoBehaviour
            this.audioSourceBuff = sources[1];
         }
 
+        MixManager.AudioSourceAssignMixerGroup(this.audioSource, "Music");
+        MixManager.AudioSourceAssignMixerGroup(this.audioSourceBuff, "Music");
+
         foreach(AudioClip clip in this.Clips)
         {   AudioSizeTypeAssertion(clip);
         }
