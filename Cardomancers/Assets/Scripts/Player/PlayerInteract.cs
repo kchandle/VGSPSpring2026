@@ -16,7 +16,8 @@ public class PlayerInteract : MonoBehaviour
     private void Update()
     {
         InteractHighlight();
-        interactPrompt.SetActive(inRange);
+        if (interacting == false) interactPrompt.SetActive(inRange);
+        else interactPrompt.SetActive(false);
     }
 
 
@@ -75,14 +76,21 @@ public class PlayerInteract : MonoBehaviour
                         interactable = inter;
                         minRange = range;
                     }
-                    if (currentHighlight != null) ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    if (currentHighlight != null)
+                    {
+                        ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                        if (currentHighlight.highlightables.Length > 0) foreach (GameObject g in currentHighlight.highlightables) ChangeAllChildrenLayer(g, "Default");
+                    }
+
                     ChangeAllChildrenLayer(interactable.gameObject, "Outline");
+                    if (inter.highlightables.Length > 0) foreach(GameObject g in inter.highlightables) ChangeAllChildrenLayer(g, "Outline");
                     currentHighlight = interactable;
                     inRange = true;
                 }
                 else if (currentHighlight != null && !inRange)
                 {
                     ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    if (currentHighlight.highlightables.Length > 0) foreach (GameObject g in currentHighlight.highlightables) ChangeAllChildrenLayer(g, "Default");
                     currentHighlight = null;
                 }
             }

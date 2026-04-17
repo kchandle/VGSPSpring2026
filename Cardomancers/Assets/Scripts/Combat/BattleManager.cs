@@ -46,6 +46,7 @@ public class BattleManager : MonoBehaviour
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
     public StartBattle startBattle;
     public Battle_SO battle; // current battle SO passed in when battlestart is called
+    public FieldEffect_SO fieldCondition; //***The current active field condition
     public BattleState battleState; // current state of the battle
     public EndState endState;
     #region All the player scripts
@@ -76,6 +77,12 @@ public class BattleManager : MonoBehaviour
     }
 
     public InventoryCard restCard;
+    #endregion
+
+    #region utility References
+    public bool tutorial = false;
+    public DialogueScripts.DialogueManager dialogueManager;
+    public int turnCount = 0;
     #endregion
 
     public List<GameObject> currentEnemies; // list of current enemy game objects in the battle
@@ -122,6 +129,7 @@ public class BattleManager : MonoBehaviour
 
         //Assign Variables for Cameras and UI
         mainCamera = Camera.main;
+        dialogueManager = GameObject.Find("DialogueScreen").GetComponent<DialogueScripts.DialogueManager>();
     }
 
     private void OnEnable()
@@ -209,6 +217,14 @@ public class BattleManager : MonoBehaviour
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
+        //***
+        if (battle.fieldCondition)
+        {
+            this.fieldCondition = battle.fieldCondition;
+        }
+
+        if (battle.isTutorial) tutorial = true;
+
         //Switches Camera to Battle camera
         mainCamera.enabled = false;
         battleCamera.enabled = true;
@@ -278,6 +294,20 @@ public class BattleManager : MonoBehaviour
     //Player based defense needs to be fixed.
 
     #region Battle Flow
+    public void PlayDialogue()
+    {
+        if (tutorial)
+        {
+            for  (int i = 0; i < battle.dialogueSOs.Count; i++)
+            {
+                if (turnCount == battle.dialogueSOs[i].GetTurn())
+                {
+                    dialogueManager.StartDialogue(battle.dialogueSOs[i].dialogue);
+                }
+            }
+        }
+    }
+
 
     IEnumerator BattleStateManager()
     {
@@ -302,6 +332,8 @@ public class BattleManager : MonoBehaviour
                 }
                 case BattleState.PLAYER_TURN:
                 {
+                    PlayDialogue();
+                    turnCount++;
                     PlayerTurn.Invoke();
                     yield return StartCoroutine(StartPlayerTurn());
                     battleState = BattleState.CHECK_ENEMIES_HP;
@@ -434,6 +466,56 @@ public class BattleManager : MonoBehaviour
         yield return StartCoroutine(playerController.StatusEffects());
 
 
+        //***Decrease field condition turn count
+        if(fieldCondition && fieldCondition.active)
+        {
+            fieldCondition.turnsRemaining--;
+            print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
+
+            //If the field's duration is up, deactivate it
+            if(fieldCondition.turnsRemaining == -1)
+            {
+                fieldCondition.active = false;
+            }
+
+
+            //*** If an active field condition deals chip damage (just acid rain for now)
+            //optimize later please
+            if(fieldCondition.chipDamage)
+            {
+
+                foreach(FieldEffects effect in fieldCondition.effects)
+                {
+
+                    if(effect.dealsChipDamage && effect.chipDamageCard)
+                    {
+
+                        //if you thought 2 nested foreach loops was bad
+                        foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                        {
+
+                            bEffect.TriggerEffect(playerController, player.transform.position);
+                            print("Damaging player with acid rain");
+                            foreach(GameObject e in currentEnemies)
+                            {
+                                bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);
+                                print("Damaging enemies with acid rain");
+                            }
+
+                        }
+                        
+                    }
+
+                }
+
+            }
+
+        }
+
+        
+        
+
+
         yield return null;
     }
 
@@ -452,8 +534,11 @@ public class BattleManager : MonoBehaviour
         EnemyTurn.Invoke();
 
         //Enemy picks card from card list
-        foreach (GameObject enemy in currentEnemies)
+        //foreach (GameObject enemy in currentEnemies)
+        int count = currentEnemies.Count;
+        for(int i = 0; i < count; i++) //Changed from foreach loop to account for summoning enemies
         {
+            GameObject enemy = currentEnemies[i];
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             if (enemyScript.currentHealth <= 0) continue; //Skip turn if enemy is dead
             InventoryCard card = enemyScript.currentCard;
@@ -468,6 +553,25 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
+                
+
+
+                //***
+                if(fieldCondition)
+                {
+                    print(fieldCondition.name + "field condition Is active!");
+                }
+                else
+                {
+                    print("no field condition is active");
+                }
+
+                if(effect.summonsEnemies)
+                {
+                    TrySummonEnemy(effect);
+                }
+
+
 
                 switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
@@ -493,17 +597,17 @@ public class BattleManager : MonoBehaviour
                 
                 GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
                 
-                print("ps y: " + ps.transform.position.y);
-                print("enemy y: " + enemy.transform.position.y);
+                //print("ps y: " + ps.transform.position.y);
+                //print("enemy y: " + enemy.transform.position.y);
                 xOffset = -(enemy.transform.position.x - ps.transform.position.x);
                 yOffset = enemy.transform.position.y + ps.transform.position.y;
                 
                 slope = yOffset/xOffset;
                 if (float.IsInfinity(slope)) slope = yOffset;
                 
-                print("yOffset: " + yOffset);
-                print("XOffset: " + xOffset);
-                print("slope: " + slope);
+                //print("yOffset: " + yOffset);
+                //print("XOffset: " + xOffset);
+                //print("slope: " + slope);
                 if (xOffset == 0) xOffset = 1;
                 Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
                 
@@ -617,6 +721,11 @@ public class BattleManager : MonoBehaviour
 
     #endregion
 
+
+
+
+    #region Enemy Manipulation
+    //Repositions enemies
     void ResetEnemyPositions()
     {
         //Count number of alive enemies
@@ -673,5 +782,57 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
+
+
+    //Summons enemies
+    private void TrySummonEnemy(BattleEffect effect)
+    {
+        if(!effect.summonsEnemies || effect.summonableEnemies.Length == 0)
+        {
+            return;
+        }
+        //print("Evaluating Enemy Card Battle Effects");
+        //print("Summons enemies: " + effect.summonsEnemies);
+        //print("Card Name: " + card.cardSO.displayName);
+        print("Attempting to summon enemy");
+        //Summoning enemy logic
+
+        //Get number of enemies alive
+        int alive = 0;
+        foreach (GameObject enemy in currentEnemies)
+        {
+            if (enemy.GetComponent<Enemy>().currentHealth > 0)
+            {
+                alive++;
+            }
+        }
+
+        //Summon fails if six or more enemies are on the field, just so they don't start overlapping
+        if(alive >= 6)
+        {
+            print("Max enemies, summon failed");
+        }
+        else
+        {
+            print("Summoned enemy");
+            //Selects random enemy from list of possible options set in the card's battle effect
+            Enemy_SO newEnemy = effect.summonableEnemies[UnityEngine.Random.Range(0, effect.summonableEnemies.Length)];
+
+            //Same code for creating an enemy object used in SetUpPlayspaces
+            GameObject enemyPrefab = newEnemy.enemyPrefab;
+            enemyPrefab = Instantiate(newEnemy.enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
+            enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
+
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
+            enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
+            currentEnemies.Add(enemyPrefab);
+
+            EnemiesChooseCards(currentEnemies.IndexOf(enemyPrefab));
+            ResetEnemyPositions();
+        }
+    }
+    #endregion
+
 
 }
