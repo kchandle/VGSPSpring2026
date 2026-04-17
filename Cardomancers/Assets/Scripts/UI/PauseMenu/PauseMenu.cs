@@ -16,8 +16,8 @@ using UnityEngine.Events;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject musicSlider;
-    public GameObject sfxSlider;
+    public GameObject musicSlider;    // Music mixer slider in the pause menu.
+    public GameObject sfxSlider;      // SFX mixer slider in the pause menu.
 
     void Awake()
     {
@@ -25,12 +25,14 @@ public class PauseMenu : MonoBehaviour
         Debug.Assert(sfxSlider != null, "SFX Slider is not assigned in the inspector.");
     }
 
+    // Intialize the sliders to update properly.
     void Start()
     {
         musicSlider.GetComponent<UnityEngine.UI.Slider>().onValueChanged.AddListener(MusicSliderUpdate);
         sfxSlider.GetComponent<UnityEngine.UI.Slider>().onValueChanged.AddListener(SFXSliderUpdate);
     }
 
+    // Update the Music volume when the slider value changes.
     void MusicSliderUpdate(float value)
     {
         float volume = value / 100f; // Convert from 0-100 to 0-1
@@ -38,6 +40,7 @@ public class PauseMenu : MonoBehaviour
         MixManager.SetMusicVolume(volume);
     }
 
+    // Update the SFX volume when the slider value changes.
     void SFXSliderUpdate(float value)
     {
         float volume = value / 100f; // Convert from 0-100 to 0-1
@@ -45,9 +48,9 @@ public class PauseMenu : MonoBehaviour
         MixManager.SetSFXVolume(volume);
     }
 
+    // Intialize Settings.
     public void OnEnable()
     {
-        /* intialize settings */
 
         UnityEngine.UI.Slider music = musicSlider.GetComponent<UnityEngine.UI.Slider>();
         UnityEngine.UI.Slider sfx = sfxSlider.GetComponent<UnityEngine.UI.Slider>();
