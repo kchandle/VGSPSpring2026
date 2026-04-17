@@ -20,7 +20,7 @@ public enum DamageType
     Dark,
     DamageBlock,
     Psychic,
-    Stun,
+    //Stun,
 }
 
 public enum BattleActionType
@@ -46,30 +46,42 @@ public enum StatusEffectType
 {
     None,
 
-    //---Implemented
+    //---Implemented---//
+    //-Stat boosts
+    AttackBoost, // outgoing damage * (AttackMulti/100). Ex: an Attackboost with a statusAmount of 125 gives a 1.25x attack boost
+    EnduranceBoost, // incoming damage/(EunduranceMulti/100)
+    //-
+
+
+    //-Statuses that cleanse other statuses. For a one time cleanse, just use a turn count of 0 or 1.
+    CleanseNegative,
+    CleanseAll,
+    //-
+
+    //-DOTs
     Regeneration,
     OnFire,
     Poisoned,
-    //---
-
-    //---Not Yet Implemented
     Frostbite,
+    //-
+    //--- ---//
+
+
+    //---Not Yet Implemented---//
     Awestruck,
-    Stun,
+    Stun, //done
     CounterSpell,
     EyeOfTheStorm,
-    AntiHeal,
-    //---
+    AntiHeal, //done
+    Evisceration, //done
+    //--- ---//
 
-    //---Statuses that cleanse other statuses. For a one time cleanse, just use a turn count of 0 or 1.
-    CleanseNegative,
-    CleanseAll,
-    //---
+    
 
     Other
 }
 
-//Not used as of now
+//Not used just yettttttt
 public enum TargetingType
 {
     SingleTarget,
@@ -85,7 +97,7 @@ public struct BattleEffect
 {
     #region VARIABLES
     [Header("Basic Card Info")]
-    // The amount of damage/heal/stun/whatever the BattleEffect inflicts on the target
+    // The amount of damage/heal/damage per turn/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
     public DamageType damageType;
@@ -179,9 +191,17 @@ public struct BattleEffect
         {
             case (BattleActionType.ATTACK):
             {
-                int dmgToDo = StatusAmount;
+                float dmgToDo = (float)StatusAmount;
                 int shieldAmount = player.Shield;
 
+                //---Account for player stat boosts (attack boosts will be BattleManager)
+                Debug.Log("Player dmgToDo: " + dmgToDo);
+                dmgToDo /= player.enduranceMulti;
+                Debug.Log("dmgToDo after endurance: " + dmgToDo);
+                //---
+
+
+                //---Account for Field Effects on damage and application of Field Effects
                 //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
                 FieldEffect_SO condition = BattleManager.instance.fieldCondition;
                 //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
@@ -194,14 +214,13 @@ public struct BattleEffect
                         if(System.Array.IndexOf(effect.boostedTypes, damageType) != -1)
                         {
                            // Debug.Log("Initial Damage to deal on player: " + dmgToDo);
-                            dmgToDo = (int)(dmgToDo * effect.boostAmount); 
+                            dmgToDo = (dmgToDo * effect.boostAmount); 
                             //Debug.Log("Weather-boosted Damage to deal on player: " + dmgToDo);
                             //Debug.Log(condition.name + " has affected damage dealt");      
                         }
                     }
                 }
-
-                //***If the played card sets a new field condition.
+                //If the played card sets a new field condition.
                 if(setsFieldCondition)
                 {
                     fieldCondition.active = true;
@@ -210,7 +229,10 @@ public struct BattleEffect
                     BattleManager.instance.fieldCondition = fieldCondition;
                     //Debug.Log("set field condition to: " + fieldCondition.name);       
                 } 
+                //---
 
+
+                //---Account for Application of status Effects
                 if (isStatusEffect)
                 {
                     float statusRoll = Random.Range(0, 1);
@@ -226,17 +248,26 @@ public struct BattleEffect
                         Debug.Log("Status missed the roll to trigger on player");
                     }
                 }
+                //---
+
+
+                //---Actually do damage to player
+                int intDmgToDo = (int)dmgToDo;
+
                 if (shieldAmount > 0)
                 {
-                    player.Shield -= dmgToDo;
-                    dmgToDo -= shieldAmount;
+                    player.Shield -= intDmgToDo;
+                    intDmgToDo -= shieldAmount;
                 }
-                if(dmgToDo > 0)
-                    player.currentHealth -= dmgToDo;
+                if(intDmgToDo > 0)
+                    player.currentHealth -= intDmgToDo;
                 //PlayParticles(pos);
                 player.UpdateHealthbar();
                 return true;
+                //---
             }
+
+
             case (BattleActionType.DEFEND):
             {
                 //For friendly status effects to be applied on self
@@ -260,6 +291,8 @@ public struct BattleEffect
                 return true;
                 break;
             }
+
+
             case (BattleActionType.HEAL):
             {
                 //For friendly status effects to be applied on self
@@ -310,7 +343,7 @@ public struct BattleEffect
         {
             case (BattleActionType.ATTACK):
             {
-                int DamageDealt = StatusAmount;
+                //---Add Status Effects
                 if (isStatusEffect)
                 {
                     float statusRoll = Random.Range(0f, 1f);
@@ -319,11 +352,11 @@ public struct BattleEffect
                     if(statusRoll <= probability)
                     {
                         enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                        if (damageType == DamageType.Stun) 
+                        if (statusType == StatusEffectType.Stun) 
                         {
+                            //Trigger stun immediately, since status effects are normally evaluated at the end of the turn
                             target.isStunned = true;
                         }
-                        // Causes stun to happen
                         enemy.UpdateHealthBar();
                     }
                     else
@@ -333,9 +366,19 @@ public struct BattleEffect
                     return true;
                     
                 }
+                //---
+
+
+                //---Account for player stat boosts (attack boosts will be BattleManager)
+                float DamageDealt = (float)StatusAmount;
+
+                Debug.Log("Enemy dmgToDo: " + DamageDealt);
+                DamageDealt /= enemy.enduranceMulti;
+                Debug.Log("dmgToDo after endurance: " + DamageDealt);
+                //---
 
                 
-
+                //---Account for Field Effects on damage and application of Field Effects
                 //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
                 FieldEffect_SO condition = BattleManager.instance.fieldCondition;
                 //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
@@ -348,15 +391,13 @@ public struct BattleEffect
                         if(System.Array.IndexOf(effect.boostedTypes, damageType) != -1)
                         {
                             //Debug.Log("Initial damage to be dealt on enemy: " + DamageDealt);
-                            DamageDealt = (int)(DamageDealt * effect.boostAmount); 
+                            DamageDealt = (DamageDealt * effect.boostAmount); 
                             //Debug.Log("Weather-Boosted damage to be dealt enemy: " + DamageDealt);
                             //Debug.Log(condition.name + " has affected damage dealt");      
                         }
                     }
                 }
-                //Debug.Log("last check: " + DamageDealt);
-
-                //***If the played card sets a new field condition.
+                //If the played card sets a new field condition.
                 if(setsFieldCondition)
                 {
                     fieldCondition.active = true;
@@ -365,9 +406,11 @@ public struct BattleEffect
                     BattleManager.instance.fieldCondition = fieldCondition;
                     //Debug.Log("set field condition to: " + fieldCondition.name);       
                 } 
+                //---
 
 
-                int dmgToDeal = DamageDealt;
+                //---Actually damage the thing
+                int dmgToDeal = (int)DamageDealt;
                 int shieldAmount = enemy.CurrentShield;
     
                 if (shieldAmount > 0)
@@ -394,10 +437,13 @@ public struct BattleEffect
                 }
                 //PlayParticles(pos);
                 if (DamageDealt > 0)
-                    enemy.currentHealth -= DamageDealt;
+                    enemy.currentHealth -= (int)DamageDealt;
                 enemy.UpdateHealthBar();
                 break;
+                //---
             }
+
+
             case (BattleActionType.HEAL):
             {
                 //For friendly status effects to be applied on self
@@ -421,6 +467,8 @@ public struct BattleEffect
                 enemy.UpdateHealthBar();
                 break;
             }
+
+
             case (BattleActionType.DEFEND):
             {
                 //For friendly status effects to be applied on self
@@ -445,6 +493,8 @@ public struct BattleEffect
                 break;
             }
         }
+
+        //---Enemy death
         if (enemy.currentHealth <= 0)
         {
             //Stops the player from interacting with the enemy once dead
@@ -454,6 +504,7 @@ public struct BattleEffect
             enemy.gameObject.SetActive(false);
         }
         return true;
+        //---
     }
     #endregion
 

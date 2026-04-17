@@ -15,6 +15,12 @@ public class PlayerController : MonoBehaviour
     public Image healthbar;
     public TMP_Text currentHealthText;
 
+    //---Variables affected by status effects
+    public float attackMulti = 1f; //Multiplier for outgoing damage if the player has an attack boost
+    public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
+    public bool healable = true; //Whether or not player can be healed. 
+    //--
+
     public bool TestingFastMode = false;
 
     public GameObject shieldPanel;
@@ -160,10 +166,12 @@ public class PlayerController : MonoBehaviour
         questMenu.SetActive(!questMenu.activeSelf);
     }
 
+    #region Status Effects
     public IEnumerator StatusEffects()
     {
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
+        healable = true;
         for (int i = 0; i < statusEffects.Count; i++)
         {
             StatusEffectContainer status = statusEffects[i];
@@ -171,12 +179,25 @@ public class PlayerController : MonoBehaviour
             switch(status.statusType)
             {
                 case(StatusEffectType.CleanseAll):
+                {
                     print("Player cleansing ALL status effects");
                     statusEffects.Clear();
                     break;
+                }
                 case(StatusEffectType.CleanseNegative):
+                {
                     cleanseNeg = true;
                     break;
+                }
+                case(StatusEffectType.AntiHeal):
+                {
+                    healable = false;
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
             }
         }
 
@@ -198,6 +219,12 @@ public class PlayerController : MonoBehaviour
 
 
         //=====Start Loop=====//
+
+        //
+        attackMulti = 1;
+        enduranceMulti = 1;
+        //
+
         for(int i = 0; i < statusEffects.Count; i++)
         {
             //Apply the status effect to the Player
@@ -211,11 +238,49 @@ public class PlayerController : MonoBehaviour
             switch(status.statusType)
             {
                 case(StatusEffectType.None):
+                {
                     print("No statusEffect. If this is printing, you accidentally triggered isStatusEffect on a card.");
                     break;
+                }
+                //---Stat boosts
+                case(StatusEffectType.AttackBoost):
+                {
+                    print("Attack Boost statusEffect of " + status.statusAmount + " at index " + i);
+
+                    //Change the attack multiplier accordingly
+                    attackMulti *= ((float)status.statusAmount/100);
+
+                    break;
+                }
+                case(StatusEffectType.EnduranceBoost):
+                {
+                    print("Endurance Boost statusEffect of " + status.statusAmount + " at index " + i);
+
+                    //Change the endurance multiplier accordingly
+                    enduranceMulti *= ((float)status.statusAmount/100);
+
+                    break;
+                }
+                //---
+
+                //---Cleanses
+                case(StatusEffectType.CleanseNegative):
+                {
+                    print("Cleanse negative statusEffects at index: " + i);
+                    //Handled above
+                    break;
+                }
+                case(StatusEffectType.CleanseAll):
+                {
+                    print("Cleanse all statusEffects at index: " + i);
+                    //Handled above
+                    break;
+                }
+                //---
 
                 //---Simple DOTs
                 case(StatusEffectType.Regeneration):
+                {
                     print("Regeneration statusEffect at index: " + i);
 
                     //Do heal
@@ -223,76 +288,98 @@ public class PlayerController : MonoBehaviour
                     print("Regeneration Status Effect healed the Player for " + status.statusAmount + " hp");
 
                     break;
+                }
                 case(StatusEffectType.OnFire):
+                {
                     print("OnFire statusEffect at index: " + i);
 
                     //Do burn damage
                     currentHealth -= status.statusAmount;
                     print("OnFire Status Effect did " + status.statusAmount + " damage to the Player");
+                    enduranceMulti *= 0.75f;
 
                     break;
+                }
                 case(StatusEffectType.Poisoned):
+                {
                     print("Poisoned statusEffect at index: " + i);
 
-                    //Do poison damage (exact same as burn)
+                    //Do poison damage
                     currentHealth -= status.statusAmount; 
                     print("Poisoned Status Effect did " + status.statusAmount + " damage to the Player");
 
                     break;
-                //---
-
-                //---More complicated
+                }
                 case(StatusEffectType.Frostbite):
+                {
                     print("Frostbite statusEffect at index: " + i);
-                    //
+                    
+                    //Do frostbite damage
+                    currentHealth -= status.statusAmount;
+                    print("Frostbite Status Effect did " + status.statusAmount + " damage to the Player");
+                    attackMulti *= 0.75f;
 
                     break;
+                }
+                //---
+
+                //---Not done yet
                 case(StatusEffectType.Awestruck):
+                {
                     print("Awestruck statusEffect at index: " + i);
 
                     //
 
                     break;
-                case(StatusEffectType.Stun):
+                }
+                case(StatusEffectType.Stun): //done*
+                {
                     print("Stun statusEffect at index: " + i);
 
-                    //Handled elsewhere
+                    //I don't think the player has stun handling at all so yeah
 
                     break;
+                }
                 case(StatusEffectType.CounterSpell):
+                {
                     print("CounterSpell statusEffect at index: " + i);
 
                     //
 
                     break;
+                }
                 case(StatusEffectType.EyeOfTheStorm):
+                {
                     print("EyeOfTheStorm statusEffect at index: " + i);
 
                     //
 
                     break;
-                case(StatusEffectType.AntiHeal):
+                }
+                case(StatusEffectType.AntiHeal): //done
+                {
                     print("AntiHeal statusEffect at index: " + i);
 
-                    //
+                    //Handled in the exceptions above
 
                     break;
-                //---
+                }
+                case(StatusEffectType.Evisceration): //done
+                {
+                    print("Evisceration statusEffect at index: " + i);
 
-                //---Cleanses
-                case(StatusEffectType.CleanseNegative):
-                    print("Cleanse negative statusEffects at index: " + i);
-                    //Handled above
+                    //teehee
+                    currentHealth -= 200;
+
                     break;
-                case(StatusEffectType.CleanseAll):
-                    print("Cleanse all statusEffects at index: " + i);
-                    //Handled above
-                    break;
+                }
                 //---
 
                 default:
+                {
                     print("idk");
                     break;
+                }
             }
             //==End of big switch statement to handle EVERY status effect==//
             
@@ -315,6 +402,7 @@ public class PlayerController : MonoBehaviour
 
         yield return null;
     }
+    #endregion
 
     public void UpdateHealthbar()
     {

@@ -6,6 +6,7 @@ using TMPro;
 
 public class Enemy : MonoBehaviour
 {
+    #region Variables
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Enemy_SO enemySO;
     // InventoryCard[] deck: Deck of the enemy. Copy from enemySO on instantiation
@@ -81,6 +82,12 @@ public class Enemy : MonoBehaviour
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
 
+    //---Variables to do with status effects
+    public float attackMulti = 1; //Multiplier for damage dealt if the enemy has an attack boost
+    public float enduranceMulti = 1; //Multipliter for damage taken if the enemy has an endurance booost
+    public bool healable = true; //Whether or not enemy can be healed. 
+    //---
+
     public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
@@ -99,10 +106,11 @@ public class Enemy : MonoBehaviour
 
     public bool deathCalled = false;
 
-// variable for enum switch state
+    // variable for enum switch state
     bool currentValue;
     int State = 5;
-//the different enemy states
+
+    //the different enemy states
     public enum EnemyState
     {
         Idle,
@@ -111,6 +119,7 @@ public class Enemy : MonoBehaviour
         Stunned,
         Defeated,
     }
+    #endregion
 
     //Changed Awake to a seperate function in order to set enemySO in the battlemanager
     public void SetUp(Enemy_SO enemy_SO)
@@ -297,25 +306,42 @@ public class Enemy : MonoBehaviour
         hourglassAnim.SetTrigger("HourglassRotate");
     }
 
+    #region Status Effects
     public IEnumerator StatusEffects()
     {
         //*** Add to PlayerController too
         
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
+        isStunned = false;
+        healable = true;
         for (int i = 0; i < statusEffects.Count; i++)
         {
             StatusEffectContainer status = statusEffects[i];
-            print("Test: " + status.statusType);
+            //print("Test: " + status.statusType);
             switch(status.statusType)
             {
                 case(StatusEffectType.CleanseAll):
+                {
                     print("Enemy cleansing ALL status effects");
                     statusEffects.Clear();
                     break;
+                }
                 case(StatusEffectType.CleanseNegative):
+                {
                     cleanseNeg = true;
                     break;
+                }
+                case(StatusEffectType.Stun):
+                {
+                    isStunned = true;
+                    break;
+                }
+                case(StatusEffectType.AntiHeal):
+                {
+                    healable = false;
+                    break;
+                }
             }
         }
 
@@ -337,6 +363,13 @@ public class Enemy : MonoBehaviour
 
 
 
+        //=====Start Loop=====//
+
+        //
+        attackMulti = 1;
+        enduranceMulti = 1;
+        //
+
         for (int i = 0; i < statusEffects.Count; i++)
         {
             //Apply the status effect to the Enemy
@@ -350,113 +383,163 @@ public class Enemy : MonoBehaviour
             switch(status.statusType)
             {
                 case(StatusEffectType.None):
+                {
                     print("No statusEffect. If this is printing, you accidentally triggered isStatusEffect on a card.");
                     break;
+                }
+                //---Stat boosts
+                case(StatusEffectType.AttackBoost):
+                {
+                    print("Attack Boost statusEffect of " + status.statusAmount + " at index " + i);
+
+                    //Change the attack multiplier accordingly
+                    attackMulti *= ((float)status.statusAmount/100);
+
+                    break;
+                }
+                case(StatusEffectType.EnduranceBoost):
+                {
+                    print("Endurance Boost statusEffect of " + status.statusAmount + " at index " + i);
+
+                    //Change the endurance multiplier accordingly
+                    enduranceMulti *= ((float)status.statusAmount/100);
+
+                    break;
+                }
+                //---
+
+                //---Cleanses
+                case(StatusEffectType.CleanseNegative):
+                {
+                    print("Cleanse negative statusEffects at index: " + i);
+                    //Handled above
+                    break;
+                }
+                case(StatusEffectType.CleanseAll):
+                {
+                    print("Cleanse all statusEffects at index: " + i);
+                    //Handled above
+                    break;
+                }
+                //---
 
                 //---Simple DOTs
                 case(StatusEffectType.Regeneration):
+                {
                     print("Regeneration statusEffect at index: " + i);
 
                     //Do heal
                     //Type based healing to jumpscare playtesters
-                    if( weaknesses.Contains(status.damageType) ){ currentHealth += Mathf.FloorToInt(status.statusAmount*DamageMult);  }
-                    else if (resistances.Contains(status.damageType)){ currentHealth += Mathf.FloorToInt(status.statusAmount * DamageReduct); }
-                    else{ currentHealth += status.statusAmount; }
-
+                    if(healable)
+                    {
+                        if( weaknesses.Contains(status.damageType) ){ currentHealth += Mathf.FloorToInt(status.statusAmount*DamageMult);  }
+                        else if (resistances.Contains(status.damageType)){ currentHealth += Mathf.FloorToInt(status.statusAmount * DamageReduct); }
+                        else{ currentHealth += status.statusAmount; }
+                    }
                     break;
+                }
                 case(StatusEffectType.OnFire):
+                {
                     print("OnFire statusEffect at index: " + i);
 
                     //Do burn damage
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
+                    enduranceMulti *= 0.75f;
 
                     break;
+                }
                 case(StatusEffectType.Poisoned):
+                {
                     print("Poisoned statusEffect at index: " + i);
 
-                    //Do poison damage (exact same as burn)
+                    //Do poison damage 
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
 
                     break;
+                }
+                case(StatusEffectType.Frostbite):
+                {
+                    print("Frostbite statusEffect at index: " + i);
+
+                    //Do Frostbite damage
+                    if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
+                    else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
+                    else{ currentHealth -= status.statusAmount; }
+                    attackMulti *= 0.75f;
+
+                    break;
+                }
                 //---
 
                 //---More complicated
-                case(StatusEffectType.Frostbite):
-                    print("Frostbite statusEffect at index: " + i);
-                    //
-
-                    break;
                 case(StatusEffectType.Awestruck):
+                {
                     print("Awestruck statusEffect at index: " + i);
 
                     //
 
                     break;
-                case(StatusEffectType.Stun):
+                }
+                case(StatusEffectType.Stun): //done
+                {
                     print("Stun statusEffect at index: " + i);
 
-                    //Handled elsewhere
+                    //Handled in the exceptions above
 
                     break;
+                }
                 case(StatusEffectType.CounterSpell):
+                {
                     print("CounterSpell statusEffect at index: " + i);
 
                     //
 
                     break;
+                }
                 case(StatusEffectType.EyeOfTheStorm):
+                {
                     print("EyeOfTheStorm statusEffect at index: " + i);
 
                     //
 
                     break;
-                case(StatusEffectType.AntiHeal):
+                }
+                case(StatusEffectType.AntiHeal): // done
+                {
                     print("AntiHeal statusEffect at index: " + i);
 
-                    //
+                    //Handled in the exceptions above
 
                     break;
-                //---
+                }
+                case(StatusEffectType.Evisceration): //done
+                {
+                    print("Evisceration statusEffect at index: " + i);
 
-                //---Cleanses
-                case(StatusEffectType.CleanseNegative):
-                    print("Cleanse negative statusEffects at index: " + i);
-                    //Handled above
+                    //teehee
+                    currentHealth -= 200;
+
                     break;
-                case(StatusEffectType.CleanseAll):
-                    print("Cleanse all statusEffects at index: " + i);
-                    //Handled above
-                    break;
+                }
                 //---
 
                 default:
+                {
                     print("idk");
                     break;
+                }
             }
             //==End of big switch statement to handle EVERY status effect==//
-
-            /*if(cleanse)
-            {
-                for (int i = 0; i < statusEffects.Count; i++)
-                {
-                    //Apply the status effect to the Enemy
-                    if(status.isNegative)
-                    {
-                        statusEffects.Remove(statusEffects[i]);
-                        i--;
-                    }
-                }
-            }*/
 
             // Decrement the turn count for perishable effects
             if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
-                if (statusEffects[i].damageType == DamageType.Stun) isStunned = false;
+                //if (statusEffects[i].damageType == DamageType.Stun) isStunned = false;
                 statusEffects.Remove(statusEffects[i]);
                 Debug.Log("The Status Effect " + status.statusType + " has expired on an Enemy");
                 i--;
@@ -465,7 +548,10 @@ public class Enemy : MonoBehaviour
             UpdateHealthBar();
             yield return new WaitForSeconds(0.1f);
         }
+        //=====End Loop=====//
+
         yield return null;
     }
+    #endregion
 
 }
