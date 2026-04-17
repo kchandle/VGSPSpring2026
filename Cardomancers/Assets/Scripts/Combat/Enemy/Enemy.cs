@@ -126,6 +126,7 @@ public class Enemy : MonoBehaviour
         UpdateShield();
         UpdateHealthBar();
         currentMana = 5;
+        attackAnim.runtimeAnimatorController = enemy_SO.enemyAttkAnim;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
@@ -229,6 +230,7 @@ public class Enemy : MonoBehaviour
     {
         if (healthBar != null)
         {
+            if(healthBar.fillAmount > (float)currentHealth / maxHealth) attackAnim.SetTrigger("Hurt");
             healthBar.fillAmount = (float)currentHealth / maxHealth;
             healthText.text = currentHealth + "/" + maxHealth;
         }

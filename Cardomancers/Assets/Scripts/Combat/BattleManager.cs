@@ -590,7 +590,8 @@ public class BattleManager : MonoBehaviour
 
             if (enemyScript.currentTimer <= 0)
             {  
-                enemyScript.attackAnim.SetTrigger("Attack");
+                if(enemyScript.currentActionType == CardType.ATK) enemyScript.attackAnim.SetTrigger("Attack");
+                
                 #region attackAnim
                 // float xOffset = 0;
                 // float yOffset = 0;
