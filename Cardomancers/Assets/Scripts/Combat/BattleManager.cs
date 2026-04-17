@@ -590,30 +590,31 @@ public class BattleManager : MonoBehaviour
 
             if (enemyScript.currentTimer <= 0)
             {  
+                enemyScript.attackAnim.SetTrigger("Attack");
                 #region attackAnim
-                float xOffset = 0;
-                float yOffset = 0;
-                float slope = 0;
-                
-                GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
-                
-                //print("ps y: " + ps.transform.position.y);
-                //print("enemy y: " + enemy.transform.position.y);
-                xOffset = -(enemy.transform.position.x - ps.transform.position.x);
-                yOffset = enemy.transform.position.y + ps.transform.position.y;
-                
-                slope = yOffset/xOffset;
-                if (float.IsInfinity(slope)) slope = yOffset;
-                
-                //print("yOffset: " + yOffset);
-                //print("XOffset: " + xOffset);
-                //print("slope: " + slope);
-                if (xOffset == 0) xOffset = 1;
-                Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
-                
-                enemyScript.enemyImage.transform.position += moveAnim;
-                yield return new WaitForSeconds(attackAnimDelay);
-                enemyScript.enemyImage.transform.position -= moveAnim;
+                // float xOffset = 0;
+                // float yOffset = 0;
+                // float slope = 0;
+                //
+                // GameObject ps = playerspacePrefab.transform.GetChild(0).gameObject;
+                //
+                // //print("ps y: " + ps.transform.position.y);
+                // //print("enemy y: " + enemy.transform.position.y);
+                // xOffset = -(enemy.transform.position.x - ps.transform.position.x);
+                // yOffset = enemy.transform.position.y + ps.transform.position.y;
+                //
+                // slope = yOffset/xOffset;
+                // if (float.IsInfinity(slope)) slope = yOffset;
+                //
+                // //print("yOffset: " + yOffset);
+                // //print("XOffset: " + xOffset);
+                // //print("slope: " + slope);
+                // if (xOffset == 0) xOffset = 1;
+                // Vector3 moveAnim = new Vector3(attackOffset*xOffset, -slope*attackOffset*xOffset, 0);
+                //
+                // enemyScript.enemyImage.transform.position += moveAnim;
+                // yield return new WaitForSeconds(attackAnimDelay);
+                // enemyScript.enemyImage.transform.position -= moveAnim;
                 #endregion
                 
                 EnemiesChooseCards(currentEnemies.IndexOf(enemy));

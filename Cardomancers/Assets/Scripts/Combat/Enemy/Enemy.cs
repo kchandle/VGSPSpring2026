@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
     public List<DamageType> weaknesses;
 
     [SerializeField] private Animator animator;   //Animator for the enemy’s sprites.
+    public Animator attackAnim;
 
 
     //References to UI components
