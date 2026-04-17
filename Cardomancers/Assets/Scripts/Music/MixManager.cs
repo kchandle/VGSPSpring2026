@@ -30,6 +30,9 @@ public static class MixManager
 
         musicGroup = mixer.FindMatchingGroups("Music")[0];
         sfxGroup = mixer.FindMatchingGroups("SFX")[0];
+
+        /* make things happen */
+        Application.runInBackground = true;
     }
 
     private static float ToDb(float volume)
