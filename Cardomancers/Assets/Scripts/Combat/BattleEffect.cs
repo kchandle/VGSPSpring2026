@@ -3,6 +3,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 
 [ System.Serializable ]
@@ -41,7 +42,7 @@ public enum damageType
     rest
 }
 
-//***
+#region Status Effect Types
 public enum StatusEffectType
 {
     None,
@@ -63,23 +64,24 @@ public enum StatusEffectType
     OnFire,
     Poisoned,
     Frostbite,
+    Awestruck,
     //-
     //--- ---//
 
 
     //---Not Yet Implemented---//
-    Awestruck,
     Stun, //done
     CounterSpell,
     EyeOfTheStorm,
     AntiHeal, //done
-    Evisceration, //done
+    Evisceration, //teehee
     //--- ---//
 
     
-
+    Random, //For the aura of minor chaos hack
     Other
 }
+#endregion
 
 //Not used just yettttttt
 public enum TargetingType
@@ -103,6 +105,7 @@ public struct BattleEffect
     public DamageType damageType;
     public BattleActionType actionType;
 
+
     [Header("Status Effects")]
     // Status effect related variables, only used if isStatusEffect is true
     public bool isStatusEffect; // Whether this BattleEffect is a status effect
@@ -112,20 +115,29 @@ public struct BattleEffect
     public float probability; //The chance of inflicting the status effect (0-1)
     public StatusEffectType statusType;
 
-    [Header("Enemy Summoning (For enemies only)")] //Will have no effect if used by player
+
+    [Header("Enemy Summoning (Note: For enemies only)")] 
+    //Will have no effect if used by player
+
     //Summoning variables, only used if summonsEnemies is true
     public bool summonsEnemies; //Whether or not this card summons enemies
     public Enemy_SO[] summonableEnemies; //The possible enemy types that can be summoned
 
-    [Header("Set-Order (For enemies only)")] //Will have no effect if used by player
+
+    [Header("Set-Order (Note: different effects for enemy and player)")] 
+    //If a set-order card is used by an enemy in any context, the enemy's next action will be nextCard
+    //If a set-order card is used by a player on an enemy, it will force the enemy's next action to be nextCard.
+
     //Variables for set-order cards
     public bool setsNextCard;
     public Card_SO nextCard;
+
 
     [Header("Field Conditions")]
     //Variables for Field Effects
     public bool setsFieldCondition;
     public FieldEffect_SO fieldCondition;
+
 
     [Header("Particle Effects")]
     //A list of particle effects to happen when the BattleEffect is played
@@ -140,7 +152,7 @@ public struct BattleEffect
     //}
 
 
-    public BattleEffect(int statusAmount, DamageType damageType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, /*TargetingType attackTargetType,*/ bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
     {
         //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
@@ -187,6 +199,16 @@ public struct BattleEffect
             }
         }
 
+        //---Applying random status effects
+        if(isStatusEffect && statusType == StatusEffectType.Random)
+        {
+            StatusEffectType value = (StatusEffectType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(StatusEffectType)).Length);
+            statusType = value;
+            //Debug.Log(statusType);
+        }
+        //---
+
+
         switch (actionType)
         {
             case (BattleActionType.ATTACK):
@@ -202,10 +224,10 @@ public struct BattleEffect
 
 
                 //---Account for Field Effects on damage and application of Field Effects
-                //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
+                //If there is a field condition active (such as rain), it affects damage, and the target is not immune to weather
                 FieldEffect_SO condition = BattleManager.instance.fieldCondition;
-                //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
-                if(condition && condition.active && condition.boostsDamage)
+
+                if(condition && condition.active && condition.boostsDamage && !player.weatherImmune)
                 {
                     Debug.Log("Evaluating " + condition.name + " effects on damage to player");
                     foreach(FieldEffects effect in condition.effects)
@@ -220,6 +242,7 @@ public struct BattleEffect
                         }
                     }
                 }
+
                 //If the played card sets a new field condition.
                 if(setsFieldCondition)
                 {
@@ -235,7 +258,7 @@ public struct BattleEffect
                 //---Account for Application of status Effects
                 if (isStatusEffect)
                 {
-                    float statusRoll = Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0, 1);
                     Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -273,7 +296,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0, 1);
                     Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -298,7 +321,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0, 1);
                     Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -315,6 +338,8 @@ public struct BattleEffect
                 player.currentHealth += StatusAmount;
                 return true;
             }
+
+
             default:
             {
                 return false;
@@ -338,6 +363,16 @@ public struct BattleEffect
             }
         }
         
+        //---Applying random status effects
+        if(isStatusEffect && statusType == StatusEffectType.Random)
+        {
+            StatusEffectType value = (StatusEffectType)UnityEngine.Random.Range(0, Enum.GetValues(typeof(StatusEffectType)).Length);
+            statusType = value;
+            //Debug.Log(statusType);
+        }
+        //---
+
+        
         Enemy enemy = target.GetComponent<Enemy>();
         switch (actionType)
         {
@@ -346,7 +381,7 @@ public struct BattleEffect
                 //---Add Status Effects
                 if (isStatusEffect)
                 {
-                    float statusRoll = Random.Range(0f, 1f);
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
                     Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -369,6 +404,15 @@ public struct BattleEffect
                 //---
 
 
+                //---If the attack sets the enemy's next card
+                if(setsNextCard && nextCard)
+                {
+                    enemy.nextCardSet = true;
+                    enemy.nextCard = new InventoryCard(nextCard, new Hack_SO[2], 0);
+                }
+                //---
+
+
                 //---Account for player stat boosts (attack boosts will be BattleManager)
                 float DamageDealt = (float)StatusAmount;
 
@@ -379,12 +423,12 @@ public struct BattleEffect
 
                 
                 //---Account for Field Effects on damage and application of Field Effects
-                //***If there is a field condition active (such as rain), evaluate the effects it may have on damage.
+                //If there is a field condition active (such as rain), it affects damage, and the target isn't immune to weather effects
                 FieldEffect_SO condition = BattleManager.instance.fieldCondition;
-                //Debug.Log("Field Condition Active: " + condition + ", " + condition.active);
-                if(condition && condition.active)
+
+                if(condition && condition.active && condition.boostsDamage && !enemy.weatherImmune)
                 {
-                    Debug.Log("Evaluating " + condition.name + " effects damage to enemy");
+                    Debug.Log("Evaluating " + condition.name + " effects on damage to enemy");
                     foreach(FieldEffects effect in condition.effects)
                     {
                         //decreases / increases damage if the type of damage is affected by the field condition
@@ -397,6 +441,7 @@ public struct BattleEffect
                         }
                     }
                 }
+
                 //If the played card sets a new field condition.
                 if(setsFieldCondition)
                 {
@@ -449,7 +494,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0, 1);
                     Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -474,7 +519,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0, 1);
                     Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)

@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
     public List<Card_SO> hand = new List<Card_SO>();
     public int maxHealth; //Max health of the enemy.
     public int currentHealth; //  MaxHealth by default
-    public bool isStunned; // f the enemy is stunned, they cannot take actions.
     public int maxTimer = 3;
     public int currentTimer;
     public int currentMana = 5;
@@ -83,12 +82,17 @@ public class Enemy : MonoBehaviour
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
 
     //---Variables to do with status effects
+    public bool isStunned; // if the enemy is stunned, they cannot take actions.
     public float attackMulti = 1; //Multiplier for damage dealt if the enemy has an attack boost
     public float enduranceMulti = 1; //Multipliter for damage taken if the enemy has an endurance booost
     public bool healable = true; //Whether or not enemy can be healed. 
-    //---
+    public bool weatherImmune = false; //Whether or not enemy is immune to weather
+    public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
+
+
 
     public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
+    //---
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
@@ -368,6 +372,7 @@ public class Enemy : MonoBehaviour
         //
         attackMulti = 1;
         enduranceMulti = 1;
+        weatherImmune = false;
         //
 
         for (int i = 0; i < statusEffects.Count; i++)
@@ -466,24 +471,31 @@ public class Enemy : MonoBehaviour
                     print("Frostbite statusEffect at index: " + i);
 
                     //Do Frostbite damage
-                    if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
+                    if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
                     attackMulti *= 0.75f;
 
                     break;
                 }
-                //---
-
-                //---More complicated
                 case(StatusEffectType.Awestruck):
                 {
                     print("Awestruck statusEffect at index: " + i);
 
-                    //
+                    //Do Awestruck damage
+                    //DOT that only triggers while stunned
+                    if(isStunned)
+                    {
+                        if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageMult);  }
+                        else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
+                        else{ currentHealth -= status.statusAmount; }
+                    }
 
                     break;
                 }
+                //---
+
+                //---More complicated
                 case(StatusEffectType.Stun): //done
                 {
                     print("Stun statusEffect at index: " + i);
@@ -492,11 +504,15 @@ public class Enemy : MonoBehaviour
 
                     break;
                 }
-                case(StatusEffectType.CounterSpell):
+                case(StatusEffectType.CounterSpell): //*
                 {
                     print("CounterSpell statusEffect at index: " + i);
 
-                    //
+                    //Set counterSpellActive to true, then immedieately remove this status effect.
+                    //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
+                    counterSpellActive = true;
+                    statusEffects.Remove(statusEffects[i]);
+                    i--;
 
                     break;
                 }
@@ -505,6 +521,7 @@ public class Enemy : MonoBehaviour
                     print("EyeOfTheStorm statusEffect at index: " + i);
 
                     //
+                    weatherImmune = true;
 
                     break;
                 }
@@ -529,7 +546,8 @@ public class Enemy : MonoBehaviour
 
                 default:
                 {
-                    print("idk");
+                    print("If this is printing, you forgot to add " + status.statusType + " to the Enemy script");
+                    print("If it printed Random, ignore this");
                     break;
                 }
             }
@@ -539,7 +557,6 @@ public class Enemy : MonoBehaviour
             if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
-                //if (statusEffects[i].damageType == DamageType.Stun) isStunned = false;
                 statusEffects.Remove(statusEffects[i]);
                 Debug.Log("The Status Effect " + status.statusType + " has expired on an Enemy");
                 i--;

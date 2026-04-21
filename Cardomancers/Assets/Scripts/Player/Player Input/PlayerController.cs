@@ -10,6 +10,7 @@ using static UnityEngine.ParticleSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Variables
 	public float maxPlayerHealth = 100f;
     public float currentHealth;
     public Image healthbar;
@@ -19,6 +20,10 @@ public class PlayerController : MonoBehaviour
     public float attackMulti = 1f; //Multiplier for outgoing damage if the player has an attack boost
     public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
     public bool healable = true; //Whether or not player can be healed. 
+    public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
+
+    //public bool isStunned = false;
+    public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
     //--
 
     public bool TestingFastMode = false;
@@ -53,6 +58,7 @@ public class PlayerController : MonoBehaviour
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public bool isShielded = false; //If the player is shielded, they take no damage this turn.
+    #endregion
 
     private void OnEnable()
     {
@@ -223,6 +229,7 @@ public class PlayerController : MonoBehaviour
         //
         attackMulti = 1;
         enduranceMulti = 1;
+        weatherImmune = false;
         //
 
         for(int i = 0; i < statusEffects.Count; i++)
@@ -321,18 +328,23 @@ public class PlayerController : MonoBehaviour
 
                     break;
                 }
-                //---
-
-                //---Not done yet
-                case(StatusEffectType.Awestruck):
+                case(StatusEffectType.Awestruck)://*
                 {
                     print("Awestruck statusEffect at index: " + i);
 
-                    //
+                    //no isStunned variable for player
+                    if(false)
+                    {
+                        currentHealth -= status.statusAmount;
+                        print("Awakened Status Effect did " + status.statusAmount + " damage to the Player");
+                    }
 
                     break;
                 }
-                case(StatusEffectType.Stun): //done*
+                //---
+
+                //---Not done yet
+                case(StatusEffectType.Stun): //*
                 {
                     print("Stun statusEffect at index: " + i);
 
@@ -344,7 +356,11 @@ public class PlayerController : MonoBehaviour
                 {
                     print("CounterSpell statusEffect at index: " + i);
 
-                    //
+                    //Set counterSpellActive to true, then immedieately remove this status effect.
+                    //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
+                    counterSpellActive = true;
+                    statusEffects.Remove(statusEffects[i]);
+                    i--;
 
                     break;
                 }
@@ -353,6 +369,7 @@ public class PlayerController : MonoBehaviour
                     print("EyeOfTheStorm statusEffect at index: " + i);
 
                     //
+                    weatherImmune = true;
 
                     break;
                 }
@@ -377,7 +394,8 @@ public class PlayerController : MonoBehaviour
 
                 default:
                 {
-                    print("idk");
+                    print("If this is printing, you forgot to add " + status.statusType + " to the PlayerController");
+                    print("If it printed Random, ignore this");
                     break;
                 }
             }

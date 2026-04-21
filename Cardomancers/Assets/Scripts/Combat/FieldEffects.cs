@@ -26,16 +26,17 @@ using System.Collections.Generic;
 [ System.Serializable ]
 public struct FieldEffects
 {
+    [Header("Type-Based damage boosting")]
     //The types of damage that will be affected by the boostAmount
     public DamageType[] boostedTypes;
-
     //Amount the BoostType will be multiplied by. a boostAmout of .75 decreases damage by 25%
     public float boostAmount;
 
 
+    [Header("Chip Damage dealt per turn")]
     //Card containing the type and amount of chip damage to be dealt per turn to all targets on the field
-    //This could cause issues down the line, but it works fine at the moment
     public bool dealsChipDamage;
+    //public bool chipIsRandom; //not used yet
     public Card_SO chipDamageCard;
     
 
