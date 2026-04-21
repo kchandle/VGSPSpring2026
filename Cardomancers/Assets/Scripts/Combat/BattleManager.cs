@@ -137,7 +137,7 @@ public class BattleManager : MonoBehaviour
     {
         // OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
         // OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        // OnWin.AddListener(() => {Debug.Log("You Win!");}); //Occurs on Win
+        OnWin.AddListener(() => {Debug.Log("You Win!");}); //Occurs on Win
         // PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
         // EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
         OnEnd.AddListener(() => {Debug.Log("Battle Over"); playerInteract.battleManager = null;}); //Occurs on Battle End

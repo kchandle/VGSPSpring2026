@@ -12,15 +12,25 @@ public class Objective : MonoBehaviour
     float timer = 0f;
     public TextMeshProUGUI questUI;
     public TextMeshProUGUI completionUI;
+    //Battle only needed if on=bjective requires a battle to continue
+    public Battle_SO battle_so;
     // Text for when objective begins/is ended
 
     public UnityEvent OnCompleteObjective;
+    public BattleManager battleManager;
     
 
     private void OnEnable()
     {
         Debug.Log(objectiveText);
         questUI.text = objectiveText;
+        
+    }
+
+    public void SetBattleManager(BattleManager battleManagerPass)
+    {
+        battleManager = battleManagerPass;
+        battleManager.OnWin.AddListener(CompleteObjective(battleManager.battle));
     }
 
     public void StartTimer()
@@ -30,6 +40,15 @@ public class Objective : MonoBehaviour
 
     public void CompleteObjective()
     {
+        Debug.Log(completedText);
+        timer = 5f;
+        OnCompleteObjective.Invoke();
+        completion = true;
+    }
+
+    public void CompleteObjective(Battle_SO battle)
+    {
+        if (!(battle == battle_so)) return;
         Debug.Log(completedText);
         timer = 5f;
         OnCompleteObjective.Invoke();

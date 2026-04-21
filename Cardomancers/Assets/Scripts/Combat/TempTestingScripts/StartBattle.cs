@@ -57,7 +57,16 @@ public class StartBattle : MonoBehaviour
             print("Pick up some cards and add them to your deck. Then come back.");
             return;
         }
+
         StartCoroutine(_Impl_StartBattleNow());
+    }
+
+    public  void SetObjectives(BattleManager battleManager)
+    {
+        foreach (Objective o in Object.FindObjectsByType<Objective>(FindObjectsSortMode.None))
+        {
+            o.SetBattleManager(battleManager);
+        }
     }
 
     IEnumerator DisableTransition(float waitTime)
@@ -98,6 +107,7 @@ public class StartBattle : MonoBehaviour
 
                     battleSystem = FindFirstObjectByType<BattleManager>();
                     battleSystem.startBattle = this;
+                    SetObjectives(battleSystem);
                 }
                 battleSystem.StartBattle(battleToStart);
                 battleStarted = true;
