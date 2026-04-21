@@ -12,11 +12,27 @@ public class PlayerInteract : MonoBehaviour
 
     public InteractableObject currentHighlight = null;
     public GameObject interactPrompt;
+    public GameStateScript.GameState state;
+    public BattleManager battleManager;
+    public bool battling;
+
+    public void Start()
+    {
+        GameStateScript.GameState state = GameStateScript.CurrentState;
+    }
 
     private void Update()
     {
+        if(battleManager)
+        {
+            battling = battleManager.isBattling;
+        }
+        else battling = false;
         InteractHighlight();
-        if (interacting == false) interactPrompt.SetActive(inRange);
+        if (!interacting && !battling) 
+        {
+            if (state == GameStateScript.GameState.WALKING) interactPrompt.SetActive(inRange);
+        }
         else interactPrompt.SetActive(false);
     }
 
