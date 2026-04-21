@@ -11,9 +11,9 @@ public class AnimateVFX : MonoBehaviour
 
     private void Update()
     {
-        if (false)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Finished"))
         {
-
+            Destroy(this.gameObject);
         }
     }
 }
