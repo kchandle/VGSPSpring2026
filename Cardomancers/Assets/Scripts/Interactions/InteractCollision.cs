@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,11 +7,13 @@ public class InteractCollision : MonoBehaviour
 {
      public UnityEvent interactable;
 
+    [SerializeField] ParticleSystem particles;
+
     private void Awake()
     {
         GetComponent<Collider>().isTrigger = true;
     }
-
+    
     void OnTriggerEnter(Collider other)
     {
         //check the state, if speaking, inventory, or battle, return, if not it invokes
@@ -20,7 +23,8 @@ public class InteractCollision : MonoBehaviour
             if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
             if (GameStateScript.CurrentState == GameStateScript.GameState.BATTLE) return;
             if (GameStateScript.CurrentState == GameStateScript.GameState.SPEAKING) return;
-        
+
+            Instantiate(particles, transform.position, Quaternion.identity); 
             interactable.Invoke();
         }
     }

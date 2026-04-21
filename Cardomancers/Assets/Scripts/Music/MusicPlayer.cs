@@ -1,7 +1,3 @@
-/* Author: DerjenigeUberMensch
- *
- * Contact Group 1 For help or questions relating to this script.
- */
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Networking;
@@ -52,10 +48,6 @@ public class MusicPlayer : MonoBehaviour
     [Tooltip("Fade Time (In Seconds) between Tracks")]
     [Range(0f, 10f)]
     public float FadeTime = 0.15f;
-
-    [Tooltip("Playback History max length")]
-    [Range(0f, 256f)]
-    public int HistoryMax = 50;
 
     public float TrackLength 
     { 
@@ -142,6 +134,7 @@ public class MusicPlayer : MonoBehaviour
 
     // cant use new() because the type isnt enough to be descriptive ????
     private List<int> playHistory = new List<int>();
+    private const int TRIM_PLAY_HISTORY_LENGTH = 50;
 
     // These are the sources we need 2 to prevent choppy transitions.
 
@@ -160,6 +153,10 @@ public class MusicPlayer : MonoBehaviour
     private Coroutine fadeCoroutine;
     // this is just a hack to fix the Update() stuff we did to call Next and Prev when we end music.
     private bool isNextPrevQueued = false;
+
+    // This is not implemented yet...
+    private bool reversed = false;
+
 
     // Unused.
     private static float DbToVolume(float db)
@@ -288,16 +285,19 @@ public class MusicPlayer : MonoBehaviour
         // Play History
         playHistory.Add(this.AudioIndex);
 
-        if(playHistory.Count > this.HistoryMax)
+        if(playHistory.Count > TRIM_PLAY_HISTORY_LENGTH)
         {   playHistory.RemoveAt(0);
         }
+
+
 
         int prevIndex = this.AudioIndex;
 
         this.AudioIndex = audioIndex;
 
         if(fadeCoroutine != null)
-        {   StopCoroutine(fadeCoroutine);
+        {   
+            StopCoroutine(fadeCoroutine);
         }
 
         this.audioSourceBuff.clip = Clips[this.AudioIndex];
@@ -463,6 +463,9 @@ public class MusicPlayer : MonoBehaviour
            this.audioSourceBuff = sources[1];
         }
 
+        MixManager.AudioSourceAssignMixerGroup(this.audioSource, "Music");
+        MixManager.AudioSourceAssignMixerGroup(this.audioSourceBuff, "Music");
+
         foreach(AudioClip clip in this.Clips)
         {   AudioSizeTypeAssertion(clip);
         }
@@ -492,7 +495,6 @@ public class MusicPlayer : MonoBehaviour
 
         float playbackSpeed;
         float volume;
-
 
         if(this.VolumeRampTime <= 0f)
         {   volume = this.Volume;
@@ -525,9 +527,21 @@ public class MusicPlayer : MonoBehaviour
             }
             else if(playbackSpeed > 0f)
             {
+                // make sampling back to normal.
+                if(reversed)
+                {
+                }
+
+                reversed = false;
             }
             else if(playbackSpeed < 0f)
             {
+                // reverse sampling.
+                if(!reversed)
+                {
+                }
+
+                reversed = true;
             }
         }
 
@@ -633,7 +647,7 @@ public class MusicPlayer : MonoBehaviour
             string timeLabel = string.Format("[{0}:{1:00}]", minutes, seconds);
 
             val = EditorGUILayout.Slider(
-                new GUIContent("Current Time: " + timeLabel),
+                new GUIContent("Current Time: " + timeLabel, "Time Position in The Currently Playing Track."),
                 player.CurrentTime,
                 0f,
                 player.TrackLength
@@ -646,7 +660,7 @@ public class MusicPlayer : MonoBehaviour
             {   track = audio.name;
             }
 
-            EditorGUILayout.LabelField($"Track: [{track}]");
+            EditorGUILayout.LabelField(new GUIContent($"Track: [{track}]", "Current Track Playing"));
 
             if(!player.IsPlaying)
             {
@@ -659,12 +673,39 @@ public class MusicPlayer : MonoBehaviour
 
             player.CurrentTime = val;
 
+            EditorGUILayout.LabelField("Player Controls: ");
+
             EditorGUILayout.BeginHorizontal();
 
-            playClick = GUILayout.Button("�", GUILayout.Width(buttonWidthPx));
-            prevClick = GUILayout.Button("�", GUILayout.Width(buttonWidthPx));
-            stopClick = GUILayout.Button("�", GUILayout.Width(buttonWidthPx));
-            nextClick = GUILayout.Button("�", GUILayout.Width(buttonWidthPx));
+            if(player.IsPlaying)
+            {
+                playClick = GUILayout.Button(
+                    EditorGUIUtility.IconContent("PauseButton", "Play/Pause"),
+                    GUILayout.Width(buttonWidthPx)
+                    );
+            }
+            else
+            {
+                playClick = GUILayout.Button(
+                    EditorGUIUtility.IconContent("PlayButton", "Play/Pause"),
+                    GUILayout.Width(buttonWidthPx)
+                    );
+            }
+
+            prevClick = GUILayout.Button(
+                EditorGUIUtility.IconContent("Animation.PrevKey", "Previous"),
+                GUILayout.Width(buttonWidthPx)
+                );
+
+            stopClick = GUILayout.Button(
+                EditorGUIUtility.IconContent("PlayButton On", "Stop"),
+                GUILayout.Width(buttonWidthPx)
+                );
+
+            nextClick = GUILayout.Button(
+                EditorGUIUtility.IconContent("Animation.NextKey", "Next"),
+                GUILayout.Width(buttonWidthPx)
+                );
 
             if(playClick)
             {   
