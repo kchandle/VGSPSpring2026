@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static GameStateScript; 
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -23,18 +24,12 @@ public class PlayerInteract : MonoBehaviour
 
     private void Update()
     {
-        if(battleManager)
-        {
-            battling = battleManager.isBattling;
-        }
-        else battling = false;
         InteractHighlight();
-        if (!interacting && !battling) 
-        {
-            if (state == GameStateScript.GameState.WALKING) interactPrompt.SetActive(inRange);
-        }
-        else interactPrompt.SetActive(false);
+        if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(inRange);
+        else interactPrompt.SetActive(false); 
     }
+
+
 
 
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
