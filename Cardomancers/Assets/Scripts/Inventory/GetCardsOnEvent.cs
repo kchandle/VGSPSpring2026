@@ -4,7 +4,13 @@ using System.Collections.Generic;
 public class GetCardsOnEvent : MonoBehaviour
 {
     public List<Card_SO> cardsToGet;
-    
+    public GameObject player;
+
+    public void Awake()
+    {
+        player = GameObject.FindWithTag("Player");
+    }
+
     public void GiveCards()
     {
 
@@ -14,5 +20,6 @@ public class GetCardsOnEvent : MonoBehaviour
         }
 
         cardsToGet.Clear();
+        player.GetComponent<PlayerInteract>().interacting = false;
     }
 }

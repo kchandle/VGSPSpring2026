@@ -30,13 +30,25 @@ public class StartBattle : MonoBehaviour
 
     public bool battleStarted = false;
 
+    public DialogueScripts.DialogueSO altText;
+    
+
     // The only reason this exists is to test the battle system quickly  
 
     public void StartBattleNow()
     {
+        if (Inventory.Deck.Count <= 1)
+        {
+            //play alt text
+            GameObject.Find("DialogueScreen").GetComponent<DialogueScripts.DialogueManager>().StartDialogue(altText);
+            print("Help");
+            return ;
+        } 
+
         if (Inventory.Deck.Count == 0 && Inventory.InventoryList.Count > 0)
         {
             print("Add some cards to your deck and come back.");
+            FindFirstObjectByType<PlayerInteract>().interacting = false;
             return;
         }
 
@@ -57,9 +69,6 @@ public class StartBattle : MonoBehaviour
     private IEnumerator _Impl_StartBattleNow()
     {
         Debug.Log("Script is running on: " + gameObject.name + ". Starting battle: "+ battleToStart.ToString());
-
-
-
         
          // Prepares video, plays it, and sets the battle transition to unactive
         if (videoPlayer != null)
