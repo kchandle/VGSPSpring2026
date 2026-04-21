@@ -15,6 +15,7 @@ public class BattleTheme : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        MixManager.AudioSourceAssignMixerGroup(this.audioSource, "Music");
         //GameStateScript.OnGameStateChanged += OnStateChange;
     }
 
