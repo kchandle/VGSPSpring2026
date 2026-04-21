@@ -35,6 +35,9 @@ public class BackgroundMusic : MonoBehaviour
             this.audioSource.volume = Volume;
             this.audioSource.clip = this.audioClip;
             this.audioSource.loop = true;
+
+            MixManager.AudioSourceAssignMixerGroup(this.audioSource, "Music");
+
         }
 
         this.audioSource.Play();
