@@ -69,6 +69,7 @@ public class PlayerCamera : MonoBehaviour
     {
         // Contact Group-1 team lead for this they added it, and I dont know what it does.
         input.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING ? true : false;
+        orbital.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING ? true : false;
 
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();

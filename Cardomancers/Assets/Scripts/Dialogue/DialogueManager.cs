@@ -119,6 +119,7 @@ public class DialogueManager : MonoBehaviour
 
         DialogueEvents.StartDialogue(newDialogue);
 
+        GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
         StartCoroutine(TypeLine());
     }
 
@@ -155,6 +156,7 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
             }
             //if (!reactive)
             //{

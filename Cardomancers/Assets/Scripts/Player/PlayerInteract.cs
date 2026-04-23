@@ -83,7 +83,7 @@ public class PlayerInteract : MonoBehaviour
                     }
 
                     ChangeAllChildrenLayer(interactable.gameObject, "Outline");
-                    if (inter.highlightables.Length > 0) foreach(GameObject g in inter.highlightables) ChangeAllChildrenLayer(g, "Outline");
+                    if (interactable.highlightables.Length > 0) foreach(GameObject g in interactable.highlightables) ChangeAllChildrenLayer(g, "Outline");
                     currentHighlight = interactable;
                     inRange = true;
                 }
