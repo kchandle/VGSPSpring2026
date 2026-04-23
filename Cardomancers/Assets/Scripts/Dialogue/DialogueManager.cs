@@ -47,15 +47,18 @@ public class DialogueManager : MonoBehaviour
 
 
     public Transform playerTransform;
-    public CinemachineCamera cam;
-        // Assign the player's transform in the Inspector
+    public CinemachineOrbitalFollow camPosition;
+    public CinemachineRotationComposer camRotation;
+        public CinemachineCamera cam;
+        public CinemachineInputAxisController input;
+        CinemachineBrain brain;
+        public Transform mainCam;
+    // Assign the player's transform in the Inspector
     public StartBattle reference;
 
     //Gets player action map to react to player input
     private void Awake()
-    {
-        playerTransform = GameObject.FindWithTag("Player").transform;
-        nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");  
+    {  
         // Check if an instance already exists
         if (instance != null && instance != this)
         {
@@ -63,9 +66,15 @@ public class DialogueManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-
         // Otherwise, set the instance to this object
         instance = this;
+
+        playerTransform = GameObject.FindWithTag("Player").transform;
+        nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");
+
+        brain = FindFirstObjectByType<CinemachineBrain>();
+        mainCam = Camera.main.transform;
+
 
         // Optional: Keep the object alive when loading new scenes
         DontDestroyOnLoad(this.gameObject);
@@ -123,6 +132,10 @@ public class DialogueManager : MonoBehaviour
         DialogueEvents.StartDialogue(newDialogue);
 
         GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
+
+            
+        brain.enabled = false;
+
         StartCoroutine(TypeLine());
     }
 
@@ -146,6 +159,8 @@ public class DialogueManager : MonoBehaviour
             
             textElement.text = string.Empty;
 
+            mainCam.transform.position = dialogue.lines[index].cameraMovePosition;
+            mainCam.transform.eulerAngles = dialogue.lines[index].cameraRotation;
 
             StartCoroutine(TypeLine());            
         }
@@ -160,6 +175,7 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
+                brain.enabled = true;
                 playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
                 GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
             }

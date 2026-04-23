@@ -33,6 +33,7 @@ public class DialogueLine
 
     [TextArea(3, 5)] public string text;
 
+        [Header("Cutscenes")]
     public bool doesCameraMove;
     public Vector3 playerMovePosition;
     public Vector3 cameraMovePosition;
