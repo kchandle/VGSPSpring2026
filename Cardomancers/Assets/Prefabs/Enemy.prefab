@@ -372,6 +372,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   isStunned: 0
+  maxTimer: 3
   currentTimer: 0
   currentMana: 0
   shieldPanel: {fileID: 9216639558957327251}
@@ -386,6 +387,7 @@ MonoBehaviour:
   resistances: 
   weaknesses: 
   animator: {fileID: 2476867894194971606}
+  attackAnim: {fileID: 8579979170492168572}
   deck: []
   healthBar: {fileID: 3208164943156339758}
   manaText: {fileID: 3610334816180045525}
@@ -400,6 +402,12 @@ MonoBehaviour:
     length: 0
     cardID: 
   cardPrefab: {fileID: 7278841492920612246, guid: ad9cfff1982a9484bac552ed07009f6c, type: 3}
+  nextCard:
+    cardSO: {fileID: 0}
+    hacks: []
+    length: 0
+    cardID: 
+  nextCardSet: 0
   DamageMult: 2
   DamageReduct: 0.5
   isShielded: 0
@@ -1246,6 +1254,7 @@ GameObject:
   - component: {fileID: 2571326184634737005}
   - component: {fileID: 8449422442201847894}
   - component: {fileID: 7110660132654742918}
+  - component: {fileID: 8579979170492168572}
   m_Layer: 5
   m_Name: EnemyImage
   m_TagString: Untagged
@@ -1300,7 +1309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1730165131, guid: ca1acb6b848fbd946bbadcfb7120a70d, type: 3}
+  m_Sprite: {fileID: -316966544, guid: b164405010778354db75664ccade2894, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1310,6 +1319,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &8579979170492168572
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7633620537899374289}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 949d87a0010b72a4d8cf9fcbc2cb0565, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8130180573378348369
 GameObject:
   m_ObjectHideFlags: 0
