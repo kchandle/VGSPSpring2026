@@ -416,6 +416,7 @@ MonoBehaviour:
   battleToStart: {fileID: 11400000, guid: ee4801a150f80054da51dfcc064b80e1, type: 2}
   battleManagerPrefab: {fileID: 2964704237051563936, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
   battleStarted: 0
+  altText: {fileID: 0}
 --- !u!114 &297765985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,7 +690,7 @@ PrefabInstance:
     - target: {fileID: 6706552799686737436, guid: bd1582476349c3e4e921a2f0be87f9ec, type: 3}
       propertyPath: 'cardsToGet.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 2ca5826a86f9e36438f9e09dc085e240, type: 2}
+      objectReference: {fileID: 11400000, guid: 999f9dd181ba06e45985f568398e7324, type: 2}
     - target: {fileID: 6706552799686737436, guid: bd1582476349c3e4e921a2f0be87f9ec, type: 3}
       propertyPath: 'cardsToGet.Array.data[1]'
       value: 
@@ -701,11 +702,11 @@ PrefabInstance:
     - target: {fileID: 6706552799686737436, guid: bd1582476349c3e4e921a2f0be87f9ec, type: 3}
       propertyPath: 'cardsToGet.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: 999f9dd181ba06e45985f568398e7324, type: 2}
+      objectReference: {fileID: 11400000, guid: aebc29f9cb8e1f143a76d37976547438, type: 2}
     - target: {fileID: 6706552799686737436, guid: bd1582476349c3e4e921a2f0be87f9ec, type: 3}
       propertyPath: 'cardsToGet.Array.data[4]'
       value: 
-      objectReference: {fileID: 11400000, guid: f45c14741a7eca64d8e7ec7954320873, type: 2}
+      objectReference: {fileID: 11400000, guid: e7c140d0a9b6d294babc8b876fbfc5fe, type: 2}
     - target: {fileID: 6706552799686737436, guid: bd1582476349c3e4e921a2f0be87f9ec, type: 3}
       propertyPath: 'cardsToGet.Array.data[5]'
       value: 
@@ -1273,6 +1274,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  particles: {fileID: 0}
 --- !u!65 &468594692
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1350,6 +1352,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468594686}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &487123443 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3487622405048088181, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
+  m_PrefabInstance: {fileID: 1058365601}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &553704664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3146,11 +3153,6 @@ PrefabInstance:
       addedObject: {fileID: 1687447742}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
---- !u!1 &1058365602 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6311963466393561165, guid: 917f4774f5e1af041870a712dba648a4, type: 3}
-  m_PrefabInstance: {fileID: 1058365601}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1111349007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3349,6 +3351,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  particles: {fileID: 0}
 --- !u!65 &1140780479
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3968,6 +3971,7 @@ MonoBehaviour:
   battleToStart: {fileID: 11400000, guid: f1ffa245f8e3a9540bbe7e57018b53b5, type: 2}
   battleManagerPrefab: {fileID: 2964704237051563936, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
   battleStarted: 0
+  altText: {fileID: 0}
 --- !u!114 &1761861086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4963,7 +4967,11 @@ PrefabInstance:
     - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: pauseMenu
       value: 
-      objectReference: {fileID: 1058365602}
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      propertyPath: questMenu
+      value: 
+      objectReference: {fileID: 487123443}
     - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: inventoryUI
       value: 

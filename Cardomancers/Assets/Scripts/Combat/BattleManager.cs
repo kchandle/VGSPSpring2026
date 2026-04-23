@@ -217,10 +217,12 @@ public class BattleManager : MonoBehaviour
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
-        //***
+        //Enter battle with weather active
         if (battle.fieldCondition)
         {
             this.fieldCondition = battle.fieldCondition;
+            fieldCondition.active = true;
+            fieldCondition.turnsRemaining = fieldCondition.turnsActive;
         }
 
         if (battle.isTutorial) tutorial = true;
@@ -460,60 +462,13 @@ public class BattleManager : MonoBehaviour
         //Display cards
 
         // Start Player turn coroutine to handle playing cards 
-        yield return StartCoroutine(cardDragInput.DragDrop());
+        yield return StartCoroutine(cardDragInput.DragDrop()); 
 
         //Status Effects get activated
         yield return StartCoroutine(playerController.StatusEffects());
 
-
-        //***Decrease field condition turn count
-        if(fieldCondition && fieldCondition.active)
-        {
-            fieldCondition.turnsRemaining--;
-            print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
-
-            //If the field's duration is up, deactivate it
-            if(fieldCondition.turnsRemaining == -1)
-            {
-                fieldCondition.active = false;
-            }
-
-
-            //*** If an active field condition deals chip damage (just acid rain for now)
-            //optimize later please
-            if(fieldCondition.chipDamage)
-            {
-
-                foreach(FieldEffects effect in fieldCondition.effects)
-                {
-
-                    if(effect.dealsChipDamage && effect.chipDamageCard)
-                    {
-
-                        //if you thought 2 nested foreach loops was bad
-                        foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
-                        {
-
-                            bEffect.TriggerEffect(playerController, player.transform.position);
-                            print("Damaging player with acid rain");
-                            foreach(GameObject e in currentEnemies)
-                            {
-                                bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);
-                                print("Damaging enemies with acid rain");
-                            }
-
-                        }
-                        
-                    }
-
-                }
-
-            }
-
-        }
-
-        
-        
+        //Evaluate Field Conditions for the turn
+        TurnBasedFieldEffects();
 
 
         yield return null;
@@ -529,6 +484,14 @@ public class BattleManager : MonoBehaviour
             {
                 enemy.GetComponent<Enemy>().ShuffleDeck();
             }
+        }
+
+        //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
+        foreach (GameObject enemy in currentEnemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            //InventoryCard card = enemyScript.DrawCard();
+            yield return StartCoroutine(enemyScript.StatusEffects());
         }
 
         EnemyTurn.Invoke();
@@ -553,27 +516,42 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
-                
-
-
-                //***
-                if(fieldCondition)
-                {
-                    print(fieldCondition.name + "field condition Is active!");
-                }
-                else
-                {
-                    print("no field condition is active");
-                }
 
                 if(effect.summonsEnemies)
                 {
                     TrySummonEnemy(effect);
                 }
 
+                switch(effect.actionType)
+                {
+                    case(BattleActionType.ATTACK):
+                    {
+                        print("Enemy attacking opponent. Attack multi: " + enemyScript.attackMulti);
+                        effect.TriggerEffect(playerController, player.transform.position, null, enemyScript.attackMulti);
+                        break;
+                    }
+                    case(BattleActionType.DEFEND):
+                    {
+                        print("Enemy defending themelves");
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position);
+                        break;
+                    }
+                    case(BattleActionType.HEAL):
+                    {
+                        print("Enemy healing themselves");
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position);
+                        break;
+                    }
+                    default:
+                    {
+                        print("Enemy doing some other option");
+                        break;
+                    }
+                }
 
 
-                switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
+
+                /*switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
                     case (CardType.ATK):
                     {
@@ -585,7 +563,7 @@ public class BattleManager : MonoBehaviour
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
                     }
-                }
+                }*/
             }
 
             if (enemyScript.currentTimer <= 0)
@@ -626,13 +604,13 @@ public class BattleManager : MonoBehaviour
             
         }
 
-        //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
+       /* //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
         foreach (GameObject enemy in currentEnemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             //InventoryCard card = enemyScript.DrawCard();
             yield return StartCoroutine(enemyScript.StatusEffects());
-        }
+        }*/
 
 
         // If player or enemy is out of health, change battleState to WON or LOST
@@ -834,6 +812,145 @@ public class BattleManager : MonoBehaviour
             ResetEnemyPositions();
         }
     }
+    #endregion
+
+
+    
+    #region Field Effects
+    //For turn-based Field effects
+    private void TurnBasedFieldEffects()
+    {
+        if(!fieldCondition)
+        {
+            print("No field condition exists");
+            return;
+        }
+        if(!fieldCondition.active)
+        {
+            print("No field condition is active");
+            return;
+        }
+        print(fieldCondition.name + "field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
+
+
+
+        //=====Chip damage=====//
+        //If an active field condition deals chip damage (acid rain and thunderstorm)
+        if(fieldCondition.chipDamage)
+        {
+            //Field chip damage works by playing a damaging card on the targets
+            //Evaluate field effects, similarrly to how cards evaluate battle effects
+            foreach(FieldEffects effect in fieldCondition.effects)
+            {
+                if(effect.dealsChipDamage && effect.chipDamageCard)
+                {
+                    //Strike one target at random (thunderstorm)
+                    if(effect.chipIsRandom)
+                    {
+                        int target = (int)UnityEngine.Random.Range(0, currentEnemies.Count + 1);
+
+                        if(target >= currentEnemies.Count && !playerController.weatherImmune) //trigger on player
+                        {
+                            foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                            {
+                                bEffect.TriggerEffect(playerController, player.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                            {
+                                if(!currentEnemies[target].GetComponent<Enemy>().weatherImmune)
+                                {
+                                    bEffect.TriggerEffect(currentEnemies[target].GetComponent<Enemy>(), currentEnemies[target].transform.position);
+                                }
+                            }
+                        }
+                        
+                    }
+                    else //Hit all enemies and the player (acid rain)
+                    {
+                        //Play the damaging card on each enemy and the player
+                        foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                        {
+
+                            bEffect.TriggerEffect(playerController, player.transform.position);
+                            //print("Damaging player with acid rain");
+                            foreach(GameObject e in currentEnemies)
+                            {
+                                bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);
+                                //print("Damaging enemies with acid rain");
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }
+        //=====End of Chip damage handling=====//
+
+
+
+        //=====Universal stat changes=====//
+        if(fieldCondition.boostsTypeDamage)
+        {
+            foreach(FieldEffects effect in fieldCondition.effects)
+            {
+                //If the type of field is meant to boost damage and this effect does so
+                if(effect.statChanges)
+                {
+
+                    if(!playerController.weatherImmune) //eye of the storm status
+                    {
+                        playerController.fieldAtkBoost = effect.attackBoost;
+                        playerController.fieldEndBoost = effect.enduranceBoost;
+                    }
+
+                    //Do the same for all enemies
+                    foreach(GameObject e in currentEnemies)
+                    {
+                        if(!e.GetComponent<Enemy>().weatherImmune)
+                        {
+                            e.GetComponent<Enemy>().fieldAtkBoost = effect.attackBoost;
+                            e.GetComponent<Enemy>().fieldEndBoost = effect.enduranceBoost;
+                        }
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            
+        }
+        //=====End of Universal stat changes=====//
+
+
+
+        //---Decrement turn
+        fieldCondition.turnsRemaining--;
+        print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
+
+        //If the field's duration is up, deactivate it and reset everything as needed
+        if(fieldCondition.turnsRemaining == -1)
+        {
+            fieldCondition.active = false;
+
+            playerController.fieldAtkBoost = 1f;
+            playerController.fieldEndBoost = 1f;
+
+            foreach(GameObject e in currentEnemies)
+            {
+                e.GetComponent<Enemy>().fieldAtkBoost = 1f;
+                e.GetComponent<Enemy>().fieldEndBoost = 1f;
+            }
+        }
+        //---
+
+    }
+
     #endregion
 
 

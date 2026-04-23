@@ -82,18 +82,23 @@ public class Enemy : MonoBehaviour
     public float DamageMult = 2.0f; // Multiplier for damage if weakness is present
     public float DamageReduct = 0.5f; // Multiplier for damage if resistance is present
 
+
     //---Variables to do with status effects
-    public bool isStunned; // if the enemy is stunned, they cannot take actions.
+    [Header("Status Effect Variables")]
     public float attackMulti = 1; //Multiplier for damage dealt if the enemy has an attack boost
     public float enduranceMulti = 1; //Multipliter for damage taken if the enemy has an endurance booost
     public bool healable = true; //Whether or not enemy can be healed. 
-    public bool weatherImmune = false; //Whether or not enemy is immune to weather
+
+    public bool isStunned; // if the enemy is stunned, they cannot take actions.
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
 
-
-
-    public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
+    public bool weatherImmune = false; //Whether or not enemy is immune to weather
+    public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
+    public float fieldEndBoost = 1f; //current endurance multiplier as a result of a Field Effect
     //---
+
+    [Header(" ")]
+    public bool isShielded = false; //If the enemy is shielded, they take no damage this turn.
 
     public Enemy_SO EnemySO { get { return enemySO; } set { enemySO = EnemySO; } }
 
@@ -321,6 +326,7 @@ public class Enemy : MonoBehaviour
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
         isStunned = false;
+        attackAnim.SetBool("Stunned", false);
         healable = true;
         for (int i = 0; i < statusEffects.Count; i++)
         {
@@ -342,6 +348,7 @@ public class Enemy : MonoBehaviour
                 case(StatusEffectType.Stun):
                 {
                     isStunned = true;
+                    attackAnim.SetBool("Stunned", true);
                     break;
                 }
                 case(StatusEffectType.AntiHeal):
@@ -373,8 +380,8 @@ public class Enemy : MonoBehaviour
         //=====Start Loop=====//
 
         //
-        attackMulti = 1;
-        enduranceMulti = 1;
+        attackMulti = 1 * fieldAtkBoost;
+        enduranceMulti = 1 * fieldEndBoost;
         weatherImmune = false;
         //
 

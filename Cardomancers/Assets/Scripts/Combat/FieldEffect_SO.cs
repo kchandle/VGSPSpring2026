@@ -38,7 +38,7 @@ public class FieldEffect_SO : ScriptableObject
 
     [Header("Check the following according to what the field does.")] //This makes checking in the code faster
     //Whether or not the field boosts / decreases any damage types
-    public bool boostsDamage;
+    public bool boostsTypeDamage;
 
     //Whether or not the field deals chip damage
     public bool chipDamage;

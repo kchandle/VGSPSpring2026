@@ -16,16 +16,22 @@ public class PlayerController : MonoBehaviour
     public Image healthbar;
     public TMP_Text currentHealthText;
 
+
     //---Variables affected by status effects
+    [Header("Status Effect Variables")]
     public float attackMulti = 1f; //Multiplier for outgoing damage if the player has an attack boost
     public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
     public bool healable = true; //Whether or not player can be healed. 
-    public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
 
     public bool isStunned = false; //player doesn't have stun handling yet
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
+
+    public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
+    public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
+    public float fieldEndBoost = 1f; //current endurance multiplier as a result of a Field Effect
     //--
 
+    [Header(" ")]
     public bool TestingFastMode = false;
 
     public GameObject shieldPanel;
@@ -162,7 +168,7 @@ public class PlayerController : MonoBehaviour
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        if(pauseMenu.activeSelf || questMenu.activeSelf) return;
+        //if(pauseMenu.activeSelf || questMenu.activeSelf) return;
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
@@ -254,8 +260,8 @@ public class PlayerController : MonoBehaviour
         //=====Start Loop=====//
 
         //
-        attackMulti = 1;
-        enduranceMulti = 1;
+        attackMulti = 1 * fieldAtkBoost;
+        enduranceMulti = 1 * fieldEndBoost;
         weatherImmune = false;
         //
 
@@ -360,7 +366,7 @@ public class PlayerController : MonoBehaviour
                     print("Awestruck statusEffect at index: " + i);
 
                     //no isStunned variable for player
-                    if(false)
+                    if(isStunned)
                     {
                         currentHealth -= status.statusAmount;
                         print("Awakened Status Effect did " + status.statusAmount + " damage to the Player");
@@ -375,7 +381,7 @@ public class PlayerController : MonoBehaviour
                 {
                     print("Stun statusEffect at index: " + i);
 
-                    //I don't think the player has stun handling at all
+                    //Handled in the exceptions above
 
                     break;
                 }

@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51846fc53971bb248b593873882ab722, type: 3}
-  m_Name: Blizzard_Weather
+  m_Name: ThunderStorm_Weather
   m_EditorClassIdentifier: Assembly-CSharp::FieldEffect_SO
-  turnsActive: 5
-  turnsRemaining: 2
-  name: Blizzard
-  description: 
-  active: 1
-  boostsTypeDamage: 1
-  chipDamage: 0
+  turnsActive: 3
+  turnsRemaining: -1
+  name: Thunderstorm
+  description: Strikes a random enemy/player with lightning every turn while active
+  active: 0
+  boostsTypeDamage: 0
+  chipDamage: 1
   effects:
-  - statChanges: 1
-    attackBoost: 1
-    enduranceBoost: 0.8
+  - statChanges: 0
+    attackBoost: 0
+    enduranceBoost: 0
     boostedTypes: 
     boostAmount: 0
-    dealsChipDamage: 0
-    chipIsRandom: 0
-    chipDamageCard: {fileID: 0}
+    dealsChipDamage: 1
+    chipIsRandom: 1
+    chipDamageCard: {fileID: 11400000, guid: 53bbc42fc6990004ea6e035cbbf73fb7, type: 2}
   fieldType: 0

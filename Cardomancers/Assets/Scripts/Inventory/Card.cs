@@ -117,7 +117,7 @@ public class Card : PlayItem
         {
             if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true; continue;}
             //Apply each effect to the target
-            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO)) returnVal = true;
+            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO, player.attackMulti)) returnVal = true;
         }
         return returnVal;
     }
