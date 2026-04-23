@@ -520,7 +520,7 @@ public class Enemy : MonoBehaviour
                 {
                     print("EyeOfTheStorm statusEffect at index: " + i);
 
-                    //
+                    //When field effects act, they'll check if the target is weatherImmune first. See in BattleEffect and BattleManager
                     weatherImmune = true;
 
                     break;
@@ -537,7 +537,7 @@ public class Enemy : MonoBehaviour
                 {
                     print("Evisceration statusEffect at index: " + i);
 
-                    //teehee
+                    //
                     currentHealth -= 200;
 
                     break;

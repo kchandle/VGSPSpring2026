@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public bool healable = true; //Whether or not player can be healed. 
     public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
 
-    //public bool isStunned = false;
+    public bool isStunned = false; //player doesn't have stun handling yet
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
     //--
 
@@ -178,6 +178,7 @@ public class PlayerController : MonoBehaviour
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
         healable = true;
+        isStunned = false;
         for (int i = 0; i < statusEffects.Count; i++)
         {
             StatusEffectContainer status = statusEffects[i];
@@ -193,6 +194,11 @@ public class PlayerController : MonoBehaviour
                 case(StatusEffectType.CleanseNegative):
                 {
                     cleanseNeg = true;
+                    break;
+                }
+                case(StatusEffectType.Stun):
+                {
+                    isStunned = true;
                     break;
                 }
                 case(StatusEffectType.AntiHeal):
@@ -348,7 +354,7 @@ public class PlayerController : MonoBehaviour
                 {
                     print("Stun statusEffect at index: " + i);
 
-                    //I don't think the player has stun handling at all so yeah
+                    //I don't think the player has stun handling at all
 
                     break;
                 }
@@ -368,7 +374,7 @@ public class PlayerController : MonoBehaviour
                 {
                     print("EyeOfTheStorm statusEffect at index: " + i);
 
-                    //
+                    //When field effects act, they'll check if the target is weatherImmune first. See in BattleEffect and BattleManager
                     weatherImmune = true;
 
                     break;

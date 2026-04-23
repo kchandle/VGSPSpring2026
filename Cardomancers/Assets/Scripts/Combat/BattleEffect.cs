@@ -104,6 +104,7 @@ public struct BattleEffect
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
     public DamageType damageType;
     public BattleActionType actionType;
+    public TargetingType targetingType;
 
 
     [Header("Status Effects")]
@@ -152,12 +153,12 @@ public struct BattleEffect
     //}
 
 
-    public BattleEffect(int statusAmount, DamageType damageType, /*TargetingType attackTargetType,*/ bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, TargetingType targetingType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
     {
         //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
-        //this.attackTargetType = attackTargetType;
+        this.targetingType = targetingType; //doesn't do anything yet
 
         //Status Effect attributes. turnsActive is also used to define how long field conditions last
         this.isStatusEffect = isStatusEffect;
