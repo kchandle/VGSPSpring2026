@@ -645,6 +645,7 @@ GameObject:
   - component: {fileID: 5809042115564079106}
   - component: {fileID: 6883381829391735037}
   - component: {fileID: 7209800516965655749}
+  - component: {fileID: 1817531715709257768}
   m_Layer: 0
   m_Name: FightDummy
   m_TagString: Untagged
@@ -810,11 +811,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Objective
   objectiveText: Show Trafficconius your skills on the dummy!
   completedText: Congrats on the victory!
-  questUI: {fileID: 0}
-  completionUI: {fileID: 0}
+  questUI: {fileID: 8126024780159173779}
+  completionUI: {fileID: 5277820702369360423}
   OnCompleteObjective:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1817531715709257768}
+        m_TargetAssemblyTypeName: StartBattle, Assembly-CSharp
+        m_MethodName: StartBattleNow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 7209800516965655749}
         m_TargetAssemblyTypeName: Objective, Assembly-CSharp
         m_MethodName: StartTimer
@@ -827,18 +840,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+--- !u!114 &1817531715709257768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8304923749336867016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0054cff2bc23d9d45ac7569ab0353caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartBattle
+  timer: 2
+  videoTimer: 1
+  canvas: {fileID: 0}
+  videoPlayer: {fileID: 8079070646663097198}
+  battleToStart: {fileID: 11400000, guid: 49a35b1f3c76d634d922d66e9f72c32b, type: 2}
+  battleManagerPrefab: {fileID: 2964704237051563936, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
+  battleStarted: 0
 --- !u!1 &8898780816619731762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,11 +1096,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7719481414565814671, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 351.06674
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7719481414565814671, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 91.74007
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8283461280315372233, guid: b24fffc208d583649af7b48a5d1244f9, type: 3}
       propertyPath: m_fontAsset
@@ -1226,7 +1246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 562436349255026596, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1147985991770556370, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_IsActive
@@ -1380,9 +1400,29 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2745789455705341361, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745789455705341361, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745789455705341361, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClosePauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2745789455705341361, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3568618694353615358, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4235399652409009591, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5489604310419508550, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_IsActive
@@ -1390,7 +1430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6422574238520844118, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6698186150543642154, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1406,7 +1446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968720648955785706, guid: 7dd2f95ec356f3c429de7006eec3dd89, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1483,6 +1523,11 @@ PrefabInstance:
 --- !u!4 &532149823207400912 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6682199447601250685, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
+  m_PrefabInstance: {fileID: 6618430596232635565}
+  m_PrefabAsset: {fileID: 0}
+--- !u!328 &8079070646663097198 stripped
+VideoPlayer:
+  m_CorrespondingSourceObject: {fileID: 3154767679855153091, guid: c38913a6173b2a7458c45f35e862d026, type: 3}
   m_PrefabInstance: {fileID: 6618430596232635565}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6740443434314130644
@@ -1619,7 +1664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 386981998701656910, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 214
+      value: -421
       objectReference: {fileID: 0}
     - target: {fileID: 386981998701656910, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1721,6 +1766,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -158
       objectReference: {fileID: 0}
+    - target: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_text
+      value: Go meet Traffic Conius in the red building
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_margin.w
+      value: -20.15491
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_margin.x
+      value: 36.23964
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_margin.z
+      value: 34.93625
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_overflowMode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 3353795029330809267, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_Name
       value: FightAnEnemy
@@ -1743,11 +1812,35 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 5e3606b92fbacba458e82e0065a83024, type: 3}
     - target: {fileID: 5472945311919364547, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -531
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5472945311919364547, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 290
+      value: 13.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028250369858605871, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028250369858605871, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028250369858605871, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028250369858605871, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028250369858605871, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -400
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028250369858605871, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7241849885175356027, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
       propertyPath: m_text
@@ -1957,6 +2050,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 288663696625746382, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
   m_PrefabInstance: {fileID: 6740443434314130644}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8126024780159173779 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3265019487136555079, guid: e73c438573e948c4cab67bbb4c7b2d0b, type: 3}
+  m_PrefabInstance: {fileID: 6740443434314130644}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &8484253283711740397
 PrefabInstance:
   m_ObjectHideFlags: 0

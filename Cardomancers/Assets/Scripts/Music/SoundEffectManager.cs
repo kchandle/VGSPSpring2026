@@ -24,6 +24,7 @@ public class SoundEffectManager : MonoBehaviour
         AudioSource returnSource = audioSource;
 
         //sets the audio clip in the source and volume and then plays it 
+        MixManager.AudioSourceAssignMixerGroup(audioSource, "SFX");
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         audioSource.pitch = pitch;
@@ -49,6 +50,7 @@ public class SoundEffectManager : MonoBehaviour
         int randomIndex = Random.Range(0, audioClips.Length);
 
         //sets the audio clip to the random index in the audiosource and sets volume and then plays it 
+        MixManager.AudioSourceAssignMixerGroup(audioSource, "SFX");
         audioSource.clip = audioClips[randomIndex];
         audioSource.volume = volume;
         audioSource.pitch = pitch;

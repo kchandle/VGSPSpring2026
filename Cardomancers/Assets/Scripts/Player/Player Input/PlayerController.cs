@@ -114,21 +114,34 @@ public class PlayerController : MonoBehaviour
         _characterControllerMovement.jumpWasPressed = true;
     }
 
+    public void ClosePauseMenu() => OnEscape(new InputAction.CallbackContext());
+    
     public void OnEscape(InputAction.CallbackContext context)
     {
+        if (CurrentState == GameState.INVENTORY || questMenu.activeSelf) return;
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+        if (pauseMenu.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
         if (Time.timeScale == 1f){
                 Time.timeScale = 0f;
         } else
-            {
-              Time.timeScale = 1.0f;  
-            }
+        {
+          Time.timeScale = 1.0f;  
+        }
         switch(GameStateScript.CurrentState)
         {
             case GameStateScript.GameState.WALKING:
-                GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+                GameStateScript.CurrentState = GameStateScript.GameState.PAUSE;
                 break;
-            case GameStateScript.GameState.INVENTORY:
+            case GameStateScript.GameState.PAUSE:
                 GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
                 break;
 
@@ -149,10 +162,7 @@ public class PlayerController : MonoBehaviour
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        if(pauseMenu.activeSelf)
-        {
-            return;
-        }
+        if(pauseMenu.activeSelf || questMenu.activeSelf) return;
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
@@ -169,7 +179,18 @@ public class PlayerController : MonoBehaviour
 
     public void OnQuest(InputAction.CallbackContext context)
     {
+        if (pauseMenu.activeSelf || CurrentState == GameState.INVENTORY) return;
         questMenu.SetActive(!questMenu.activeSelf);
+        if (questMenu.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     #region Status Effects
