@@ -63,9 +63,9 @@ public class StartBattle : MonoBehaviour
 
     public  void SetObjectives(BattleManager battleManager)
     {
-        foreach (Objective o in Object.FindObjectsByType<Objective>(FindObjectsSortMode.None))
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Object"))
         {
-            o.SetBattleManager(battleManager);
+            o.GetComponent<Objective>().SetBattleManager(battleManager);
         }
     }
 

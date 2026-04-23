@@ -30,7 +30,7 @@ public class Objective : MonoBehaviour
     public void SetBattleManager(BattleManager battleManagerPass)
     {
         battleManager = battleManagerPass;
-        battleManager.OnWin.AddListener(CompleteObjective(battleManager.battle));
+        battleManager.OnWin.AddListener(() => CompleteObjective(battleManager.battle));
     }
 
     public void StartTimer()
