@@ -65,7 +65,7 @@ git clone https://github.com/kchandle/VGSPSpring2026.git
 | Artist | Chloe Abrego| [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/913660359288700969/)  | 
 | Artist | [Noah C.](https://github.com/DinoNuggies04/)| [<img src="https://avatars.githubusercontent.com/DinoNuggies04" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://github.com/DinoNuggies04/) [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/722691375799205939/)  | 
 | Artist | [Kennedi Porter](https://github.com/WheresMyPickles/)| [<img src="https://avatars.githubusercontent.com/WheresMyPickles" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://github.com/WheresMyPickles/) [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/1219415965620502680/)  | 
-| Artist | Hunter| [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/752577803731599400/)  | 
+| Artist | [Hunter](https://github.com/hunter0110huc/)| [<img src="https://avatars.githubusercontent.com/hunter0110huc" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://github.com/hunter0110huc/) [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/752577803731599400/)  | 
 | Artist | Graeson Candanoza| [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/594738903425220608/)  | 
 | Artist | [Rorik H.](https://github.com/Gajmi/)| [<img src="https://avatars.githubusercontent.com/Gajmi" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://github.com/Gajmi/)  | 
 | Artist | Zachary G.| [<img src="./images/discord.png" width="25" style="border-radius:100%; vertical-align:middle; horizontal-align:middle;" />](https://discord.com/users/761225884660793384/)  | 
@@ -85,3 +85,5 @@ git clone https://github.com/kchandle/VGSPSpring2026.git
 <a href="https://github.com/kchandle/VGSPSpring2026/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=kchandle/VGSPSpring2026" />
 </a>
+
+
