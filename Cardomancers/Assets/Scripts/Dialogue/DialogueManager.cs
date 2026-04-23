@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Reflection;
+using Unity.Cinemachine;
 
 
 
@@ -45,7 +46,9 @@ public class DialogueManager : MonoBehaviour
     public DialogueSO dialogue; // current dialogue SO
 
 
-    public Transform playerTransform; // Assign the player's transform in the Inspector
+    public Transform playerTransform;
+    public CinemachineCamera cam;
+        // Assign the player's transform in the Inspector
     public StartBattle reference;
 
     //Gets player action map to react to player input
@@ -142,6 +145,8 @@ public class DialogueManager : MonoBehaviour
             index++;
             
             textElement.text = string.Empty;
+
+
             StartCoroutine(TypeLine());            
         }
         else
