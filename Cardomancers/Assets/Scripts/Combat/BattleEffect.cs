@@ -71,10 +71,10 @@ public enum StatusEffectType
 
     //---Not Yet Implemented---//
     Stun, //done
-    CounterSpell,
-    EyeOfTheStorm,
+    CounterSpell, //done
+    EyeOfTheStorm, //done
     AntiHeal, //done
-    Evisceration, //teehee
+    Evisceration, //ignore
     //--- ---//
 
     
@@ -87,10 +87,14 @@ public enum StatusEffectType
 public enum TargetingType
 {
     SingleTarget,
-    BlastTarget, //Main and adjacent enemies with lower output
     AOETarget,
+    SelfTarget, //Only to be used with attacking cards that damage the caster. Use the HEAL or DEF action type for cards with positive effects on the user
 
-    SelfTarget,
+
+
+    //AOE_And_SelfTarget
+
+    //BlastTarget, //Main and adjacent enemies with lower output
 }
 
 
@@ -218,11 +222,11 @@ public struct BattleEffect
                 int shieldAmount = player.Shield;
 
                 //---Account for player stat boosts
-                Debug.Log("Player dmgToDo: " + dmgToDo);
+                //Debug.Log("Player dmgToDo: " + dmgToDo);
                 dmgToDo *= incomingAttackBoost;
-                Debug.Log("dmgToDo after the enemy's attack boost: " + dmgToDo);
+                //Debug.Log("dmgToDo after the enemy's attack boost: " + dmgToDo);
                 dmgToDo /= player.enduranceMulti;
-                Debug.Log("dmgToDo after player endurance: " + dmgToDo);
+                //Debug.Log("dmgToDo after player endurance: " + dmgToDo);
                 //---
 
 
@@ -262,11 +266,19 @@ public struct BattleEffect
                 if (isStatusEffect)
                 {
                     float statusRoll = UnityEngine.Random.Range(0, 1);
-                    Debug.Log(statusRoll);
+                    //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
                     {
                         player.statusEffects.Add(new StatusEffectContainer(damageType, Mathf.RoundToInt(dmgToDo), isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                        if (statusType == StatusEffectType.Stun) 
+                        {
+                            //Trigger stun immediately, since status effects are normally evaluated at the end of the turn
+                            target.isStunned = true;
+                        }
+
+
+
                         return true;
                     }
                     else
@@ -300,7 +312,7 @@ public struct BattleEffect
                 if (isStatusEffect)
                 {
                     float statusRoll = UnityEngine.Random.Range(0, 1);
-                    Debug.Log(statusRoll);
+                    //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
                     {
@@ -325,7 +337,7 @@ public struct BattleEffect
                 if (isStatusEffect)
                 {
                     float statusRoll = UnityEngine.Random.Range(0, 1);
-                    Debug.Log(statusRoll);
+                    //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
                     {
@@ -393,11 +405,11 @@ public struct BattleEffect
 
                 //---Account for player stat boosts
                 float DamageDealt = (float)StatusAmount;
-                Debug.Log("Enemy damage to receive: " + DamageDealt);
+                //Debug.Log("Enemy damage to receive: " + DamageDealt);
                 DamageDealt *= incomingAttackBoost;
-                Debug.Log("dmg to recieve after the player's attack boost: " + DamageDealt);
+                //Debug.Log("dmg to recieve after the player's attack boost: " + DamageDealt);
                 DamageDealt /= enemy.enduranceMulti;
-                Debug.Log("dmg to recieve after enemy endurance: " + DamageDealt);
+                //Debug.Log("dmg to recieve after enemy endurance: " + DamageDealt);
                 //---
 
 
@@ -439,7 +451,7 @@ public struct BattleEffect
                 if (isStatusEffect)
                 {
                     float statusRoll = UnityEngine.Random.Range(0f, 1f);
-                    Debug.Log(statusRoll);
+                    //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
                     {
@@ -504,7 +516,7 @@ public struct BattleEffect
                 if (isStatusEffect)
                 {
                     float statusRoll = UnityEngine.Random.Range(0, 1);
-                    Debug.Log(statusRoll);
+                    //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
                     {
@@ -529,7 +541,7 @@ public struct BattleEffect
                 if (isStatusEffect)
                 {
                     float statusRoll = UnityEngine.Random.Range(0, 1);
-                    Debug.Log(statusRoll);
+                    //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
                     {

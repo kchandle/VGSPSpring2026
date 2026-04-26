@@ -297,7 +297,7 @@ public class Enemy : MonoBehaviour
         cardToPlayspace.DestroyPlayItem(cardToPlayspace.playItems[0]);
         cardToPlayspace.NewPlayItem(cardPrefab, currentCard.cardSO, currentCard);
         cardToPlayspace.playItems[0].draggable = false;
-        print(currentActionType);
+        //print(currentActionType);
 
         currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
         if (currentActionType != CardType.RST)
@@ -308,7 +308,7 @@ public class Enemy : MonoBehaviour
         {
             actionAmountText.text = "";
         }
-        print(currentActionAmount);
+        //print(currentActionAmount);
     }
 
     public void UpdateTimer()
@@ -349,6 +349,12 @@ public class Enemy : MonoBehaviour
                 {
                     isStunned = true;
                     attackAnim.SetBool("Stunned", true);
+                    break;
+                }
+                case(StatusEffectType.EyeOfTheStorm):
+                {
+                    fieldAtkBoost = 1f;
+                    fieldEndBoost = 1f;
                     break;
                 }
                 case(StatusEffectType.AntiHeal):
@@ -519,10 +525,9 @@ public class Enemy : MonoBehaviour
                     print("CounterSpell statusEffect at index: " + i);
 
                     //Set counterSpellActive to true, then immedieately remove this status effect.
-                    //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
+                    //counterSpellActive will be set to false in Card, after a spell is reflected
                     counterSpellActive = true;
-                    statusEffects.Remove(statusEffects[i]);
-                    i--;
+                    statusEffects[i].turnsRemaining = -1;
 
                     break;
                 }
@@ -554,10 +559,15 @@ public class Enemy : MonoBehaviour
                 }
                 //---
 
+                case(StatusEffectType.Random):
+                {
+                    print("Random statusEffect at index: " + i);
+                    //
+                    break;
+                }
                 default:
                 {
                     print("If this is printing, you forgot to add " + status.statusType + " to the Enemy script");
-                    print("If it printed Random, ignore this");
                     break;
                 }
             }
@@ -574,6 +584,8 @@ public class Enemy : MonoBehaviour
 
             UpdateHealthBar();
             yield return new WaitForSeconds(0.1f);
+
+            //print(attackMulti);
         }
         //=====End Loop=====//
 

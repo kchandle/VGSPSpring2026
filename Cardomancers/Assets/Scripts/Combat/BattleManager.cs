@@ -223,6 +223,8 @@ public class BattleManager : MonoBehaviour
             this.fieldCondition = battle.fieldCondition;
             fieldCondition.active = true;
             fieldCondition.turnsRemaining = fieldCondition.turnsActive;
+            StartCoroutine(TurnBasedFieldEffects());
+            print("Set start field condition");
         }
 
         if (battle.isTutorial) tutorial = true;
@@ -462,13 +464,22 @@ public class BattleManager : MonoBehaviour
         //Display cards
 
         // Start Player turn coroutine to handle playing cards 
-        yield return StartCoroutine(cardDragInput.DragDrop()); 
+        if(playerController.isStunned)
+        {
+            print("Player is stunned");
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+        {
+            yield return StartCoroutine(cardDragInput.DragDrop());    
+        }
+         
 
         //Status Effects get activated
         yield return StartCoroutine(playerController.StatusEffects());
 
         //Evaluate Field Conditions for the turn
-        TurnBasedFieldEffects();
+        StartCoroutine(TurnBasedFieldEffects());
 
 
         yield return null;
@@ -486,13 +497,13 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
+        /*//Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
         foreach (GameObject enemy in currentEnemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             //InventoryCard card = enemyScript.DrawCard();
             yield return StartCoroutine(enemyScript.StatusEffects());
-        }
+        }*/
 
         EnemyTurn.Invoke();
 
@@ -512,6 +523,8 @@ public class BattleManager : MonoBehaviour
             enemyScript.currentTimer--;
             enemyScript.UpdateTimer();
 
+            bool reflected = false; //track if player counterspell has been triggered
+
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
@@ -526,8 +539,19 @@ public class BattleManager : MonoBehaviour
                 {
                     case(BattleActionType.ATTACK):
                     {
-                        print("Enemy attacking opponent. Attack multi: " + enemyScript.attackMulti);
-                        effect.TriggerEffect(playerController, player.transform.position, null, enemyScript.attackMulti);
+                        //print("Enemy attacking opponent. Attack multi: " + enemyScript.attackMulti);
+
+                        //If the player has counterSpell, launch the attack on the enemy instead
+                        if(playerController.counterSpellActive)
+                        {
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, enemyScript.attackMulti);
+                            print("Spell countered");
+                            reflected = true;
+                        }
+                        else
+                        {
+                            effect.TriggerEffect(playerController, player.transform.position, null, enemyScript.attackMulti);
+                        }
                         break;
                     }
                     case(BattleActionType.DEFEND):
@@ -564,6 +588,11 @@ public class BattleManager : MonoBehaviour
                         break;
                     }
                 }*/
+            }
+
+            if(reflected) //disable player counterSpell
+            {
+                playerController.counterSpellActive = false;
             }
 
             if (enemyScript.currentTimer <= 0)
@@ -604,13 +633,13 @@ public class BattleManager : MonoBehaviour
             
         }
 
-       /* //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
+        //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
         foreach (GameObject enemy in currentEnemies)
         {
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             //InventoryCard card = enemyScript.DrawCard();
             yield return StartCoroutine(enemyScript.StatusEffects());
-        }*/
+        }
 
 
         // If player or enemy is out of health, change battleState to WON or LOST
@@ -817,26 +846,108 @@ public class BattleManager : MonoBehaviour
 
     
     #region Field Effects
+    
+
+
     //For turn-based Field effects
-    private void TurnBasedFieldEffects()
+    private IEnumerator TurnBasedFieldEffects()
     {
         if(!fieldCondition)
         {
-            print("No field condition exists");
-            return;
+            //print("No field condition exists");
+            yield break;
         }
         if(!fieldCondition.active)
         {
-            print("No field condition is active");
-            return;
+            //print("No field condition is active");
+            yield break;
+        }
+        if(fieldCondition.turnsRemaining < 0)
+        {
+            //print("Field Condition has expired");
+            fieldCondition.active = false;
+            yield break;
         }
         print(fieldCondition.name + "field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
 
 
 
+        //=====Universal stat changes=====//
+        if(fieldCondition.boostsTypeDamage)
+        {
+            
+            foreach(FieldEffects effect in fieldCondition.effects)
+            {
+                //If the type of field is meant to boost damage and this effect does so
+                if(effect.statChanges)
+                {
+
+                    if(!playerController.weatherImmune) //eye of the storm status
+                    {
+                        playerController.fieldAtkBoost = effect.attackBoost;
+                        playerController.fieldEndBoost = effect.enduranceBoost;
+                    }
+
+                    //Do the same for all enemies
+                    foreach(GameObject e in currentEnemies)
+                    {
+                        if(!e.GetComponent<Enemy>().weatherImmune)
+                        {
+                            e.GetComponent<Enemy>().fieldAtkBoost = effect.attackBoost;
+                            e.GetComponent<Enemy>().fieldEndBoost = effect.enduranceBoost;
+                        }
+                    }
+                }
+
+            }
+            
+
+            //make stat changes happen on the first turn
+            if(fieldCondition.turnsRemaining == fieldCondition.turnsActive)
+            {
+                foreach(FieldEffects effect in fieldCondition.effects)
+                {
+                    //If the type of field is meant to boost damage and this effect does so
+                    if(effect.statChanges)
+                    {
+                        if(!playerController.weatherImmune) //eye of the storm status
+                        {
+                            playerController.attackMulti *= effect.attackBoost;
+                            playerController.enduranceMulti *= effect.enduranceBoost;
+                        }
+                        foreach(GameObject e in currentEnemies)
+                        {
+                            if(!e.GetComponent<Enemy>().weatherImmune)
+                            {
+                                e.GetComponent<Enemy>().attackMulti *= effect.attackBoost;
+                                e.GetComponent<Enemy>().enduranceMulti *= effect.enduranceBoost;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+        else
+        {
+            playerController.fieldAtkBoost = 1f;
+            playerController.fieldEndBoost = 1f;
+
+            foreach(GameObject e in currentEnemies)
+            {
+                e.GetComponent<Enemy>().fieldAtkBoost = 1f;
+                e.GetComponent<Enemy>().fieldEndBoost = 1f;
+            }
+        }
+        //=====End of Universal stat changes=====//
+
+
+
         //=====Chip damage=====//
         //If an active field condition deals chip damage (acid rain and thunderstorm)
-        if(fieldCondition.chipDamage)
+        if(fieldCondition.chipDamage && fieldCondition.turnsRemaining < fieldCondition.turnsActive) //Don't do chip on the first turn
         {
             //Field chip damage works by playing a damaging card on the targets
             //Evaluate field effects, similarrly to how cards evaluate battle effects
@@ -873,12 +984,18 @@ public class BattleManager : MonoBehaviour
                         //Play the damaging card on each enemy and the player
                         foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
                         {
-
-                            bEffect.TriggerEffect(playerController, player.transform.position);
+                            if(!playerController.weatherImmune)
+                            {
+                                bEffect.TriggerEffect(playerController, player.transform.position);    
+                            }
+                            
                             //print("Damaging player with acid rain");
                             foreach(GameObject e in currentEnemies)
                             {
-                                bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);
+                                if(!e.GetComponent<Enemy>().weatherImmune)
+                                {
+                                    bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);   
+                                }
                                 //print("Damaging enemies with acid rain");
                             }
 
@@ -893,48 +1010,13 @@ public class BattleManager : MonoBehaviour
 
 
 
-        //=====Universal stat changes=====//
-        if(fieldCondition.boostsTypeDamage)
-        {
-            foreach(FieldEffects effect in fieldCondition.effects)
-            {
-                //If the type of field is meant to boost damage and this effect does so
-                if(effect.statChanges)
-                {
-
-                    if(!playerController.weatherImmune) //eye of the storm status
-                    {
-                        playerController.fieldAtkBoost = effect.attackBoost;
-                        playerController.fieldEndBoost = effect.enduranceBoost;
-                    }
-
-                    //Do the same for all enemies
-                    foreach(GameObject e in currentEnemies)
-                    {
-                        if(!e.GetComponent<Enemy>().weatherImmune)
-                        {
-                            e.GetComponent<Enemy>().fieldAtkBoost = effect.attackBoost;
-                            e.GetComponent<Enemy>().fieldEndBoost = effect.enduranceBoost;
-                        }
-                    }
-                }
-
-            }
-        }
-        else
-        {
-            
-        }
-        //=====End of Universal stat changes=====//
-
-
 
         //---Decrement turn
         fieldCondition.turnsRemaining--;
-        print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
+        //print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
 
         //If the field's duration is up, deactivate it and reset everything as needed
-        if(fieldCondition.turnsRemaining == -1)
+        if(fieldCondition.turnsRemaining < 0)
         {
             fieldCondition.active = false;
 
@@ -949,8 +1031,9 @@ public class BattleManager : MonoBehaviour
         }
         //---
 
-    }
+        yield return null;
 
+    }
     #endregion
 
 

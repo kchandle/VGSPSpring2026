@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < statusEffects.Count; i++)
         {
             StatusEffectContainer status = statusEffects[i];
-            print("Test: " + status.statusType);
+            //print("Test: " + status.statusType);
             switch(status.statusType)
             {
                 case(StatusEffectType.CleanseAll):
@@ -226,6 +226,12 @@ public class PlayerController : MonoBehaviour
                 case(StatusEffectType.Stun):
                 {
                     isStunned = true;
+                    break;
+                }
+                case(StatusEffectType.EyeOfTheStorm):
+                {
+                    fieldAtkBoost = 1f;
+                    fieldEndBoost = 1f;
                     break;
                 }
                 case(StatusEffectType.AntiHeal):
@@ -365,7 +371,7 @@ public class PlayerController : MonoBehaviour
                 {
                     print("Awestruck statusEffect at index: " + i);
 
-                    //no isStunned variable for player
+                    //damage only triggers when stunned
                     if(isStunned)
                     {
                         currentHealth -= status.statusAmount;
@@ -385,15 +391,14 @@ public class PlayerController : MonoBehaviour
 
                     break;
                 }
-                case(StatusEffectType.CounterSpell):
+                case(StatusEffectType.CounterSpell): //done
                 {
                     print("CounterSpell statusEffect at index: " + i);
 
                     //Set counterSpellActive to true, then immedieately remove this status effect.
                     //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
                     counterSpellActive = true;
-                    statusEffects.Remove(statusEffects[i]);
-                    i--;
+                    statusEffects[i].turnsRemaining = -1;
 
                     break;
                 }
@@ -418,17 +423,22 @@ public class PlayerController : MonoBehaviour
                 {
                     print("Evisceration statusEffect at index: " + i);
 
-                    //teehee
+                    //
                     currentHealth -= 200;
 
                     break;
                 }
                 //---
 
+                case(StatusEffectType.Random):
+                {
+                    print("Random statusEffect at index: " + i);
+                    //
+                    break;
+                }
                 default:
                 {
                     print("If this is printing, you forgot to add " + status.statusType + " to the PlayerController");
-                    print("If it printed Random, ignore this");
                     break;
                 }
             }
