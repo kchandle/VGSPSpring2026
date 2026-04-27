@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab035d907c4ef78478ebd5f51ede08fd, type: 3}
-  m_Name: LesserAuraOfHealing
+  m_Name: DisarmingRune
   m_EditorClassIdentifier: Assembly-CSharp::Hack_SO
   sellValue: 0
   Price: 0
-  displayName: Lesser Aura of Healing
-  description: I feel better already!
-  image: {fileID: 1959415521, guid: d22417a1709674f4885a88e17b0f3835, type: 3}
+  displayName: Disarming Rune
+  description: 
+  image: {fileID: 0}
   sideOfCard: 0
   hackEffects:
-  - StatusAmount: 5
-    damageType: 0
-    actionType: 2
-    isStatusEffect: 0
+  - StatusAmount: 15
+    damageType: 10
+    actionType: 1
+    isStatusEffect: 1
     isPerishable: 0
     turnsActive: 0
     summonsEnemies: 0
