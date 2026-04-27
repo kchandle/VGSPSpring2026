@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static GameStateScript; 
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -12,13 +13,23 @@ public class PlayerInteract : MonoBehaviour
 
     public InteractableObject currentHighlight = null;
     public GameObject interactPrompt;
+    public GameStateScript.GameState state;
+    public BattleManager battleManager;
+    public bool battling;
+
+    public void Start()
+    {
+        GameStateScript.GameState state = GameStateScript.CurrentState;
+    }
 
     private void Update()
     {
         InteractHighlight();
-        if (interacting == false) interactPrompt.SetActive(inRange);
-        else interactPrompt.SetActive(false);
+        if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(inRange);
+        else interactPrompt.SetActive(false); 
     }
+
+
 
 
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
@@ -96,6 +107,11 @@ public class PlayerInteract : MonoBehaviour
             }
 
         }
+    }
+
+    public void AUDBIEfwk()
+    {
+        interacting = false;
     }
 
     public void ChangeAllChildrenLayer(GameObject target, string layer)

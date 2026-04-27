@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51846fc53971bb248b593873882ab722, type: 3}
+  m_Name: ThunderStorm_Weather
+  m_EditorClassIdentifier: Assembly-CSharp::FieldEffect_SO
+  turnsActive: 99
+  turnsRemaining: 99
+  name: Thunderstorm
+  description: Strikes a random enemy/player with lightning every turn while active
+  active: 0
+  boostsTypeDamage: 0
+  chipDamage: 1
+  effects:
+  - statChanges: 0
+    attackBoost: 0
+    enduranceBoost: 0
+    boostedTypes: 
+    boostAmount: 0
+    dealsChipDamage: 1
+    chipIsRandom: 1
+    chipDamageCard: {fileID: 11400000, guid: 53bbc42fc6990004ea6e035cbbf73fb7, type: 2}
+  fieldType: 0

@@ -43,7 +43,7 @@ public class CardImageDictionary : MonoBehaviour
         cardElementImageDictionary.Add(DamageType.Dark, imageDark);
         cardElementImageDictionary.Add(DamageType.DamageBlock, imageDamageBlock);
         cardElementImageDictionary.Add(DamageType.Psychic, imagePsychic);
-        cardElementImageDictionary.Add(DamageType.Stun, imageStun);
+        //cardElementImageDictionary.Add(DamageType.Stun, imageStun);
 
         // Additions to the cardAttackTypeDictionary dict
         cardAttackTypeDictionary.Add(damageType.damageInstant, imageDamageInst);
