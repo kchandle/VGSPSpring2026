@@ -150,17 +150,22 @@ public class PlayerController : MonoBehaviour
 
    public void OnToggleInventory(InputAction.CallbackContext context)
     {
+        print("AEI");
         if(pauseMenu.activeSelf || questMenu.activeSelf) return;
         //can only open the inventory when in free movement and alive
         if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING && inventoryUIHandler.uiDisplayed == false)
         {
+            print("Hell");
             inventoryUIHandler.DisplayUI();
             GameStateScript.CurrentState = GameStateScript.GameState.INVENTORY;
+            return;
         }
         else if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY/* && inventoryUIHandler.uiDisplayed == true*/)
         {
+            print("KILL KILL");
             inventoryUIHandler.DestroyUI();
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+            return;
         }
         
     }
