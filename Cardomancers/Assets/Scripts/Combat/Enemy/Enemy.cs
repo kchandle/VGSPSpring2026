@@ -323,8 +323,8 @@ public class Enemy : MonoBehaviour
     #region Status Effects
     public IEnumerator StatusEffects()
     {
-        //*** Add to PlayerController too
-        
+        //Any status added to enemy should be added to playercontroller and vice versa
+
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
         isStunned = false;
@@ -414,19 +414,15 @@ public class Enemy : MonoBehaviour
                 case(StatusEffectType.AttackBoost):
                 {
                     print("Attack Boost statusEffect of " + status.statusAmount + " at index " + i);
-
                     //Change the attack multiplier accordingly
                     attackMulti *= ((float)status.statusAmount/100);
-
                     break;
                 }
                 case(StatusEffectType.EnduranceBoost):
                 {
                     print("Endurance Boost statusEffect of " + status.statusAmount + " at index " + i);
-
                     //Change the endurance multiplier accordingly
                     enduranceMulti *= ((float)status.statusAmount/100);
-
                     break;
                 }
                 //---
@@ -452,12 +448,13 @@ public class Enemy : MonoBehaviour
                     print("Regeneration statusEffect at index: " + i);
 
                     //Do heal
-                    //Type based healing to jumpscare playtesters
                     if(healable)
                     {
-                        if( weaknesses.Contains(status.damageType) ){ currentHealth += Mathf.FloorToInt(status.statusAmount*DamageMult);  }
-                        else if (resistances.Contains(status.damageType)){ currentHealth += Mathf.FloorToInt(status.statusAmount * DamageReduct); }
-                        else{ currentHealth += status.statusAmount; }
+                        /*if( weaknesses.Contains(status.damageType) ){ currentHealth += Mathf.FloorToInt(status.statusAmount*DamageReduct);  }
+                        else if (resistances.Contains(status.damageType)){ currentHealth += Mathf.FloorToInt(status.statusAmount * DamageMult); }
+                        else{ currentHealth += status.statusAmount; }*/
+
+                        currentHealth += status.statusAmount; 
                     }
                     break;
                 }
@@ -465,7 +462,7 @@ public class Enemy : MonoBehaviour
                 {
                     print("OnFire statusEffect at index: " + i);
 
-                    //Do burn damage
+                    //Do burn damage. Is Super effective if the enemy is weak to the damage type
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
@@ -477,7 +474,7 @@ public class Enemy : MonoBehaviour
                 {
                     print("Poisoned statusEffect at index: " + i);
 
-                    //Do poison damage 
+                    //Do poison damage. Is super effective if the enemy is weak to the damage type (poison)
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
@@ -487,13 +484,11 @@ public class Enemy : MonoBehaviour
                 case(StatusEffectType.Frostbite):
                 {
                     print("Frostbite statusEffect at index: " + i);
-
-                    //Do Frostbite damage
+                    //Do Frostbite damage. Is super effective if the enemy is weak to ice
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
                     attackMulti *= 0.75f;
-
                     break;
                 }
                 case(StatusEffectType.Awestruck):

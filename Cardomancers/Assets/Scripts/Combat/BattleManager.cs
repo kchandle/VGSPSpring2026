@@ -849,10 +849,10 @@ public class BattleManager : MonoBehaviour
     #region Player Attack Targeting
     //Methods for the player to use to attack in accordance with an effect's targeting type.
     //These methods are called in the Card script's TryPlayCard(Enemy enemy){}
-    //These are only for effects with the ATTACK action type
+    //These only handle effects with the ATTACK action type. For positive statusEffects, just use the DEFEND or HEAL action types
 
 
-    //***Method for the player to attack one enemy. Done just to centralize the system and make universal changes easier
+    //Method for the player to attack one enemy. Done just to centralize the system and make universal changes easier
     public void PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript)
     {
         foreach(BattleEffect effect in effects)
@@ -903,7 +903,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
-    //***Method for specifically the player to affect ALL enemies with a card and its hacks
+    //Method for specifically the player to affect ALL enemies with a card and its hacks
     public void PlayerAttackAllEnemies(List<BattleEffect> effects)
     {
         foreach(BattleEffect effect in effects)
@@ -962,7 +962,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
-    //***Method for the player to attack themselves
+    //Method for the player to attack themselves
     public void PlayerAttackSelf(List<BattleEffect> effects)
     {
         foreach(BattleEffect effect in effects)
@@ -1032,7 +1032,7 @@ public class BattleManager : MonoBehaviour
 
 
         //=====Universal stat changes=====//
-        if(fieldCondition.boostsTypeDamage)
+        if(fieldCondition.hasStatChanges)
         {
             
             foreach(FieldEffects effect in fieldCondition.effects)

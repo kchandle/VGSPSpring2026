@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
     #region Status Effects
     public IEnumerator StatusEffects()
     {
-        //---Exceptions that need to be evaluated before other status effects (Cleanses)
+        //---Exceptions that need to be evaluated before other status effects (Ex: Cleanses)
         bool cleanseNeg = false;
         healable = true;
         isStunned = false;
@@ -277,6 +277,8 @@ public class PlayerController : MonoBehaviour
         {
             //Apply the status effect to the Player
             StatusEffectContainer status = statusEffects[i];
+
+            //There are no particle effects, this doesn't do anything
             foreach (ParticleSystem particle in statusEffects[i].particles)
             {
                 Instantiate(particle, transform.position, Quaternion.identity);
@@ -294,19 +296,15 @@ public class PlayerController : MonoBehaviour
                 case(StatusEffectType.AttackBoost):
                 {
                     print("Attack Boost statusEffect of " + status.statusAmount + " at index " + i);
-
                     //Change the attack multiplier accordingly
                     attackMulti *= ((float)status.statusAmount/100);
-
                     break;
                 }
                 case(StatusEffectType.EnduranceBoost):
                 {
                     print("Endurance Boost statusEffect of " + status.statusAmount + " at index " + i);
-
                     //Change the endurance multiplier accordingly
                     enduranceMulti *= ((float)status.statusAmount/100);
-
                     break;
                 }
                 //---
@@ -330,105 +328,85 @@ public class PlayerController : MonoBehaviour
                 case(StatusEffectType.Regeneration):
                 {
                     print("Regeneration statusEffect at index: " + i);
-
                     //Do heal
                     currentHealth += status.statusAmount;
                     print("Regeneration Status Effect healed the Player for " + status.statusAmount + " hp");
-
                     break;
                 }
                 case(StatusEffectType.OnFire):
                 {
                     print("OnFire statusEffect at index: " + i);
-
                     //Do burn damage
                     currentHealth -= status.statusAmount;
                     print("OnFire Status Effect did " + status.statusAmount + " damage to the Player");
                     enduranceMulti *= 0.75f;
-
                     break;
                 }
                 case(StatusEffectType.Poisoned):
                 {
                     print("Poisoned statusEffect at index: " + i);
-
                     //Do poison damage
                     currentHealth -= status.statusAmount; 
                     print("Poisoned Status Effect did " + status.statusAmount + " damage to the Player");
-
                     break;
                 }
                 case(StatusEffectType.Frostbite):
                 {
                     print("Frostbite statusEffect at index: " + i);
-                    
                     //Do frostbite damage
                     currentHealth -= status.statusAmount;
                     print("Frostbite Status Effect did " + status.statusAmount + " damage to the Player");
                     attackMulti *= 0.75f;
-
                     break;
                 }
                 case(StatusEffectType.Awestruck)://*
                 {
                     print("Awestruck statusEffect at index: " + i);
-
                     //damage only triggers when stunned
                     if(isStunned)
                     {
                         currentHealth -= status.statusAmount;
                         print("Awakened Status Effect did " + status.statusAmount + " damage to the Player");
                     }
-
                     break;
                 }
                 //---
 
-                //---Not done yet
-                case(StatusEffectType.Stun): //*
+                //---Other types of status effects
+                case(StatusEffectType.Stun):
                 {
                     print("Stun statusEffect at index: " + i);
-
                     //Handled in the exceptions above
-
                     break;
                 }
-                case(StatusEffectType.CounterSpell): //done
+                case(StatusEffectType.CounterSpell):
                 {
                     print("CounterSpell statusEffect at index: " + i);
-
                     //Set counterSpellActive to true, then immedieately remove this status effect.
                     //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
                     counterSpellActive = true;
                     cSpellTriggered = false;
                     statusEffects[i].turnsRemaining = -1;
-
                     break;
                 }
                 case(StatusEffectType.EyeOfTheStorm):
                 {
                     print("EyeOfTheStorm statusEffect at index: " + i);
-
                     //When field effects act, they'll check if the target is weatherImmune first. See in BattleEffect and BattleManager
                     weatherImmune = true;
-
                     break;
                 }
-                case(StatusEffectType.AntiHeal): //done
+                case(StatusEffectType.AntiHeal): //AntiHeal is completely unused
                 {
                     print("AntiHeal statusEffect at index: " + i);
-
                     //Handled in the exceptions above
-
                     break;
                 }
                 case(StatusEffectType.Evisceration): //done
                 {
                     print("Evisceration statusEffect at index: " + i);
-
-                    //
+                    //fun
                     currentHealth -= 200;
-
                     break;
                 }
                 //---

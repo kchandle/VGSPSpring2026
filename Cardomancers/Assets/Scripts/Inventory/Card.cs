@@ -133,13 +133,14 @@ public class Card : PlayItem
         //If it was triggered, disable the enemy's counterspell
         if(reflected){enemy.counterSpellActive = false;}*/
 
-        //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything
+
+        //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything.
+        //Ask Joshua if you have any concerns
         BattleManager.instance.PlayerAttackOneEnemy(effects, enemy);
         BattleManager.instance.PlayerAttackAllEnemies(effects);
         BattleManager.instance.PlayerAttackSelf(effects);
 
         returnVal = true;
-
         return returnVal;
     }
 

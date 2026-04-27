@@ -37,6 +37,9 @@ public class FieldEffect_SO : ScriptableObject
 
 
     [Header("Check the following according to what the field does.")] //This makes checking in the code faster
+    //Whether or not the field boosts / decreases the attack or defense of targets on the field
+    public bool hasStatChanges;
+
     //Whether or not the field boosts / decreases any damage types
     public bool boostsTypeDamage;
 

@@ -161,7 +161,7 @@ public struct BattleEffect
     {
         //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
-        this.damageType = damageType;
+        this.damageType = damageType; 
         this.targetingType = targetingType; //Only applied if the actionType is attack. Does nothing otherwise
 
         //Status Effect attributes. turnsActive is also used to define how long field conditions last
@@ -221,7 +221,7 @@ public struct BattleEffect
                 float dmgToDo = (float)StatusAmount;
                 int shieldAmount = player.Shield;
 
-                //---Account for player stat boosts
+                //---Account for stat boosts
                 //Debug.Log("Player dmgToDo: " + dmgToDo);
                 dmgToDo *= incomingAttackBoost;
                 //Debug.Log("dmgToDo after the enemy's attack boost: " + dmgToDo);
@@ -276,8 +276,6 @@ public struct BattleEffect
                             //Trigger stun immediately, since status effects are normally evaluated at the end of the turn
                             target.isStunned = true;
                         }
-
-
 
                         return true;
                     }
@@ -466,7 +464,7 @@ public struct BattleEffect
                     }
                     else
                     {
-                        //Debug.Log("Unlucky womp womp");
+                        Debug.Log("Unlucky womp womp");
                     }
                     return true;
                     
