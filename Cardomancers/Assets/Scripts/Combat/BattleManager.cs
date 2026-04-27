@@ -844,11 +844,170 @@ public class BattleManager : MonoBehaviour
     #endregion
 
 
+
+
+    #region Player Attack Targeting
+    //Methods for the player to use to attack in accordance with an effect's targeting type.
+    //These methods are called in the Card script's TryPlayCard(Enemy enemy){}
+    //These are only for effects with the ATTACK action type
+
+
+    //***Method for the player to attack one enemy. Done just to centralize the system and make universal changes easier
+    public void PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript)
+    {
+        foreach(BattleEffect effect in effects)
+        {
+            if(effect.targetingType != TargetingType.SingleTarget){continue;}
+
+
+            switch(effect.actionType)
+            {
+                case(BattleActionType.ATTACK):
+                {
+                    //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
+                    if(enemyScript.counterSpellActive)
+                    {
+                        effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+
+                        enemyScript.cSpellTriggered = true;
+                        print("counterspell triggered");
+                    }
+                    else
+                    {
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, playerController.attackMulti);
+                    }
+                    break;
+                }
+                case(BattleActionType.DEFEND):
+                {
+                    break;
+                }
+                case(BattleActionType.HEAL):
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+
+        }
+
+        //Disable counterspell if the enemy had it triggered
+        if(enemyScript.cSpellTriggered)
+        {
+            enemyScript.counterSpellActive = false;
+            enemyScript.cSpellTriggered = false;
+        }
+
+    }
+
+    //***Method for specifically the player to affect ALL enemies with a card and its hacks
+    public void PlayerAttackAllEnemies(List<BattleEffect> effects)
+    {
+        foreach(BattleEffect effect in effects)
+        {
+            if(effect.targetingType != TargetingType.AOETarget){continue;}
+
+            switch(effect.actionType)
+            {
+                case(BattleActionType.ATTACK):
+                {
+                    //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
+                    foreach(GameObject e in currentEnemies)
+                    {
+                        Enemy enemyScript = e.GetComponent<Enemy>();
+
+                        if(enemyScript.counterSpellActive)
+                        {
+                            effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+
+                            enemyScript.cSpellTriggered = true;
+                            print("counterspell triggered");
+                        }
+                        else
+                        {
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, playerController.attackMulti);
+                        }
+                    }
+                    break;
+                }
+                case(BattleActionType.DEFEND):
+                {
+                    break;
+                }
+                case(BattleActionType.HEAL):
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
+
+        //Disable counterspell for any enemy that had it triggered
+        foreach(GameObject e in currentEnemies)
+        {
+            Enemy enemyScript = e.GetComponent<Enemy>();
+
+            if(enemyScript.cSpellTriggered)
+            {
+                enemyScript.counterSpellActive = false;
+                enemyScript.cSpellTriggered = false;
+            }
+        }
+
+    }
+
+    //***Method for the player to attack themselves
+    public void PlayerAttackSelf(List<BattleEffect> effects)
+    {
+        foreach(BattleEffect effect in effects)
+        {
+            if(effect.targetingType != TargetingType.SelfTarget){continue;}
+
+            //print(effect.StatusAmount);
+
+            switch(effect.actionType)
+            {
+                case(BattleActionType.ATTACK):
+                {
+                    
+                    effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+                    break;
+                }
+                case(BattleActionType.DEFEND):
+                {
+                    break;
+                }
+                case(BattleActionType.HEAL):
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+
+        }
+
+    }
+    #endregion
+
+
+
+
+
+
+
+
+
     
     #region Field Effects
-    
-
-
     //For turn-based Field effects
     private IEnumerator TurnBasedFieldEffects()
     {

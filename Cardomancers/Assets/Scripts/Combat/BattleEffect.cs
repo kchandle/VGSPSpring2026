@@ -162,7 +162,7 @@ public struct BattleEffect
         //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
         this.damageType = damageType;
-        this.targetingType = targetingType; //doesn't do anything yet
+        this.targetingType = targetingType; //Only applied if the actionType is attack. Does nothing otherwise
 
         //Status Effect attributes. turnsActive is also used to define how long field conditions last
         this.isStatusEffect = isStatusEffect;
@@ -178,7 +178,7 @@ public struct BattleEffect
         this.setsNextCard = setsNextCard;
         this.nextCard = nextCard;
 
-        //Field effects / conditions (weather)
+        //Field effects / conditions (weather). These are currently only applied if the actionType is attack.
         this.setsFieldCondition = setsFieldCondition;
         this.fieldCondition = fieldCondition;
 
@@ -265,10 +265,10 @@ public struct BattleEffect
                 //---Account for Application of status Effects
                 if (isStatusEffect)
                 {
-                    float statusRoll = UnityEngine.Random.Range(0, 1);
-                    //Debug.Log(statusRoll);
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
+                    //Debug.Log("STATUS ROLLLLLLLLLLLLLLLLL " + statusRoll);
 
-                    if(statusRoll <= probability)
+                    if(statusRoll < probability)
                     {
                         player.statusEffects.Add(new StatusEffectContainer(damageType, Mathf.RoundToInt(dmgToDo), isPerishable, isNegative, turnsActive, particles, actionType, statusType));
                         if (statusType == StatusEffectType.Stun) 
@@ -311,7 +311,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = UnityEngine.Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
                     //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -336,7 +336,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = UnityEngine.Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
                     //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -466,7 +466,7 @@ public struct BattleEffect
                     }
                     else
                     {
-                        Debug.Log("Unlucky womp womp");
+                        //Debug.Log("Unlucky womp womp");
                     }
                     return true;
                     
@@ -515,7 +515,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = UnityEngine.Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
                     //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)
@@ -540,7 +540,7 @@ public struct BattleEffect
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
-                    float statusRoll = UnityEngine.Random.Range(0, 1);
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
                     //Debug.Log(statusRoll);
 
                     if(statusRoll <= probability)

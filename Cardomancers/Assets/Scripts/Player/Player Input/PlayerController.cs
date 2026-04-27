@@ -21,10 +21,12 @@ public class PlayerController : MonoBehaviour
     [Header("Status Effect Variables")]
     public float attackMulti = 1f; //Multiplier for outgoing damage if the player has an attack boost
     public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
-    public bool healable = true; //Whether or not player can be healed. 
 
+    public bool healable = true; //Whether or not player can be healed. 
     public bool isStunned = false; //player doesn't have stun handling yet
+
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
+    public bool cSpellTriggered = false; //Whether or not counterSpell had been triggered, used as a signal to disable counterSpellActive
 
     public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
     public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
@@ -398,6 +400,7 @@ public class PlayerController : MonoBehaviour
                     //Set counterSpellActive to true, then immedieately remove this status effect.
                     //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
                     counterSpellActive = true;
+                    cSpellTriggered = false;
                     statusEffects[i].turnsRemaining = -1;
 
                     break;

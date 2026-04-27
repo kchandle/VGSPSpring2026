@@ -87,10 +87,12 @@ public class Enemy : MonoBehaviour
     [Header("Status Effect Variables")]
     public float attackMulti = 1; //Multiplier for damage dealt if the enemy has an attack boost
     public float enduranceMulti = 1; //Multipliter for damage taken if the enemy has an endurance booost
-    public bool healable = true; //Whether or not enemy can be healed. 
 
+    public bool healable = true; //Whether or not enemy can be healed. 
     public bool isStunned; // if the enemy is stunned, they cannot take actions.
+
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
+    public bool cSpellTriggered = false; //Whether or not counterSpell had been triggered, used as a signal to disable counterSpellActive
 
     public bool weatherImmune = false; //Whether or not enemy is immune to weather
     public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
@@ -527,6 +529,7 @@ public class Enemy : MonoBehaviour
                     //Set counterSpellActive to true, then immedieately remove this status effect.
                     //counterSpellActive will be set to false in Card, after a spell is reflected
                     counterSpellActive = true;
+                    cSpellTriggered = false;
                     statusEffects[i].turnsRemaining = -1;
 
                     break;

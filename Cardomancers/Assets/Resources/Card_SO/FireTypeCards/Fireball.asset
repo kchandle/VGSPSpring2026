@@ -20,6 +20,23 @@ MonoBehaviour:
   - StatusAmount: 15
     damageType: 2
     actionType: 0
+    targetingType: 1
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 15
+    damageType: 2
+    actionType: 0
+    targetingType: 2
     isStatusEffect: 0
     isPerishable: 0
     isNegative: 0
@@ -34,8 +51,7 @@ MonoBehaviour:
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: Fireball
-  description: Deal medium Fire Damage to all Enemies on the field. Deals medium
-    Fire Damage to Self.
+  description: Deal medium Fire Damage to all Enemies on the field and the User.
   tagLine: 
   cardType: 0
   damageType: 1
