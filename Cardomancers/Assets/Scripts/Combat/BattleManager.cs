@@ -52,6 +52,7 @@ public class BattleManager : MonoBehaviour
     #region All the player scripts
     [SerializeField]private GameObject player; // reference to the player game object
     [SerializeField]private PlayerController playerController; // reference to the player controller
+    [SerializeField]private PlayerInteract playerInteract; // reference to player interact
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
     [SerializeField]private float playerMaxHealth; // reference to the player's max health
@@ -136,10 +137,10 @@ public class BattleManager : MonoBehaviour
     {
         // OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
         // OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        // OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
+        OnWin.AddListener(() => {Debug.Log("You Win!");}); //Occurs on Win
         // PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
         // EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
-        // OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
+        OnEnd.AddListener(() => {Debug.Log("Battle Over"); playerInteract.battleManager = null;}); //Occurs on Battle End
     }
 
     private void OnDestroy() //Swap camera back to main at end of battle.
@@ -238,6 +239,8 @@ public class BattleManager : MonoBehaviour
 
         playerMaxHealth = playerController.maxPlayerHealth;
         playerCurrentHealth = playerController.currentHealth;
+        playerInteract = FindAnyObjectByType<PlayerInteract>();
+        playerInteract.battleManager = this;
 
         //Get the enemy set up
 

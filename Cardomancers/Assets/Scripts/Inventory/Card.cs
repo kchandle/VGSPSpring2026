@@ -92,13 +92,13 @@ public class Card : PlayItem
         backHack = transform.GetChild(0).gameObject;
         if (hacks.Length > 0 && hacks[0])
         {
-            backHack.GetComponent<Image>().sprite = hacks[0].image;
+            backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
             backHack.SetActive(true);
         }
 
         if (hacks.Length > 1 && hacks[1])
         {
-            frontHack.GetComponent<Image>().sprite = hacks[1].image;
+            frontHack.GetComponent<RawImage>().texture = hacks[1].image.texture;
             frontHack.SetActive(true);
         }
     }
@@ -176,7 +176,7 @@ public class Card : PlayItem
                 hacks[1] = hack;
                 inventoryCard.hacks[1] = hack;
                 print("hack added");
-                frontHack.GetComponent<Image>().sprite = hack.image;
+                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
                 print("Design on top.");
                 frontHack.SetActive(true);
                 break;
@@ -187,7 +187,7 @@ public class Card : PlayItem
                 inventoryCard.hacks[0] = hack;
                 print("hack added");
                 print(hack.image.name);
-                backHack.GetComponent<Image>().sprite = hack.image;
+                backHack.GetComponent<RawImage>().texture = hack.image.texture;
                 print("Design on bottom.");
                 backHack.SetActive(true);
                 break;
