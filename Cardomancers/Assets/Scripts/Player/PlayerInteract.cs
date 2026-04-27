@@ -48,12 +48,11 @@ public class PlayerInteract : MonoBehaviour
                         minRange = range;
                     }
                 }
-
-                if (interactable != null)
-                {
-                    interacting = true;
-                    interactable.interactable.Invoke();
-                }
+            }
+            if (interactable != null)
+            {
+                interacting = true;
+                interactable.interactable.Invoke();
             }
         }
     }

@@ -1,13 +1,14 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
-using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using TMPro;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using System.Reflection;
-using Unity.Cinemachine;
+using UnityEngine.UIElements;
 
 
 
@@ -38,7 +39,7 @@ public class DialogueManager : MonoBehaviour
 
     public TextMeshProUGUI textElement; // the current text box the dialogue text is being loaded into
     public TextMeshProUGUI titleElement; // the current text box the dialogue speaker is being loaded into
-    public Image talkspriteImage; // the image element where the talksprite will be loaded
+    public UnityEngine.UI.Image talkspriteImage; // the image element where the talksprite will be loaded
 
     public InputActionAsset inputActions; //The set of actions the player can perform, reference used to react to player input
     public InputAction nextAction;
@@ -49,9 +50,11 @@ public class DialogueManager : MonoBehaviour
     public Transform playerTransform;
     public CinemachineOrbitalFollow camPosition;
     public CinemachineRotationComposer camRotation;
+        public PlayerCamera cameraScript; 
         public CinemachineCamera cam;
         public CinemachineInputAxisController input;
         CinemachineBrain brain;
+       
         public Transform mainCam;
     // Assign the player's transform in the Inspector
     public StartBattle reference;
@@ -73,6 +76,9 @@ public class DialogueManager : MonoBehaviour
         nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");
 
         brain = FindFirstObjectByType<CinemachineBrain>();
+            input = FindFirstObjectByType<CinemachineInputAxisController>();
+            cameraScript = FindFirstObjectByType<PlayerCamera>();
+           
         mainCam = Camera.main.transform;
 
 
@@ -87,12 +93,14 @@ public class DialogueManager : MonoBehaviour
         print(reference.name);
     }
 
-    //void Start()
-    //{
-    //    StartDialogue(dialogue);
-    //}
+        //void Start()
+        //{
+        //    StartDialogue(dialogue);
+        //}
 
-    // Update is called once per frame
+        // Update is called once per frame
+
+        Coroutine cor;
     void Update()
     {
         if(canvas.activeInHierarchy)
@@ -106,7 +114,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-                    StopAllCoroutines();
+                    StopCoroutine(cor);
                     textElement.text = dialogue.lines[index].text;
                 }
             }
@@ -135,13 +143,27 @@ public class DialogueManager : MonoBehaviour
 
             
         brain.enabled = false;
-
-        StartCoroutine(TypeLine());
+            input.enabled = false;
+            cameraScript.enabled = false;
+        cor = StartCoroutine(TypeLine());
     }
 
     IEnumerator TypeLine()
     {
-        textElement.text = string.Empty;
+            if (dialogue.lines[index].lineHasCutscene)
+            {
+                CharacterController cc = playerTransform.GetComponent<CharacterController>();
+                cc.enabled = false;
+                playerTransform.position = dialogue.lines[index].playerMovePosition;
+                playerTransform.eulerAngles = dialogue.lines[index].playerMoveRotation;
+                cc.enabled = true;
+
+                if (camCor != null) StopCoroutine(camCor);
+                camCor = StartCoroutine(LerpCam(dialogue.lines[index].cameraMovePosition, dialogue.lines[index].cameraRotation));
+
+            }
+
+            textElement.text = string.Empty;
         titleElement.text = dialogue.lines[index].displayName;
         talkspriteImage.sprite = dialogue.lines[index].talksprite;
 
@@ -151,6 +173,8 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(dialogue.lines[index].textDelay);
         }
     }
+
+        private Coroutine camCor;
     void NextLine( )
     {
         if (index < dialogue.lines.Length - 1)
@@ -158,9 +182,6 @@ public class DialogueManager : MonoBehaviour
             index++;
             
             textElement.text = string.Empty;
-
-            mainCam.transform.position = dialogue.lines[index].cameraMovePosition;
-            mainCam.transform.eulerAngles = dialogue.lines[index].cameraRotation;
 
             StartCoroutine(TypeLine());            
         }
@@ -176,7 +197,9 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 brain.enabled = true;
-                playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+                    input.enabled = true;
+                    cameraScript.enabled = true;
+                    playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
                 GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
             }
             //if (!reactive)
@@ -185,6 +208,22 @@ public class DialogueManager : MonoBehaviour
             //}
         }
 
+    }
+
+    public IEnumerator LerpCam(Vector3 newCamPosition, Vector3 newCamRotation)
+    {
+            Camera mainCam = Camera.main;
+            mainCam.transform.position = newCamPosition;
+            
+            Quaternion newRot = Quaternion.Euler(newCamRotation);
+            while (Quaternion.Angle(newRot, mainCam.transform.rotation) > 0.01)
+            {
+                mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, newRot, Time.deltaTime * 3f);
+                yield return null;
+            }
+
+            mainCam.transform.eulerAngles = newCamRotation;
+            camCor = null;
     }
 
     // Get closest object to player.
