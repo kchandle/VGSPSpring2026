@@ -74,13 +74,17 @@ public class PlayerCamera : MonoBehaviour
         // Contact Group-1 team lead for this they added it, and I dont know what it does.
         input.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN ? true : false;
         brain.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN ? true : false;
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN) RotatePlayerModel();
+    }
 
+    public void RotatePlayerModel()
+    {
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();
 
         // if we dont have a orbital well this doesnt work.
-        if(orbital != null)
-        {   
+        if (orbital != null)
+        {
             // Get the future zoom position that the player wants.
             // This is mosly just to lerp the camera...
             // Basically this just smooths the camera zoom in.

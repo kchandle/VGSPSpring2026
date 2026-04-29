@@ -59,6 +59,9 @@ public class DialogueManager : MonoBehaviour
     // Assign the player's transform in the Inspector
     public StartBattle reference;
 
+        public List<Transform> cameraMoveTransforms;
+        public List<Transform> playerMoveTransforms;
+
     //Gets player action map to react to player input
     private void Awake()
     {  
@@ -114,7 +117,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-                    StopCoroutine(cor);
+                    if (cor != null) StopCoroutine(cor);
                     textElement.text = dialogue.lines[index].text;
                 }
             }
@@ -150,17 +153,22 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeLine()
     {
-            if (dialogue.lines[index].lineHasCutscene)
+            if (playerMoveTransforms.Count > index)
             {
-                CharacterController cc = playerTransform.GetComponent<CharacterController>();
-                cc.enabled = false;
-                playerTransform.position = dialogue.lines[index].playerMovePosition;
-                playerTransform.eulerAngles = dialogue.lines[index].playerMoveRotation;
-                cc.enabled = true;
+                if (playerMoveTransforms[index] != null)
+                {
+                    CharacterController cc = playerTransform.GetComponent<CharacterController>();
+                    cc.enabled = false;
+                    playerTransform.position = playerMoveTransforms[index].position;
+                    playerTransform.rotation = playerMoveTransforms[index].rotation;
+                    cc.enabled = true;
+                }
+            }
 
+            if (cameraMoveTransforms.Count > index)
+            {
                 if (camCor != null) StopCoroutine(camCor);
-                camCor = StartCoroutine(LerpCam(dialogue.lines[index].cameraMovePosition, dialogue.lines[index].cameraRotation));
-
+                if (cameraMoveTransforms[index] != null) camCor = StartCoroutine(LerpCam(cameraMoveTransforms[index].transform.position, cameraMoveTransforms[index].transform.rotation));
             }
 
             textElement.text = string.Empty;
@@ -199,6 +207,8 @@ public class DialogueManager : MonoBehaviour
                 brain.enabled = true;
                     input.enabled = true;
                     cameraScript.enabled = true;
+                    playerMoveTransforms = new();
+                    cameraMoveTransforms = new();
                     playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
                 GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
             }
@@ -210,19 +220,18 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-    public IEnumerator LerpCam(Vector3 newCamPosition, Vector3 newCamRotation)
+    public IEnumerator LerpCam(Vector3 newCamPosition, Quaternion newCamRotation)
     {
             Camera mainCam = Camera.main;
             mainCam.transform.position = newCamPosition;
             
-            Quaternion newRot = Quaternion.Euler(newCamRotation);
-            while (Quaternion.Angle(newRot, mainCam.transform.rotation) > 0.01)
+            while (Quaternion.Angle(newCamRotation, mainCam.transform.rotation) > 0.01)
             {
-                mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, newRot, Time.deltaTime * 3f);
+                mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, newCamRotation, Time.deltaTime * 3f);
                 yield return null;
             }
 
-            mainCam.transform.eulerAngles = newCamRotation;
+            mainCam.transform.rotation = newCamRotation;
             camCor = null;
     }
 
