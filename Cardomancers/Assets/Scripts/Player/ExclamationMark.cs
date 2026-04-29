@@ -89,7 +89,6 @@ public class ExclamationMark : MonoBehaviour
 
         targetPosition += targetOffset;
 
-        Debug.Log("daises");
         if(playerInteract.interacting)
         {   
             float distance = Vector3.Distance(transform.position, player.transform.position);
@@ -104,17 +103,14 @@ public class ExclamationMark : MonoBehaviour
             if(parentInteractable != null && playerInteract.currentHighlight == parentInteractable)
             {   
                 image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
-                Debug.Log("sigma");
             }
             else if(parentInteractable == null && playerInteract.InRange)
             {   
                 image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
-                Debug.Log("rizz");
             }
             else
             {   
                 image.color = Color.Lerp(image.color, originalColor, ColorChangeSpeed * Time.deltaTime);
-                Debug.Log("huzz");
             }
         }
 
