@@ -25,13 +25,9 @@ public class PlayerInteract : MonoBehaviour
     private void Update()
     {
         InteractHighlight();
-<<<<<<< HEAD
-        if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(inRange);
+
+        if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(InRange);
         else interactPrompt.SetActive(false); 
-=======
-        if (interacting == false) interactPrompt.SetActive(InRange);
-        else interactPrompt.SetActive(false);
->>>>>>> 8973ebd8 (Fixed highlighting for non-parented objects, still need parented though)
     }
 
 
