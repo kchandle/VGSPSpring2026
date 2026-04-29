@@ -25,6 +25,7 @@ public class Card_SO : ScriptableObject
     public Sprite image; // sprite to be displayed when the card is instanced
     public BattleEffect[] cardEffects; // Needs battle effect to be done first
     public ParticleSystem particleSystem; // Used by damage scripts to play effect upon hit
+    public Sprite attackicon; // The damagetypeicon
     
     public string displayName; // Card's name
     public string description; // Description of what the card does
