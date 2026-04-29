@@ -9,9 +9,12 @@ public class StatusEffectContainer
     public DamageType damageType;
     public int statusAmount;
     public bool isPerishable;
+    public bool isNegative;
     public int turnsLasting;
     public int turnsRemaining;
     public BattleActionType actionType;
+    public StatusEffectType statusType;
+    
 
     public ParticleSystem[] particles;
 
@@ -21,7 +24,7 @@ public class StatusEffectContainer
         if (isPerishable && turnsRemaining > 0)
         {
             turnsRemaining--;
-            Debug.Log("turnsRemainingDecremented: " + turnsRemaining);
+            //Debug.Log("turnsRemainingDecremented: " + turnsRemaining);
         }
         else if (turnsRemaining <= 0 && isPerishable)
         {
@@ -31,14 +34,16 @@ public class StatusEffectContainer
     }
 
     //Setting up the status effect container
-    public StatusEffectContainer(DamageType damageType,int statusAmount, bool isPerishable, int turnsLasting, ParticleSystem[] particles, BattleActionType actionType)
+    public StatusEffectContainer(DamageType damageType,int statusAmount, bool isPerishable, bool isNegative, int turnsLasting, ParticleSystem[] particles, BattleActionType actionType, StatusEffectType statusType)
     {
         this.damageType = damageType;
         this.statusAmount = statusAmount;
         this.isPerishable = isPerishable;
+        this.isNegative = isNegative;
         this.turnsLasting = turnsLasting;
         this.turnsRemaining = turnsLasting;
         this.particles = particles;
         this.actionType = actionType;
+        this.statusType = statusType;
     }
 }
