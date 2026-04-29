@@ -20,6 +20,7 @@ MonoBehaviour:
   - StatusAmount: 0
     damageType: 3
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
     isNegative: 0
@@ -33,6 +34,8 @@ MonoBehaviour:
     setsFieldCondition: 1
     fieldCondition: {fileID: 11400000, guid: 7ad029ba903672642966c897fce2dd0d, type: 2}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1255159727, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 1650510629, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Rain
   description: Summons a Rainstorm for 5 turns. While Rainstorm is active, reduces
     attack of Everyone by 50%.

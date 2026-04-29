@@ -20,6 +20,7 @@ MonoBehaviour:
   - StatusAmount: 0
     damageType: 1
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
     isNegative: 0
@@ -33,6 +34,8 @@ MonoBehaviour:
     setsFieldCondition: 1
     fieldCondition: {fileID: 11400000, guid: 39572009e8442954baa664c24568da9e, type: 2}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1255159727, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -1846445739, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Blizzard
   description: Summons a Blizzard for five turns, inflicitng Frostbite on Everyone.
     During the Blizzard, Everyone takes 25% more Damage.
