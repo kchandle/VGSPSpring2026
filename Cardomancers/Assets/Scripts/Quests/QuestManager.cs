@@ -118,7 +118,7 @@ public class QuestManager : MonoBehaviour
             }
             newQuestMap.Add(quest.ID, LoadQuest(quest));
         }
-        Debug.Log(newQuestMap.Count);
+        //Debug.Log(newQuestMap.Count);
         return newQuestMap;
     }
 
@@ -216,7 +216,7 @@ public class QuestManager : MonoBehaviour
         {
             QuestData questData = quest.GetQuestData();
             string serializedData = JsonUtility.ToJson(questData);
-            Debug.Log(serializedData);
+            //Debug.Log(serializedData);
             return serializedData;
         }
         catch (Exception e)

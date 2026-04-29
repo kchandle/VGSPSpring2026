@@ -20,9 +20,13 @@ MonoBehaviour:
   - StatusAmount: 0
     damageType: 0
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 0
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
@@ -31,7 +35,8 @@ MonoBehaviour:
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: EnemyRest
-  description: Used internally
+  description: The enemy skips its next turn to regenerate mana.
   tagLine: 
   cardType: 2
+  VFXPrefab: {fileID: 8534211664784800584, guid: 074bb197a324230439b1c850b97f53c2, type: 3}
   damageType: 0

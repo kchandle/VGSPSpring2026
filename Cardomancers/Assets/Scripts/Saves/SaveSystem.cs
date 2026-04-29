@@ -34,7 +34,7 @@ public static class SaveSystem
     }
     public static void Save(GameObject player, QuestManager questManager)
     {
-        Debug.Log("Saving");
+        //Debug.Log("Saving");
         // Creates an instance of the InventoryData class using the input
         SaveData data = new SaveData(player);
 
@@ -43,7 +43,7 @@ public static class SaveSystem
 
         string encryptedJson = encryption.Encrypt(json);
         
-        Debug.Log(DataPath);
+        //Debug.Log(DataPath);
         // Creates or overwrites save file with readable file structure
         File.WriteAllText(DataPath, encryptedJson);
 
@@ -52,8 +52,8 @@ public static class SaveSystem
             QuestData questData = quest.GetQuestData();
             
             string questDataJSON = questManager.SaveQuest(quest);
-            Debug.Log(questDataJSON);
-            Debug.Log(QuestDataPath(questData.ID));
+            //Debug.Log(questDataJSON);
+            //Debug.Log(QuestDataPath(questData.ID));
             string encryptedQuestDataJSON = encryption.Encrypt(questDataJSON);
             File.WriteAllText(QuestDataPath(questData.ID),  encryptedQuestDataJSON);
         }
@@ -99,7 +99,7 @@ public static class SaveSystem
     {
         if (!File.Exists(QuestDataPath(ID))) throw new FileNotFoundException();
         
-        Debug.Log(QuestDataPath(ID));
+        //Debug.Log(QuestDataPath(ID));
         
         QuestData data = JsonUtility.FromJson<QuestData>(encryption.Decrypt(File.ReadAllText(QuestDataPath(ID))));
 
