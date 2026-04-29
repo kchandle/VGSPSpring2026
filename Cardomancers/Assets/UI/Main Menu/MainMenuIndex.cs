@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using DG.Tweening;
 
 public class MainMenuIndex : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class MainMenuIndex : MonoBehaviour
     private VisualElement mainMenu;
     private VisualElement credits;
     private VisualElement settings;
+    private VisualElement background;
+
+    private float xPos;
 
     private void Awake()
     {
@@ -21,11 +25,29 @@ public class MainMenuIndex : MonoBehaviour
         creditsButton = root.Q<Button>("Credits");
         settingsButton = root.Q<Button>("Settings");
         
+        background = root.Q<VisualElement>("Background");
+        
+        
         startGameButton.RegisterCallback<ClickEvent>(OnStartGameClick);
         quitGameButton.RegisterCallback<ClickEvent>(OnQuitGameClick);
         creditsButton.RegisterCallback<ClickEvent>(OnCreditsClick);
         settingsButton.RegisterCallback<ClickEvent>(OnSettingsClick);
     }
+
+    private void Start()
+    {
+        DOTween.Init();
+
+        xPos = background.worldBound.x;
+        DOTween.To(() => xPos, x=> xPos = x, 1207, 5 ).SetLoops(-1, LoopType.Incremental);
+        
+    }
+
+    private void Update()
+    {
+        background.style.position.x = xPos;
+    }
+    
 
     private void OnStartGameClick(ClickEvent clickEvent)
     {

@@ -2,6 +2,12 @@
 }
 
 .unity-button {
+    scale: 1 1;
+    width: 25px;
+    height: 64px;
+    flex-shrink: 1;
+    align-items: stretch;
+    min-width: auto;
 }
 
 .unity-button:hover {
@@ -17,6 +23,6 @@
 }
 
 .background {
-    background-image: url("Game Start Scene.png");
+    background-image: url('Game Start Scene.png');
     background-repeat: repeat-x;
 }
