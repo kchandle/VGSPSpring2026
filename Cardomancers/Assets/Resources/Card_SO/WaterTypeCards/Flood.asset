@@ -17,16 +17,38 @@ MonoBehaviour:
   energyCost: 0
   image: {fileID: 21300000, guid: c9c19d89feab0a64aaadaa26ee2a1581, type: 3}
   cardEffects:
-  - StatusAmount: 25
+  - StatusAmount: 10
     damageType: 3
     actionType: 0
+    targetingType: 1
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 0
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 5
+    damageType: 3
+    actionType: 0
+    targetingType: 2
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: Flood
   description: Deal medium Water Damage to all Enemies on the field. Does minor Water
