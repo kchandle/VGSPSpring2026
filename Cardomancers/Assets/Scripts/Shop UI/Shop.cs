@@ -27,6 +27,15 @@ public class Shop : MonoBehaviour
     /*[HideInInspector]*/ public List<ShopItem> stock = new();
     /*[HideInInspector]*/ public List<Card_SO> cachedSOs = new();
 
+
+    [Header("Manually set shop stock")]
+    public List<Card_SO> customCardStock;
+    public List<Hack_SO> customHackStock;
+    
+
+
+
+
     private List<ShopItem> inventory = new();
     private List<InventoryCard> playerInv;
 
@@ -81,37 +90,37 @@ public class Shop : MonoBehaviour
         }
     }
 
-    //Gets the cardSos from the folder they are stored in path, which is where the programmers put the cardSOs
-    private List<UnityEngine.Object> GetObjectsInPath(string path)
-    {
-        List<UnityEngine.Object> assets = new();
+    
 
-        string []guids = AssetDatabase.FindAssets("", new[] { path });
-
-        foreach (string guid in guids)
-        {
-            path = AssetDatabase.GUIDToAssetPath(guid);
-            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-
-            if (asset != null)
-            {   assets.Add(asset);
-            }
-        }
-
-        return assets;
-    }
-
-    //Updates our inventory when it's changed
-    private void OnInventoryChange(object unused1, EventArgs unused2)
-    {
-        playerInv = Inventory.InventoryList;
-    }
+    
 
     //Initializes inventory stuff
     void Start()
     {
         playerInv = Inventory.InventoryList;
         Inventory.inventoryChanged += OnInventoryChange;
+
+        //If there's a custom stock set, override the generated stock
+        if(customCardStock.Count > 0 || customHackStock.Count > 0)
+        {
+            stock.Clear();
+
+            foreach(Card_SO card in customCardStock)
+            {
+                ShopItem newItem = new ShopItem();
+                newItem.Init_cardSO(card);
+                stock.Add(newItem);
+            }
+
+            foreach(Hack_SO hack in customHackStock)
+            {
+                ShopItem newItem = new ShopItem();
+                newItem.Init_hackSO(hack);
+                stock.Add(newItem);
+            }
+
+        }
+        shopUI.GetComponent<ShopUI>().CreateBuyMenu();
     }
 
     // Opens the shop UI.
@@ -136,12 +145,13 @@ public class Shop : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
     }
 
+    #region Buying/Selling Items
     // Checks whether you can buy a card.
     public bool CanBuyCard(ShopItem item)
     {
         int playerBalance = Inventory.Money;
 
-        return item.PurchasePrice <= playerBalance;
+        return item.PurchasePrice <= playerBalance;  
     }
 
     // Check whether you can sell a card.
@@ -191,7 +201,15 @@ public class Shop : MonoBehaviour
 
         //Buy the card, remove money
         Inventory.Money -= (int)item.PurchasePrice;
-        Inventory.AddCardToInventory(item.SO);
+        if(item.itemType == ItemType.CARD_SO)
+        {
+            Inventory.AddCardToInventory(item.SO_cardSO);
+        }
+        else if(item.itemType == ItemType.HACK_SO)
+        {
+            print("Sucessfully bought hack");
+            Inventory.AddHackToInventory(item.SO_hackSO);
+        }
         SaveSystem.Save(player);
         Shop.PurchaseEvent?.Invoke();
 
@@ -217,22 +235,71 @@ public class Shop : MonoBehaviour
             return false;
         }
 
-        //Remove the corresponding card in the inventory
-        foreach(InventoryCard c in playerInv)
+        //If the item is a card, sell it
+        if(item.itemType == ItemType.CARD_SO)
         {
-            if(c.cardSO == item.SO)
-            {   
-                Inventory.RemoveCardFromInventory(c);
-                Inventory.Money += (int)item.SellPrice;
-                Shop.SellEvent?.Invoke();
-                SaveSystem.Save(player);
-                return true;
+            //Remove the corresponding card in the inventory
+            foreach(InventoryCard c in playerInv)
+            {
+                if(c.cardSO == item.SO_cardSO)
+                {   
+                    Inventory.RemoveCardFromInventory(c);
+                    Inventory.Money += (int)item.SellPrice;
+                    Shop.SellEvent?.Invoke();
+                    SaveSystem.Save(player);
+                    return true;
+                }
+            }
+        }
+        //If the item is a hack, sell it
+        else if(item.itemType == ItemType.HACK_SO)
+        {
+            foreach(Hack_SO h in Inventory.HackInventory)
+            {
+                if(h == item.SO_hackSO)
+                {   
+                    Inventory.RemoveHackFromInventory(h);
+                    Inventory.Money += (int)item.SellPrice;
+                    Shop.SellEvent?.Invoke();
+                    SaveSystem.Save(player);
+                    return true;
+                }
             }
         }
 
         
 
         return false;
+    }
+    #endregion
+
+
+
+
+    //Updates our inventory when it's changed
+    private void OnInventoryChange(object unused1, EventArgs unused2)
+    {
+        playerInv = Inventory.InventoryList;
+    }
+
+    //Gets the cardSos from the folder they are stored in path, which is where the programmers put the cardSOs
+    private List<UnityEngine.Object> GetObjectsInPath(string path)
+    {
+        List<UnityEngine.Object> assets = new();
+
+        string []guids = AssetDatabase.FindAssets("", new[] { path });
+
+        foreach (string guid in guids)
+        {
+            path = AssetDatabase.GUIDToAssetPath(guid);
+            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+
+            if (asset != null)
+            {   assets.Add(asset);
+            }
+        }
+
+        return assets;
     }
 
     //Generates a new random shop stock, ignores the cards in the exclude list
@@ -257,14 +324,14 @@ public class Shop : MonoBehaviour
             }
 
             // exclude any in the exclude list.
-            if(exclude != null && exclude.Any(exc => exc.SO == obj))
+            if(exclude != null && exclude.Any(exc => exc.SO_cardSO == obj))
             {   continue;
             }
 
             
             ShopItem item = new();
 
-            item.Init(obj);
+            item.Init_cardSO(obj);
             //print(item);
 
             generatedStock.Add(item);

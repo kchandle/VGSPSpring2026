@@ -5,61 +5,196 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ItemType
+{
+    NULL,
+
+    CARD_SO,
+    HACK_SO,
+
+    OTHER
+}
+
 public class ShopItem : ScriptableObject
 {
-    [SerializeField] private Card_SO so;
-
     //Unused for now
     public int Stock { get; set; } = 0;
-
-
-    //All of this just makes sure the SO isn't null and retrieves the data from the cardSO
-    public float SellPrice 
-    { 
+    [SerializeField] private ItemType _itemType;
+    public ItemType itemType
+    {
         get
-        {   
-            if(so == null)
+        {
+            if( !(cardSO == null) )
             {   
-                Debug.LogError("Shop Item SO is null");
-                return 0f;
+                return ItemType.CARD_SO;
             }
-
-            return so.sellValue;
+            else if( !(hackSO == null) )
+            {   
+                return ItemType.HACK_SO;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
+                return ItemType.OTHER; //does nothing
+            }
         }
         set
-        {   
-            if(so == null)
+        {
+            if( !(cardSO == null) )
             {   
-                Debug.LogError("Shop Item SO is null");
+                _itemType = value;
+            }
+            else if( !(hackSO == null) )
+            {   
+                _itemType = value;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return;
             }
-
-            so.sellValue = (int)value;
         }
     }
 
-    public float PurchasePrice 
+    //All of this just makes sure the SO isn't null and retrieves the data from the cardSO
+    
+    #region test version
+    //The following are for the cardSO version of a shopItem.
+    [SerializeField] private Card_SO cardSO;
+    public CardType Type_cardSO
+    {
+        get
+        {   
+            if(cardSO == null)
+            {   
+                Debug.LogError("Shop Item cardSO is null");
+                return CardType.NULL;
+            }
+            return cardSO.CardType;
+        }
+    }
+    public Card_SO SO_cardSO
+    {
+        get
+        {   
+            return cardSO;
+        }
+    }
+    public void Init_cardSO(Card_SO cardSO) 
+    {
+        if(cardSO == null)
+        {   
+            Debug.LogError("Argument \"cardSO\" is null");
+            return;
+        }
+        this.cardSO = cardSO;
+        this.Image = cardSO.image;
+        this.itemType = ItemType.CARD_SO;
+    } 
+
+
+
+    //The following is for the hackSo version of a shopItem
+    [SerializeField] private Hack_SO hackSO;
+    public Hack_SO SO_hackSO
+    {
+        get
+        {   
+            return hackSO;
+        }
+    }
+    public void Init_hackSO(Hack_SO hackSO) 
+    {
+        if(hackSO == null)
+        {   
+            Debug.LogError("Argument \"hackSO\" is null");
+            return;
+        }
+        this.hackSO = hackSO;
+        this.Image = hackSO.image;
+        this.itemType = ItemType.HACK_SO;
+    } 
+
+
+
+
+
+
+
+    public int SellPrice
     { 
         get
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
-                return 0f;
+                return cardSO.sellValue; 
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                return hackSO.sellValue;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
+                return 0;
+            }
+  
+        }
+        set
+        {   
+            if( itemType == ItemType.CARD_SO )
+            {   
+                cardSO.sellValue = (int)value; 
+            }
+            else if( itemType == ItemType.HACK_SO )
+            {   
+                hackSO.sellValue = (int)value; 
             }
 
-            return so.price;
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO area null");
+                return;
+            }
+
+        }
+    }
+
+    public int PurchasePrice
+    { 
+        get
+        {   
+
+            if( itemType == ItemType.CARD_SO )
+            {   
+                return cardSO.price; 
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                return hackSO.Price;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
+                return 0;
+            }
         }
 
         set
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                cardSO.price = (int)value; 
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                hackSO.Price = (int)value;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return;
             }
-            
-            so.price = (int)value;
         } 
     }
 
@@ -67,23 +202,35 @@ public class ShopItem : ScriptableObject
     {   
         get
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                return cardSO.displayName; 
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                return hackSO.displayName;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return "";
             }
-            
-            return so.displayName;
         }
         set
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                cardSO.displayName = value;
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                hackSO.displayName = value;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return;
             }
-
-            so.displayName = value;
         }
     }
 
@@ -91,23 +238,35 @@ public class ShopItem : ScriptableObject
     {
         get
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                return cardSO.description;
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                return hackSO.description;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return "";
             }
-
-            return so.description;
         }
         set
         {  
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                cardSO.description = value;
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                hackSO.description = value;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return;
             }
-            
-            so.description = value;
         }
     }
 
@@ -115,57 +274,207 @@ public class ShopItem : ScriptableObject
     {   
         get
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                return cardSO.image;
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                return hackSO.image;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
                 return null;
             }
-            
-            return so.image;
         }
         set
         {   
-            if(so == null)
+            if( itemType == ItemType.CARD_SO )
             {   
-                Debug.LogError("Shop Item SO is null");
+                cardSO.image = value;
+            }
+            else if ( itemType == ItemType.HACK_SO )
+            {
+                hackSO.image = value;
+            }
+            else
+            {
+                Debug.LogError("Shop Item cardSO and hackSO are null");
+                return;
+            }
+        }
+    }
+    #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+    /*#region HackSO version
+    //The following is for the HackSO version of a shopItem. 
+    [SerializeField] private Hack_SO hackSO;
+
+
+    /*public CardType Type_hackSO
+    {
+        get
+        {   
+            if(cardSO == null)
+            {   
+                Debug.LogError("Shop Item cardSO is null");
+                return CardType.NULL;
+            }
+            return cardSO.CardType;
+        }
+    }
+
+    public Hack_SO SO_hackSO
+    {
+        get
+        {   
+            return hackSO;
+        }
+    }
+    public void Init_hackSO(Hack_SO Init_hackSO) 
+    {
+        if(hackSO == null)
+        {   
+            Debug.LogError("Argument \"hackSO\" is null");
+            return;
+        }
+        this.hackSO = hackSO;
+        this.Image_hackSO = hackSO.image;
+    }
+
+    public float SellPrice_hackSO
+    { 
+        get
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hack SO is null");
+                return 0f;
+            }
+
+            return hackSO.sellValue;
+        }
+        set
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hack SO is null");
+                return;
+            }
+
+            hackSO.sellValue = (int)value;
+        }
+    }
+
+    public float PurchasePrice_hackSO
+    { 
+        get
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
+                return 0f;
+            }
+
+            return hackSO.Price;
+        }
+
+        set
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
                 return;
             }
             
-            so.image = value;
-        }
+            hackSO.Price = (int)value;
+        } 
     }
 
-    public CardType Type
-    {
+    public string DisplayName_hackSO
+    {   
         get
         {   
-            if(so == null)
+            if(hackSO == null)
             {   
-                Debug.LogError("Shop Item SO is null");
-                return CardType.NULL;
+                Debug.LogError("Shop Item hackSO is null");
+                return "";
+            }
+            
+            return hackSO.displayName;
+        }
+        set
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
+                return;
             }
 
-            return so.CardType;
+            hackSO.displayName = value;
         }
     }
 
-    public Card_SO SO
+    public string Description_hackSO
     {
         get
-        {   return so;
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
+                return "";
+            }
+
+            return hackSO.description;
+        }
+        set
+        {  
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
+                return;
+            }
+            
+            hackSO.description = value;
         }
     }
 
-    public void Init(Card_SO so) 
-    {
-        if(so == null)
+    public Sprite Image_hackSO
+    {   
+        get
         {   
-            Debug.LogError("Argument \"so\" is null");
-            return;
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
+                return null;
+            }
+            
+            return hackSO.image;
         }
-        this.so = so;
-        this.Image = so.image;
-    } 
+        set
+        {   
+            if(hackSO == null)
+            {   
+                Debug.LogError("Shop Item hackSO is null");
+                return;
+            }
+            
+            hackSO.image = value;
+        }
+    }
 
 
+    #endregion*/
 }

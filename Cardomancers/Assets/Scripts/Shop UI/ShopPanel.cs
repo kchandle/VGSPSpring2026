@@ -2,26 +2,40 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+//could be expanded to add items in the future
+[System.Serializable]
+/*public enum ItemType
+{
+    NULL,
+
+    CARD_SO,
+    HACK_SO,
+
+    OTHER
+}*/
+
 //Shop Panel just displays the information of the card and allows the player to buy / sell it
 public class ShopPanel : MonoBehaviour
 {
     //Visual elements of the panel (all set in editor)
-    [SerializeField] private Image cardImage;
-    [SerializeField] private TMPro.TextMeshProUGUI cardName;
-    [SerializeField] private TMPro.TextMeshProUGUI cardDesc;
-    [SerializeField] private TMPro.TextMeshProUGUI cardValue;
+    [SerializeField] private Image itemImage;
+    [SerializeField] private TMPro.TextMeshProUGUI itemName;
+    [SerializeField] private TMPro.TextMeshProUGUI itemDesc;
+    [SerializeField] private TMPro.TextMeshProUGUI itemValue;
     
     
     //other
+    private ItemType type;
     private ShopItem item;
     private Card_SO cardSO;
+    private Hack_SO hackSO;
 
     public int cardAmount = 1;
     public TMP_Text totalCardAmount;
 
 
-    private int cardCost;
-    private int cardSellValue;
+    private int itemCost;
+    private int itemSellValue;
     
     [SerializeField] private Shop shop; //set in editor
     [SerializeField] private ShopUI shopUI; //set in editor
@@ -29,18 +43,30 @@ public class ShopPanel : MonoBehaviour
     //Change visual elements of panel. Called by the Onclick events of whichever shopItem was clicked
     public void UpdatePanel(ShopItem shopItem)
     {
-        cardSO = shopItem.SO;
         item = shopItem;
+        type = item.itemType;
 
-        cardImage.sprite = cardSO.image;
-        cardDesc.text = cardSO.description;
-        cardName.text = cardSO.displayName;
+        if(shopItem.itemType == ItemType.CARD_SO)
+        {
+            cardSO = shopItem.SO_cardSO;
+            hackSO = null;
+        }
+        else if(shopItem.SO_hackSO)
+        {
+            cardSO = null;
+            hackSO = shopItem.SO_hackSO;
+        }
 
-        cardCost = cardSO.price;
-        cardSellValue = cardSO.sellValue;
+        itemImage.sprite = item.Image;
+        itemDesc.text = item.Description;
+        itemName.text = item.DisplayName;
 
-        cardValue.text = "Buy: " + cardCost + " currency.\nSell: " + cardSellValue + " currency.";
+        itemCost = item.PurchasePrice;
+        itemSellValue = item.SellPrice;
+
+        itemValue.text = "Buy: " + itemCost + " currency.\nSell: " + itemSellValue + " currency.";
         totalCardAmount.text = cardAmount.ToString();
+
     }
 
 
@@ -63,6 +89,8 @@ public class ShopPanel : MonoBehaviour
         }
         totalCardAmount.text = cardAmount.ToString();
     }
+
+
 
     //method called by the shop panel's Buy button onclick event
     public void ClickedBuyCard()

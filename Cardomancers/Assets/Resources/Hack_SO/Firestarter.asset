@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab035d907c4ef78478ebd5f51ede08fd, type: 3}
   m_Name: FireStarter
   m_EditorClassIdentifier: Assembly-CSharp::Hack_SO
-  sellValue: 6
-  Price: 7
+  sellValue: 80
+  Price: 400
   displayName: Fire Starter
   description: Inflicts "On Fire" on the target of the card.
-  image: {fileID: 0}
+  image: {fileID: -1461973926, guid: 1c72dc8d0df445947817d2ca1961ff55, type: 3}
   sideOfCard: 0
   hackEffects:
   - StatusAmount: 2
     damageType: 0
     actionType: 0
+    targetingType: 0
     isStatusEffect: 1
     isPerishable: 1
     isNegative: 1

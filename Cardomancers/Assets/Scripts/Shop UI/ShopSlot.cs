@@ -11,14 +11,14 @@ public class ShopSlot : MonoBehaviour
     public void Init(ShopItem item)
     {
         shopItem = item;
-        image.sprite = shopItem.SO.image;
+        image.sprite = shopItem.Image;  
     }
 
     //Unused
     public void Init(Card_SO so)
     {
-        shopItem.Init(so);
-        image.sprite = shopItem.SO.image;
+        shopItem.Init_cardSO(so);
+        image.sprite = shopItem.SO_cardSO.image;
     }
 
     //Called when the object is clicked on  
