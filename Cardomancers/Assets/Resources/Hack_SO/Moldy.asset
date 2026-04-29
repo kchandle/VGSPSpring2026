@@ -12,21 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab035d907c4ef78478ebd5f51ede08fd, type: 3}
   m_Name: Moldy
   m_EditorClassIdentifier: Assembly-CSharp::Hack_SO
-  sellValue: 0
-  Price: 0
+  sellValue: 1
+  Price: 2
   displayName: Moldy
-  description: "How long has this card been sitting in the bottom of your bag\u2026"
-  image: {fileID: 21300000, guid: c7a863cf356782047be7e9670bebdf41, type: 3}
+  description: How long has this card been sitting in the bottom of your bag..?
+  image: {fileID: 0}
   sideOfCard: 0
   hackEffects:
-  - StatusAmount: 3
-    damageType: 8
+  - StatusAmount: 5
+    damageType: 0
     actionType: 0
     isStatusEffect: 1
     isPerishable: 1
-    turnsActive: 5
+    isNegative: 1
+    turnsActive: 3
+    probability: 1
+    statusType: 7
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
