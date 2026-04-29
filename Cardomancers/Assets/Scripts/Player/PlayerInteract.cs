@@ -109,6 +109,11 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
+    public void AUDBIEfwk()
+    {
+        interacting = false;
+    }
+
     public void ChangeAllChildrenLayer(GameObject target, string layer)
     {
         target.gameObject.layer = LayerMask.NameToLayer(layer);

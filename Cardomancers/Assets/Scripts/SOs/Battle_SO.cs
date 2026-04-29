@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Battle_SO : ScriptableObject
 {
     public Enemy_SO[] enemies; //The enemies that will be faced in this battle.
-    public FieldEffect_SO fieldCondition; //*****  
+    public FieldEffect_SO fieldCondition; //A field condition that will be active when entering the battle
     public bool isTutorial;
     
     public List<BattleDialogue> dialogueSOs;
