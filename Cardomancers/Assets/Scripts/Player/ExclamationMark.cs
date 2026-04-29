@@ -10,11 +10,25 @@ public class ExclamationMark : MonoBehaviour
     public float RotationSpeed = 1f;
     [Tooltip("Whether the exclamation mark should rotate clockwise.")]
     public bool RotateClockwise = true;
+    [Tooltip("The color the exclamation mark should change to when the player is interacting with the npc.")]
+    public Color InteractingColor = Color.grey;
+    [Tooltip("The speed at which the exclamation mark should change color when the player is interacting with the npc.")]
+    public float ColorChangeSpeed = 1f;
+    [Tooltip("The color the exclamation mark should change to when the player is in range to interact with the npc.")]
+    public Color InRangeColor = Color.yellow;
+    [Tooltip("The speed at which the exclamation mark should change color when the player is in range to interact with the npc.")]
+    public float InRangeColorChangeSpeed = 1f;
 
+
+    private GameObject player;
+    private GameObject parent;
+    private PlayerInteract playerInteract;
     private Canvas canvas;
     private float initialOffset;
     private bool isRising = true;
     private RectTransform rectTransform = null;
+    private Color originalColor;
+    private SpriteRenderer image;
 
     void Start()
     {
@@ -26,6 +40,21 @@ public class ExclamationMark : MonoBehaviour
 
         Debug.Assert(rectTransform != null, "RectTransform component not found on the assigned Canvas.");
 
+        image = canvas.GetComponentInChildren<SpriteRenderer>();
+
+        Debug.Assert(image != null, "SpriteRenderer component not found on the assigned Canvas.");
+
+        originalColor = image.color;
+        player = GameObject.FindWithTag("Player");
+
+        Debug.Assert(player != null, "Player GameObject with tag 'Player' not found in the scene.");
+
+        playerInteract = player.GetComponent<PlayerInteract>();
+
+        Debug.Assert(playerInteract != null, "PlayerInteract component not found on the Player GameObject.");
+
+        parent = transform?.parent?.gameObject;
+
         initialOffset = rectTransform.anchoredPosition.y;
     }
 
@@ -35,7 +64,7 @@ public class ExclamationMark : MonoBehaviour
 
     void Update()
     {
-        if(canvas == null || rectTransform == null)
+        if(canvas == null || rectTransform == null || player == null || playerInteract == null)
         {   return;
         }
 
@@ -58,7 +87,33 @@ public class ExclamationMark : MonoBehaviour
 
         targetPosition += targetOffset;
 
-        //rectTransform.anchoredPosition = Vector2.Lerp(currentPosition, targetPosition, HoverSpeed * Time.deltaTime * HOVER_SPEED_MULTIPLIER);
+        Debug.LogWarning(parent);
+        Debug.Log(playerInteract.currentHighlight);
+        if(playerInteract.interacting)
+        {   
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            float interactRange = playerInteract.range;
+
+            if(distance > interactRange)
+            {   return;
+            }
+
+            image.color = Color.Lerp(image.color, InteractingColor, ColorChangeSpeed * Time.deltaTime);
+        }
+        else
+        {
+            if(parent != null && playerInteract.currentHighlight == parent)
+            {   
+                image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
+            }
+            else if(parent == null && playerInteract.InRange)
+            {   image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
+            }
+            else
+            {   image.color = Color.Lerp(image.color, originalColor, ColorChangeSpeed * Time.deltaTime);
+            }
+        }
+
         rectTransform.anchoredPosition = Vector2.MoveTowards(currentPosition, targetPosition, HoverSpeed * Time.deltaTime * HOVER_SPEED_MULTIPLIER);
         rectTransform.Rotate(0, RotationSpeed * RotationDirection * Time.deltaTime * ROTATION_SPEED_MULTIPLIER, 0);
 
