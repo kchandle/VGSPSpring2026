@@ -22,6 +22,7 @@ public class ExclamationMark : MonoBehaviour
 
     private GameObject player;
     private GameObject parent;
+    private InteractableObject parentInteractable;
     private PlayerInteract playerInteract;
     private Canvas canvas;
     private float initialOffset;
@@ -54,6 +55,7 @@ public class ExclamationMark : MonoBehaviour
         Debug.Assert(playerInteract != null, "PlayerInteract component not found on the Player GameObject.");
 
         parent = transform?.parent?.gameObject;
+        parentInteractable = parent?.GetComponent<InteractableObject>();
 
         initialOffset = rectTransform.anchoredPosition.y;
     }
@@ -87,8 +89,6 @@ public class ExclamationMark : MonoBehaviour
 
         targetPosition += targetOffset;
 
-        Debug.LogWarning(parent);
-        Debug.Log(playerInteract.currentHighlight);
         if(playerInteract.interacting)
         {   
             float distance = Vector3.Distance(transform.position, player.transform.position);
@@ -102,11 +102,11 @@ public class ExclamationMark : MonoBehaviour
         }
         else
         {
-            if(parent != null && playerInteract.currentHighlight == parent)
+            if(parentInteractable != null && playerInteract.currentHighlight == parentInteractable)
             {   
                 image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
             }
-            else if(parent == null && playerInteract.InRange)
+            else if(parentInteractable == null && playerInteract.InRange)
             {   image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
             }
             else
