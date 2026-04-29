@@ -17,16 +17,22 @@ MonoBehaviour:
   energyCost: 0
   image: {fileID: 21300000, guid: c62c444d442e1ac418542702e715ae18, type: 3}
   cardEffects:
-  - StatusAmount: 10
+  - StatusAmount: 5
     damageType: 5
     actionType: 0
+    targetingType: 1
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 0
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
   displayName: Wind Burst
   description: Deal minor Wind Damage to all Enemies

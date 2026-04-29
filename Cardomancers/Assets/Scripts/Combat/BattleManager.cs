@@ -52,6 +52,7 @@ public class BattleManager : MonoBehaviour
     #region All the player scripts
     [SerializeField]private GameObject player; // reference to the player game object
     [SerializeField]private PlayerController playerController; // reference to the player controller
+    [SerializeField]private PlayerInteract playerInteract; // reference to player interact
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
     [SerializeField]private float playerMaxHealth; // reference to the player's max health
@@ -136,10 +137,10 @@ public class BattleManager : MonoBehaviour
     {
         // OnBattleStart.AddListener(() => Debug.Log("Battle Started!")); //Occurs on start
         // OnLose.AddListener(() => Debug.Log("You Lose!")); //Occurs on Lose
-        // OnWin.AddListener(() => {Debug.Log("You Win!"); Win();}); //Occurs on Win
+        OnWin.AddListener(() => {Debug.Log("You Win!");}); //Occurs on Win
         // PlayerTurn.AddListener(() => Debug.Log("Player's Turn")); //Occurs on Player Turn
         // EnemyTurn.AddListener(() => Debug.Log("Enemy's Turn")); //Occurs on Enemies Turn
-        // OnEnd.AddListener(() => Debug.Log("Battle Over")); //Occurs on Battle End
+        OnEnd.AddListener(() => {Debug.Log("Battle Over"); playerInteract.battleManager = null;}); //Occurs on Battle End
     }
 
     private void OnDestroy() //Swap camera back to main at end of battle.
@@ -217,10 +218,14 @@ public class BattleManager : MonoBehaviour
         // Spawn enemies based on the Battle_SO
         this.battle = battle;
 
-        //***
+        //Enter battle with weather active
         if (battle.fieldCondition)
         {
             this.fieldCondition = battle.fieldCondition;
+            fieldCondition.active = true;
+            fieldCondition.turnsRemaining = fieldCondition.turnsActive;
+            StartCoroutine(TurnBasedFieldEffects());
+            print("Set start field condition");
         }
 
         if (battle.isTutorial) tutorial = true;
@@ -234,6 +239,8 @@ public class BattleManager : MonoBehaviour
 
         playerMaxHealth = playerController.maxPlayerHealth;
         playerCurrentHealth = playerController.currentHealth;
+        playerInteract = FindAnyObjectByType<PlayerInteract>();
+        playerInteract.battleManager = this;
 
         //Get the enemy set up
 
@@ -460,60 +467,22 @@ public class BattleManager : MonoBehaviour
         //Display cards
 
         // Start Player turn coroutine to handle playing cards 
-        yield return StartCoroutine(cardDragInput.DragDrop());
+        if(playerController.isStunned)
+        {
+            print("Player is stunned");
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+        {
+            yield return StartCoroutine(cardDragInput.DragDrop());    
+        }
+         
 
         //Status Effects get activated
         yield return StartCoroutine(playerController.StatusEffects());
 
-
-        //***Decrease field condition turn count
-        if(fieldCondition && fieldCondition.active)
-        {
-            fieldCondition.turnsRemaining--;
-            print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
-
-            //If the field's duration is up, deactivate it
-            if(fieldCondition.turnsRemaining == -1)
-            {
-                fieldCondition.active = false;
-            }
-
-
-            //*** If an active field condition deals chip damage (just acid rain for now)
-            //optimize later please
-            if(fieldCondition.chipDamage)
-            {
-
-                foreach(FieldEffects effect in fieldCondition.effects)
-                {
-
-                    if(effect.dealsChipDamage && effect.chipDamageCard)
-                    {
-
-                        //if you thought 2 nested foreach loops was bad
-                        foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
-                        {
-
-                            bEffect.TriggerEffect(playerController, player.transform.position);
-                            print("Damaging player with acid rain");
-                            foreach(GameObject e in currentEnemies)
-                            {
-                                bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);
-                                print("Damaging enemies with acid rain");
-                            }
-
-                        }
-                        
-                    }
-
-                }
-
-            }
-
-        }
-
-        
-        
+        //Evaluate Field Conditions for the turn
+        StartCoroutine(TurnBasedFieldEffects());
 
 
         yield return null;
@@ -530,6 +499,14 @@ public class BattleManager : MonoBehaviour
                 enemy.GetComponent<Enemy>().ShuffleDeck();
             }
         }
+
+        /*//Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
+        foreach (GameObject enemy in currentEnemies)
+        {
+            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            //InventoryCard card = enemyScript.DrawCard();
+            yield return StartCoroutine(enemyScript.StatusEffects());
+        }*/
 
         EnemyTurn.Invoke();
 
@@ -549,31 +526,59 @@ public class BattleManager : MonoBehaviour
             enemyScript.currentTimer--;
             enemyScript.UpdateTimer();
 
+            bool reflected = false; //track if player counterspell has been triggered
+
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
-                
-
-
-                //***
-                if(fieldCondition)
-                {
-                    print(fieldCondition.name + "field condition Is active!");
-                }
-                else
-                {
-                    print("no field condition is active");
-                }
 
                 if(effect.summonsEnemies)
                 {
                     TrySummonEnemy(effect);
                 }
 
+                switch(effect.actionType)
+                {
+                    case(BattleActionType.ATTACK):
+                    {
+                        //print("Enemy attacking opponent. Attack multi: " + enemyScript.attackMulti);
+
+                        //If the player has counterSpell, launch the attack on the enemy instead
+                        if(playerController.counterSpellActive)
+                        {
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, enemyScript.attackMulti);
+                            print("Spell countered");
+                            reflected = true;
+                        }
+                        else
+                        {
+                            effect.TriggerEffect(playerController, player.transform.position, null, enemyScript.attackMulti);
+                        }
+                        break;
+                    }
+                    case(BattleActionType.DEFEND):
+                    {
+                        print("Enemy defending themelves");
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position);
+                        break;
+                    }
+                    case(BattleActionType.HEAL):
+                    {
+                        print("Enemy healing themselves");
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position);
+                        break;
+                    }
+                    default:
+                    {
+                        print("Enemy doing some other option");
+                        break;
+                    }
+                }
 
 
-                switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
+
+                /*switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
                 {
                     case (CardType.ATK):
                     {
@@ -585,7 +590,12 @@ public class BattleManager : MonoBehaviour
                         enemyScript.CurrentShield += effect.StatusAmount;
                         break;
                     }
-                }
+                }*/
+            }
+
+            if(reflected) //disable player counterSpell
+            {
+                playerController.counterSpellActive = false;
             }
 
             if (enemyScript.currentTimer <= 0)
@@ -833,6 +843,358 @@ public class BattleManager : MonoBehaviour
             EnemiesChooseCards(currentEnemies.IndexOf(enemyPrefab));
             ResetEnemyPositions();
         }
+    }
+    #endregion
+
+
+
+
+    #region Player Attack Targeting
+    //Methods for the player to use to attack in accordance with an effect's targeting type.
+    //These methods are called in the Card script's TryPlayCard(Enemy enemy){}
+    //These only handle effects with the ATTACK action type. For positive statusEffects, just use the DEFEND or HEAL action types
+
+
+    //Method for the player to attack one enemy. Done just to centralize the system and make universal changes easier
+    public void PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript)
+    {
+        foreach(BattleEffect effect in effects)
+        {
+            if(effect.targetingType != TargetingType.SingleTarget){continue;}
+
+
+            switch(effect.actionType)
+            {
+                case(BattleActionType.ATTACK):
+                {
+                    //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
+                    if(enemyScript.counterSpellActive)
+                    {
+                        effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+
+                        enemyScript.cSpellTriggered = true;
+                        print("counterspell triggered");
+                    }
+                    else
+                    {
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, playerController.attackMulti);
+                    }
+                    break;
+                }
+                case(BattleActionType.DEFEND):
+                {
+                    break;
+                }
+                case(BattleActionType.HEAL):
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+
+        }
+
+        //Disable counterspell if the enemy had it triggered
+        if(enemyScript.cSpellTriggered)
+        {
+            enemyScript.counterSpellActive = false;
+            enemyScript.cSpellTriggered = false;
+        }
+
+    }
+
+    //Method for specifically the player to affect ALL enemies with a card and its hacks
+    public void PlayerAttackAllEnemies(List<BattleEffect> effects)
+    {
+        foreach(BattleEffect effect in effects)
+        {
+            if(effect.targetingType != TargetingType.AOETarget){continue;}
+
+            switch(effect.actionType)
+            {
+                case(BattleActionType.ATTACK):
+                {
+                    //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
+                    foreach(GameObject e in currentEnemies)
+                    {
+                        Enemy enemyScript = e.GetComponent<Enemy>();
+
+                        if(enemyScript.counterSpellActive)
+                        {
+                            effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+
+                            enemyScript.cSpellTriggered = true;
+                            print("counterspell triggered");
+                        }
+                        else
+                        {
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, playerController.attackMulti);
+                        }
+                    }
+                    break;
+                }
+                case(BattleActionType.DEFEND):
+                {
+                    break;
+                }
+                case(BattleActionType.HEAL):
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
+
+        //Disable counterspell for any enemy that had it triggered
+        foreach(GameObject e in currentEnemies)
+        {
+            Enemy enemyScript = e.GetComponent<Enemy>();
+
+            if(enemyScript.cSpellTriggered)
+            {
+                enemyScript.counterSpellActive = false;
+                enemyScript.cSpellTriggered = false;
+            }
+        }
+
+    }
+
+    //Method for the player to attack themselves
+    public void PlayerAttackSelf(List<BattleEffect> effects)
+    {
+        foreach(BattleEffect effect in effects)
+        {
+            if(effect.targetingType != TargetingType.SelfTarget){continue;}
+
+            //print(effect.StatusAmount);
+
+            switch(effect.actionType)
+            {
+                case(BattleActionType.ATTACK):
+                {
+                    
+                    effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+                    break;
+                }
+                case(BattleActionType.DEFEND):
+                {
+                    break;
+                }
+                case(BattleActionType.HEAL):
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+
+        }
+
+    }
+    #endregion
+
+
+
+
+
+
+
+
+
+    
+    #region Field Effects
+    //For turn-based Field effects
+    private IEnumerator TurnBasedFieldEffects()
+    {
+        if(!fieldCondition)
+        {
+            //print("No field condition exists");
+            yield break;
+        }
+        if(!fieldCondition.active)
+        {
+            //print("No field condition is active");
+            yield break;
+        }
+        if(fieldCondition.turnsRemaining < 0)
+        {
+            //print("Field Condition has expired");
+            fieldCondition.active = false;
+            yield break;
+        }
+        print(fieldCondition.name + "field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
+
+
+
+        //=====Universal stat changes=====//
+        if(fieldCondition.hasStatChanges)
+        {
+            
+            foreach(FieldEffects effect in fieldCondition.effects)
+            {
+                //If the type of field is meant to boost damage and this effect does so
+                if(effect.statChanges)
+                {
+
+                    if(!playerController.weatherImmune) //eye of the storm status
+                    {
+                        playerController.fieldAtkBoost = effect.attackBoost;
+                        playerController.fieldEndBoost = effect.enduranceBoost;
+                    }
+
+                    //Do the same for all enemies
+                    foreach(GameObject e in currentEnemies)
+                    {
+                        if(!e.GetComponent<Enemy>().weatherImmune)
+                        {
+                            e.GetComponent<Enemy>().fieldAtkBoost = effect.attackBoost;
+                            e.GetComponent<Enemy>().fieldEndBoost = effect.enduranceBoost;
+                        }
+                    }
+                }
+
+            }
+            
+
+            //make stat changes happen on the first turn
+            if(fieldCondition.turnsRemaining == fieldCondition.turnsActive)
+            {
+                foreach(FieldEffects effect in fieldCondition.effects)
+                {
+                    //If the type of field is meant to boost damage and this effect does so
+                    if(effect.statChanges)
+                    {
+                        if(!playerController.weatherImmune) //eye of the storm status
+                        {
+                            playerController.attackMulti *= effect.attackBoost;
+                            playerController.enduranceMulti *= effect.enduranceBoost;
+                        }
+                        foreach(GameObject e in currentEnemies)
+                        {
+                            if(!e.GetComponent<Enemy>().weatherImmune)
+                            {
+                                e.GetComponent<Enemy>().attackMulti *= effect.attackBoost;
+                                e.GetComponent<Enemy>().enduranceMulti *= effect.enduranceBoost;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+        else
+        {
+            playerController.fieldAtkBoost = 1f;
+            playerController.fieldEndBoost = 1f;
+
+            foreach(GameObject e in currentEnemies)
+            {
+                e.GetComponent<Enemy>().fieldAtkBoost = 1f;
+                e.GetComponent<Enemy>().fieldEndBoost = 1f;
+            }
+        }
+        //=====End of Universal stat changes=====//
+
+
+
+        //=====Chip damage=====//
+        //If an active field condition deals chip damage (acid rain and thunderstorm)
+        if(fieldCondition.chipDamage && fieldCondition.turnsRemaining < fieldCondition.turnsActive) //Don't do chip on the first turn
+        {
+            //Field chip damage works by playing a damaging card on the targets
+            //Evaluate field effects, similarrly to how cards evaluate battle effects
+            foreach(FieldEffects effect in fieldCondition.effects)
+            {
+                if(effect.dealsChipDamage && effect.chipDamageCard)
+                {
+                    //Strike one target at random (thunderstorm)
+                    if(effect.chipIsRandom)
+                    {
+                        int target = (int)UnityEngine.Random.Range(0, currentEnemies.Count + 1);
+
+                        if(target >= currentEnemies.Count && !playerController.weatherImmune) //trigger on player
+                        {
+                            foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                            {
+                                bEffect.TriggerEffect(playerController, player.transform.position);
+                            }
+                        }
+                        else
+                        {
+                            foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                            {
+                                if(!currentEnemies[target].GetComponent<Enemy>().weatherImmune)
+                                {
+                                    bEffect.TriggerEffect(currentEnemies[target].GetComponent<Enemy>(), currentEnemies[target].transform.position);
+                                }
+                            }
+                        }
+                        
+                    }
+                    else //Hit all enemies and the player (acid rain)
+                    {
+                        //Play the damaging card on each enemy and the player
+                        foreach(BattleEffect bEffect in effect.chipDamageCard.cardEffects)
+                        {
+                            if(!playerController.weatherImmune)
+                            {
+                                bEffect.TriggerEffect(playerController, player.transform.position);    
+                            }
+                            
+                            //print("Damaging player with acid rain");
+                            foreach(GameObject e in currentEnemies)
+                            {
+                                if(!e.GetComponent<Enemy>().weatherImmune)
+                                {
+                                    bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);   
+                                }
+                                //print("Damaging enemies with acid rain");
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }
+        //=====End of Chip damage handling=====//
+
+
+
+
+        //---Decrement turn
+        fieldCondition.turnsRemaining--;
+        //print(fieldCondition.name + " turns remaining: " + fieldCondition.turnsRemaining);
+
+        //If the field's duration is up, deactivate it and reset everything as needed
+        if(fieldCondition.turnsRemaining < 0)
+        {
+            fieldCondition.active = false;
+
+            playerController.fieldAtkBoost = 1f;
+            playerController.fieldEndBoost = 1f;
+
+            foreach(GameObject e in currentEnemies)
+            {
+                e.GetComponent<Enemy>().fieldAtkBoost = 1f;
+                e.GetComponent<Enemy>().fieldEndBoost = 1f;
+            }
+        }
+        //---
+
+        yield return null;
+
     }
     #endregion
 
