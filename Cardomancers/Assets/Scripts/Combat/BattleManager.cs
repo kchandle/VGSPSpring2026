@@ -454,6 +454,9 @@ public class BattleManager : MonoBehaviour
         if (playerDeckCopyActive.Count <= 0)
         {
             playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
+            //playerDeckCopyActive = Inventory.Deck;
+
+            //print("TESTING: " + playerDeckCopyActive.Count);
 
             //Add NewPlayItem from playspace for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
@@ -463,6 +466,7 @@ public class BattleManager : MonoBehaviour
                 playerCard.GetComponent<Card>().hacks = card.hacks;
                 playerCard.GetComponent<Card>().CardSO = card.cardSO;
             }
+            //print("TESTING2: " + playerDeckCopyActive.Count);
         }
         //Display cards
 
@@ -485,7 +489,8 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(TurnBasedFieldEffects());
 
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+        yield return null;
     }
 
     public IEnumerator StartEnemyTurn()
@@ -576,21 +581,6 @@ public class BattleManager : MonoBehaviour
                     }
                 }
 
-
-
-                /*switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
-                {
-                    case (CardType.ATK):
-                    {
-                        effect.TriggerEffect(playerController, player.transform.position);
-                        break;
-                    }
-                    case (CardType.DEF):
-                    {
-                        enemyScript.CurrentShield += effect.StatusAmount;
-                        break;
-                    }
-                }*/
             }
 
             if(reflected) //disable player counterSpell
@@ -633,7 +623,7 @@ public class BattleManager : MonoBehaviour
                 enemyScript.UpdateTimer();
             }
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
         }
 
         //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played

@@ -199,14 +199,14 @@ public struct BattleEffect
         PlayerController player = target.GetComponent<PlayerController>();
         if(card != null)
         {
-            Debug.Log(card.name);
+            Debug.Log(card.name + " on player");
 
             GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
             vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
-            if (card.CardType != CardType.DEF)
+            /*if (card.CardType != CardType.DEF)
             {
                 return false;
-            }
+            }*/
         }
 
         //---Applying the Random status effect chooses a random status effect from the enum to hit the opponent with.
@@ -374,14 +374,14 @@ public struct BattleEffect
     {
         if(card)
         {
-            Debug.Log(card.name);
+            Debug.Log(card.name + " on enemy");
             GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
             vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
-            if (card.CardType == CardType.DEF)
+            /*if (card.CardType == CardType.DEF)
             {
                 Debug.Log("a card with only def played on enemy");
                 return false;
-            }
+            }*/
         }
         
         //---Applying random status effects

@@ -62,10 +62,10 @@ public static class SaveSystem
     // Takes in an inventory SO and assigns its data based on the saved data
     public static void Load(GameObject player)
     {
-        Debug.Log(File.Exists(DataPath));
+        //Debug.Log(File.Exists(DataPath));
         // Ends function if there is no save data
         if (!File.Exists(DataPath)) return;
-        Debug.Log(DataPath);
+        //Debug.Log(DataPath);
 
         // where data is assigned
         SaveData data = JsonUtility.FromJson<SaveData>(encryption.Decrypt(File.ReadAllText(DataPath)));

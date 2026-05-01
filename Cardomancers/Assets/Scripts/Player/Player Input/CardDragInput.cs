@@ -14,6 +14,9 @@ public class CardDragInput : MonoBehaviour
 
     //public InventoryUIHandler uIHandler;
 
+    //****
+    private int plays;
+
     private bool dragDropActive; // if the drag and drop ability is active
 
     public bool DragDropActive // getter setter for activating dragDropAbility
@@ -105,8 +108,8 @@ public class CardDragInput : MonoBehaviour
 // Coroutine for Dragging and Dropping items. When active, the player will be able to drag and drop playItems between the current active playspaces
     public IEnumerator DragDrop()
     {
-        dragDropActive = true;
-        while (dragDropActive == true)
+        DragDropActive = true;
+        while (DragDropActive == true)
         {
             
         
@@ -216,10 +219,9 @@ public class CardDragInput : MonoBehaviour
                                     BattleManager bm = FindFirstObjectByType<BattleManager>();
                                     if (FindFirstObjectByType<BattleManager>().isBattling)
                                     {
-                                        if (AttemptPlay((Card)dragTarget, p))
+                                        if (AttemptPlay((Card)dragTarget, p) /*&& DragDropActive*/)
                                         {
-                                            bm.PlayerDeckCopyActive.Remove(((Card)dragTarget)
-                                                .inventoryCard); // remove played card from deck copy
+                                            bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                             dragPlayspace.DestroyPlayItem(dragTarget);
                                             dragDropActive = false;
                                         }
@@ -268,9 +270,13 @@ public class CardDragInput : MonoBehaviour
         {
             //tries to play card against the playspace's parent gameobject enemy component
             if(p.gameObject.GetComponentInParent<Enemy>())
+            {
                 return dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+            }
             else
+            {
                 return dragTarget.TryPlayCard(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
+            }
         }
         else{
             return false;

@@ -240,7 +240,7 @@ public class ShopUI : MonoBehaviour
             }
         }
 
-        print(Inventory.InventoryList[0]);
+        //print(Inventory.InventoryList[0]);
         //print(Inventory.HackInventory.Count);
 
         //Set shop slots that contain hacks active, leave others inactive
