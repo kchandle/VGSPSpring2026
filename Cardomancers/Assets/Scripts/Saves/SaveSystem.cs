@@ -34,7 +34,7 @@ public static class SaveSystem
     }
     public static void Save(GameObject player, QuestManager questManager)
     {
-        Debug.Log("Saving");
+        //Debug.Log("Saving");
         // Creates an instance of the InventoryData class using the input
         SaveData data = new SaveData(player);
 
@@ -100,7 +100,7 @@ public static class SaveSystem
     {
         if (!File.Exists(QuestDataPath(ID))) throw new FileNotFoundException();
         
-        Debug.Log(QuestDataPath(ID));
+        //Debug.Log(QuestDataPath(ID));
         
         QuestData data = JsonUtility.FromJson<QuestData>(encryption.Decrypt(File.ReadAllText(QuestDataPath(ID))));
 

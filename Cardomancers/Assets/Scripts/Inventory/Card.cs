@@ -136,9 +136,9 @@ public class Card : PlayItem
 
         //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything.
         //Ask Joshua if you have any concerns
-        BattleManager.instance.PlayerAttackOneEnemy(effects, enemy);
-        BattleManager.instance.PlayerAttackAllEnemies(effects);
-        BattleManager.instance.PlayerAttackSelf(effects);
+        BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO);
+        BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
+        BattleManager.instance.PlayerAttackSelf(effects, cardSO);
 
         returnVal = true;
         return returnVal;
@@ -157,7 +157,7 @@ public class Card : PlayItem
         {
             if(cardSO.CardType != CardType.ATK)
             {
-                if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true;continue;}
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)){ returnVal = true;continue;}
             } 
             //Apply each effect to the target
             if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;

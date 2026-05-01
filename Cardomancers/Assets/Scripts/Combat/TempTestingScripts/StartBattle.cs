@@ -41,20 +41,20 @@ public class StartBattle : MonoBehaviour
         {
             //play alt text
             GameObject.Find("DialogueScreen").GetComponent<DialogueScripts.DialogueManager>().StartDialogue(altText);
-            print("Help");
+            //print("Help");
             return ;
         } 
 
         if (Inventory.Deck.Count == 0 && Inventory.InventoryList.Count > 0)
         {
-            print("Add some cards to your deck and come back.");
+            //print("Add some cards to your deck and come back.");
             FindFirstObjectByType<PlayerInteract>().interacting = false;
             return;
         }
 
         if (Inventory.InventoryList.Count == 0)
         {
-            print("Pick up some cards and add them to your deck. Then come back.");
+            //print("Pick up some cards and add them to your deck. Then come back.");
             return;
         }
 

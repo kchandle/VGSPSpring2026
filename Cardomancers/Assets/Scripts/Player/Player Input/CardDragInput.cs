@@ -301,7 +301,7 @@ public class CardDragInput : MonoBehaviour
     public void MoveToNewPlayspace(PlayItem moveTarget, Playspace to, Playspace from)
     {
         if (to.allowedDonors.Contains(from)){
-            print("in allowed donors");
+            //print("in allowed donors");
             //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
             if (moveTarget.itemType == PlayItem.ItemType.CARD)
             {
@@ -310,7 +310,7 @@ public class CardDragInput : MonoBehaviour
                     to.gameObject.transform.parent.parent.gameObject.name == "InventoryCanvas" ||
                     to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
                 {
-                    print("Is of allowed type");
+                    //print("Is of allowed type");
                     if(to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard)) from.DestroyPlayItem(moveTarget);
                     PlayitemMoved.Invoke(moveTarget, to, from);
                 }

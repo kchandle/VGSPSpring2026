@@ -66,7 +66,7 @@ public class InventoryUIHandler : MonoBehaviour
             // Add deck cards
             foreach(InventoryCard card in Inventory.Deck)
             {
-                print(card);   
+                //print(card);   
                 GameObject newCard = deckPlayspace.NewPlayItem(cardPrefab, card.cardSO, card);
             }
 
@@ -76,13 +76,13 @@ public class InventoryUIHandler : MonoBehaviour
  
             foreach (InventoryCard card in notInDeck)
             {
-                print(card);
+                //print(card);
                 GameObject newCard = invPlayspace.NewPlayItem(cardPrefab, card.cardSO, card);
             } 
 
             foreach (Hack_SO hack in Inventory.HackInventory)
             {
-                print(hack);
+                //print(hack);
                 GameObject newHack = hackPlayspace.NewPlayItem(hackPrefab, hack);
             }
 
@@ -112,14 +112,14 @@ public class InventoryUIHandler : MonoBehaviour
 
     public void CardDraggedIntoPlayspace(PlayItem playItem, Playspace to, Playspace from)
     {
-        print("Card dragged into playspace. To playspace: " + to);
+        //print("Card dragged into playspace. To playspace: " + to);
         if(to == invPlayspace) CardDraggedIntoInventory(playItem, from);
         if(to == deckPlayspace) CardDraggedIntoDeck(playItem, from);
         if(to == trashPlayspace) CardDraggedIntoTrash(playItem, from);
     }
     public void CardDraggedIntoInventory(PlayItem playItem, Playspace originPlayspace)
     {
-        print("Card dragged into inventory");
+        //print("Card dragged into inventory");
         if (originPlayspace == deckPlayspace)
         {
             AttemptRemoveFromDeck((Card)playItem);
@@ -191,7 +191,7 @@ public class InventoryUIHandler : MonoBehaviour
         if (uiDisplayed == true) // only run if the UI already exists
         {
             uiDisplayed = false;
-           print("destroying inv ui");
+           //print("destroying inv ui");
         StopCoroutine(cardDragInput.DragDrop());
 
         

@@ -30,9 +30,9 @@ public class Quest
         this.state = data.state;
         this.currentStepIndex = data.questStepIndex;
         this.questStepStates = data.questStepStates;
-        Debug.Log(data.state);
-        Debug.Log(data.questStepIndex);
-        Debug.Log(data.questStepStates);
+        //Debug.Log(data.state);
+        //Debug.Log(data.questStepIndex);
+        //Debug.Log(data.questStepStates);
         if (this.questStepStates == null)
         {
             this.questStepStates = new QuestStepState[info.questSteps.Length];
