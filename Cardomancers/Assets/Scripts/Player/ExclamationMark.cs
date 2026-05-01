@@ -94,8 +94,16 @@ public class ExclamationMark : MonoBehaviour
             float distance = Vector3.Distance(transform.position, player.transform.position);
             float interactRange = playerInteract.range;
 
-            if(parentInteractable != null && playerInteract.currentHighlight == parentInteractable || distance <= interactRange)
-            {   image.color = Color.Lerp(image.color, InteractingColor, ColorChangeSpeed * Time.deltaTime);
+            if(parentInteractable != null || playerInteract.currentHighlight != null)
+            {
+                if(parentInteractable == playerInteract.currentHighlight)
+                {   
+                    image.color = Color.Lerp(image.color, InteractingColor, ColorChangeSpeed * Time.deltaTime);
+                }
+            }
+            else if(distance <= interactRange)
+            {   
+                image.color = Color.Lerp(image.color, InteractingColor, ColorChangeSpeed * Time.deltaTime);
             }
         }
         else
