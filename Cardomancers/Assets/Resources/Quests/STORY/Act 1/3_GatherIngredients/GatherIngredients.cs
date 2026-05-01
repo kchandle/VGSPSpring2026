@@ -17,6 +17,7 @@ public class GatherIngredients : QuestStep
     public void GatherIngredient()
     {
         ingredientsGathered++;
+        SetQuestStepState(ingredientsGathered.ToString());
         if(ingredientsGathered >= ingredientsToGather)
         {
             this.FinishQuestStep();
