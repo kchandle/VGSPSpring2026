@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e321ed277a0e0410cbcbcec6ecbece41, type: 3}
+  m_Name: SnailCat
+  m_EditorClassIdentifier: Assembly-CSharp::QuestInfoSO
+  displayName: Thelma Come Home
+  levelRequirement: 2
+  prerequisiteQuests:
+  - {fileID: 11400000, guid: d5fdfcba7a0890f488433b20bbbdc83e, type: 2}
+  questSteps:
+  - {fileID: 8861555532168108006, guid: 45c7854d995852c4fb925db27aec1a76, type: 3}
+  - {fileID: 4791682029541665561, guid: 44e5619679f53c446a1e8541f2b9ec26, type: 3}
+  moneyReward: 500
+  expReward: 500
+  cardRewards:
+    keys:
+    - {fileID: 11400000, guid: 0497de8d01883bd44915e96c711182e4, type: 2}
+    - {fileID: 11400000, guid: 49a9969ccf5991c45ad7b2c64c604902, type: 2}
+    - {fileID: 11400000, guid: cec254f5da5c70e4d82106b4fd9b2d95, type: 2}
+    values: 020000000100000001000000
+    changingLists: 0
+  hackRewards:
+    keys: []
+    values: 
+    changingLists: 0

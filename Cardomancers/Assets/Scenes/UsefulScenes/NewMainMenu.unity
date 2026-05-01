@@ -266,6 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 817730002}
   - component: {fileID: 817730001}
+  - component: {fileID: 817730003}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -305,12 +306,24 @@ Transform:
   m_GameObject: {fileID: 817730000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1970.1382, y: 0, z: 1728.6522}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &817730003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817730000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0e5468cfda77649a3531976db18243, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuIndex
 --- !u!1 &1860364451
 GameObject:
   m_ObjectHideFlags: 0
