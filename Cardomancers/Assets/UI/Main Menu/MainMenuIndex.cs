@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class MainMenuIndex : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class MainMenuIndex : MonoBehaviour
     private VisualElement settings;
     private VisualElement background;
 
+    [Tooltip("Larger numbers = slower animation.")]
+    [SerializeField] private float animationDurationSeconds = 5f;
     private float xPos;
 
     private void Awake()
@@ -39,13 +42,13 @@ public class MainMenuIndex : MonoBehaviour
         DOTween.Init();
 
         xPos = background.worldBound.x;
-        DOTween.To(() => xPos, x=> xPos = x, 1207, 5 ).SetLoops(-1, LoopType.Incremental);
+        DOTween.To(() => xPos, x=> xPos = x, 1207, animationDurationSeconds ).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
         
     }
 
     private void Update()
     {
-        background.style.position.x = xPos;
+        background.style.backgroundPositionX = new StyleBackgroundPosition(new BackgroundPosition(BackgroundPositionKeyword.Left, xPos));
     }
     
 

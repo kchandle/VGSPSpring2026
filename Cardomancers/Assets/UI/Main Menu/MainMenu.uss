@@ -8,12 +8,14 @@
     flex-shrink: 1;
     align-items: stretch;
     min-width: auto;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
 }
 
 .unity-button:hover {
     scale: 1.1 1.1;
     transition-duration: 0.1s;
-    transition-timing-function: ease-in-circ;
+    transition-timing-function: linear;
 }
 
 .unity-button:active {
