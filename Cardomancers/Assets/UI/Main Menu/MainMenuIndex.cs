@@ -42,8 +42,8 @@ public class MainMenuIndex : MonoBehaviour
         DOTween.Init();
 
         xPos = background.worldBound.x;
-        DOTween.To(() => xPos, x=> xPos = x, 1207, animationDurationSeconds ).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
         
+        DOTween.To(() => xPos, x=> xPos = x, Camera.main.pixelWidth, animationDurationSeconds ).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
     }
 
     private void Update()
