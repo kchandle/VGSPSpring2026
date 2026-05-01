@@ -165,11 +165,11 @@ public class ShopUI : MonoBehaviour
         Inventory.Money += 1000;
         playerMoneyText.text = "$" + Inventory.Money;
         int i = 0;
-        print("Cards in your inventory: ");
+        //print("Cards in your inventory: ");
         foreach(InventoryCard card in Inventory.InventoryList)
         {
             i++;
-            print($"Card {i}: {card.cardSO.displayName}");
+            //print($"Card {i}: {card.cardSO.displayName}");
         }
     }
     
@@ -214,8 +214,9 @@ public class ShopUI : MonoBehaviour
             sellContent.transform.GetChild(i).gameObject.SetActive(false);
         }
 
+        print("cards sell");
         //Set shop slots that contain player Inventory cards active, leave others inactive
-        for(i = 0; i < Inventory.InventoryList.Count; i++)
+        for(i = 0; i < Inventory.Cardscount(); i++)
         {
             InventoryCard invCard = Inventory.InventoryList[i];
 
@@ -225,22 +226,26 @@ public class ShopUI : MonoBehaviour
                 continue;
             }
 
+
+
+
             //Every card made has a default hack length of 2. Assuming adding a hack increases the lenght to 3, hacked cards will not display
             if(invCard.hacks.Length <= 2)
             {
                 ShopItem item = new ShopItem();
                 item.Init_cardSO(invCard.cardSO);
+                print("CARD: " + invCard.cardSO);
 
                 sellContent.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
                 sellContent.transform.GetChild(i).gameObject.SetActive(true);
             }
         }
 
-        print(Inventory.InventoryList.Count);
-        print(Inventory.HackInventory.Count);
+        print(Inventory.InventoryList[0]);
+        //print(Inventory.HackInventory.Count);
 
         //Set shop slots that contain hacks active, leave others inactive
-        for(i = Inventory.InventoryList.Count; i < Inventory.InventoryList.Count + Inventory.HackInventory.Count; i++)
+        for(i = Inventory.Cardscount(); i < Inventory.Cardscount() + Inventory.HackInventory.Count; i++)
         {
             Hack_SO hack = Inventory.HackInventory[i - Inventory.InventoryList.Count];
 
@@ -252,6 +257,7 @@ public class ShopUI : MonoBehaviour
 
             ShopItem item = new ShopItem();
             item.Init_hackSO(hack);
+            print("HACK: " + hack);
             sellContent.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
             sellContent.transform.GetChild(i).gameObject.SetActive(true);
             

@@ -43,7 +43,7 @@ public static class SaveSystem
 
         string encryptedJson = encryption.Encrypt(json);
         
-        Debug.Log(DataPath);
+        //Debug.Log(DataPath);
         // Creates or overwrites save file with readable file structure
         File.WriteAllText(DataPath, encryptedJson);
 
@@ -52,8 +52,8 @@ public static class SaveSystem
             QuestData questData = quest.GetQuestData();
             
             string questDataJSON = questManager.SaveQuest(quest);
-            Debug.Log(questDataJSON);
-            Debug.Log(QuestDataPath(questData.ID));
+            //Debug.Log(questDataJSON);
+            //Debug.Log(QuestDataPath(questData.ID));
             string encryptedQuestDataJSON = encryption.Encrypt(questDataJSON);
             File.WriteAllText(QuestDataPath(questData.ID),  encryptedQuestDataJSON);
         }
@@ -73,6 +73,7 @@ public static class SaveSystem
         Inventory.Deck =  data.deck;
         Inventory.DeckSize = data.deckLength;
         Inventory.InventorySize = data.inventoryLength;
+
 
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;

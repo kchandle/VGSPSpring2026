@@ -7,11 +7,14 @@ public class ShopSlot : MonoBehaviour
     [SerializeField] private ShopPanel shopPanel; //set in editor
     [SerializeField] private Image image; //set in editor
 
-    //Passes in the ShopItem SO, and by proxy the card SO, this slot in the shop represents
+    //Passes in the ShopItem SO, and by proxy the card/hack SO, this slot in the shop represents
     public void Init(ShopItem item)
     {
+       
         shopItem = item;
         image.sprite = shopItem.Image;  
+        
+        
     }
 
     //Unused

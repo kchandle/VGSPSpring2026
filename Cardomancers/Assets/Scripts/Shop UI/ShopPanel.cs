@@ -98,22 +98,51 @@ public class ShopPanel : MonoBehaviour
         //print("Buying card...");
         for (int i = 0; i < cardAmount; i++)
         {
-            if (Inventory.IsInventoryFull()) print("full: " + Inventory.Cardscount());
-
-            if (!Inventory.IsInventoryFull())
+            
+            if(type == ItemType.CARD_SO)
             {
-                print("no-full: " + Inventory.Cardscount());
-                if (shop.BuyCard(item))
+                if (Inventory.IsInventoryFull())
                 {
-                    shopUI.UpdateBuyMenu();
-                    print("Card bought!");
-                    shopUI.UpdateSellMenu();
+                    print("full: " + Inventory.Cardscount());
+                }
+
+                if (!Inventory.IsInventoryFull())
+                {
+                    //print("no-full: " + Inventory.Cardscount());
+                    if (shop.BuyCard(item))
+                    {
+                        shopUI.UpdateBuyMenu();
+                        print("Card bought!");
+                        shopUI.UpdateSellMenu();
+                    }
+                    else
+                    {
+                        print("you're broke");
+                    }
+                }
+            }
+
+            else if(type == ItemType.HACK_SO)
+            {
+                if(Inventory.HackInventory.Count > Inventory.HackInventorySize)
+                {
+                    print("full on hacks");
                 }
                 else
                 {
-                    print("you're broke");
+                    if (shop.BuyCard(item))
+                    {
+                        shopUI.UpdateBuyMenu();
+                        print("Hack bought!");
+                        shopUI.UpdateSellMenu();
+                    }
+                    else
+                    {
+                        print("you're broke");
+                    }
                 }
             }
+            
         }
     }
 
@@ -124,7 +153,7 @@ public class ShopPanel : MonoBehaviour
         if(shop.SellCard(item))
         {
             shopUI.UpdateSellMenu();
-            print("Card sold!");
+            print("Card / Hack sold!");
         }
         else
         {

@@ -235,6 +235,8 @@ public class Shop : MonoBehaviour
             return false;
         }
 
+
+
         //If the item is a card, sell it
         if(item.itemType == ItemType.CARD_SO)
         {
@@ -249,24 +251,24 @@ public class Shop : MonoBehaviour
                     SaveSystem.Save(player);
                     return true;
                 }
+                
             }
         }
         //If the item is a hack, sell it
         else if(item.itemType == ItemType.HACK_SO)
         {
-            foreach(Hack_SO h in Inventory.HackInventory)
-            {
-                if(h == item.SO_hackSO)
-                {   
-                    Inventory.RemoveHackFromInventory(h);
-                    Inventory.Money += (int)item.SellPrice;
-                    Shop.SellEvent?.Invoke();
-                    SaveSystem.Save(player);
-                    return true;
-                }
-            }
+            Inventory.RemoveHackFromInventory(item.SO_hackSO);
+            Inventory.Money += (int)item.SellPrice;
+            Shop.SellEvent?.Invoke();
+            SaveSystem.Save(player);
+            return true;
         }
-
+        //
+        else
+        {
+            print("Error, clearing nulls in card and hack inventories");
+            Inventory.DeleteNullInInventory();
+        }
         
 
         return false;

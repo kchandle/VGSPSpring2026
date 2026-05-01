@@ -35,7 +35,7 @@ public class ShopItem : ScriptableObject
             else
             {
                 Debug.LogError("Shop Item cardSO and hackSO are null");
-                return ItemType.OTHER; //does nothing
+                return ItemType.NULL; //does nothing
             }
         }
         set
