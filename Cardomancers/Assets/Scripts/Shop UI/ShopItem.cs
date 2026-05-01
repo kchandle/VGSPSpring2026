@@ -19,6 +19,12 @@ public class ShopItem : ScriptableObject
 {
     //Unused for now
     public int Stock { get; set; } = 0;
+
+
+
+    #region Item Type Info
+
+    //Refer to this to tell if the shopItem is a hack or card
     [SerializeField] private ItemType _itemType;
     public ItemType itemType
     {
@@ -56,9 +62,6 @@ public class ShopItem : ScriptableObject
         }
     }
 
-    //All of this just makes sure the SO isn't null and retrieves the data from the cardSO
-    
-    #region test version
     //The following are for the cardSO version of a shopItem.
     [SerializeField] private Card_SO cardSO;
     public CardType Type_cardSO
@@ -94,7 +97,7 @@ public class ShopItem : ScriptableObject
 
 
 
-    //The following is for the hackSo version of a shopItem
+    //The following is for the hackSO version of a shopItem
     [SerializeField] private Hack_SO hackSO;
     public Hack_SO SO_hackSO
     {
@@ -114,12 +117,16 @@ public class ShopItem : ScriptableObject
         this.Image = hackSO.image;
         this.itemType = ItemType.HACK_SO;
     } 
+    #endregion
 
 
 
 
 
 
+
+    #region Item Data
+    //All of the following retrieves data from either the cardSO or hackSO
 
     public int SellPrice
     { 
@@ -306,175 +313,4 @@ public class ShopItem : ScriptableObject
         }
     }
     #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-    /*#region HackSO version
-    //The following is for the HackSO version of a shopItem. 
-    [SerializeField] private Hack_SO hackSO;
-
-
-    /*public CardType Type_hackSO
-    {
-        get
-        {   
-            if(cardSO == null)
-            {   
-                Debug.LogError("Shop Item cardSO is null");
-                return CardType.NULL;
-            }
-            return cardSO.CardType;
-        }
-    }
-
-    public Hack_SO SO_hackSO
-    {
-        get
-        {   
-            return hackSO;
-        }
-    }
-    public void Init_hackSO(Hack_SO Init_hackSO) 
-    {
-        if(hackSO == null)
-        {   
-            Debug.LogError("Argument \"hackSO\" is null");
-            return;
-        }
-        this.hackSO = hackSO;
-        this.Image_hackSO = hackSO.image;
-    }
-
-    public float SellPrice_hackSO
-    { 
-        get
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hack SO is null");
-                return 0f;
-            }
-
-            return hackSO.sellValue;
-        }
-        set
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hack SO is null");
-                return;
-            }
-
-            hackSO.sellValue = (int)value;
-        }
-    }
-
-    public float PurchasePrice_hackSO
-    { 
-        get
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return 0f;
-            }
-
-            return hackSO.Price;
-        }
-
-        set
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return;
-            }
-            
-            hackSO.Price = (int)value;
-        } 
-    }
-
-    public string DisplayName_hackSO
-    {   
-        get
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return "";
-            }
-            
-            return hackSO.displayName;
-        }
-        set
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return;
-            }
-
-            hackSO.displayName = value;
-        }
-    }
-
-    public string Description_hackSO
-    {
-        get
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return "";
-            }
-
-            return hackSO.description;
-        }
-        set
-        {  
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return;
-            }
-            
-            hackSO.description = value;
-        }
-    }
-
-    public Sprite Image_hackSO
-    {   
-        get
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return null;
-            }
-            
-            return hackSO.image;
-        }
-        set
-        {   
-            if(hackSO == null)
-            {   
-                Debug.LogError("Shop Item hackSO is null");
-                return;
-            }
-            
-            hackSO.image = value;
-        }
-    }
-
-
-    #endregion*/
 }

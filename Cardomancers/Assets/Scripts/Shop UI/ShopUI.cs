@@ -234,7 +234,6 @@ public class ShopUI : MonoBehaviour
             {
                 ShopItem item = new ShopItem();
                 item.Init_cardSO(invCard.cardSO);
-                print("CARD: " + invCard.cardSO);
 
                 sellContent.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
                 sellContent.transform.GetChild(i).gameObject.SetActive(true);
@@ -257,7 +256,7 @@ public class ShopUI : MonoBehaviour
 
             ShopItem item = new ShopItem();
             item.Init_hackSO(hack);
-            print("HACK: " + hack);
+        
             sellContent.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
             sellContent.transform.GetChild(i).gameObject.SetActive(true);
             

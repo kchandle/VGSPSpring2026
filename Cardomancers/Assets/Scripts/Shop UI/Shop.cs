@@ -146,29 +146,29 @@ public class Shop : MonoBehaviour
     }
 
     #region Buying/Selling Items
-    // Checks whether you can buy a card.
-    public bool CanBuyCard(ShopItem item)
+    // Checks whether you can buy an item.
+    public bool CanBuyItem(ShopItem item)
     {
         int playerBalance = Inventory.Money;
 
         return item.PurchasePrice <= playerBalance;  
     }
 
-    // Check whether you can sell a card.
-    public bool CanSellCard(ShopItem item)
+    // Check whether you can sell an item.
+    public bool CanSellItem(ShopItem item)
     {
         // return true for now.
         return true;
     }
 
-    // Purchases a card in the shop.
+    // Purchases an item in the shop.
     //
     // RETURN: true on Succesful purchase.
     // RETURN: false on failed to purchase.
-    public bool BuyCard(ShopItem item)
+    public bool BuyItem(ShopItem item)
     {
-        //If the card can't be bought
-        if(!this.CanBuyCard(item))
+        //If the item can't be bought
+        if(!this.CanBuyItem(item))
         {   
             Shop.FailPurchaseEvent?.Invoke();
 
@@ -199,7 +199,7 @@ public class Shop : MonoBehaviour
             return false;
         }
 
-        //Buy the card, remove money
+        //Buy the item, remove money
         Inventory.Money -= (int)item.PurchasePrice;
         if(item.itemType == ItemType.CARD_SO)
         {
@@ -210,6 +210,11 @@ public class Shop : MonoBehaviour
             print("Sucessfully bought hack");
             Inventory.AddHackToInventory(item.SO_hackSO);
         }
+        else
+        {
+            print("error, one of the buyable items isn't a card or hack so");
+            return false;
+        }
         SaveSystem.Save(player);
         Shop.PurchaseEvent?.Invoke();
 
@@ -218,14 +223,14 @@ public class Shop : MonoBehaviour
         return true;
     }
 
-    // Sells a card in the sthop.
+    // Sells an item in the sthop.
     //
     // RETURN: true on Succesful sell.
     // RETURN: false on failed to sell 
-    public bool SellCard(ShopItem item)
+    public bool SellItem(ShopItem item)
     {
         
-        if(!this.CanSellCard(item))
+        if(!this.CanSellItem(item))
         {   
             return false;
         }
