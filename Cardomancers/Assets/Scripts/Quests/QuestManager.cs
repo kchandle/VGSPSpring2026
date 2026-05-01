@@ -6,6 +6,8 @@ using UnityEngine;
 /// <summary>
 /// A MonoBehaviour which manages the quests.
 /// </summary>
+// Certain quests rely on the Awake method from here being run before they are set up.
+[DefaultExecutionOrder(-1)]
 public class QuestManager : MonoBehaviour
 {
     private Dictionary<string, Quest> questMap = new Dictionary<string, Quest>();

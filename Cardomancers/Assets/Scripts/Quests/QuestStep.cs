@@ -4,8 +4,11 @@ using UnityEngine;
 [System.Serializable]
 public abstract class QuestStep : MonoBehaviour
 {
+    // If this quest step is finished
     private bool isFinished = false;
+    // The ID of the quest this belongs to
     private string ID;
+    // The index of this quest step in the Quest it belongs to
     private int stepIndex;
 
     public void InitializeQuestStep(string questID, int stepIndex, string questStepState)
