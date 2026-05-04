@@ -108,7 +108,7 @@ public class CardDragInput : MonoBehaviour
 // Coroutine for Dragging and Dropping items. When active, the player will be able to drag and drop playItems between the current active playspaces
     public IEnumerator DragDrop()
     {
-        DragDropActive = true;
+        dragDropActive = true;
         while (DragDropActive == true)
         {
             
@@ -219,7 +219,7 @@ public class CardDragInput : MonoBehaviour
                                     BattleManager bm = FindFirstObjectByType<BattleManager>();
                                     if (FindFirstObjectByType<BattleManager>().isBattling)
                                     {
-                                        if (AttemptPlay((Card)dragTarget, p) /*&& DragDropActive*/)
+                                        if (dragDropActive && AttemptPlay((Card)dragTarget, p))
                                         {
                                             bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                             dragPlayspace.DestroyPlayItem(dragTarget);

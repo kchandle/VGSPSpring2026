@@ -49,6 +49,7 @@ public class BattleManager : MonoBehaviour
     public FieldEffect_SO fieldCondition; //***The current active field condition
     public BattleState battleState; // current state of the battle
     public EndState endState;
+
     #region All the player scripts
     [SerializeField]private GameObject player; // reference to the player game object
     [SerializeField]private PlayerController playerController; // reference to the player controller
@@ -80,7 +81,7 @@ public class BattleManager : MonoBehaviour
     public InventoryCard restCard;
     #endregion
 
-    #region utility References
+    #region Utility References
     public bool tutorial = false;
     public DialogueScripts.DialogueManager dialogueManager;
     public int turnCount = 0;
@@ -452,12 +453,9 @@ public class BattleManager : MonoBehaviour
         PlayerTurn.Invoke();
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
-        {
-            playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
-            //playerDeckCopyActive = Inventory.Deck;
-
-            //print("TESTING: " + playerDeckCopyActive.Count);
-
+        {  
+            playerDeckCopyActive = new List<InventoryCard>(Inventory.Shuffle(Inventory.Deck));
+            
             //Add NewPlayItem from playspace for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
             {
@@ -466,7 +464,6 @@ public class BattleManager : MonoBehaviour
                 playerCard.GetComponent<Card>().hacks = card.hacks;
                 playerCard.GetComponent<Card>().CardSO = card.cardSO;
             }
-            //print("TESTING2: " + playerDeckCopyActive.Count);
         }
         //Display cards
 
@@ -678,8 +675,6 @@ public class BattleManager : MonoBehaviour
 
 
     }
-
-
     #endregion
 
     #region EndGameButtons
@@ -826,6 +821,8 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
             enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
 
+
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().cardToPlayspace);
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
@@ -835,6 +832,7 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
+
 
 
 
@@ -990,11 +988,6 @@ public class BattleManager : MonoBehaviour
 
     }
     #endregion
-
-
-
-
-
 
 
 

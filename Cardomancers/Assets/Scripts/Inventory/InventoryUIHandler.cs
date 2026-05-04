@@ -128,7 +128,7 @@ public class InventoryUIHandler : MonoBehaviour
 
     public void CardDraggedIntoDeck(PlayItem playItem, Playspace originPlayspace)
     {
-        print("Card dragged into deck");
+        //print("Card dragged into deck");
         if (originPlayspace == invPlayspace)
         {
             AttemptAddToDeck((Card)playItem);

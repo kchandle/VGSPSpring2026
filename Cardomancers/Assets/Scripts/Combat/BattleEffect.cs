@@ -197,7 +197,7 @@ public struct BattleEffect
     {
         //Debug.Log("test helooooooooo test");
         PlayerController player = target.GetComponent<PlayerController>();
-        if(card != null)
+        if(card != null && card.VFXPrefab)
         {
             Debug.Log(card.name + " on player");
 
