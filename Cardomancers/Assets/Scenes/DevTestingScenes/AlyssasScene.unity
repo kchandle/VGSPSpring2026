@@ -2286,6 +2286,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8805448749967120339, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      propertyPath: interactSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 1386a932235cacd4f9f78dee9a145d20, type: 3}
+    - target: {fileID: 8805448749967120339, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: interactPrompt
       value: 
       objectReference: {fileID: 1873637957}
@@ -4652,6 +4656,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8813872607217479546, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1678606694}
+    - targetCorrespondingSourceObject: {fileID: 8813872607217479546, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1827620876}
   m_SourcePrefab: {fileID: 100100000, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
 --- !u!4 &1678606687 stripped
 Transform:
@@ -4860,21 +4867,29 @@ PrefabInstance:
       propertyPath: GetCard.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4505620184537042318, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: particles
+      value: 
+      objectReference: {fileID: 370800893518441691, guid: f48840a350e0be5418d522022b140615, type: 3}
+    - target: {fileID: 4505620184537042318, guid: 01c467f47897f07438eae1a034064631, type: 3}
+      propertyPath: interactClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 075aecd54f0bf79498ab3acee41f239f, type: 3}
     - target: {fileID: 6105093374102025538, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: m_Name
       value: CardPickup
       objectReference: {fileID: 0}
     - target: {fileID: 7544448231374381975, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -78.26
+      value: -53.73
       objectReference: {fileID: 0}
     - target: {fileID: 7544448231374381975, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -14.57
+      value: -17.85
       objectReference: {fileID: 0}
     - target: {fileID: 7544448231374381975, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -93.8
+      value: -122.09
       objectReference: {fileID: 0}
     - target: {fileID: 7544448231374381975, guid: 01c467f47897f07438eae1a034064631, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5117,6 +5132,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722399531}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &1827620876
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678606693}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b8dcc99089da614c9be940ac0c7d9e8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1832891025
 GameObject:
   m_ObjectHideFlags: 0

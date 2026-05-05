@@ -11,6 +11,7 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI cardDesc;
     [SerializeField] private TMPro.TextMeshProUGUI cardValue;
     
+    public AudioClip cardAudioClip;
     
     //other
     private ShopItem item;
@@ -79,6 +80,7 @@ public class ShopPanel : MonoBehaviour
                 {
                     shopUI.UpdateBuyMenu();
                     print("Card bought!");
+                    SoundEffectManager.Instance.PlaySoundFXClip(cardAudioClip, transform);
                     shopUI.UpdateSellMenu();
                 }
                 else

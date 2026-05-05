@@ -8,6 +8,7 @@ public class InteractCollision : MonoBehaviour
      public UnityEvent interactable;
 
     [SerializeField] ParticleSystem particles;
+    [SerializeField] AudioClip interactClip;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class InteractCollision : MonoBehaviour
 
             Instantiate(particles, transform.position, Quaternion.identity); 
             interactable.Invoke();
+            SoundEffectManager.Instance.PlaySoundFXClip(interactClip, transform, 0.5f);
         }
     }
 }
