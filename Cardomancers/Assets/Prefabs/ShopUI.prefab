@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 8400338188981835920}
   - component: {fileID: 1731732296630507374}
   m_Layer: 5
-  m_Name: CardImage
+  m_Name: ItemImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -821,6 +821,8 @@ MonoBehaviour:
   shopUI: {fileID: 4363680050397838111}
   stock: []
   cachedSOs: []
+  customCardStock: []
+  customHackStock: []
 --- !u!1 &1709979599459463751
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +946,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6165387810638408660}
         m_TargetAssemblyTypeName: ShopPanel, Assembly-CSharp
-        m_MethodName: MinusCard
+        m_MethodName: MinusItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1077,7 +1079,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6165387810638408660}
         m_TargetAssemblyTypeName: ShopPanel, Assembly-CSharp
-        m_MethodName: ClickedBuyCard
+        m_MethodName: ClickedBuyItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1522,7 +1524,7 @@ GameObject:
   - component: {fileID: 7665382004927955795}
   - component: {fileID: 5133338132131682807}
   m_Layer: 5
-  m_Name: CardShopTemplate
+  m_Name: ItemShopSlotTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2090,7 +2092,7 @@ GameObject:
   - component: {fileID: 2558005091226799421}
   - component: {fileID: 4319935344091147724}
   m_Layer: 5
-  m_Name: CardName
+  m_Name: ItemName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2143,7 +2145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: card name
+  m_text: Item name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2338,7 +2340,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6165387810638408660}
         m_TargetAssemblyTypeName: ShopPanel, Assembly-CSharp
-        m_MethodName: ClickedSellCard
+        m_MethodName: ClickedSellItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2614,7 +2616,7 @@ GameObject:
   - component: {fileID: 5170824882621887674}
   - component: {fileID: 6165387810638408660}
   m_Layer: 5
-  m_Name: CardInfoPanel
+  m_Name: ItemInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2635,10 +2637,10 @@ RectTransform:
   - {fileID: 7341374687161459842}
   - {fileID: 5203332122981108848}
   - {fileID: 2514020296292604670}
+  - {fileID: 6118848906088781692}
   - {fileID: 4823170463405963655}
   - {fileID: 8602870612564632712}
   - {fileID: 8415710335026713562}
-  - {fileID: 6118848906088781692}
   - {fileID: 1619126237128186811}
   - {fileID: 2242886433223025068}
   - {fileID: 7218344778184473087}
@@ -2699,12 +2701,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208126b6d4dbc404fa2e6bf1c7a80547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopPanelTest
-  cardImage: {fileID: 1731732296630507374}
-  cardName: {fileID: 4319935344091147724}
-  cardDesc: {fileID: 4752536848203343551}
-  cardValue: {fileID: 3684853401112827338}
-  cardAmount: 1
-  totalCardAmount: {fileID: 2685403024556856900}
+  itemImage: {fileID: 0}
+  itemName: {fileID: 0}
+  itemDesc: {fileID: 0}
+  itemValue: {fileID: 0}
+  itemAmount: 1
+  totalItemAmount: {fileID: 0}
   shop: {fileID: 1316765173153266366}
   shopUI: {fileID: 2107310746191959000}
 --- !u!1 &4000143677577089517
@@ -3173,7 +3175,6 @@ MonoBehaviour:
   PlayBackSpeed: 1
   PlaybackRampTime: 1
   FadeTime: 0.15
-  HistoryMax: 50
 --- !u!1 &4851264301769723274
 GameObject:
   m_ObjectHideFlags: 0
@@ -3262,7 +3263,7 @@ GameObject:
   - component: {fileID: 8103976940449054637}
   - component: {fileID: 3684853401112827338}
   m_Layer: 5
-  m_Name: CardValue
+  m_Name: ItemValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3315,7 +3316,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Card Price
+  m_text: Item Price
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3704,7 +3705,7 @@ GameObject:
   - component: {fileID: 7567581327984740955}
   - component: {fileID: 4752536848203343551}
   m_Layer: 5
-  m_Name: CardDesc
+  m_Name: ItemDesc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3757,7 +3758,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Card description
+  m_text: Item description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4027,7 +4028,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6165387810638408660}
         m_TargetAssemblyTypeName: ShopPanel, Assembly-CSharp
-        m_MethodName: PlusCard
+        m_MethodName: PlusItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4675,7 +4676,7 @@ GameObject:
   - component: {fileID: 3034057985486482187}
   - component: {fileID: 2685403024556856900}
   m_Layer: 5
-  m_Name: CardAmount
+  m_Name: ItemAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

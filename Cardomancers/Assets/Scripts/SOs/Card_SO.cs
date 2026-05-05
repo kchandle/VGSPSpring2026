@@ -35,6 +35,8 @@ public class Card_SO : ScriptableObject
 
     public GameObject VFXPrefab;
 
+    public AudioClip cardSound;
+
     public CardType CardType
     {
         get
