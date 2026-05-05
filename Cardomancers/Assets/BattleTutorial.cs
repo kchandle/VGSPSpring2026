@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BattleTutorial : MonoBehaviour
 {
-    int i = 0;
+    [SerializeField] int i = 0;
     public GameObject tabIcons;
     public GameObject attackIcons;
     public void ShowTutorial()

@@ -2436,24 +2436,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 331011880}
+      objectReference: {fileID: 187497959}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -2461,78 +2461,82 @@ PrefabInstance:
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 187497959}
+      objectReference: {fileID: 318875525}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 318875525}
+      objectReference: {fileID: 331011880}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
-      objectReference: {fileID: 0}
-    - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: StartDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: AssignStartBattle
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: ShowTutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: 
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: DialogueScripts.DialogueManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: DialogueScripts.DialogueManager, Assembly-CSharp
+      value: BattleTutorial, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: DialogueScripts.DialogueManager, Assembly-CSharp
+      value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 5be38271918aa0a4ca0973c883dd8fb8, type: 2}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 11400000, guid: 5be38271918aa0a4ca0973c883dd8fb8, type: 2}
+      objectReference: {fileID: 318875519}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 318875519}
+      objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 318875519}
-    - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: DialogueScripts.DialogueSO, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: StartBattle, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872410796697678174, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: StartBattle, Assembly-CSharp
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2585,6 +2589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899b4d441523baa4287da458bc72110c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleTutorial
+  i: 0
   tabIcons: {fileID: 331011880}
   attackIcons: {fileID: 753579505}
 --- !u!1 &331011880 stripped
@@ -2710,6 +2715,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8805448749967120339, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      propertyPath: interactSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 1386a932235cacd4f9f78dee9a145d20, type: 3}
     - target: {fileID: 8805448749967120339, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: interactPrompt
       value: 
@@ -3718,7 +3727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d11e0a3c97042142b8cb9f569fa078b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackTutorial
-  clickAction: {fileID: 1049044233}
 --- !u!1 &760816075
 GameObject:
   m_ObjectHideFlags: 0
@@ -4790,20 +4798,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7944088, y: 0.8274307, z: 11.437927}
   m_Center: {x: -0.00000667572, y: -0.14591742, z: -0.49491358}
---- !u!114 &1049044233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Battle/Left Click
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 2b38fc0fef84a0c41b437564f1db19c5, type: 3}
-  m_ActionId: df306652-f51a-438f-95e4-0fbad2dd065b
 --- !u!1 &1070705975
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,11 +3,10 @@ using UnityEngine.InputSystem;
 
 public class AttackTutorial : MonoBehaviour
 {
-    public InputActionReference clickAction;
 
     public void Update()
     {
-        if (clickAction.action.IsPressed())
+        if (Input.GetMouseButton(0))
         {
             gameObject.SetActive(false);
         }
