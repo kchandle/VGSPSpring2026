@@ -49,6 +49,7 @@ public class BattleManager : MonoBehaviour
     public FieldEffect_SO fieldCondition; //***The current active field condition
     public BattleState battleState; // current state of the battle
     public EndState endState;
+
     #region All the player scripts
     [SerializeField]private GameObject player; // reference to the player game object
     [SerializeField]private PlayerController playerController; // reference to the player controller
@@ -80,7 +81,7 @@ public class BattleManager : MonoBehaviour
     public InventoryCard restCard;
     #endregion
 
-    #region utility References
+    #region Utility References
     public bool tutorial = false;
     public DialogueScripts.DialogueManager dialogueManager;
     public int turnCount = 0;
@@ -452,9 +453,9 @@ public class BattleManager : MonoBehaviour
         PlayerTurn.Invoke();
         //Check if player is out of cards
         if (playerDeckCopyActive.Count <= 0)
-        {
-            playerDeckCopyActive = Inventory.Shuffle(Inventory.Deck);
-
+        {  
+            playerDeckCopyActive = new List<InventoryCard>(Inventory.Shuffle(Inventory.Deck));
+            
             //Add NewPlayItem from playspace for each card in deck copy
             foreach (InventoryCard card in playerDeckCopyActive)
             {
@@ -485,6 +486,7 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(TurnBasedFieldEffects());
 
 
+        yield return new WaitForSeconds(1f);
         yield return null;
     }
 
@@ -547,26 +549,30 @@ public class BattleManager : MonoBehaviour
                         //If the player has counterSpell, launch the attack on the enemy instead
                         if(playerController.counterSpellActive)
                         {
-                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, enemyScript.attackMulti);
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO, enemyScript.attackMulti);
                             print("Spell countered");
                             reflected = true;
                         }
                         else
                         {
-                            effect.TriggerEffect(playerController, player.transform.position, null, enemyScript.attackMulti);
+                            effect.TriggerEffect(playerController, player.transform.position, card.cardSO, enemyScript.attackMulti);
+
+                            SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                         }
                         break;
                     }
                     case(BattleActionType.DEFEND):
                     {
                         print("Enemy defending themelves");
-                        effect.TriggerEffect(enemyScript, enemyScript.transform.position);
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                         break;
                     }
                     case(BattleActionType.HEAL):
                     {
                         print("Enemy healing themselves");
-                        effect.TriggerEffect(enemyScript, enemyScript.transform.position);
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                         break;
                     }
                     default:
@@ -576,21 +582,6 @@ public class BattleManager : MonoBehaviour
                     }
                 }
 
-
-
-                /*switch (enemyScript.currentActionType) //Chooses to attack or defend based on the current action type of the enemy.
-                {
-                    case (CardType.ATK):
-                    {
-                        effect.TriggerEffect(playerController, player.transform.position);
-                        break;
-                    }
-                    case (CardType.DEF):
-                    {
-                        enemyScript.CurrentShield += effect.StatusAmount;
-                        break;
-                    }
-                }*/
             }
 
             if(reflected) //disable player counterSpell
@@ -633,7 +624,7 @@ public class BattleManager : MonoBehaviour
                 enemyScript.UpdateTimer();
             }
 
-            
+            yield return new WaitForSeconds(1f);
         }
 
         //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
@@ -688,8 +679,6 @@ public class BattleManager : MonoBehaviour
 
 
     }
-
-
     #endregion
 
     #region EndGameButtons
@@ -836,6 +825,8 @@ public class BattleManager : MonoBehaviour
             enemyPrefab.transform.SetParent(battleUI.gameObject.transform, false);
             enemyPrefab.GetComponent<Enemy>().SetUp(newEnemy);
 
+
+            cardDragInput.AddActivePlayspace(enemyPrefab.GetComponent<Enemy>().cardToPlayspace);
             cardDragInput.AddActivePlayspace(enemyPrefab.GetComponentInChildren<Playspace>());
             enemyPrefab.GetComponentInChildren<Playspace>().allowedDonors.Add(playerspacePrefab.GetComponent<Playspace>());
             currentEnemies.Add(enemyPrefab);
@@ -849,6 +840,7 @@ public class BattleManager : MonoBehaviour
 
 
 
+
     #region Player Attack Targeting
     //Methods for the player to use to attack in accordance with an effect's targeting type.
     //These methods are called in the Card script's TryPlayCard(Enemy enemy){}
@@ -856,7 +848,7 @@ public class BattleManager : MonoBehaviour
 
 
     //Method for the player to attack one enemy. Done just to centralize the system and make universal changes easier
-    public void PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript)
+    public void PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript, Card_SO card)
     {
         foreach(BattleEffect effect in effects)
         {
@@ -870,14 +862,14 @@ public class BattleManager : MonoBehaviour
                     //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
                     if(enemyScript.counterSpellActive)
                     {
-                        effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+                        effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
 
                         enemyScript.cSpellTriggered = true;
                         print("counterspell triggered");
                     }
                     else
                     {
-                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, playerController.attackMulti);
+                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
                     }
                     break;
                 }
@@ -907,7 +899,7 @@ public class BattleManager : MonoBehaviour
     }
 
     //Method for specifically the player to affect ALL enemies with a card and its hacks
-    public void PlayerAttackAllEnemies(List<BattleEffect> effects)
+    public void PlayerAttackAllEnemies(List<BattleEffect> effects, Card_SO card)
     {
         foreach(BattleEffect effect in effects)
         {
@@ -924,14 +916,14 @@ public class BattleManager : MonoBehaviour
 
                         if(enemyScript.counterSpellActive)
                         {
-                            effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+                            effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
 
                             enemyScript.cSpellTriggered = true;
                             print("counterspell triggered");
                         }
                         else
                         {
-                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, null, playerController.attackMulti);
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
                         }
                     }
                     break;
@@ -966,7 +958,7 @@ public class BattleManager : MonoBehaviour
     }
 
     //Method for the player to attack themselves
-    public void PlayerAttackSelf(List<BattleEffect> effects)
+    public void PlayerAttackSelf(List<BattleEffect> effects, Card_SO card)
     {
         foreach(BattleEffect effect in effects)
         {
@@ -979,7 +971,7 @@ public class BattleManager : MonoBehaviour
                 case(BattleActionType.ATTACK):
                 {
                     
-                    effect.TriggerEffect(playerController, playerController.transform.position, null, playerController.attackMulti);
+                    effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
                     break;
                 }
                 case(BattleActionType.DEFEND):
@@ -1000,11 +992,6 @@ public class BattleManager : MonoBehaviour
 
     }
     #endregion
-
-
-
-
-
 
 
 
@@ -1135,7 +1122,7 @@ public class BattleManager : MonoBehaviour
                             {
                                 if(!currentEnemies[target].GetComponent<Enemy>().weatherImmune)
                                 {
-                                    bEffect.TriggerEffect(currentEnemies[target].GetComponent<Enemy>(), currentEnemies[target].transform.position);
+                                    bEffect.TriggerEffect(currentEnemies[target].GetComponent<Enemy>(), currentEnemies[target].transform.position, currentEnemies[target].GetComponent<Enemy>().currentCard.cardSO);
                                 }
                             }
                         }
@@ -1156,7 +1143,7 @@ public class BattleManager : MonoBehaviour
                             {
                                 if(!e.GetComponent<Enemy>().weatherImmune)
                                 {
-                                    bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position);   
+                                    bEffect.TriggerEffect(e.GetComponent<Enemy>(), e.transform.position, e.GetComponent<Enemy>().currentCard.cardSO);   
                                 }
                                 //print("Damaging enemies with acid rain");
                             }
