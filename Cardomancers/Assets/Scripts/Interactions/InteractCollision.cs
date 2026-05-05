@@ -27,7 +27,7 @@ public class InteractCollision : MonoBehaviour
 
             Instantiate(particles, transform.position, Quaternion.identity); 
             interactable.Invoke();
-            SoundEffectManager.Instance.PlaySoundFXClip(interactClip, transform, 0.5f);
+            if (interactClip != null) SoundEffectManager.Instance.PlaySoundFXClip(interactClip, transform, 0.5f);
         }
     }
 }
