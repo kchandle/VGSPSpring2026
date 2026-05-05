@@ -40,7 +40,7 @@ public class Objective : MonoBehaviour
 
     public void CompleteObjective()
     {
-        Debug.Log(completedText);
+        //Debug.Log(completedText);
         timer = 5f;
         OnCompleteObjective.Invoke();
         completion = true;

@@ -30,7 +30,7 @@ public class ShopPanel : MonoBehaviour
     //Change visual elements of panel. Called by the Onclick events of whichever shopItem was clicked
     public void UpdatePanel(ShopItem shopItem)
     {
-        cardSO = shopItem.SO;
+        cardSO = shopItem.SO_cardSO;
         item = shopItem;
 
         cardImage.sprite = cardSO.image;
@@ -76,7 +76,7 @@ public class ShopPanel : MonoBehaviour
             if (!Inventory.IsInventoryFull())
             {
                 print("no-full: " + Inventory.Cardscount());
-                if (shop.BuyCard(item))
+                if (shop.BuyItem(item))
                 {
                     shopUI.UpdateBuyMenu();
                     print("Card bought!");
@@ -95,7 +95,7 @@ public class ShopPanel : MonoBehaviour
     public void ClickedSellCard()
     {
         //print("Selling card...");
-        if(shop.SellCard(item))
+        if(shop.SellItem(item))
         {
             shopUI.UpdateSellMenu();
             print("Card sold!");

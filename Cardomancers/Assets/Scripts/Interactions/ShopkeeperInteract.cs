@@ -10,7 +10,15 @@ public class ShopkeeperInteract : MonoBehaviour
 
     public void OnInteract()
     {
-        if (shop.IsShopOpenUI) shop.CloseShop();
-        else shop.OpenShop();
+        if (shop.IsShopOpenUI) 
+        {
+            print("do nothing");
+            //shop.CloseShop();
+        }
+        else 
+        {
+            print("do something");
+            shop.OpenShop();
+        }
     }
 }
