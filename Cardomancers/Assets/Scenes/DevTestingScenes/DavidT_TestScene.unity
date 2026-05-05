@@ -209,15 +209,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -58.9
+      value: 45.84
       objectReference: {fileID: 0}
     - target: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.13
+      value: -44.15
       objectReference: {fileID: 0}
     - target: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -138.7
+      value: -90.29
       objectReference: {fileID: 0}
     - target: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -275,6 +275,10 @@ PrefabInstance:
       propertyPath: interactPrompt
       value: 
       objectReference: {fileID: 375907479}
+    - target: {fileID: 8805448749967120339, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      propertyPath: currentHighlight
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9106127963584501081, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: pool
       value: 
@@ -853,7 +857,7 @@ Transform:
   m_GameObject: {fileID: 683243290}
   serializedVersion: 2
   m_LocalRotation: {x: 0.009473989, y: 0.9184437, z: 0.022038506, w: -0.3948237}
-  m_LocalPosition: {x: -48.054886, y: 2.412357, z: -128.41705}
+  m_LocalPosition: {x: 56.685116, y: -42.867645, z: -80.00705}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1011,12 +1015,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5359317873607056707, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: highlightables.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5359317873607056707, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: 'highlightables.Array.data[0]'
       value: 
-      objectReference: {fileID: 1510116294}
+      objectReference: {fileID: 0}
     - target: {fileID: 5828644565095318681, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: m_Name
       value: Apartment
@@ -1033,12 +1037,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 14.52
       objectReference: {fileID: 0}
+    - target: {fileID: 8106041088695020181, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: highlightables.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9049623351845701166, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: videoPlayer
       value: 
       objectReference: {fileID: 23501477}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8379780493528681322, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
@@ -1208,6 +1217,7 @@ MonoBehaviour:
   completedText: Congrats on the victory!
   questUI: {fileID: 0}
   completionUI: {fileID: 0}
+  battle_so: {fileID: 0}
   OnCompleteObjective:
     m_PersistentCalls:
       m_Calls:
@@ -1235,6 +1245,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  battleManager: {fileID: 0}
 --- !u!114 &825845242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2398,6 +2409,7 @@ MonoBehaviour:
   completedText: Congrats on the victory!
   questUI: {fileID: 0}
   completionUI: {fileID: 0}
+  battle_so: {fileID: 0}
   OnCompleteObjective:
     m_PersistentCalls:
       m_Calls:
@@ -2425,6 +2437,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  battleManager: {fileID: 0}
 --- !u!114 &1509237971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2570,11 +2583,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 54917196}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1510116294 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5054466045995605422, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-  m_PrefabInstance: {fileID: 717468404}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1548786890
 PrefabInstance:
   m_ObjectHideFlags: 0
