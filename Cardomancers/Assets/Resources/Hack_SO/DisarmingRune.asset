@@ -12,21 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab035d907c4ef78478ebd5f51ede08fd, type: 3}
   m_Name: DisarmingRune
   m_EditorClassIdentifier: Assembly-CSharp::Hack_SO
-  sellValue: 0
-  Price: 0
+  sellValue: 65
+  Price: 325
   displayName: Disarming Rune
-  description: 
-  image: {fileID: 0}
+  description: Reduces the Target's damage by 15% for the remainder of the battle.
+    Stacks with other effects.
+  image: {fileID: 21300000, guid: 8c41c87c1ab079447bce8d32924a6f54, type: 3}
   sideOfCard: 0
   hackEffects:
-  - StatusAmount: 15
-    damageType: 10
+  - StatusAmount: 85
+    damageType: 0
     actionType: 1
+    targetingType: 0
     isStatusEffect: 1
     isPerishable: 0
-    turnsActive: 0
+    isNegative: 0
+    turnsActive: 1
+    probability: 1
+    statusType: 1
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}

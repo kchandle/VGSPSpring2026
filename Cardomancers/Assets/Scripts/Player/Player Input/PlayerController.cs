@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour
     
     public void OnEscape(InputAction.CallbackContext context)
     {
-        if (CurrentState == GameState.INVENTORY || questMenu.activeSelf) return;
+        if (GameStateScript.CurrentState == GameState.INVENTORY || questMenu.activeSelf || GameStateScript.CurrentState == GameState.SHOPPING) return;
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         if (pauseMenu.activeSelf)
         {
