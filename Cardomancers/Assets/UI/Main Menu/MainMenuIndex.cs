@@ -18,6 +18,11 @@ public class MainMenuIndex : MonoBehaviour
     [Tooltip("Larger numbers = slower animation.")]
     [SerializeField] private float animationDurationSeconds = 5f;
     private float xPos;
+    
+    [Header("Scene Indices")]
+    [SerializeField] private int mainMenuIndex;
+    [SerializeField] private int creditsIndex;
+    [SerializeField] private int settingsIndex;
 
     private void Awake()
     {
@@ -54,7 +59,7 @@ public class MainMenuIndex : MonoBehaviour
 
     private void OnStartGameClick(ClickEvent clickEvent)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(1);
         Debug.Log("Start Game");
     }
 
@@ -67,12 +72,28 @@ public class MainMenuIndex : MonoBehaviour
     private void OnCreditsClick(ClickEvent clickEvent)
     {
         // Load credits scene
+        if (SceneManager.GetSceneAt(creditsIndex).IsValid())
+        {
+            SceneManager.LoadScene(creditsIndex);
+        }
+        else
+        {
+            Debug.Log("Credits scene build index is incorrect or the scene is not in scene list.");
+        }
         Debug.Log("Credits");
     }
 
     private void OnSettingsClick(ClickEvent clickEvent)
     {
         // Load settings scene
+        if (SceneManager.GetSceneAt(settingsIndex).IsValid())
+        {
+            SceneManager.LoadScene(settingsIndex);
+        }
+        else
+        {
+            Debug.Log("Settings scene build index is incorrect or the scene is not in the scene list.");
+        }
         Debug.Log("Settings");
     }
     
