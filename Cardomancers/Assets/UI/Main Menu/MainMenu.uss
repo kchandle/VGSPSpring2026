@@ -1,0 +1,30 @@
+:root {
+}
+
+.unity-button {
+    scale: 1 1;
+    width: 25px;
+    height: 64px;
+    flex-shrink: 1;
+    align-items: stretch;
+    min-width: auto;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+}
+
+.unity-button:hover {
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+}
+
+.unity-button:active {
+    scale: 0.9 0.9 0.9;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-cubic;
+}
+
+.background {
+    background-image: url('Game Start Scene.png');
+    background-repeat: repeat-x;
+}
