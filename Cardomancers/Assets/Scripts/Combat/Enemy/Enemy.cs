@@ -26,6 +26,16 @@ public class Enemy : MonoBehaviour
     public Playspace cardToPlayspace;
     public Playspace enemyPlayspace;
 
+    #region Effects & Anims
+    public GameObject AntiHeal;
+    public GameObject Poison;
+    public GameObject Regen;
+    public GameObject Frostbite;
+    public GameObject OnFire;
+    public GameObject Awestruck;
+    #endregion
+
+
     public int CurrentShield
     {
         get { return currentShield; }
@@ -361,6 +371,7 @@ public class Enemy : MonoBehaviour
                 }
                 case(StatusEffectType.AntiHeal):
                 {
+                    AntiHeal.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
                     healable = false;
                     break;
                 }
@@ -445,7 +456,8 @@ public class Enemy : MonoBehaviour
                 //---Simple DOTs
                 case(StatusEffectType.Regeneration):
                 {
-                    print("Regeneration statusEffect at index: " + i);
+                        Regen.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
+                        print("Regeneration statusEffect at index: " + i);
 
                     //Do heal
                     if(healable)
@@ -460,6 +472,7 @@ public class Enemy : MonoBehaviour
                 }
                 case(StatusEffectType.OnFire):
                 {
+                    OnFire.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
                     print("OnFire statusEffect at index: " + i);
 
                     //Do burn damage. Is Super effective if the enemy is weak to the damage type
@@ -472,6 +485,7 @@ public class Enemy : MonoBehaviour
                 }
                 case(StatusEffectType.Poisoned):
                 {
+                        Poison.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
                     print("Poisoned statusEffect at index: " + i);
 
                     //Do poison damage. Is super effective if the enemy is weak to the damage type (poison)
@@ -483,6 +497,7 @@ public class Enemy : MonoBehaviour
                 }
                 case(StatusEffectType.Frostbite):
                 {
+                        Frostbite.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
                     print("Frostbite statusEffect at index: " + i);
                     //Do Frostbite damage. Is super effective if the enemy is weak to ice
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageMult);  }
@@ -493,6 +508,7 @@ public class Enemy : MonoBehaviour
                 }
                 case(StatusEffectType.Awestruck):
                 {
+                        Awestruck.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
                     print("Awestruck statusEffect at index: " + i);
 
                     //Do Awestruck damage

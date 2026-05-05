@@ -2,26 +2,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-//Shop Panel just displays the information of the card and allows the player to buy / sell it
+
+
+//Shop Panel just displays the information of the item and allows the player to buy / sell it
 public class ShopPanel : MonoBehaviour
 {
     //Visual elements of the panel (all set in editor)
-    [SerializeField] private Image cardImage;
-    [SerializeField] private TMPro.TextMeshProUGUI cardName;
-    [SerializeField] private TMPro.TextMeshProUGUI cardDesc;
-    [SerializeField] private TMPro.TextMeshProUGUI cardValue;
+    [SerializeField] private Image itemImage;
+    [SerializeField] private TMPro.TextMeshProUGUI itemName;
+    [SerializeField] private TMPro.TextMeshProUGUI itemDesc;
+    [SerializeField] private TMPro.TextMeshProUGUI itemValue;
     
     
     //other
+    private ItemType type;
     private ShopItem item;
     private Card_SO cardSO;
+    private Hack_SO hackSO;
 
-    public int cardAmount = 1;
-    public TMP_Text totalCardAmount;
+    public int itemAmount = 1;
+    public TMP_Text totalItemAmount;
 
 
-    private int cardCost;
-    private int cardSellValue;
+    private int itemCost;
+    private int itemSellValue;
     
     [SerializeField] private Shop shop; //set in editor
     [SerializeField] private ShopUI shopUI; //set in editor
@@ -29,74 +33,118 @@ public class ShopPanel : MonoBehaviour
     //Change visual elements of panel. Called by the Onclick events of whichever shopItem was clicked
     public void UpdatePanel(ShopItem shopItem)
     {
-        cardSO = shopItem.SO;
         item = shopItem;
+        type = item.itemType;
 
-        cardImage.sprite = cardSO.image;
-        cardDesc.text = cardSO.description;
-        cardName.text = cardSO.displayName;
-
-        cardCost = cardSO.price;
-        cardSellValue = cardSO.sellValue;
-
-        cardValue.text = "Buy: " + cardCost + " currency.\nSell: " + cardSellValue + " currency.";
-        totalCardAmount.text = cardAmount.ToString();
-    }
-
-
-    public void PlusCard()
-    {
-        cardAmount += 1;
-        print("CardAmount: " + cardAmount);
-        totalCardAmount.text = cardAmount.ToString();
-    }
-
-    public void MinusCard()
-    {
-        if (cardAmount >= 2)
+        if(shopItem.itemType == ItemType.CARD_SO)
         {
-            cardAmount -= 1;
+            cardSO = shopItem.SO_cardSO;
+            hackSO = null;
+        }
+        else if(shopItem.SO_hackSO)
+        {
+            cardSO = null;
+            hackSO = shopItem.SO_hackSO;
+        }
+
+        itemImage.sprite = item.Image;
+        itemDesc.text = item.Description;
+        itemName.text = item.DisplayName;
+
+        itemCost = item.PurchasePrice;
+        itemSellValue = item.SellPrice;
+
+        itemValue.text = "Buy: " + itemCost + " currency.\nSell: " + itemSellValue + " currency.";
+        totalItemAmount.text = itemAmount.ToString();
+
+    }
+
+
+    public void PlusItem()
+    {
+        itemAmount += 1;
+        print("ItemAmount: " + itemAmount);
+        totalItemAmount.text = itemAmount.ToString();
+    }
+
+    public void MinusItem()
+    {
+        if (itemAmount >= 2)
+        {
+            itemAmount -= 1;
         }
         else
         {
-            cardAmount = 1;
+            itemAmount = 1;
         }
-        totalCardAmount.text = cardAmount.ToString();
+        totalItemAmount.text = itemAmount.ToString();
     }
 
+
+
     //method called by the shop panel's Buy button onclick event
-    public void ClickedBuyCard()
+    public void ClickedBuyItem()
     {
         //print("Buying card...");
-        for (int i = 0; i < cardAmount; i++)
+        for (int i = 0; i < itemAmount; i++)
         {
-            if (Inventory.IsInventoryFull()) print("full: " + Inventory.Cardscount());
-
-            if (!Inventory.IsInventoryFull())
+            //Buying a CARD
+            if(type == ItemType.CARD_SO)
             {
-                print("no-full: " + Inventory.Cardscount());
-                if (shop.BuyCard(item))
+                if (Inventory.IsInventoryFull())
                 {
-                    shopUI.UpdateBuyMenu();
-                    print("Card bought!");
-                    shopUI.UpdateSellMenu();
+                    print("full: " + Inventory.Cardscount());
+                }
+
+                if (!Inventory.IsInventoryFull())
+                {
+                    //print("no-full: " + Inventory.Cardscount());
+                    if (shop.BuyItem(item))
+                    {
+                        shopUI.UpdateBuyMenu();
+                        print("Card bought!");
+                        shopUI.UpdateSellMenu();
+                    }
+                    else
+                    {
+                        print("you're broke");
+                    }
+                }
+            }
+            //Buying a HACK
+            else if(type == ItemType.HACK_SO)
+            {
+                if(Inventory.HackInventory.Count > Inventory.HackInventorySize)
+                {
+                    print("full on hacks");
                 }
                 else
                 {
-                    print("you're broke");
+                    if (shop.BuyItem(item))
+                    {
+                        shopUI.UpdateBuyMenu();
+                        print("Hack bought!");
+                        shopUI.UpdateSellMenu();
+                    }
+                    else
+                    {
+                        print("you're broke");
+                    }
                 }
             }
+            
         }
     }
 
     //method called by the shop panel's Sell button onclick event 
-    public void ClickedSellCard()
+    public void ClickedSellItem()
     {
         //print("Selling card...");
-        if(shop.SellCard(item))
+        if(shop.SellItem(item))
         {
             shopUI.UpdateSellMenu();
-            print("Card sold!");
+            //print("Card / Hack sold!");
+            print(type + " sold!");
         }
         else
         {
