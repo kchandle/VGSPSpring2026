@@ -174,6 +174,8 @@ public class Card : PlayItem
             }
         }
 
+        if (returnVal) SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform);
+
         //print("Playing card on self: " + returnVal);
         return returnVal;
     }

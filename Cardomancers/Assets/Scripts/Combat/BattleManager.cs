@@ -556,6 +556,8 @@ public class BattleManager : MonoBehaviour
                         else
                         {
                             effect.TriggerEffect(playerController, player.transform.position, card.cardSO, enemyScript.attackMulti);
+
+                            SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                         }
                         break;
                     }
@@ -563,12 +565,14 @@ public class BattleManager : MonoBehaviour
                     {
                         print("Enemy defending themelves");
                         effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                         break;
                     }
                     case(BattleActionType.HEAL):
                     {
                         print("Enemy healing themselves");
                         effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                         break;
                     }
                     default:
