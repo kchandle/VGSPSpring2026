@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CardThrow : MonoBehaviour
+/*public class CardThrow : MonoBehaviour
 {
     //the object pool the throw is getting objects from
     [SerializeField] ObjectPool pool;
@@ -79,5 +79,6 @@ public class CardThrow : MonoBehaviour
             cardRB.linearVelocity = (cardDir * cardForce) + (new Vector3(cc.velocity.x, 0f, cc.velocity.z) / 2);
             cardRB.angularVelocity = new(0, 30, 0);
         }
-    }
-}
+    } 
+}*/
+//my hopes and dreams are all dead
