@@ -9,6 +9,7 @@ public class DialogueSO : ScriptableObject
 {
     public DialogueLine[] lines;
     public bool startsBattle;
+    public bool hasExclamationMark;
 
     public Color textColorDefault = new Color(1f, 1f, 1f, 1f);
     public Color textBackgroundColorDefault = new Color(1f, 1f, 1f, 1f);
