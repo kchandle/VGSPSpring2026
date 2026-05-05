@@ -21,11 +21,8 @@ public class ReturnToCardShop : QuestStep
         return "Return to the Card Shop";
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void FinishMe()
     {
-        if (other.CompareTag("Player"))
-        {
-            FinishQuestStep();
-        }
+        FinishQuestStep();
     }
 }
