@@ -17,6 +17,8 @@ public class PlayerInteract : MonoBehaviour
     public BattleManager battleManager;
     public bool battling;
 
+    public AudioClip interactSound;
+
     public void Start()
     {
         GameStateScript.GameState state = GameStateScript.CurrentState;
@@ -26,11 +28,8 @@ public class PlayerInteract : MonoBehaviour
     {
         InteractHighlight();
         if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(inRange);
-        else interactPrompt.SetActive(false); 
+        else interactPrompt.SetActive(false);
     }
-
-
-
 
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
     public void OnInteract(InputAction.CallbackContext obj)
@@ -59,12 +58,12 @@ public class PlayerInteract : MonoBehaviour
                         minRange = range;
                     }
                 }
-
-                if (interactable != null)
-                {
-                    interacting = true;
-                    interactable.interactable.Invoke();
-                }
+            }
+            if (interactable != null)
+            {
+                interacting = true;
+                interactable.interactable.Invoke();
+                SoundEffectManager.Instance.PlaySoundFXClip(interactSound, transform, 0.5f);
             }
         }
     }
@@ -94,7 +93,7 @@ public class PlayerInteract : MonoBehaviour
                     }
 
                     ChangeAllChildrenLayer(interactable.gameObject, "Outline");
-                    if (inter.highlightables.Length > 0) foreach(GameObject g in inter.highlightables) ChangeAllChildrenLayer(g, "Outline");
+                    if (interactable.highlightables.Length > 0) foreach(GameObject g in interactable.highlightables) ChangeAllChildrenLayer(g, "Outline");
                     currentHighlight = interactable;
                     inRange = true;
                 }
@@ -107,11 +106,6 @@ public class PlayerInteract : MonoBehaviour
             }
 
         }
-    }
-
-    public void AUDBIEfwk()
-    {
-        interacting = false;
     }
 
     public void ChangeAllChildrenLayer(GameObject target, string layer)

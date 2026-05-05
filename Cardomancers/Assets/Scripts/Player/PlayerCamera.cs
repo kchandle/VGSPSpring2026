@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
+using UnityEditor.ShaderGraph;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class PlayerCamera : MonoBehaviour
     // Current zoom, being lerped...
     private float currentZoom;
 
+    private CinemachineBrain brain;
+
     // setup the variables.
     void Start()
     {
@@ -45,6 +48,7 @@ public class PlayerCamera : MonoBehaviour
         //get the decollider attached
         decollider = cam.GetComponent<CinemachineDecollider>();
         input = cam.GetComponent<CinemachineInputAxisController>();
+        brain = FindFirstObjectByType<CinemachineBrain>();
 
         //Optimal settings to reduce motion sickness
         ZoomLerpSpeed = 5f;
@@ -63,19 +67,24 @@ public class PlayerCamera : MonoBehaviour
         // gets the scroll input.
         scrollDelta += Input.GetAxisRaw("Mouse ScrollWheel");
     }
-
+    
     // update camera position...
     void Update()
     {
         // Contact Group-1 team lead for this they added it, and I dont know what it does.
-        input.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING ? true : false;
+        input.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN ? true : false;
+        brain.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN ? true : false;
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN) RotatePlayerModel();
+    }
 
+    public void RotatePlayerModel()
+    {
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();
 
         // if we dont have a orbital well this doesnt work.
-        if(orbital != null)
-        {   
+        if (orbital != null)
+        {
             // Get the future zoom position that the player wants.
             // This is mosly just to lerp the camera...
             // Basically this just smooths the camera zoom in.
