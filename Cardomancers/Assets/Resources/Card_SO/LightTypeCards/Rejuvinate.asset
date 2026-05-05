@@ -20,6 +20,7 @@ MonoBehaviour:
   - StatusAmount: 3
     damageType: 6
     actionType: 2
+    targetingType: 0
     isStatusEffect: 1
     isPerishable: 1
     isNegative: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
   - StatusAmount: 3
     damageType: 6
     actionType: 2
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
     isNegative: 0
@@ -48,9 +50,13 @@ MonoBehaviour:
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1402778820, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -1435407506, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Rejuvinate
   description: "Applies \u201CRegeneration\u201D to the player for 3 turns. Heal
     a small extra amount on the first turn. "
   tagLine: 
   cardType: 3
+  VFXPrefab: {fileID: 316241846328714962, guid: eeae4442dde39d146aad4611d64d2044, type: 3}
+  cardSound: {fileID: 8300000, guid: b039bad5f1929994daf0b479015e81ba, type: 3}
   damageType: 2
