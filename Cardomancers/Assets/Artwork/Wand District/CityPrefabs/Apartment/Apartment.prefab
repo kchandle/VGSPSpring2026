@@ -421,131 +421,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 39252262720643579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4013657032167613469
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4413768085568260816}
-  - component: {fileID: 6962813071696250908}
-  - component: {fileID: 2614344026514988121}
-  - component: {fileID: 746634690828634932}
-  m_Layer: 0
-  m_Name: ChestCardGiver
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4413768085568260816
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4013657032167613469}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 5, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8532466911037381320}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6962813071696250908
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4013657032167613469}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.0916595, y: 1.5184631, z: 2.288765}
-  m_Center: {x: 0.045829773, y: 0.81585693, z: -0.39261246}
---- !u!114 &2614344026514988121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4013657032167613469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 686f94df1f718604da54e7da0c2d1759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GetCardsOnEvent
-  cardsToGet:
-  - {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
-  - {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
-  - {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
-  player: {fileID: 0}
---- !u!114 &746634690828634932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4013657032167613469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 136d45e620239de4ebc3a42bbbbaa5b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  name: 
-  interactable:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2614344026514988121}
-        m_TargetAssemblyTypeName: GetCardsOnEvent, Assembly-CSharp
-        m_MethodName: GiveCards
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Objective, Assembly-CSharp
-        m_MethodName: CompleteObjective
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 4013657032167613469}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  highlightables: []
 --- !u!1 &5058795411993314516
 GameObject:
   m_ObjectHideFlags: 0
@@ -7141,6 +7016,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1928626548765232170, guid: adb8865513db5e4489e9dd37862fe64d, type: 3}
   m_PrefabInstance: {fileID: 4596948072643111970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4630840114650859868
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8532466911037381320}
+    m_Modifications:
+    - target: {fileID: 8644469555814313281, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_Name
+      value: ChestCardGiver
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+--- !u!4 &4413768085568260816 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9008560711057818508, guid: dd8e2658906f5524cba72715955c622e, type: 3}
+  m_PrefabInstance: {fileID: 4630840114650859868}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4770527778478087892
 PrefabInstance:
