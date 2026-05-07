@@ -272,17 +272,28 @@ MonoBehaviour:
   hand: []
   maxHealth: 100
   currentHealth: 100
-  isStunned: 0
+  maxTimer: 3
   currentTimer: 0
   currentMana: 0
   shieldPanel: {fileID: 9216639558957327251}
   shieldText: {fileID: 3610334816180045525}
+  healthText: {fileID: 0}
+  hourglassAnim: {fileID: 0}
+  cardToPlayspace: {fileID: 0}
+  enemyPlayspace: {fileID: 0}
+  AntiHeal: {fileID: 0}
+  Poison: {fileID: 0}
+  Regen: {fileID: 0}
+  Frostbite: {fileID: 0}
+  OnFire: {fileID: 0}
+  Awestruck: {fileID: 0}
   currentActionAmount: 0
   currentActionType: 0
   statusEffects: []
   resistances: 
   weaknesses: 
   animator: {fileID: 2476867894194971606}
+  attackAnim: {fileID: 0}
   deck: []
   healthBar: {fileID: 4742033380019758031}
   manaText: {fileID: 3610334816180045525}
@@ -296,8 +307,24 @@ MonoBehaviour:
     hacks: []
     length: 0
     cardID: 
+  cardPrefab: {fileID: 0}
+  nextCard:
+    cardSO: {fileID: 0}
+    hacks: []
+    length: 0
+    cardID: 
+  nextCardSet: 0
   DamageMult: 2
   DamageReduct: 0.5
+  attackMulti: 1
+  enduranceMulti: 1
+  healable: 1
+  isStunned: 0
+  counterSpellActive: 0
+  cSpellTriggered: 0
+  weatherImmune: 0
+  fieldAtkBoost: 1
+  fieldEndBoost: 1
   isShielded: 0
   battleManager: {fileID: 0}
   spriteRenderer: {fileID: 0}
@@ -306,6 +333,7 @@ MonoBehaviour:
   AttackedSprite: {fileID: 21300000, guid: 371203b2af9def84792f1f1871c6f73d, type: 3}
   StunnedSprite: {fileID: 21300000, guid: 560437b0218584742a30dda1fa9f6349, type: 3}
   DefeatedSprite: {fileID: 21300000, guid: e63339a57cba30a4eaf918ebe61bec40, type: 3}
+  enemyImage: {fileID: 0}
   deathCalled: 0
 --- !u!95 &2476867894194971606
 Animator:
@@ -317,7 +345,7 @@ Animator:
   m_GameObject: {fileID: 1754986763223118875}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dd3bea19c92041748912dd2af5d5ce3c, type: 2}
+  m_Controller: {fileID: 9100000, guid: f75baf88163b3fd49b569d6ec0afaf57, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1050,7 +1078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f0aa3eccf6e2dd544926ed331257c12d, type: 3}
+  m_Sprite: {fileID: -1142058912, guid: ff0b6dc2876e5b04280eaccf34a9b7a1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

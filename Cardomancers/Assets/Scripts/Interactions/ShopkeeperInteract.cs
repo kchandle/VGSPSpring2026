@@ -14,17 +14,6 @@ public class ShopkeeperInteract : MonoBehaviour
 
     public void OnInteract()
     {
-<<<<<<< HEAD
-        if (shop.IsShopOpenUI) 
-        {
-            print("do nothing");
-            shop.CloseShop();
-        }
-        else 
-        {
-            print("do something");
-            shop.OpenShop();
-=======
         if (shop.IsShopOpenUI){
 
             shop.CloseShop();
@@ -38,7 +27,6 @@ public class ShopkeeperInteract : MonoBehaviour
             GameStateScript.CurrentState = oldState;
             UI.SetActive(false);
 
->>>>>>> cd3827c058b2b532fa526026745bf9a7397ee997
         }
     }
 }
