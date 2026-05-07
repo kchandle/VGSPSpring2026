@@ -191,7 +191,7 @@ public class Card : PlayItem
                 hacks[1] = hack;
                 inventoryCard.hacks[1] = hack;
                 print("hack added");
-                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
+                frontHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on top.");
                 frontHack.SetActive(true);
                 break;
@@ -202,7 +202,7 @@ public class Card : PlayItem
                 inventoryCard.hacks[0] = hack;
                 print("hack added");
                 print(hack.image.name);
-                backHack.GetComponent<RawImage>().texture = hack.image.texture;
+                backHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on bottom.");
                 backHack.SetActive(true);
                 break;
