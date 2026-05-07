@@ -13,7 +13,7 @@ public class ShopkeeperInteract : MonoBehaviour
         if (shop.IsShopOpenUI) 
         {
             print("do nothing");
-            //shop.CloseShop();
+            shop.CloseShop();
         }
         else 
         {
