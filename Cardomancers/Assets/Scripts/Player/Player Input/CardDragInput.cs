@@ -14,6 +14,9 @@ public class CardDragInput : MonoBehaviour
 
     //public InventoryUIHandler uIHandler;
 
+    //****
+    private int plays;
+
     private bool dragDropActive; // if the drag and drop ability is active
 
     public bool DragDropActive // getter setter for activating dragDropAbility
@@ -106,7 +109,7 @@ public class CardDragInput : MonoBehaviour
     public IEnumerator DragDrop()
     {
         dragDropActive = true;
-        while (dragDropActive == true)
+        while (DragDropActive == true)
         {
             
         
@@ -216,10 +219,9 @@ public class CardDragInput : MonoBehaviour
                                     BattleManager bm = FindFirstObjectByType<BattleManager>();
                                     if (FindFirstObjectByType<BattleManager>().isBattling)
                                     {
-                                        if (AttemptPlay((Card)dragTarget, p))
+                                        if (dragDropActive && AttemptPlay((Card)dragTarget, p))
                                         {
-                                            bm.PlayerDeckCopyActive.Remove(((Card)dragTarget)
-                                                .inventoryCard); // remove played card from deck copy
+                                            bm.PlayerDeckCopyActive.Remove(((Card)dragTarget).inventoryCard); // remove played card from deck copy
                                             dragPlayspace.DestroyPlayItem(dragTarget);
                                             dragDropActive = false;
                                         }
@@ -268,9 +270,13 @@ public class CardDragInput : MonoBehaviour
         {
             //tries to play card against the playspace's parent gameobject enemy component
             if(p.gameObject.GetComponentInParent<Enemy>())
+            {
                 return dragTarget.TryPlayCard(p.gameObject.GetComponentInParent<Enemy>());
+            }
             else
+            {
                 return dragTarget.TryPlayCard(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
+            }
         }
         else{
             return false;
@@ -301,7 +307,7 @@ public class CardDragInput : MonoBehaviour
     public void MoveToNewPlayspace(PlayItem moveTarget, Playspace to, Playspace from)
     {
         if (to.allowedDonors.Contains(from)){
-            print("in allowed donors");
+            //print("in allowed donors");
             //Checks if play type matches action type, or if the parent of the parent of the playspace is the battle canvas, or if the playspace is in the inventory.
             if (moveTarget.itemType == PlayItem.ItemType.CARD)
             {
@@ -310,7 +316,7 @@ public class CardDragInput : MonoBehaviour
                     to.gameObject.transform.parent.parent.gameObject.name == "InventoryCanvas" ||
                     to.gameObject.transform.parent.parent.parent.gameObject.name == "InventoryCanvas")
                 {
-                    print("Is of allowed type");
+                    //print("Is of allowed type");
                     if(to.NewPlayItem(moveTarget.gameObject, ((Card)moveTarget).CardSO, ((Card)moveTarget).inventoryCard)) from.DestroyPlayItem(moveTarget);
                     PlayitemMoved.Invoke(moveTarget, to, from);
                 }

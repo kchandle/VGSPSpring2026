@@ -9,6 +9,7 @@ public class DialogueSO : ScriptableObject
 {
     public DialogueLine[] lines;
     public bool startsBattle;
+    public bool hasExclamationMark;
 
     public Color textColorDefault = new Color(1f, 1f, 1f, 1f);
     public Color textBackgroundColorDefault = new Color(1f, 1f, 1f, 1f);
@@ -32,10 +33,5 @@ public class DialogueLine
 
 
     [TextArea(3, 5)] public string text;
-
-    public bool doesCameraMove;
-    public Vector3 playerMovePosition;
-    public Vector3 cameraMovePosition;
-    public Vector3 cameraRotation;
 }
 }

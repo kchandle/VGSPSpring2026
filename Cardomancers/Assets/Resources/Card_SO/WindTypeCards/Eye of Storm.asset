@@ -20,6 +20,7 @@ MonoBehaviour:
   - StatusAmount: 0
     damageType: 0
     actionType: 1
+    targetingType: 0
     isStatusEffect: 1
     isPerishable: 1
     isNegative: 0
@@ -33,10 +34,14 @@ MonoBehaviour:
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1255159727, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 1739543200, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Eye of Storm
   description: "Applies the \u201CEye of the Storm\u201D status effect to The User
     for 3 turns and Stuns all Enemies for 1 turn. While \"Eye of the Storm\" is active,
     The user is immune to Weather Spells."
   tagLine: 
   cardType: 4
+  VFXPrefab: {fileID: 4453258991637391671, guid: 534ce38623604d24db6870b7d9a069dd, type: 3}
+  cardSound: {fileID: 8300000, guid: 4564650e3130afa458e6c98ba68fe228, type: 3}
   damageType: 0

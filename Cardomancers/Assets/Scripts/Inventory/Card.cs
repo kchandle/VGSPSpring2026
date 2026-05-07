@@ -136,11 +136,14 @@ public class Card : PlayItem
 
         //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything.
         //Ask Joshua if you have any concerns
-        BattleManager.instance.PlayerAttackOneEnemy(effects, enemy);
-        BattleManager.instance.PlayerAttackAllEnemies(effects);
-        BattleManager.instance.PlayerAttackSelf(effects);
+        if(cardSO.CardType == CardType.ATK)
+        {
+            BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO);
+            BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
+            BattleManager.instance.PlayerAttackSelf(effects, cardSO);
+            returnVal = true;
+        }
 
-        returnVal = true;
         return returnVal;
     }
 
@@ -157,11 +160,23 @@ public class Card : PlayItem
         {
             if(cardSO.CardType != CardType.ATK)
             {
-                if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true;continue;}
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+                { 
+                    returnVal = true;
+                    //print("card played on self!");
+                    continue;
+                }
             } 
             //Apply each effect to the target
-            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+            {
+                returnVal = true;
+            }
         }
+
+        if (returnVal) SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform);
+
+        //print("Playing card on self: " + returnVal);
         return returnVal;
     }
 
@@ -176,7 +191,7 @@ public class Card : PlayItem
                 hacks[1] = hack;
                 inventoryCard.hacks[1] = hack;
                 print("hack added");
-                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
+                frontHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on top.");
                 frontHack.SetActive(true);
                 break;
@@ -187,7 +202,7 @@ public class Card : PlayItem
                 inventoryCard.hacks[0] = hack;
                 print("hack added");
                 print(hack.image.name);
-                backHack.GetComponent<RawImage>().texture = hack.image.texture;
+                backHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on bottom.");
                 backHack.SetActive(true);
                 break;
