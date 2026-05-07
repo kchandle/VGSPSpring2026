@@ -1047,6 +1047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b9d49f0b0b58a48bc89c890bb1a5c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopkeeperInteract
+  UI: {fileID: 2133823497}
 --- !u!114 &188391457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3250,17 +3251,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.1809673, y: 7.086502, z: 4.881097}
   m_Center: {x: -0.062487602, y: 0.30181122, z: 0.022228122}
---- !u!114 &568576893 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3684853401112827338, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-  m_PrefabInstance: {fileID: 881458261}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!65 &653643192
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4100,17 +4090,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0030785, y: 1.0030823, z: 11.251843}
   m_Center: {x: 0, y: 0.0000038146973, z: 0}
---- !u!114 &798113482 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1731732296630507374, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-  m_PrefabInstance: {fileID: 881458261}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!65 &810293604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4224,128 +4203,28 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8807388167413940, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlusCard
-      objectReference: {fileID: 0}
     - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 381162488}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: customCardStock.Array.size
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: customHackStock.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 49a9969ccf5991c45ad7b2c64c604902, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: cbe66f0f1639e8146bad766560060e0a, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: aebc29f9cb8e1f143a76d37976547438, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[3]'
-      value: 
-      objectReference: {fileID: 11400000, guid: f306d3b9bab97bd478b70c61919d6715, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[4]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 330294cdce9963a48891a94fc5120f54, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[5]'
-      value: 
-      objectReference: {fileID: 11400000, guid: d2fbdf98d83f0794e98069430779c120, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[6]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 224325d008efdc64aa07c30491c462bb, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[7]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 7ea24cde69bdd094399e68c7887ad78b, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[8]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 42d839688b53c424f8f99eeeaba7e40a, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[9]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 8222d1c9a85de7f47bc5243124ac036b, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customHackStock.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: f392fe9d37bbb464b91bcfc3bff21c8e, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customHackStock.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 3a83896920b49da478520a891483def5, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customHackStock.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 81c7f0c2e87828f4e9b5b6b8c836bdc8, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[10]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 82469fc7bb368ce4abb801149ba2b460, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[11]'
-      value: 
-      objectReference: {fileID: 11400000, guid: c8716f2533715c04abf8709573ac8999, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[12]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 591821ae43e3d5b4a981e9c8b5643962, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[13]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 2ca5826a86f9e36438f9e09dc085e240, type: 2}
-    - target: {fileID: 1316765173153266366, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: 'customCardStock.Array.data[14]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 6ad92924843b5644fad9c5fa05d74f68, type: 2}
-    - target: {fileID: 1330222331289494460, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClickedSellCard
-      objectReference: {fileID: 0}
-    - target: {fileID: 2685403024556856900, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_fontSize
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 2685403024556856900, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_fontSizeMax
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2685403024556856900, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_overflowMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2685403024556856900, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_charWidthMaxAdj
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2685403024556856900, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3502686422502987775, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502686422502987775, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.00000015286149
       objectReference: {fileID: 0}
     - target: {fileID: 3684567895544935126, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3684567895544935126, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684567895544935126, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4363680050397838111, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
@@ -4436,49 +4315,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5779191638555217757, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MinusCard
-      objectReference: {fileID: 0}
-    - target: {fileID: 6165387810638408660, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: cardDesc
-      value: 
-      objectReference: {fileID: 1249850917}
-    - target: {fileID: 6165387810638408660, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: cardName
-      value: 
-      objectReference: {fileID: 1792761318}
-    - target: {fileID: 6165387810638408660, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: cardImage
-      value: 
-      objectReference: {fileID: 798113482}
-    - target: {fileID: 6165387810638408660, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: cardValue
-      value: 
-      objectReference: {fileID: 568576893}
-    - target: {fileID: 6165387810638408660, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: totalCardAmount
-      value: 
-      objectReference: {fileID: 1136419587}
     - target: {fileID: 6280359815241106391, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 113.0625
       objectReference: {fileID: 0}
     - target: {fileID: 7130678986432610913, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7130678986432610913, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7130678986432610913, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8431848342920284136, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClickedBuyCard
+      value: -20.0257
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5326,17 +5177,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0030804, y: 1.0030804, z: 11.251843}
   m_Center: {x: -0.0000009536743, y: 0, z: 0}
---- !u!114 &1136419587 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2685403024556856900, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-  m_PrefabInstance: {fileID: 881458261}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!64 &1156098380
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5641,17 +5481,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7944088, y: 0.8274307, z: 11.437927}
   m_Center: {x: -0.0000047683716, y: -0.14591742, z: -0.49491358}
---- !u!114 &1249850917 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4752536848203343551, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-  m_PrefabInstance: {fileID: 881458261}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1253739125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7230,17 +7059,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7944107, y: 0.8274307, z: 11.437927}
   m_Center: {x: -0.0000038146973, y: -0.14591217, z: -0.49491358}
---- !u!114 &1792761318 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4319935344091147724, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
-  m_PrefabInstance: {fileID: 881458261}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!65 &1793973341
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8148,6 +7966,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0030804, y: 1.0030823, z: 11.251843}
   m_Center: {x: -0.0000009536743, y: 0.0000038146973, z: 0}
+--- !u!1 &2133823497 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3955833639070102846, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
+  m_PrefabInstance: {fileID: 881458261}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &2142831066
 MeshCollider:
   m_ObjectHideFlags: 0
