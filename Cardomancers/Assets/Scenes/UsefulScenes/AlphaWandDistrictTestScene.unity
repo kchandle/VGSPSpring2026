@@ -513,6 +513,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 397575796}
@@ -520,6 +532,42 @@ PrefabInstance:
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1584511685}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1613938824}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: CompleteObjective
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DialogueScripts.DialogueManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Objective, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: d5b52cf841a4a84418989e7f9907e5e5, type: 2}
+    - target: {fileID: 499335582970614512, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: DialogueScripts.DialogueSO, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 662707736885860288, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
