@@ -15,6 +15,7 @@ public class ShopSlot : MonoBehaviour
         image.sprite = shopItem.Image;  
         
         
+        
     }
 
     //Unused
