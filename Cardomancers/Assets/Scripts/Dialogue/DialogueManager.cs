@@ -23,7 +23,7 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance; // singleton instance
     public Animator animator; // the current animator changing the talksprite
 
-
+    private GameStateScript.GameState initialState;
     [SerializeField]
     
     public float textDelay; // delay between characters
@@ -142,6 +142,7 @@ public class DialogueManager : MonoBehaviour
 
         DialogueEvents.StartDialogue(newDialogue);
 
+        initialState = GameStateScript.CurrentState;
         GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
 
             
@@ -205,12 +206,12 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 brain.enabled = true;
-                    input.enabled = true;
-                    cameraScript.enabled = true;
-                    playerMoveTransforms = new();
-                    cameraMoveTransforms = new();
-                    playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
-                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
+                input.enabled = true;
+                cameraScript.enabled = true;
+                playerMoveTransforms = new();
+                cameraMoveTransforms = new();
+                playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+                GameStateScript.CurrentState = initialState;
             }
             //if (!reactive)
             //{
