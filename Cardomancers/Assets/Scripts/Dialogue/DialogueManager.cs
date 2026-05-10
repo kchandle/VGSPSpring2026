@@ -36,7 +36,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject titleBoxHolder; // title box holder.
     public GameObject spriteBorder; // the sprite border.
 
-    private GameStateScript.GameState initialState;
+
     public TextMeshProUGUI textElement; // the current text box the dialogue text is being loaded into
     public TextMeshProUGUI titleElement; // the current text box the dialogue speaker is being loaded into
     public UnityEngine.UI.Image talkspriteImage; // the image element where the talksprite will be loaded
@@ -142,7 +142,6 @@ public class DialogueManager : MonoBehaviour
 
         DialogueEvents.StartDialogue(newDialogue);
 
-        initialState = GameStateScript.CurrentState;
         GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
 
             
@@ -206,12 +205,12 @@ public class DialogueManager : MonoBehaviour
             else
             {
                 brain.enabled = true;
-                input.enabled = true;
-                cameraScript.enabled = true;
-                playerMoveTransforms = new();
-                cameraMoveTransforms = new();
-                playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
-                GameStateScript.CurrentState = initialState;
+                    input.enabled = true;
+                    cameraScript.enabled = true;
+                    playerMoveTransforms = new();
+                    cameraMoveTransforms = new();
+                    playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
             }
             //if (!reactive)
             //{
