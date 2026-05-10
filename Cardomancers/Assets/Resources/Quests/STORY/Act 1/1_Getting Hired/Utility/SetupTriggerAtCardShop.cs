@@ -34,6 +34,9 @@ public class TriggerSetup : MonoBehaviour
                 case QuestForTriggerSetup.ADVERTISING:
                     FindFirstObjectByType<ReturnToCardShop>().GetComponent<ReturnToCardShop>().FinishMe();
                     break;
+                case QuestForTriggerSetup.ESCAPE:
+                    FindFirstObjectByType<EscapeToCardShop>().GetComponent<EscapeToCardShop>().PlayerEntersCardShop();
+                    break;
             }
         }
     }
@@ -44,5 +47,6 @@ public enum QuestForTriggerSetup
 {
     HIRING,
     ADVERTISING,
-    INGREDIENTS
+    INGREDIENTS,
+    ESCAPE
 }
