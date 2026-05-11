@@ -35,7 +35,6 @@ public class moneyPickup : MonoBehaviour
         if(!respawn)
         {
             Inventory.Money += moneyAmount;
-            Debug.Log ($"money: {Inventory.Money}");
             respawn = true;
             OnCollect.Invoke();
         }

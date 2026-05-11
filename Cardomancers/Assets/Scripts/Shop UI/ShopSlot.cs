@@ -28,7 +28,6 @@ public class ShopSlot : MonoBehaviour
     //Called when the object is clicked on  
     public void UpdateShopPanel()
     {
-        Debug.LogError(shopItem.SO_cardSO);
         shopPanel.UpdatePanel(shopItem);
     }
 }

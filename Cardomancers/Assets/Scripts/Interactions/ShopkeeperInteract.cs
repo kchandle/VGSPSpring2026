@@ -17,14 +17,14 @@ public class ShopkeeperInteract : MonoBehaviour
         if (shop.IsShopOpenUI){
 
             shop.CloseShop();
-            UI.SetActive(true);
-            oldState = GameStateScript.CurrentState;
-            GameStateScript.CurrentState = GameState.SHOPPING;
+            UI.SetActive(false);
+            GameStateScript.CurrentState = GameState.WALKING;
 
         } else{
 
             shop.OpenShop();
-            GameStateScript.CurrentState = oldState;
+            oldState = GameStateScript.CurrentState;
+            GameStateScript.CurrentState = GameState.SHOPPING;
             UI.SetActive(false);
 
         }
