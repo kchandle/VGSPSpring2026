@@ -21,7 +21,7 @@ public class SavePoint : MonoBehaviour
         //only save if the player is entering the save point
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Saving");
+            //Debug.Log("Saving");
             SaveSystem.Save(other.gameObject, questManager);
         }
     }

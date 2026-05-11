@@ -3,6 +3,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 using System;
 
 
@@ -117,7 +118,7 @@ public struct BattleEffect
     public bool isPerishable; //If status effect is perishable
     public bool isNegative; //If the status effect is negative, and can thus be cleansed
     public int turnsActive; //Amount of turns active at start of effect   
-    public float probability; //The chance of inflicting the status effect (0-1)
+    [Tooltip("The chance from 0-1.")]public float probability; //The chance of inflicting the status effect (0-1)
     public StatusEffectType statusType;
 
 
@@ -196,12 +197,16 @@ public struct BattleEffect
     {
         //Debug.Log("test helooooooooo test");
         PlayerController player = target.GetComponent<PlayerController>();
-        if(card != null)
+        if(card != null && card.VFXPrefab)
         {
-            if(card.CardType != CardType.DEF)
+            Debug.Log(card.name + " on player");
+
+            GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
+            vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
+            /*if (card.CardType != CardType.DEF)
             {
                 return false;
-            }
+            }*/
         }
 
         //---Applying the Random status effect chooses a random status effect from the enum to hit the opponent with.
@@ -369,11 +374,14 @@ public struct BattleEffect
     {
         if(card)
         {
-            if(card.CardType == CardType.DEF)
+            Debug.Log(card.name + " on enemy");
+            GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
+            vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
+            /*if (card.CardType == CardType.DEF)
             {
                 Debug.Log("a card with only def played on enemy");
                 return false;
-            }
+            }*/
         }
         
         //---Applying random status effects

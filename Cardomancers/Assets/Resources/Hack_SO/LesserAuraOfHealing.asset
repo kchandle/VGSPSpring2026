@@ -12,21 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab035d907c4ef78478ebd5f51ede08fd, type: 3}
   m_Name: LesserAuraOfHealing
   m_EditorClassIdentifier: Assembly-CSharp::Hack_SO
-  sellValue: 0
-  Price: 0
+  sellValue: 140
+  Price: 700
   displayName: Lesser Aura of Healing
   description: I feel better already!
-  image: {fileID: 1959415521, guid: d22417a1709674f4885a88e17b0f3835, type: 3}
+  image: {fileID: -1122356325, guid: d22417a1709674f4885a88e17b0f3835, type: 3}
   sideOfCard: 0
   hackEffects:
   - StatusAmount: 5
     damageType: 0
     actionType: 2
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 0
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
     nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}

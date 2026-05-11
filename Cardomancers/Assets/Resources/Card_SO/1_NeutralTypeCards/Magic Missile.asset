@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
   m_Name: Magic Missile
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 0
-  price: 0
+  sellValue: 50
+  price: 150
   energyCost: 0
   image: {fileID: 21300000, guid: 4c6f5998219fa264f979e51020cd7cec, type: 3}
   cardEffects:
   - StatusAmount: 15
     damageType: 0
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
     isNegative: 0
@@ -33,8 +34,12 @@ MonoBehaviour:
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -525451895, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Magic Missles
-  description: 
+  description: Sends out 5-8 low-damaging bolts at an enemy
   tagLine: 
   cardType: 0
+  VFXPrefab: {fileID: 1510538310654034063, guid: 617ff3c29f43b8e448e17ebbb0fe2d02, type: 3}
+  cardSound: {fileID: 8300000, guid: 62a2599eed8bdf243b1d1a719ebc951d, type: 3}
   damageType: 1
