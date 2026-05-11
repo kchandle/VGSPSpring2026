@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private int currentShield = 0;
     public GameObject shieldPanel;
     public TMP_Text shieldText;
+    public TMP_Text healthText;
 
     public int CurrentShield
     {
@@ -44,7 +45,7 @@ public class Enemy : MonoBehaviour
     }
 
     public int currentActionAmount;
-    public string currentActionType;
+    public CardType currentActionType;
     
     public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
@@ -82,6 +83,8 @@ public class Enemy : MonoBehaviour
     public Sprite StunnedSprite;
     public Sprite DefeatedSprite;
 
+    public Image enemyImage;
+
     public bool deathCalled = false;
 
 // variable for enum switch state
@@ -108,11 +111,12 @@ public class Enemy : MonoBehaviour
         currentTimer = Random.Range(1, 4);
         UpdateTimer();
         UpdateShield();
+        UpdateHealthBar();
         currentMana = 5;
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
-
+        enemyImage.sprite = enemySO.enemyImage;
         animator = GetComponent<Animator>();
     }
 
@@ -191,6 +195,7 @@ public class Enemy : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.fillAmount = (float)currentHealth / maxHealth;
+            healthText.text = currentHealth + "/" + maxHealth;
         }
         if(currentHealth <= 0)
         {
@@ -207,25 +212,25 @@ public class Enemy : MonoBehaviour
 
     public void UpdateActionState()
     {
-        currentActionType = currentCard.cardSO.type;
+        currentActionType = currentCard.cardSO.CardType;
         //actionTypeText.text = currentActionType;
         switch (currentActionType)
         {
-            case ("DEF"):
+            case (CardType.DEF):
             {
                 actionTypeDEF.SetActive(true);
                 actionTypeATK.SetActive(false);
                 actionTypeRST.SetActive(false);
                 break;
             }
-            case ("ATK"):
+            case (CardType.ATK):
             {
                 actionTypeDEF.SetActive(false);
                 actionTypeATK.SetActive(true);
                 actionTypeRST.SetActive(false);
                 break;
             }
-            case ("RST"):
+            case (CardType.RST):
             {
                 actionTypeDEF.SetActive(false);
                 actionTypeATK.SetActive(false);
@@ -236,7 +241,7 @@ public class Enemy : MonoBehaviour
         print(currentActionType);
 
         currentActionAmount = currentCard.cardSO.cardEffects[0].StatusAmount;
-        if (currentActionType != "RST")
+        if (currentActionType != CardType.RST)
         {
             actionAmountText.text = "" + currentActionAmount;
         }

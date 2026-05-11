@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController))]
@@ -13,6 +14,7 @@ public class CharacterControllerMovement : MonoBehaviour
 
 	//the bool changed in playercontroller for whether the player is sprinting or not 
     public bool sprinting;
+	private bool _sprintingLastFrame;
 
     //Vector3 from another script that gives the direction the character will move in 
     public Vector3 inputDirectionInput;
@@ -31,12 +33,13 @@ public class CharacterControllerMovement : MonoBehaviour
 	[HideInInspector] public float jumpMultiplier = 15f;
 
 	//reference to the character controller component
-    private CharacterController _characterController;
+    public CharacterController _characterController;
 
 	//different audioclips for different actions
 	[SerializeField] AudioClip[] footstepClips;
 	[SerializeField] AudioClip[] jumpClips;
 	[SerializeField] AudioClip[] jumpLandClips;
+	[SerializeField] AudioClip sprintingClip;
 	
 	//keeps track of if there is already a footstep sound so it doesnt overlap
 	private AudioSource footstepSource;
@@ -46,6 +49,8 @@ public class CharacterControllerMovement : MonoBehaviour
 		//Set the character controller reference automatically
 		_characterController = GetComponent<CharacterController>();
     }
+
+
 
     private void Update()
     {
@@ -75,9 +80,6 @@ public class CharacterControllerMovement : MonoBehaviour
 			_jumping = true;
 			SoundEffectManager.Instance.PlaySoundFXClip(jumpClips, transform, 0.25f);
             _moveDirection.y = Mathf.Sqrt(jumpIntensity); 
-
-			// triggers jump animation
-			animator.SetTrigger("Jump");
 		}
 
 		//if the player was jumping and they became grounded on a frame where the jumpkey wasnt pressed then it plays a sound for the player landing
@@ -90,14 +92,12 @@ public class CharacterControllerMovement : MonoBehaviour
 		//changes the current speed to the speed of either sprinting or walking depending on if youre sprinting or not
 		currentSpeed = sprinting ? sprintSpeed : walkSpeed;
 
-		//if character is not grounded, add drag to movement (0.4f)
-		float drag = _characterController.isGrounded ? 1f : airDrag;
+        //if character is not grounded, add drag to movement (0.4f)
+        float drag = _characterController.isGrounded ? 1f : airDrag;
 
         if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING) planarInput = Vector3.zero;
         //combines the y movement direction with the vector3.up planar input directions normalized and then multiply to the character speed
         Vector3 moveDirection = new Vector3(0f, _moveDirection.y * jumpMultiplier, 0f) + Vector3.Normalize(planarInput) * currentSpeed * drag;
-
-
 
         //Movement based on the intended movement direction and the rotation of the player so that the movement is always in the direction the player is facing
         Vector3 finalMovement = transform.TransformDirection(moveDirection);
@@ -108,13 +108,17 @@ public class CharacterControllerMovement : MonoBehaviour
 		//if it isnt already playing footsteps and the player is moving and grounded than it plays a footstep 
 		if (footstepSource == null && planarInput.magnitude > 0.1f && _characterController.isGrounded)
 		{
-			footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 0.5f, 1.5f);
-		}
+			if (!sprinting) footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(footstepClips, transform, 0.5f, 1.5f);
+            else footstepSource = SoundEffectManager.Instance.PlaySoundFXClip(sprintingClip, transform, 0.5f);
+        }
 		////if there is a soundplaying check if the player isnt ground or moving and then delete the sound
 		else if (footstepSource != null)
 		{
 			if (!_characterController.isGrounded || planarInput.magnitude <= 0.1f) Destroy(footstepSource.gameObject);
 		}
+
+		if (sprinting != _sprintingLastFrame && footstepSource != null) Destroy(footstepSource.gameObject);
+		_sprintingLastFrame = sprinting;
 
         //resets the jump bool that is set in the player controller script to true whenever space is pressed
         jumpWasPressed = false; 

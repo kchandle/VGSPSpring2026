@@ -35,10 +35,18 @@ MonoBehaviour:
     cardID: 
   maxHealth: 75
   displayName: Store Cashier
-  moneyDrops: 25
-  xpDrops: 10
   timer: 1
   energy: 3
-  enemyPrefab: {fileID: 1754986763223118875, guid: 58e883a55141a4e4781e3160ca43035f, type: 3}
+  enemyImage: {fileID: 21300000, guid: f0aa3eccf6e2dd544926ed331257c12d, type: 3}
+  enemyPrefab: {fileID: 1754986763223118875, guid: 179662ea861125748b22f197d73407d7, type: 3}
   resistances: 0b00000006000000
   weaknesses: 050000000200000003000000
+  drops:
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 45
+    dropType: 2
+  - weight: 4
+    item: {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
+    quantity: 2
+    dropType: 0

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using InventoryExceptions;
 using Unity.VisualScripting.FullSerializer;
 using Random = System.Random;
+using TMPro;
 
 /// <summary>
 /// Static class that manages the player's inventory, deck, hacks, and money.
@@ -29,7 +30,7 @@ public static class Inventory
     #endregion
 
     #region Limiting Variables
-    private static int inventorySize = 5;
+    private static int inventorySize = 10;
     private static int deckSize = 5;
     private static int hackInventorySize = 5;
     #endregion
@@ -112,7 +113,15 @@ public static class Inventory
     public static int Money
     {
         get => money;
-        set => money = value;
+        set
+        {
+            money = value;
+            TMP_Text t = GameObject.FindWithTag("MoneyUI")?.transform.GetComponentInChildren<TMP_Text>();
+
+            if (t != null)
+            {   t.text = money.ToString();
+            }
+        }
     }
 
     public static int InventorySize
@@ -157,6 +166,7 @@ public static class Inventory
         inventory.Add(newCard);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
+        AddCardToDeck(newCard);
         return true;
     }
 
@@ -345,7 +355,12 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    private static Random rng = new Random();
+    private static readonly Random rng = new Random();
+    /// <summary>
+    ///  Randomizes the order of a list of inventory cards
+    /// </summary>
+    /// <param name="input"> The list of inventory cards to be randomized</param>
+    /// <returns>A list of inventory cards with random order</returns>
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
         List<InventoryCard> copyInput = new List<InventoryCard>(input);
@@ -474,6 +489,8 @@ public static class Inventory
         RemoveHackFromInventory(hack);
         
         AddCardToInventory(card.inventoryCard);
+        
+        InventoryEvents.CardHacked();
         
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }

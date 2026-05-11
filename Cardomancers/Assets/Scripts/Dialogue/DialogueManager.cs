@@ -62,7 +62,9 @@ public class DialogueManager : MonoBehaviour
 
     public void AssignStartBattle(StartBattle starter)
     {
+        print("assigned " + starter.name);
         reference = starter;
+        print(reference.name);
     }
 
     //void Start()
@@ -102,6 +104,7 @@ public class DialogueManager : MonoBehaviour
         dialogue = newDialogue;
         canvas.SetActive(true);
 
+        DialogueEvents.StartDialogue(newDialogue);
 
         StartCoroutine(TypeLine());
     }
@@ -128,12 +131,16 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+            
             textElement.text = string.Empty;
             canvas.SetActive(false);
             if(dialogue.startsBattle)
             {
                 reference.StartBattleNow();
+            }
+            else
+            {
+                playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
             }
             //if (!reactive)
             //{

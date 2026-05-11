@@ -4,17 +4,22 @@ using UnityEngine.InputSystem;
 public class CardThrow : MonoBehaviour
 {
     //the object pool the throw is getting objects from
-    [SerializeField] ObjectPool pool; 
+    [SerializeField] ObjectPool pool;
+    [SerializeField] CharacterController cc;
+    public Animator animator;
 
     //where the mouse is on the screen
     private Vector2 mouseScreenPosition;
-
-    [SerializeField] Animator animator;
 
     [SerializeField] float cardForce = 10f;
 
     [SerializeField] private AudioClip[] throwWooshSounds;
     [SerializeField] private AudioClip[] throwGruntSounds;
+
+    private void Awake()
+    {
+        cc = GetComponent<CharacterController>(); 
+    }
 
     void Update()
     {
@@ -26,6 +31,8 @@ public class CardThrow : MonoBehaviour
     {
         //returns if it isnt the frame that it is pressed
         if (!context.started) return;
+
+        animator.SetTrigger("Throw");
 
         //gets a ray from the camera position to the mouse position on the screen
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
@@ -46,8 +53,6 @@ public class CardThrow : MonoBehaviour
 
             }
 
-            animator.SetTrigger("Throw");
-
             SoundEffectManager.Instance.PlaySoundFXClip(throwGruntSounds, transform, 1f);
             SoundEffectManager.Instance.PlaySoundFXClip(throwWooshSounds, transform, 1f);
 
@@ -66,7 +71,8 @@ public class CardThrow : MonoBehaviour
 
             //flatens the direction to ignore the y axis and adds force to the card in that direction
             cardDir = Vector3.ProjectOnPlane(cardDir, Vector3.up);
-            cardRB.linearVelocity = cardDir * cardForce;
+            cardRB.linearVelocity = (cardDir * cardForce) + (new Vector3(cc.velocity.x, 0f, cc.velocity.z) / 2);
+            cardRB.angularVelocity = new(0, 30, 0);
         }
     }
 }

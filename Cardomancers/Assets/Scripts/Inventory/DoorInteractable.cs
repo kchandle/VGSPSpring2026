@@ -4,29 +4,18 @@ using System.Collections;
 
 public class DoorInteractable : MonoBehaviour
 {
-    [SerializeField] string sceneToLoad;
-    bool opened = false;
+    public Transform teleportPosition;
 
     public void OpenDoor()
     {
-        if (opened) return;
+        if (LoadingScreen.Instance.updating) return;
+        Transform player = GameObject.FindWithTag("Player").transform;
+        CharacterController cc = player.GetComponent<CharacterController>();
+        cc.enabled = false;
+        player.transform.position = teleportPosition.position;
+        cc.enabled = true;
+        if (LoadingScreen.Instance.alphaCor != null) StopCoroutine(LoadingScreen.Instance.alphaCor);
         LoadingScreen.Instance.ResetLoadingScreen();
-        SceneLoader.Instance.Load(sceneToLoad);
-        StartCoroutine(WaitForSceneToFinishLoading());
-        opened = true;
-    }
-
-    IEnumerator WaitForSceneToFinishLoading()
-    {
-        StartCoroutine(LoadingScreen.Instance.UpdateLoadingBar(0.9f));
-        while (LoadingScreen.Instance.updating == true) yield return null;
-        while(SceneLoader.Instance.IsSceneLoading(sceneToLoad) == false)
-        {
-            Debug.LogWarning("WATING FOR SCENE TO FINSIH LOADING");
-            yield return null;
-        }
-        StartCoroutine(LoadingScreen.Instance.UpdateLoadingBar(1f));
-        while (LoadingScreen.Instance.updating == true) yield return null;
-        SceneLoader.Instance.SwitchScene(sceneToLoad);
+        LoadingScreen.Instance.StartCoroutine(LoadingScreen.Instance.UpdateLoadingBar(1f));
     }
 }

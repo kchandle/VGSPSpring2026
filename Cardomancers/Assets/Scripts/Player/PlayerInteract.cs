@@ -1,49 +1,106 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR.Haptics;
 
 public class PlayerInteract : MonoBehaviour
 {
-
-    //gets interact key reference from the input system:
-    public InputActionReference Interact;
     public bool interacting = false;
     // the range of the area player can interact with things in:
-     public int range = 5;
+    public int range = 5;
+
+    public InteractableObject currentHighlight = null;
+
+    private void Update()
+    {
+        InteractHighlight();
+    }
+
 
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
     public void OnInteract(InputAction.CallbackContext obj)
     {
-        print("pressed interact keybind");
+        if (!obj.started) return;
         if(interacting) return;
-        print("interacting now");
         // Checking CurrentState to make sure you can't interact while in battle
         if (GameStateScript.CurrentState == GameStateScript.GameState.INVENTORY) return;
-        print("still interacting now");
         if (GameStateScript.CurrentState == GameStateScript.GameState.BATTLE) return;
-        print("still interacting now x2");
         if (GameStateScript.CurrentState == GameStateScript.GameState.SPEAKING) return;
-        print("still interacting now x3");
 
         // sends an array thing to get all objects:
         Collider[] col = Physics.OverlapSphere(transform.position, range);
         {
+            float minRange = 1000f;
             //If object is interactable, so basically if it has the interactable object script, do what it needs to do:
+            InteractableObject interactable = null;
             foreach (Collider c in col)
             {
                 if (c.TryGetComponent(out InteractableObject inter))
                 {
-                    print(inter);
-                    interacting = true;
-                    inter.interactable.Invoke();
+                    float range = (inter.transform.position - transform.position).magnitude;
+                    if (range < minRange)
+                    {
+                        interactable = inter;
+                        minRange = range;
+                    }
                 }
-            }  
+
+                if (interactable != null)
+                {
+                    interacting = true;
+                    interactable.interactable.Invoke();
+                }
+            }
         }
-        
- 
+    }
+
+    public void InteractHighlight()
+    {
+        Collider[] col = Physics.OverlapSphere(transform.position, range);
+        {
+            float minRange = 1000f;
+            //If object is interactable, so basically if it has the interactable object script, do what it needs to do:
+            InteractableObject interactable = null;
+            bool inRange = false;
+            foreach (Collider c in col)
+            {
+                if (c.TryGetComponent(out InteractableObject inter))
+                {
+                    float range = (inter.transform.position - transform.position).magnitude;
+                    if (range < minRange)
+                    {
+                        interactable = inter;
+                        minRange = range;
+                    }
+                    if (currentHighlight != null) ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    ChangeAllChildrenLayer(interactable.gameObject, "Outline");
+                    currentHighlight = interactable;
+                    inRange = true;
+                }
+                else if (currentHighlight != null && !inRange)
+                {
+                    ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    currentHighlight = null;
+                }
+            }
+
+        }
+    }
+
+    public void ChangeAllChildrenLayer(GameObject target, string layer)
+    {
+        target.gameObject.layer = LayerMask.NameToLayer(layer);
+        foreach (Transform child in target.transform)
+        {
+            bool ignoreTag = child.CompareTag("IgnoreHighlight");
+            if (ignoreTag && child.childCount <= 0) continue;
+            else if (ignoreTag)
+            {
+                ChangeAllChildrenLayer(child.gameObject, layer);
+                continue;
+            }
+            child.gameObject.layer = LayerMask.NameToLayer(layer);
+            if (child.childCount > 0) ChangeAllChildrenLayer(child.gameObject, layer);
+        }
     }
 
 }
