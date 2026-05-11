@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51846fc53971bb248b593873882ab722, type: 3}
+  m_Name: Rainstorm_Weather
+  m_EditorClassIdentifier: Assembly-CSharp::FieldEffect_SO
+  turnsActive: 5
+  turnsRemaining: -1
+  name: Rainstorm
+  description: kill all pelipper basculegion users
+  active: 0
+  hasStatChanges: 1
+  boostsTypeDamage: 0
+  chipDamage: 0
+  effects:
+  - statChanges: 1
+    attackBoost: 0.5
+    enduranceBoost: 1
+    boostedTypes: 
+    boostAmount: 0
+    dealsChipDamage: 0
+    chipIsRandom: 0
+    chipDamageCard: {fileID: 0}
+  fieldType: 0

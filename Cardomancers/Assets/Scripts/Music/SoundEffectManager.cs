@@ -1,5 +1,5 @@
-//using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SoundEffectManager : MonoBehaviour
 {
@@ -8,12 +8,16 @@ public class SoundEffectManager : MonoBehaviour
     //an empty gameobject with the audio source component to instantiate to play audioclips
     [SerializeField] private AudioSource soundFXEmpty;
 
+    private CharacterController player;
+
     //setup the single static instance
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else Destroy(gameObject);
+
+        player = FindFirstObjectByType<CharacterController>();
     }
 
     //plays a sound effect clip with a spawn position and volume from 0f to 1f
@@ -24,6 +28,7 @@ public class SoundEffectManager : MonoBehaviour
         AudioSource returnSource = audioSource;
 
         //sets the audio clip in the source and volume and then plays it 
+        MixManager.AudioSourceAssignMixerGroup(audioSource, "SFX");
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         audioSource.pitch = pitch;
@@ -49,6 +54,7 @@ public class SoundEffectManager : MonoBehaviour
         int randomIndex = Random.Range(0, audioClips.Length);
 
         //sets the audio clip to the random index in the audiosource and sets volume and then plays it 
+        MixManager.AudioSourceAssignMixerGroup(audioSource, "SFX");
         audioSource.clip = audioClips[randomIndex];
         audioSource.volume = volume;
         audioSource.pitch = pitch;
@@ -60,5 +66,28 @@ public class SoundEffectManager : MonoBehaviour
       
         Destroy(audioSource.gameObject, clipLength);
         return returnSource;
+    }
+
+    public void PlaySoundOnEvent(AudioClip audioClip)
+    {
+        Vector3 spawnPos = player.transform.position;
+
+        //instances the audiosource prefab empty and gets the audio source from it 
+        AudioSource audioSource = Instantiate(soundFXEmpty, spawnPos, Quaternion.identity);
+        AudioSource returnSource = audioSource;
+
+        //gets a random int between 0 and the amount of clips in the array
+
+        //sets the audio clip to the random index in the audiosource and sets volume and then plays it 
+        MixManager.AudioSourceAssignMixerGroup(audioSource, "SFX");
+        audioSource.clip = audioClip;
+        audioSource.volume = 1f;
+        audioSource.pitch = 1f;
+        audioSource.Play();
+
+        //gets the time length of the clip in seconds and destorys it in that amount of time
+        float clipLength = audioSource.clip.length;
+
+        Destroy(audioSource.gameObject, clipLength);
     }
 }

@@ -22,6 +22,7 @@ public class Playspace : MonoBehaviour
 
     public int columnCount = 3; // The number of columns the grid will have, if playItems are arranged in a grid
 
+    public bool cardDisplay; //Whether this playspace just displays a card
         
 
     // Width and padding for the horizontal layout
@@ -86,8 +87,7 @@ public class Playspace : MonoBehaviour
     public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO) 
     {
         if(playItems.Count >= maxItems) return null;
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
+        GameObject newPlayItem = Instantiate(prefab, transform);
 
  
 
@@ -105,10 +105,7 @@ public class Playspace : MonoBehaviour
     {
         if (!cardSO) return null; 
         if(playItems.Count >= maxItems) return null;
-        print("Spawning this Card: " + cardSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
-
+        GameObject newPlayItem = Instantiate(prefab, transform);
  
 
         playItems.Add(newPlayItem.GetComponent<PlayItem>());
@@ -126,9 +123,7 @@ public class Playspace : MonoBehaviour
     {
         if(playItems.Count >= maxItems) return null;
         print("Spawning this Hack: " + hackSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
-
+        GameObject newPlayItem = Instantiate(prefab, transform);
  
 
         playItems.Add(newPlayItem.GetComponent<PlayItem>());
@@ -144,8 +139,7 @@ public class Playspace : MonoBehaviour
     {
         if(playItems.Count >= maxItems) return null;
         print("Spawning this Card: " + hackSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
+        GameObject newPlayItem = Instantiate(prefab, transform);
 
  
 
@@ -162,7 +156,6 @@ public class Playspace : MonoBehaviour
     // Destroys a specific PlayItem in this PlaySpace
     public void DestroyPlayItem(PlayItem playItem)
     {
-        print(gameObject.name);
         if (gameObject.name == "HackSlot")
         {
             Destroy(playItems[0].gameObject);
@@ -260,7 +253,7 @@ public class Playspace : MonoBehaviour
     public PlayItem GetNearestPlayItem(Vector3 position)
     {
         if (!InPlayArea(position)) return null;
-
+        if (cardDisplay) return playItems[0];
         PlayItem nearest = null;
         // Use sqrMagnitude for better performance (avoids expensive square root)
         float minSqrDistance = 1000f;

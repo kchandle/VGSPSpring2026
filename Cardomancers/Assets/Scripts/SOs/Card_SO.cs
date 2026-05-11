@@ -25,11 +25,17 @@ public class Card_SO : ScriptableObject
     public Sprite image; // sprite to be displayed when the card is instanced
     public BattleEffect[] cardEffects; // Needs battle effect to be done first
     public ParticleSystem particleSystem; // Used by damage scripts to play effect upon hit
+    public Sprite damageTypeIcon; // The damagetypeicon
+    public Sprite elementIcon; // The damagetypeicon
     
     public string displayName; // Card's name
     public string description; // Description of what the card does
     public string tagLine; // short tag line
     [SerializeField] private CardType cardType =  CardType.NULL;
+
+    public GameObject VFXPrefab;
+
+    public AudioClip cardSound;
 
     public CardType CardType
     {
@@ -75,4 +81,5 @@ public class Card_SO : ScriptableObject
         set { cardType = value; }
     }
     public damageType damageType;
+    //***public DamageType damageType;
 }

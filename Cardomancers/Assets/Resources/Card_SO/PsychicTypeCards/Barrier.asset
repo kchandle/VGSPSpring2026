@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 30
+  price: 150
+  energyCost: 0
+  image: {fileID: 21300000, guid: 64f99ec28e7e7384c83a283b474e57cb, type: 3}
+  cardEffects:
+  - StatusAmount: 0
+    damageType: 11
+    actionType: 1
+    targetingType: 0
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 687604367, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 1856503353, guid: c6dc8d859716e6c479204fed36898402, type: 3}
+  displayName: Barrier
+  description: 'Reduce damage dealt and recieved by 25% for 3 turns. '
+  tagLine: You've just got to expand your thinking.
+  cardType: 1
+  VFXPrefab: {fileID: 6036756796637069241, guid: fa0c25f63e4df914e8366d2c8c9fe14f, type: 3}
+  cardSound: {fileID: 8300000, guid: c622f67af3df6e94aa83975beb6fbe35, type: 3}
+  damageType: 0

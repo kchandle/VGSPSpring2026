@@ -80,6 +80,7 @@ public class Card : PlayItem
 
     void Start()
     {
+        cardSO = inventoryCard.cardSO;
         if (hacks == null)
         {
             hacks = new Hack_SO[maxHacks];
@@ -112,12 +113,37 @@ public class Card : PlayItem
         {
             if(hack) effects.AddRange(hack.hackEffects.ToList());
         }
+
+        /*bool reflected = false; //track if the enemy countered a spell
         foreach (BattleEffect effect in effects)
         {
-            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true; continue;}
+            if(effect.actionType != BattleActionType.ATTACK){if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true;continue;}} 
             //Apply each effect to the target
-            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO)) returnVal = true;
+
+            if(effect.targetingType == TargetingType.SingleTarget)
+            {
+                if(enemy.counterSpellActive) //If the enemy has counterSpell, you take damage instead
+                {
+                    if(effect.TriggerEffect(player, player.gameObject.transform.position, null, player.attackMulti)){returnVal = true;}
+                    reflected = true;
+                }
+                else{if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO, player.attackMulti)){returnVal = true;}}
+            }
         }
+        //If it was triggered, disable the enemy's counterspell
+        if(reflected){enemy.counterSpellActive = false;}*/
+
+
+        //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything.
+        //Ask Joshua if you have any concerns
+        if(cardSO.CardType == CardType.ATK)
+        {
+            BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO);
+            BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
+            BattleManager.instance.PlayerAttackSelf(effects, cardSO);
+            returnVal = true;
+        }
+
         return returnVal;
     }
 
@@ -132,10 +158,25 @@ public class Card : PlayItem
         }
         foreach (BattleEffect effect in effects)
         {
-            if(cardSO.CardType != CardType.ATK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
+            if(cardSO.CardType != CardType.ATK)
+            {
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+                { 
+                    returnVal = true;
+                    //print("card played on self!");
+                    continue;
+                }
+            } 
             //Apply each effect to the target
-            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+            {
+                returnVal = true;
+            }
         }
+
+        if (returnVal) SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform);
+
+        //print("Playing card on self: " + returnVal);
         return returnVal;
     }
 
@@ -150,7 +191,7 @@ public class Card : PlayItem
                 hacks[1] = hack;
                 inventoryCard.hacks[1] = hack;
                 print("hack added");
-                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
+                frontHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on top.");
                 frontHack.SetActive(true);
                 break;
@@ -161,7 +202,7 @@ public class Card : PlayItem
                 inventoryCard.hacks[0] = hack;
                 print("hack added");
                 print(hack.image.name);
-                backHack.GetComponent<RawImage>().texture = hack.image.texture;
+                backHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on bottom.");
                 backHack.SetActive(true);
                 break;

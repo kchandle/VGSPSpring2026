@@ -6,6 +6,8 @@ using UnityEngine;
 /// <summary>
 /// A MonoBehaviour which manages the quests.
 /// </summary>
+// Certain quests rely on the Awake method from here being run before they are set up.
+[DefaultExecutionOrder(-1)]
 public class QuestManager : MonoBehaviour
 {
     private Dictionary<string, Quest> questMap = new Dictionary<string, Quest>();
@@ -118,7 +120,7 @@ public class QuestManager : MonoBehaviour
             }
             newQuestMap.Add(quest.ID, LoadQuest(quest));
         }
-        Debug.Log(newQuestMap.Count);
+        //Debug.Log(newQuestMap.Count);
         return newQuestMap;
     }
 
@@ -216,7 +218,7 @@ public class QuestManager : MonoBehaviour
         {
             QuestData questData = quest.GetQuestData();
             string serializedData = JsonUtility.ToJson(questData);
-            Debug.Log(serializedData);
+            //Debug.Log(serializedData);
             return serializedData;
         }
         catch (Exception e)

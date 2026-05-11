@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: Quake
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 50
+  price: 150
+  energyCost: 0
+  image: {fileID: 21300000, guid: 0b55c460b35fdcd4c8b397eb52d73091, type: 3}
+  cardEffects:
+  - StatusAmount: 8
+    damageType: 4
+    actionType: 0
+    targetingType: 1
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 0
+    damageType: 4
+    actionType: 0
+    targetingType: 1
+    isStatusEffect: 1
+    isPerishable: 1
+    isNegative: 1
+    turnsActive: 2
+    probability: 0.2
+    statusType: 10
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 0
+    damageType: 4
+    actionType: 0
+    targetingType: 2
+    isStatusEffect: 1
+    isPerishable: 1
+    isNegative: 1
+    turnsActive: 2
+    probability: 0.2
+    statusType: 10
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -1335003187, guid: c6dc8d859716e6c479204fed36898402, type: 3}
+  displayName: Quake
+  description: Deal medium Earth Damage to all Enemies. Chance to Stun Enemies and
+    Self.
+  tagLine: 
+  cardType: 0
+  VFXPrefab: {fileID: 2533584212015967983, guid: 0f74feb2758774549bfddf17395d5068, type: 3}
+  cardSound: {fileID: 8300000, guid: 0d03d6176c6148948820002c13c037cf, type: 3}
+  damageType: 1

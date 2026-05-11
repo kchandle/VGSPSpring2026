@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: ZCharge
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 0
+  price: 0
+  energyCost: -2
+  image: {fileID: 0}
+  cardEffects:
+  - StatusAmount: 0
+    damageType: 0
+    actionType: 1
+    isStatusEffect: 0
+    isPerishable: 0
+    turnsActive: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 1
+    nextCard: {fileID: 11400000, guid: 1fa371a7e77754d4b8f8e85100c01eeb, type: 2}
+  particleSystem: {fileID: 0}
+  displayName: 
+  description: If the enemy chooses this card, they lock themselves in to using the
+    card in the Next Card slot next. This can create entire set attack patterns.
+  tagLine: Enemy only
+  cardType: 1
+  damageType: 0

@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: Stinger
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 25
+  price: 125
+  energyCost: 0
+  image: {fileID: 21300000, guid: 37dc65547062cab41bf187ff7a747ac3, type: 3}
+  cardEffects:
+  - StatusAmount: 4
+    damageType: 8
+    actionType: 0
+    targetingType: 0
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 3
+    damageType: 8
+    actionType: 0
+    targetingType: 0
+    isStatusEffect: 1
+    isPerishable: 1
+    isNegative: 1
+    turnsActive: 3
+    probability: 0.5
+    statusType: 7
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1588730026, guid: c6dc8d859716e6c479204fed36898402, type: 3}
+  elementIcon: {fileID: 1255159727, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  displayName: Stinger
+  description: Deal minor Poison Damage to an Enemy with a chance to inflict Poisoned.
+  tagLine: We can finally be bees.
+  cardType: 0
+  VFXPrefab: {fileID: 4479457125439300150, guid: 27a94b2501d7c134396a68aad5377a5d, type: 3}
+  cardSound: {fileID: 8300000, guid: eea8ecd28ae4f4043bba115d4ce35aa3, type: 3}
+  damageType: 0

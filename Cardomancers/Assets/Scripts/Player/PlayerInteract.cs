@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static GameStateScript; 
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -8,13 +9,27 @@ public class PlayerInteract : MonoBehaviour
     // the range of the area player can interact with things in:
     public int range = 5;
 
+    bool inRange = false;
+
     public InteractableObject currentHighlight = null;
+    public GameObject interactPrompt;
+    public GameStateScript.GameState state;
+    public BattleManager battleManager;
+    public bool battling;
+
+    public AudioClip interactSound;
+
+    public void Start()
+    {
+        GameStateScript.GameState state = GameStateScript.CurrentState;
+    }
 
     private void Update()
     {
         InteractHighlight();
+        if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(inRange);
+        else interactPrompt.SetActive(false);
     }
-
 
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
     public void OnInteract(InputAction.CallbackContext obj)
@@ -43,12 +58,12 @@ public class PlayerInteract : MonoBehaviour
                         minRange = range;
                     }
                 }
-
-                if (interactable != null)
-                {
-                    interacting = true;
-                    interactable.interactable.Invoke();
-                }
+            }
+            if (interactable != null)
+            {
+                interacting = true;
+                interactable.interactable.Invoke();
+                SoundEffectManager.Instance.PlaySoundFXClip(interactSound, transform, 0.5f);
             }
         }
     }
@@ -60,7 +75,7 @@ public class PlayerInteract : MonoBehaviour
             float minRange = 1000f;
             //If object is interactable, so basically if it has the interactable object script, do what it needs to do:
             InteractableObject interactable = null;
-            bool inRange = false;
+            inRange = false;
             foreach (Collider c in col)
             {
                 if (c.TryGetComponent(out InteractableObject inter))
@@ -71,14 +86,21 @@ public class PlayerInteract : MonoBehaviour
                         interactable = inter;
                         minRange = range;
                     }
-                    if (currentHighlight != null) ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    if (currentHighlight != null)
+                    {
+                        ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                        if (currentHighlight.highlightables.Length > 0) foreach (GameObject g in currentHighlight.highlightables) ChangeAllChildrenLayer(g, "Default");
+                    }
+
                     ChangeAllChildrenLayer(interactable.gameObject, "Outline");
+                    if (interactable.highlightables.Length > 0) foreach(GameObject g in interactable.highlightables) ChangeAllChildrenLayer(g, "Outline");
                     currentHighlight = interactable;
                     inRange = true;
                 }
                 else if (currentHighlight != null && !inRange)
                 {
                     ChangeAllChildrenLayer(currentHighlight.gameObject, "Default");
+                    if (currentHighlight.highlightables.Length > 0) foreach (GameObject g in currentHighlight.highlightables) ChangeAllChildrenLayer(g, "Default");
                     currentHighlight = null;
                 }
             }

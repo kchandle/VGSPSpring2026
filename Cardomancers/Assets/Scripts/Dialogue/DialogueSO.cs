@@ -9,6 +9,16 @@ public class DialogueSO : ScriptableObject
 {
     public DialogueLine[] lines;
     public bool startsBattle;
+    public bool hasExclamationMark;
+
+    public Color textColorDefault = new Color(1f, 1f, 1f, 1f);
+    public Color textBackgroundColorDefault = new Color(1f, 1f, 1f, 1f);
+
+    public Color titleBackgroundColorDefault = new Color(1f, 1f, 1f, 1f);
+    public Color titleTextColorDefault = new Color(1f, 1f, 1f, 1f);
+
+    public Color spriteColorDefault = new Color(1f, 1f, 1f, 1f);
+    public Color spriteBorderColorDefault = new Color(1f, 1f, 1f, 1f);
 }
 
 [System.Serializable]
@@ -20,6 +30,8 @@ public class DialogueLine
     
     public string displayName; // name to be displayed during this dialogue line
     public float textDelay;
+
+
     [TextArea(3, 5)] public string text;
 }
 }
