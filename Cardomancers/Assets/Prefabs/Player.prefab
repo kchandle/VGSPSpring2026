@@ -187,8 +187,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8093299586542698804}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.009473992, y: 0.9184437, z: 0.02203851, w: -0.39482376}
-  m_LocalPosition: {x: 10.845117, y: 1.2823572, z: 10.282951}
+  m_LocalRotation: {x: -0.0076051555, y: 0.94814265, z: 0.022751382, w: 0.31693855}
+  m_LocalPosition: {x: -8.987263, y: 1.2823563, z: 11.940893}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -464,9 +464,7 @@ GameObject:
   - component: {fileID: 570683335199455242}
   - component: {fileID: 8277037704298673333}
   - component: {fileID: 8805448749967120339}
-  - component: {fileID: 9106127963584501081}
-  - component: {fileID: 180481573607976801}
-  - component: {fileID: 7640498981376258451}
+  - component: {fileID: 3649662862395281664}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -551,7 +549,7 @@ MonoBehaviour:
     m_ActionName: 'Keyboard/Jumping[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9106127963584501081}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CardThrow, Assembly-CSharp
         m_MethodName: OnCardFire
         m_Mode: 0
@@ -791,6 +789,15 @@ MonoBehaviour:
   currentHealth: 0
   healthbar: {fileID: 0}
   currentHealthText: {fileID: 0}
+  attackMulti: 1
+  enduranceMulti: 1
+  healable: 1
+  isStunned: 0
+  counterSpellActive: 0
+  cSpellTriggered: 0
+  weatherImmune: 0
+  fieldAtkBoost: 1
+  fieldEndBoost: 1
   TestingFastMode: 0
   shieldPanel: {fileID: 0}
   shieldText: {fileID: 0}
@@ -818,33 +825,11 @@ MonoBehaviour:
   range: 5
   currentHighlight: {fileID: 0}
   interactPrompt: {fileID: 0}
---- !u!114 &9106127963584501081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8282848640817842334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eee4c25c28da77408bd559ee239fc3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CardThrow
-  pool: {fileID: 0}
-  cc: {fileID: 0}
-  animator: {fileID: 7777212770266992675}
-  cardForce: 20
-  throwWooshSounds:
-  - {fileID: 8300000, guid: ef9028466a2be154c94e7e1fdbb3949e, type: 3}
-  throwGruntSounds:
-  - {fileID: 8300000, guid: 9396ae19447b2d14382a6246e9e42e4b, type: 3}
-  - {fileID: 8300000, guid: 38e93ddfdfe7c4147becdaf954d81fd9, type: 3}
-  - {fileID: 8300000, guid: fbd8312825137a84093006ed848ed18d, type: 3}
-  - {fileID: 8300000, guid: 45581a3462217194d932c893cdbb9a71, type: 3}
-  - {fileID: 8300000, guid: e3cff8677a3760a4e99e8c786ca0a182, type: 3}
-  - {fileID: 8300000, guid: 83581f194c3053f48bb7e0308dd97583, type: 3}
-  - {fileID: 8300000, guid: 56847cb718cb8b04e9626a92bd2c3a76, type: 3}
---- !u!82 &180481573607976801
+  state: 0
+  battleManager: {fileID: 0}
+  battling: 0
+  interactSound: {fileID: 8300000, guid: 1386a932235cacd4f9f78dee9a145d20, type: 3}
+--- !u!82 &3649662862395281664
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -853,13 +838,13 @@ AudioSource:
   m_GameObject: {fileID: 8282848640817842334}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 16d225e54690d824bb1d908e4a2d4a94, type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
-  m_PlayOnAwake: 0
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -941,19 +926,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7640498981376258451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8282848640817842334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 059102c7f18780f4a90f7dc80dbc37fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BattleTheme
-  wandDistrictTheme: {fileID: 8300000, guid: 7185f1936aa3d174dbb74724a09f55fd, type: 3}
 --- !u!1001 &862255514672231528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -968,7 +940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 903078dfebf6a3943abdd8dc05e7a07b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.868
+      value: -0.83
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 903078dfebf6a3943abdd8dc05e7a07b, type: 3}
       propertyPath: m_LocalPosition.z
