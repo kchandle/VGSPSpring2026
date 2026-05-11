@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GatherIngredients : QuestStep
 {
@@ -17,6 +18,7 @@ public class GatherIngredients : QuestStep
     public void GatherIngredient()
     {
         ingredientsGathered++;
+        SetQuestStepState(ingredientsGathered.ToString());
         if(ingredientsGathered >= ingredientsToGather)
         {
             this.FinishQuestStep();

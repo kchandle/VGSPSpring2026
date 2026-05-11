@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int shield = 0;
 
     public GameObject pauseMenu;
-    public GameObject questMenu;
 
     public int Shield
     {
@@ -126,7 +125,7 @@ public class PlayerController : MonoBehaviour
     
     public void OnEscape(InputAction.CallbackContext context)
     {
-        if (GameStateScript.CurrentState == GameState.INVENTORY || questMenu.activeSelf || GameStateScript.CurrentState == GameState.SHOPPING) return;
+        if (GameStateScript.CurrentState == GameState.INVENTORY || GameStateScript.CurrentState == GameState.SHOPPING) return;
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         if (pauseMenu.activeSelf)
         {
@@ -185,21 +184,6 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void OnQuest(InputAction.CallbackContext context)
-    {
-        if (pauseMenu.activeSelf || CurrentState == GameState.INVENTORY) return;
-        questMenu.SetActive(!questMenu.activeSelf);
-        if (questMenu.activeSelf)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
 
     #region Status Effects
     public IEnumerator StatusEffects()
