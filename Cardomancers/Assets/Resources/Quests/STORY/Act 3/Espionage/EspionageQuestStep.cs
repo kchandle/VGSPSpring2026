@@ -12,6 +12,11 @@ public class EspionageQuestStep : QuestStep
         return "Investigate the Eve L Mart to find information on where they are keeping Conius.";
     }
 
+    public void FinishMe()
+    {
+        FinishQuestStep();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

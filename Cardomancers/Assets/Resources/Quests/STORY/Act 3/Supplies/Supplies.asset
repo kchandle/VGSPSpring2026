@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e321ed277a0e0410cbcbcec6ecbece41, type: 3}
   m_Name: Supplies
   m_EditorClassIdentifier: Assembly-CSharp::QuestInfoSO
-  displayName: 
+  displayName: Gather Supplies
   levelRequirement: 0
-  prerequisiteQuests: []
-  questSteps: []
+  prerequisiteQuests:
+  - {fileID: 11400000, guid: 3d3a5364d8a88d711b8c1c94008ba331, type: 2}
+  questSteps:
+  - {fileID: 41043292991224684, guid: 8ebfeec2da9f2b75c991133d21c181f5, type: 3}
+  - {fileID: 5969471707554708749, guid: 58f2b2d02c96be146914ebcef346b982, type: 3}
   moneyReward: 0
   expReward: 0
   cardRewards:
