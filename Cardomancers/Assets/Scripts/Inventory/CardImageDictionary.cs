@@ -26,8 +26,8 @@ public class CardImageDictionary : MonoBehaviour
 
     #endregion
 
-    public Dictionary<DamageType, Sprite> cardElementImageDictionary = new Dictionary<DamageType, Sprite>();
-    public Dictionary<damageType, Sprite> cardAttackTypeDictionary = new Dictionary<damageType, Sprite>();
+    public static Dictionary<DamageType, Sprite> cardElementImageDictionary = new Dictionary<DamageType, Sprite>();
+    public static Dictionary<damageType, Sprite> cardAttackTypeDictionary = new Dictionary<damageType, Sprite>();
     public void Awake()
     {
 
