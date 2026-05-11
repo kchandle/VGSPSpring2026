@@ -60,7 +60,7 @@ public class Card : PlayItem
         get{return damageTypeSprite;}
         set // when CardSprite is changed, also change it in the UI Image
         {
-            damageTypeSprite = value;
+            Sprite DamageTypeSprite = CardSO.elementIcon;
             damageImage.sprite = value;
         }
     }
