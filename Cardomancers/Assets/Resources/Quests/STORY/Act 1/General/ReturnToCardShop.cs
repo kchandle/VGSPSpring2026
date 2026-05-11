@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class ReturnToCardShop : QuestStep
 {
     private BoxCollider boxTrigger;
@@ -9,7 +10,7 @@ public class ReturnToCardShop : QuestStep
     {
         boxTrigger = GetComponentInChildren<BoxCollider>();
     }
-    
+
     protected override void SetQuestStepState(string state)
     {
         throw new System.NotImplementedException();
@@ -20,11 +21,8 @@ public class ReturnToCardShop : QuestStep
         return "Return to the Card Shop";
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void FinishMe()
     {
-        if (other.CompareTag("Player"))
-        {
-            FinishQuestStep();
-        }
+        FinishQuestStep();
     }
 }

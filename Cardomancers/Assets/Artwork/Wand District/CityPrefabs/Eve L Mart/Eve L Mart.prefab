@@ -129326,6 +129326,8 @@ GameObject:
   - component: {fileID: 120675355300417543}
   - component: {fileID: 2758541432657781965}
   - component: {fileID: 2862238244561869680}
+  - component: {fileID: 8379529505189771553}
+  - component: {fileID: 3285874289283726164}
   m_Layer: 0
   m_Name: EmployeeOfTheMonth_Frame (1)
   m_TagString: Untagged
@@ -129427,6 +129429,48 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6574864904562046818, guid: 7ca2d6e44c4840a46a91606414b8ec8d, type: 3}
+--- !u!114 &8379529505189771553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415975841233372440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136d45e620239de4ebc3a42bbbbaa5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  name: 
+  interactable:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3285874289283726164}
+        m_TargetAssemblyTypeName: EspionageInteract, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  highlightables: []
+--- !u!114 &3285874289283726164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415975841233372440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d11188dc1af034439a43266e278a9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EspionageInteract
+  dialogue: {fileID: 0}
 --- !u!1 &4416125658236536350
 GameObject:
   m_ObjectHideFlags: 0

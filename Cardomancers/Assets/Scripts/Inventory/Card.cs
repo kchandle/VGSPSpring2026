@@ -142,6 +142,8 @@ public class Card : PlayItem
             BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
             BattleManager.instance.PlayerAttackSelf(effects, cardSO);
             returnVal = true;
+
+            SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform, .65f);
         }
 
         return returnVal;

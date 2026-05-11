@@ -11,7 +11,6 @@ public class CardShopAttack : QuestStep
     
     protected override void SetQuestStepState(string state)
     {
-        throw new System.NotImplementedException();
     }
 
     public override string GetQuestStepState()
