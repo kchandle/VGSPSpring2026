@@ -1,25 +1,43 @@
 using System;
 using UnityEngine;
+using DialogueScripts;
 using System.Collections.Generic;
 
 public class ConvinceYoungsters : QuestStep
 {
-    private SerializeableDictionaryOfGameObjectAndBool youngsters;
+    private SerializeableDictionaryOfBattleSOAndBool youngsters;
+    [SerializeField] private DialogueSO finishDialogue;
 
     private void Awake()
     {
         GameObject[] youngstersKeys = GameObject.FindGameObjectsWithTag("Youngster");
         foreach (GameObject go in youngstersKeys)
         {
-            youngsters.Add(go, false);
+            youngsters.Add(go.GetComponent<StartBattle>().battleToStart, false);
         }
     }
-    
-    public void DefeatYoungster(GameObject youngster)
+
+    private void OnEnable()
+    {
+        BattleManager.instance.OnWin.AddListener(CheckIfPlayerDefeatedYoungster);
+        DialogueEvents.OnEndDialogue += FinishMe;
+    }
+
+    private void OnDisable()
+    {
+        BattleManager.instance.OnWin.RemoveListener(CheckIfPlayerDefeatedYoungster);
+        DialogueEvents.OnEndDialogue -= FinishMe;
+    }
+
+    private void CheckIfPlayerDefeatedYoungster()
+    {
+        DefeatYoungster(BattleManager.instance.battle);
+    }
+
+    private void DefeatYoungster(Battle_SO youngster)
     {
         if (!youngsters.ContainsKey(youngster))
         {
-            Debug.LogError("Attempted to fight gameobject that was not a youngster");
             return;
         }
         youngsters[youngster] = true;
@@ -27,23 +45,23 @@ public class ConvinceYoungsters : QuestStep
     }
 
     // Should be called when the player goes back to the card shop and talks to Mallory while having convinced at least one
-    public void FinishMe()
+    public void FinishMe(DialogueSO dialogue)
     {
-        // Store the number of youngsters the player defeated somewhere, so it can be checked later
+        if (dialogue != finishDialogue) return;
         FinishQuestStep();
     }
     
     protected override void SetQuestStepState(string state)
     {
-        youngsters = JsonUtility.FromJson<SerializeableDictionaryOfGameObjectAndBool>(state);
+        youngsters = JsonUtility.FromJson<SerializeableDictionaryOfBattleSOAndBool>(state);
     }
 
     public override string GetQuestStepState()
     {
         int i = 0;
-        foreach (GameObject go in youngsters.Keys)
+        foreach (Battle_SO SO in youngsters.Keys)
         {
-            if (youngsters[go] == true)
+            if (youngsters[SO] == true)
             {
                 i++;
             }
@@ -53,7 +71,7 @@ public class ConvinceYoungsters : QuestStep
 }
 
 [Serializable]
-public class SerializeableDictionaryOfGameObjectAndBool : SerializableDictionary<GameObject, bool>
+public class SerializeableDictionaryOfBattleSOAndBool : SerializableDictionary<Battle_SO, bool>
 {
     
 }

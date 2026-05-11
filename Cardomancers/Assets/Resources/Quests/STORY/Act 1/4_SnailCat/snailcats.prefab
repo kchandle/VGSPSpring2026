@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8078737515888782041
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -337.69
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.508471
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -188.01
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_Name
+      value: snailcats
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      propertyPath: m_TagString
+      value: SnailCat
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2093797532791519956}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1907319154824086410}
+  m_SourcePrefab: {fileID: 100100000, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+--- !u!1 &8997093808057423752 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a4df1a9e9d5e75bf3bf9aefba2cf8f1b, type: 3}
+  m_PrefabInstance: {fileID: 8078737515888782041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2093797532791519956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8997093808057423752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136d45e620239de4ebc3a42bbbbaa5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  name: 
+  interactable:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1907319154824086410}
+        m_TargetAssemblyTypeName: SnailcatInteract, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  highlightables: []
+--- !u!114 &1907319154824086410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8997093808057423752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bff89909910c0984bb3a4c8d54f28f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnailcatInteract
+  dialogue: {fileID: 11400000, guid: 0255f51e2b29fdcf2ab6dba38d6e06ef, type: 2}
