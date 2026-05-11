@@ -54,6 +54,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField]private GameObject player; // reference to the player game object
     [SerializeField]private PlayerController playerController; // reference to the player controller
     [SerializeField]private PlayerInteract playerInteract; // reference to player interact
+    public PlayerCamera cameraScript; // reference to the script on player camera
     public GameObject playerspacePrefab; // prefab for the player's playspace
     public GameObject playerspacePlayOnSelf;
     [SerializeField]private float playerMaxHealth; // reference to the player's max health
@@ -132,6 +133,9 @@ public class BattleManager : MonoBehaviour
         //Assign Variables for Cameras and UI
         mainCamera = Camera.main;
         dialogueManager = GameObject.Find("DialogueScreen").GetComponent<DialogueScripts.DialogueManager>();
+
+        //Assign camera to force on on fight end
+        cameraScript = FindFirstObjectByType<PlayerCamera>();
     }
 
     private void OnEnable()
@@ -149,6 +153,7 @@ public class BattleManager : MonoBehaviour
     {
         battleCamera.enabled = false;
         mainCamera.enabled = true;
+        cameraScript.enabled = true;
         GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         player.GetComponent<PlayerInteract>().interacting = false;
 
@@ -688,6 +693,7 @@ public class BattleManager : MonoBehaviour
     {
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
+        cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
@@ -697,6 +703,7 @@ public class BattleManager : MonoBehaviour
     {
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
+        cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
@@ -706,6 +713,7 @@ public class BattleManager : MonoBehaviour
     {
         player.GetComponent<PlayerInteract>().interacting = false;
         mainCamera.enabled = true;
+        cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
         Destroy(this.gameObject);
@@ -716,6 +724,7 @@ public class BattleManager : MonoBehaviour
         player.GetComponent<PlayerInteract>().interacting = false;
         OnFlee.Invoke();
         mainCamera.enabled = true;
+        cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
         Destroy(this.gameObject);
