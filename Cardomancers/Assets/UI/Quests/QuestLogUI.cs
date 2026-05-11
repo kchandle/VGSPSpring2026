@@ -18,6 +18,11 @@ public class QuestLogUI : MonoBehaviour
     
     private Button firstSelectedButton;
 
+    private void Awake()
+    {
+        
+    }
+
     private void OnEnable()
     {
         QuestEvents.OnQuestStateChanged += QuestStateChange;
