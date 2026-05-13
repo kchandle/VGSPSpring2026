@@ -10,20 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e321ed277a0e0410cbcbcec6ecbece41, type: 3}
-  m_Name: Tutorial
+  m_Name: GettingHelp
   m_EditorClassIdentifier: Assembly-CSharp::QuestInfoSO
-  displayName: Tutorial
+  displayName: Getting Help
   levelRequirement: 0
-  prerequisiteQuests: []
-  questSteps:
-  - {fileID: 8291349796930062891, guid: 28acbc8be3377404c9d3cea3e7c00371, type: 3}
-  moneyReward: 5
-  expReward: 20
+  prerequisiteQuests:
+  - {fileID: 11400000, guid: e27925d96bb481e8ebe499fef044b2f2, type: 2}
+  questSteps: []
+  moneyReward: 0
+  expReward: 0
   cardRewards:
-    keys:
-    - {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
-    - {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
-    values: 0300000002000000
+    keys: []
+    values: 
     changingLists: 0
   hackRewards:
     keys: []

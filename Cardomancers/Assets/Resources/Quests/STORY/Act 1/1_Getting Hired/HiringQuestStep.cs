@@ -21,12 +21,10 @@ public class HiringQuestStep : QuestStep
         boxTrigger = GetComponentInChildren<BoxCollider>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void FinishMe()
     {
-        if (other.CompareTag("Player"))
-        {
-            DialogueManager.instance.StartDialogue(dialogue);
-            FinishQuestStep();
-        }
+        Debug.Log("Player entered"); 
+        //DialogueManager.instance.StartDialogue(dialogue);
+        FinishQuestStep();
     }
 }

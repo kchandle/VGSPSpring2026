@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
     public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
     public float fieldEndBoost = 1f; //current endurance multiplier as a result of a Field Effect
+    
+    private GameState initialState;
     //--
 
     [Header(" ")]
@@ -43,7 +45,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int shield = 0;
 
     public GameObject pauseMenu;
-    public GameObject questMenu;
 
     public int Shield
     {
@@ -126,7 +127,6 @@ public class PlayerController : MonoBehaviour
     
     public void OnEscape(InputAction.CallbackContext context)
     {
-        if (GameStateScript.CurrentState == GameState.INVENTORY || questMenu.activeSelf || GameStateScript.CurrentState == GameState.SHOPPING) return;
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         if (pauseMenu.activeSelf)
         {
@@ -146,13 +146,18 @@ public class PlayerController : MonoBehaviour
         }
         switch(GameStateScript.CurrentState)
         {
-            case GameStateScript.GameState.WALKING:
+            
+            case GameStateScript.GameState.PAUSE:
+            {
+                GameStateScript.CurrentState = initialState;
+                break;
+            }
+            default:
+            {
+                initialState = GameStateScript.CurrentState;
                 GameStateScript.CurrentState = GameStateScript.GameState.PAUSE;
                 break;
-            case GameStateScript.GameState.PAUSE:
-                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
-                break;
-
+            }
 
 
         }
@@ -185,21 +190,6 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    public void OnQuest(InputAction.CallbackContext context)
-    {
-        if (pauseMenu.activeSelf || CurrentState == GameState.INVENTORY) return;
-        questMenu.SetActive(!questMenu.activeSelf);
-        if (questMenu.activeSelf)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
 
     #region Status Effects
     public IEnumerator StatusEffects()
