@@ -6,7 +6,15 @@ using UnityEngine;
 public class PlayItem : MonoBehaviour
 
 {
-    
+    public enum ItemType
+    {
+        CARD,
+        HACK,
+    }
+    // What is this PlayItem
+    public ItemType itemType;
+    // Can this card be dragged?
+    public bool draggable = true;
     // How quickly to move this GameObject
     public float moveSpeed = 15f;
     // Desired position to move to
@@ -34,7 +42,7 @@ public class PlayItem : MonoBehaviour
     } 
 
     // Move the PlayItem towards its target position at all times
-    void Update()
+    protected virtual void Update()
     {
         Vector3 targetPosition = position + offset;
         //targetPosition.z = 0f;

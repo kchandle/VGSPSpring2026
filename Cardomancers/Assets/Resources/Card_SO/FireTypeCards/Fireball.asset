@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: Fireball
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 40
+  price: 175
+  energyCost: 0
+  image: {fileID: 21300000, guid: 85559be4237850446b055b84df736306, type: 3}
+  cardEffects:
+  - StatusAmount: 15
+    damageType: 2
+    actionType: 0
+    targetingType: 1
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 15
+    damageType: 2
+    actionType: 0
+    targetingType: 2
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 898927699, guid: c6dc8d859716e6c479204fed36898402, type: 3}
+  displayName: Fireball
+  description: Deal medium Fire Damage to all Enemies on the field and the User.
+  tagLine: 
+  cardType: 0
+  VFXPrefab: {fileID: 6847808671855776029, guid: d786cf21cb4ee7949bd775b4a06555ce, type: 3}
+  cardSound: {fileID: 8300000, guid: c5b8f5126b9e5824f92f46db8df9a327, type: 3}
+  uiShakeMagnitude: 12
+  damageType: 1

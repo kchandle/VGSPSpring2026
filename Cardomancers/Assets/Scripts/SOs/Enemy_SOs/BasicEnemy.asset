@@ -16,16 +16,33 @@ MonoBehaviour:
   - cardSO: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
     hacks: []
     length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: c8eb2927ea48df745b49b7ecbe6d7afa, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
   - cardSO: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
     hacks: []
     length: 0
+    cardID: 
   - cardSO: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
     hacks: []
     length: 0
-  maxHealth: 100
+    cardID: 
+  maxHealth: 35
   displayName: Basic Intern
-  moneyDrops: 10
-  xpDrops: 10
-  enemyPrefab: {fileID: 1754986763223118875, guid: 798248842bb8ea544bf78bbc74392762, type: 3}
+  timer: 1
+  energy: 2
+  enemyImage: {fileID: 21300000, guid: f0aa3eccf6e2dd544926ed331257c12d, type: 3}
+  enemyPrefab: {fileID: 1754986763223118875, guid: 179662ea861125748b22f197d73407d7, type: 3}
   resistances: 
-  weaknesses: 
+  weaknesses: 090000000c000000
+  drops:
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 5
+    dropType: 3
+  - weight: 2
+    item: {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
+    quantity: 1
+    dropType: 0

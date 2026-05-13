@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 728b5e43d7f81ab43882e16ab5e09a08, type: 3}
+  m_Name: Youngster2
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_SO
+  deck:
+  - cardSO: {fileID: 11400000, guid: 80ac1fc7070da654c97d272087d644cd, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: c8eb2927ea48df745b49b7ecbe6d7afa, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 192fedef490214f4aa5ebda6c7d86116, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 27c0750f574859a4d9eb75d69f8c3e3e, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  maxHealth: 35
+  displayName: smartWiz
+  timer: 1
+  energy: 4
+  enemyImage: {fileID: 1523725669, guid: d46d473539f479b498c615bca35021e1, type: 3}
+  enemyAttkAnim: {fileID: 9100000, guid: eba45fe03ac09b74a8926d2f443ac9bc, type: 2}
+  enemyPrefab: {fileID: 1754986763223118875, guid: 179662ea861125748b22f197d73407d7, type: 3}
+  resistances: 060000000b00000009000000
+  weaknesses: 040000000200000001000000
+  drops:
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 5
+    dropType: 2
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 45
+    dropType: 3
+  - weight: 8
+    item: {fileID: 11400000, guid: 57c8daa2006d06c47931d58dec9d8ebf, type: 2}
+    quantity: 3
+    dropType: 0
+  - weight: 2
+    item: {fileID: 11400000, guid: 631f5403dda2f524e86f539d73b06bcd, type: 2}
+    quantity: 1
+    dropType: 0

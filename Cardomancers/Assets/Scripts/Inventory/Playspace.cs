@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 using System;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -9,9 +11,9 @@ public class Playspace : MonoBehaviour
 {
     public PlayItem focusTarget; // the current PlayItem being highlighted
     public float focusOffset = 20f; // how much the focusTarget will be offset from non-focused PlayItem's
-
+    public CardType battlePlayType = CardType.NULL;
     public List<PlayItem> playItems = new List<PlayItem>(); //All PlayItems currently in this PlaySpace
-
+    public int maxItems = Int32.MaxValue;
 //PlaySpaces that this PlaySpace can accept PlayItems from
 // For a PlayItem to move into this playspace, it must be FROM a PlaySpace in this list
     public List<Playspace> allowedDonors = new List<Playspace>(); 
@@ -20,7 +22,8 @@ public class Playspace : MonoBehaviour
 
     public int columnCount = 3; // The number of columns the grid will have, if playItems are arranged in a grid
 
-
+    public bool cardDisplay; //Whether this playspace just displays a card
+        
 
     // Width and padding for the horizontal layout
     // alters how the PlayItems are spaced out
@@ -39,7 +42,10 @@ public class Playspace : MonoBehaviour
 
     private PlayItem dragTarget; // the currently PlayItem being dragged
     private Vector3 dragTargetPosition; // position of the dragTarget PlayItem
-
+    
+    Vector3 defaultPosition = new Vector3(0,0,0);
+    private PlayItem currentTarget = null;
+    public float selectionBuffer = 0.4f; // Adjust this "stickiness" value as needed
     
 
     
@@ -73,17 +79,15 @@ public class Playspace : MonoBehaviour
 
     // Create a new PlayItem in this playspace
 
-    Vector3 defaultPosition = new Vector3(0,0,0);
-
-
+    
+    
 
 
         // without position
-        public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO){
-
-        print("Spawning this Card: " + cardSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
+    public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO) 
+    {
+        if(playItems.Count >= maxItems) return null;
+        GameObject newPlayItem = Instantiate(prefab, transform);
 
  
 
@@ -95,40 +99,78 @@ public class Playspace : MonoBehaviour
 
         return newPlayItem;
     }
-
-    // with inventoryCarc
-    public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard){
-
-        print("Spawning this Card: " + cardSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
-
+    
+    // with inventoryCard
+    public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO, InventoryCard inventoryCard)
+    {
+        if (!cardSO) return null; 
+        if(playItems.Count >= maxItems) return null;
+        GameObject newPlayItem = Instantiate(prefab, transform);
  
 
         playItems.Add(newPlayItem.GetComponent<PlayItem>());
 
         newPlayItem.GetComponent<Card>().CardSO = cardSO;
         newPlayItem.GetComponent<Card>().inventoryCard = inventoryCard;
+        newPlayItem.GetComponent<Card>().hacks = inventoryCard.hacks;
 
+        
+
+        return newPlayItem;
+    }
+    
+    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO, InventoryHack inventoryHack)
+    {
+        if(playItems.Count >= maxItems) return null;
+        print("Spawning this Hack: " + hackSO.name);
+        GameObject newPlayItem = Instantiate(prefab, transform);
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
+        
+
+        return newPlayItem;
+    }
+
+    // adding a Hack
+    public GameObject NewPlayItem(GameObject prefab, Hack_SO hackSO)
+    {
+        if(playItems.Count >= maxItems) return null;
+        print("Spawning this Card: " + hackSO.name);
+        GameObject newPlayItem = Instantiate(prefab, transform);
+
+ 
+
+        playItems.Add(newPlayItem.GetComponent<PlayItem>());
+
+        newPlayItem.GetComponent<InventoryHack>().HackSO = hackSO;
         
 
         return newPlayItem;
     }
 
 
+
     // Destroys a specific PlayItem in this PlaySpace
     public void DestroyPlayItem(PlayItem playItem)
     {
-        //print("attempting destroy");
+        if (gameObject.name == "HackSlot")
+        {
+            Destroy(playItems[0].gameObject);
+            playItems.Remove(playItems[0]);
+            
+        }
         if (playItems.Contains(playItem)){
-            print("destroying");
             playItems.Remove(playItem);
             Destroy(playItem.gameObject);
         }
 
     }
 
-// Arranges all play items in a line
+
+    // Arranges all play items in a line
     void HorizontalLayout(int targetIndex = -1)
     {
         int count = playItems.Count;
@@ -153,7 +195,7 @@ public class Playspace : MonoBehaviour
 
     } 
 
-// Generated by Gemini with human edits
+    // Generated by Gemini with human edits
     void GridLayout(int targetIndex = -1, int columns = 3)
     {
         if (playItems == null || playItems.Count == 0 || columns <= 0) 
@@ -205,48 +247,47 @@ public class Playspace : MonoBehaviour
 
 // If the player is hovering over this playspace, get the playItem closest to the player's cursor
 // and highlight it
-private PlayItem currentTarget = null;
-public float selectionBuffer = 0.4f; // Adjust this "stickiness" value as needed
+
 
 // Function edits generated with Gemini
-public PlayItem GetNearestPlayItem(Vector3 position)
-{
-    if (!InPlayArea(position)) return null;
-
-    PlayItem nearest = null;
-    // Use sqrMagnitude for better performance (avoids expensive square root)
-    float minSqrDistance = 1000f;
-
-    // 1. Find the absolute closest item
-    foreach (PlayItem p in playItems)
+    public PlayItem GetNearestPlayItem(Vector3 position)
     {
-        float sqrDistance = (position - p.transform.position).sqrMagnitude;
-        if (sqrDistance < minSqrDistance)
+        if (!InPlayArea(position)) return null;
+        if (cardDisplay) return playItems[0];
+        PlayItem nearest = null;
+        // Use sqrMagnitude for better performance (avoids expensive square root)
+        float minSqrDistance = 1000f;
+
+        // 1. Find the absolute closest item
+        foreach (PlayItem p in playItems)
         {
-            minSqrDistance = sqrDistance;
-            nearest = p;
+            float sqrDistance = (position - p.gameObject.transform.position).sqrMagnitude;
+            if (sqrDistance < minSqrDistance)
+            {
+                minSqrDistance = sqrDistance;
+                nearest = p;
+            }
         }
-    }
 
-    // Sticky Target: Function favors previously selected target to stop visual jittering
-    if (currentTarget != null && nearest != null && currentTarget != nearest)
-    {
-        float distToCurrent = (position - currentTarget.transform.position).magnitude;
-        float distToNew = (position - nearest.transform.position).magnitude;
+        // Sticky Target: Function favors previously selected target to stop visual jittering
+        if (currentTarget != null && nearest != null && currentTarget != nearest)
+        {
+            float distToCurrent = (position - currentTarget.transform.position).magnitude;
+            float distToNew = (position - nearest.transform.position).magnitude;
 
-        // Only switch if the new item is significantly closer than the current one
-        if (distToNew < distToCurrent - selectionBuffer)
+            // Only switch if the new item is significantly closer than the current one
+            if (distToNew < distToCurrent - selectionBuffer)
+            {
+                currentTarget = nearest;
+            }
+        }
+        else
         {
             currentTarget = nearest;
         }
-    }
-    else
-    {
-        currentTarget = nearest;
-    }
 
-    return currentTarget;
-}
+        return currentTarget;
+    }
 
     // Sets the DragTarget. Can be used by other scripts for drag functionality
     public void SetDragTarget(PlayItem dragTarget, Vector3 dragTargetPosition)

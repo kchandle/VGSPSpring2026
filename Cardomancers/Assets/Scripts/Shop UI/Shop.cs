@@ -1,0 +1,357 @@
+/* Author: DerjenigeUberMensch
+ *
+ * Contact Group 1 For help or questions relating to this script.
+ */
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Networking;
+using static GameStateScript;
+public class Shop : MonoBehaviour
+{
+    // Events
+    static public event Action PurchaseEvent;
+    static public event Action FailPurchaseEvent;
+    static public event Action SellEvent;
+    public event Action StockUpdate;
+
+    //Set in editor
+    [SerializeField] private GameObject player; 
+    public GameObject shopUI; 
+
+    //Not set in editor
+    /*[HideInInspector]*/ public List<ShopItem> stock = new();
+    /*[HideInInspector]*/ public List<Card_SO> cachedSOs = new();
+
+
+    [Header("Manually set shop stock")]
+    public List<Card_SO> customCardStock;
+    public List<Hack_SO> customHackStock;
+    
+
+
+
+
+    private List<ShopItem> inventory = new();
+    private List<InventoryCard> playerInv;
+
+    //StockSize is how many items will currently be in shop
+    private int _StockSize = -1;
+    public int StockSize 
+    { 
+        get
+        {   return this._StockSize;
+        }
+
+        set
+        {
+            if(stock.Count == value)
+            {   return;
+            }
+
+            if(value < 0)
+            {   
+                Debug.LogWarning($"MaxCardsInStock was set to {value}");
+                value = 0;
+            }
+
+            this._StockSize = value;
+
+            // if the stock is too big shrink.
+            while(stock.Count > this._StockSize)
+            {   this.stock.RemoveAt(stock.Count - 1);
+            }
+
+            // if the stock is too small grow it.
+            if(stock.Count < this._StockSize)
+            {
+                this.stock.AddRange(this.GenerateStock(this._StockSize, this.stock));
+            }
+        }
+    }
+
+    //Toggles the UI if true or false
+    public bool IsShopOpenUI
+    {
+        // todo
+        get
+        {   return shopUI.activeSelf;
+        }
+        set
+        {   if(value)
+            {
+                //SaveSystem.Load(player);
+            }
+            shopUI.SetActive(value);
+        }
+    }
+
+    
+
+    
+
+    //Initializes inventory stuff
+    void Start()
+    {
+        playerInv = Inventory.InventoryList;
+        Inventory.inventoryChanged += OnInventoryChange;
+
+        //If there's a custom stock set, override the generated stock
+        if(customCardStock.Count > 0 || customHackStock.Count > 0)
+        {
+            stock.Clear();
+
+            foreach(Card_SO card in customCardStock)
+            {
+                ShopItem newItem = new ShopItem();
+                newItem.Init_cardSO(card);
+                stock.Add(newItem);
+            }
+
+            foreach(Hack_SO hack in customHackStock)
+            {
+                ShopItem newItem = new ShopItem();
+                newItem.Init_hackSO(hack);
+                stock.Add(newItem);
+            }
+
+        }
+        shopUI.GetComponent<ShopUI>().CreateBuyMenu();
+    }
+
+    // Opens the shop UI.
+    public void OpenShop()
+    {   this.IsShopOpenUI = true;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        GameStateScript.CurrentState = GameState.MENU;
+
+        player.GetComponent<PlayerInteract>().interacting = false;
+    }
+
+    // Closes the shop UI.
+    public void CloseShop()
+    {   this.IsShopOpenUI = false;
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+        GameStateScript.CurrentState = GameState.WALKING;
+
+        player.GetComponent<PlayerInteract>().interacting = false;
+    }
+
+    #region Buying/Selling Items
+    // Checks whether you can buy an item.
+    public bool CanBuyItem(ShopItem item)
+    {
+        int playerBalance = Inventory.Money;
+
+        return item.PurchasePrice <= playerBalance;  
+    }
+
+    // Check whether you can sell an item.
+    public bool CanSellItem(ShopItem item)
+    {
+        // return true for now.
+        return true;
+    }
+
+    // Purchases an item in the shop.
+    //
+    // RETURN: true on Succesful purchase.
+    // RETURN: false on failed to purchase.
+    public bool BuyItem(ShopItem item)
+    {
+        //If the item can't be bought
+        if(!this.CanBuyItem(item))
+        {   
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        //Make sure inventory isn't null
+        if(playerInv == null)
+        {   
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        //Make sure there is enough space in inventory
+        if(playerInv.Count >= Inventory.InventorySize + 1)
+        {
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        //Make sure you have enough money
+        if(Inventory.Money < (int)item.PurchasePrice)
+        {   
+            Shop.FailPurchaseEvent?.Invoke();
+
+            return false;
+        }
+
+        //Buy the item, remove money
+        Inventory.Money -= (int)item.PurchasePrice;
+        if(item.itemType == ItemType.CARD_SO)
+        {
+            Inventory.AddCardToInventory(item.SO_cardSO);
+        }
+        else if(item.itemType == ItemType.HACK_SO)
+        {
+            print("Sucessfully bought hack");
+            Inventory.AddHackToInventory(item.SO_hackSO);
+        }
+        else
+        {
+            print("error, one of the buyable items isn't a card or hack so");
+            return false;
+        }
+        SaveSystem.Save(player);
+        Shop.PurchaseEvent?.Invoke();
+
+        
+
+        return true;
+    }
+
+    // Sells an item in the sthop.
+    //
+    // RETURN: true on Succesful sell.
+    // RETURN: false on failed to sell 
+    public bool SellItem(ShopItem item)
+    {
+        
+        if(!this.CanSellItem(item))
+        {   
+            return false;
+        }
+
+        if(playerInv == null)
+        {   
+            return false;
+        }
+
+
+
+        //If the item is a card, sell it
+        if(item.itemType == ItemType.CARD_SO)
+        {
+            //Remove the corresponding card in the inventory
+            foreach(InventoryCard c in playerInv)
+            {
+                if(c.cardSO == item.SO_cardSO)
+                {   
+                    Inventory.RemoveCardFromInventory(c);
+                    Inventory.Money += (int)item.SellPrice;
+                    Shop.SellEvent?.Invoke();
+                    SaveSystem.Save(player);
+                    return true;
+                }
+                
+            }
+        }
+        //If the item is a hack, sell it
+        else if(item.itemType == ItemType.HACK_SO)
+        {
+            Inventory.RemoveHackFromInventory(item.SO_hackSO);
+            Inventory.Money += (int)item.SellPrice;
+            Shop.SellEvent?.Invoke();
+            SaveSystem.Save(player);
+            return true;
+        }
+        //
+        else
+        {
+            print("Error, clearing nulls in card and hack inventories");
+            Inventory.DeleteNullInInventory();
+        }
+        
+
+        return false;
+    }
+    #endregion
+
+
+
+
+    //Updates our inventory when it's changed
+    private void OnInventoryChange(object unused1, EventArgs unused2)
+    {
+        playerInv = Inventory.InventoryList;
+    }
+
+    //Gets the cardSos from the folder they are stored in path, which is where the programmers put the cardSOs
+    private List<UnityEngine.Object> GetObjectsInPath(string path)
+    {
+        List<UnityEngine.Object> assets = new();
+
+        string []guids = AssetDatabase.FindAssets("", new[] { path });
+
+        foreach (string guid in guids)
+        {
+            path = AssetDatabase.GUIDToAssetPath(guid);
+            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+
+            if (asset != null)
+            {   assets.Add(asset);
+            }
+        }
+
+        return assets;
+    }
+
+    //Generates a new random shop stock, ignores the cards in the exclude list
+    private List<ShopItem> GenerateStock(int maxStockToGenerate, List<ShopItem> exclude = null) 
+    { 
+        //We will need a concrete way to differentiate between cards for the player and cards only for enemies.
+        //For now, the stock consists of only Jolt and Shield
+        if(cachedSOs.Count == 0)
+        {   
+            cachedSOs = this.GetObjectsInPath("Assets/Resources/Card_SO")
+                .OfType<Card_SO>()
+                .Where(s => s.displayName == "Jolt" || s.displayName == "Shield" && s.price != 0)
+                .ToList();
+        }
+
+        List<ShopItem> generatedStock = new();
+
+        foreach(Card_SO obj in this.cachedSOs)
+        {
+            if(maxStockToGenerate <= 0)
+            {   break;
+            }
+
+            // exclude any in the exclude list.
+            if(exclude != null && exclude.Any(exc => exc.SO_cardSO == obj))
+            {   continue;
+            }
+
+            
+            ShopItem item = new();
+
+            item.Init_cardSO(obj);
+            //print(item);
+
+            generatedStock.Add(item);
+            //print(generatedStock);
+        }
+
+        return generatedStock;
+    }
+
+    //replaces the shop stock with the passed in list
+    public void ReplaceStock(ref List<ShopItem> list)
+    {
+        this.stock = list;
+        StockUpdate?.Invoke();
+    }
+}
