@@ -31,4 +31,9 @@ public class StartDialogue : MonoBehaviour
         isShowingExclamation = value;
         exclamationMark.SetActive(isShowingExclamation);
     }
+
+    public void AssignStartBattle(StartBattle starter)
+    {
+        DialogueManager.instance.AssignStartBattle(starter);
+    }
 }
