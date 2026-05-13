@@ -37,6 +37,8 @@ public class Card_SO : ScriptableObject
 
     public AudioClip cardSound;
 
+    public float uiShakeMagnitude;
+
     public CardType CardType
     {
         get

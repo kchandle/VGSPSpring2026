@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
     public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
     public float fieldEndBoost = 1f; //current endurance multiplier as a result of a Field Effect
+    
+    private GameState initialState;
     //--
 
     [Header(" ")]
@@ -125,7 +127,6 @@ public class PlayerController : MonoBehaviour
     
     public void OnEscape(InputAction.CallbackContext context)
     {
-        if (GameStateScript.CurrentState == GameState.INVENTORY || GameStateScript.CurrentState == GameState.SHOPPING) return;
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         if (pauseMenu.activeSelf)
         {
@@ -145,13 +146,18 @@ public class PlayerController : MonoBehaviour
         }
         switch(GameStateScript.CurrentState)
         {
-            case GameStateScript.GameState.WALKING:
+            
+            case GameStateScript.GameState.PAUSE:
+            {
+                GameStateScript.CurrentState = initialState;
+                break;
+            }
+            default:
+            {
+                initialState = GameStateScript.CurrentState;
                 GameStateScript.CurrentState = GameStateScript.GameState.PAUSE;
                 break;
-            case GameStateScript.GameState.PAUSE:
-                GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
-                break;
-
+            }
 
 
         }
