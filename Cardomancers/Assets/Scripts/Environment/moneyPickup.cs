@@ -11,6 +11,8 @@ public class moneyPickup : MonoBehaviour
     // respawns the moneys
     public UnityEvent OnCollect = new UnityEvent();
 
+    public int moneyAmount = 5;
+
     // money on here for testing put on SO or sum later
     
     public void Update()
@@ -32,8 +34,7 @@ public class moneyPickup : MonoBehaviour
     {
         if(!respawn)
         {
-            Inventory.Money++;
-            Debug.Log ($"money: {Inventory.Money}");
+            Inventory.Money += moneyAmount;
             respawn = true;
             OnCollect.Invoke();
         }

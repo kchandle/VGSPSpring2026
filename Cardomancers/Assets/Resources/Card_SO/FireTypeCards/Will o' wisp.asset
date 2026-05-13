@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: Will o' wisp
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 40
+  price: 150
+  energyCost: 0
+  image: {fileID: 21300000, guid: 5f2b6e8975a96cd429d2b3665bc69fe4, type: 3}
+  cardEffects:
+  - StatusAmount: 9
+    damageType: 2
+    actionType: 0
+    targetingType: 0
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  - StatusAmount: 3
+    damageType: 2
+    actionType: 2
+    targetingType: 0
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 0
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 0
+    fieldCondition: {fileID: 0}
+  particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 898927699, guid: c6dc8d859716e6c479204fed36898402, type: 3}
+  displayName: Will o' Wisp
+  description: Deal medium Fire Damage to one Enemy. Heals for 1/3 of the Damage
+    dealt.
+  tagLine: 
+  cardType: 0
+  VFXPrefab: {fileID: 1222810276249314092, guid: 17a1814f0dccbc043b30233d3d860008, type: 3}
+  cardSound: {fileID: 8300000, guid: c5b8f5126b9e5824f92f46db8df9a327, type: 3}
+  uiShakeMagnitude: 7
+  damageType: 1

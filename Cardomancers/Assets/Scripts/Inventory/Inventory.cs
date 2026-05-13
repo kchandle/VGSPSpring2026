@@ -30,9 +30,9 @@ public static class Inventory
     #endregion
 
     #region Limiting Variables
-    private static int inventorySize = 10;
+    private static int inventorySize = 50;
     private static int deckSize = 5;
-    private static int hackInventorySize = 5;
+    private static int hackInventorySize = 50;
     #endregion
     
     /// <summary>
@@ -116,7 +116,11 @@ public static class Inventory
         set
         {
             money = value;
-            GameObject.FindWithTag("MoneyUI").transform.GetChild(0).GetComponent<TMP_Text>().text = money.ToString();
+            TMP_Text t = GameObject.FindWithTag("MoneyUI")?.transform.GetComponentInChildren<TMP_Text>();
+
+            if (t != null)
+            {   t.text = money.ToString();
+            }
         }
     }
 
@@ -162,8 +166,27 @@ public static class Inventory
         inventory.Add(newCard);
 
         inventoryChanged?.Invoke(null, EventArgs.Empty);
-        AddCardToDeck(newCard);
+        //AddCardToDeck(newCard);
         return true;
+    }
+
+    public static void DeleteNullInInventory()
+    {
+        InventoryList.RemoveAll(card => card.cardSO == null);
+        Debug.Log("Deleted null Cards. Remaining Cards: " + InventoryList.Count);
+
+        HackInventory.RemoveAll(hack => hack == null);
+        Debug.Log("Deleted null Hacls. Remaining Hacks: " + HackInventory.Count);
+    }
+
+    public static int Cardscount()
+    {
+        return inventory.Count;
+    }
+
+    public static bool IsInventoryFull()
+    {
+        return inventory.Count >= inventorySize;
     }
 
     /// <summary>
@@ -351,20 +374,14 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    private static Random rng = new Random();
+    /// <summary>
+    ///  Randomizes the order of a list of inventory cards
+    /// </summary>
+    /// <param name="input"> The list of inventory cards to be randomized</param>
+    /// <returns>A list of inventory cards with random order</returns>
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
-        List<InventoryCard> copyInput = new List<InventoryCard>(input);
-        int length = copyInput.Count;
-        while (length > 1)
-        {
-            length--;
-            int k = rng.Next(length + 1);
-            InventoryCard value = copyInput[k];
-            copyInput[k] = copyInput[length];
-            copyInput[length] = value;
-        }
-        return copyInput;
+        return ShuffleList.Shuffle(input);
     }
     #endregion
 
@@ -480,6 +497,8 @@ public static class Inventory
         RemoveHackFromInventory(hack);
         
         AddCardToInventory(card.inventoryCard);
+        
+        InventoryEvents.CardHacked();
         
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }

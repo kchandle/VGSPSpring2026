@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
+  m_Name: Thunderstorm
+  m_EditorClassIdentifier: Assembly-CSharp::Card_SO
+  sellValue: 100
+  price: 300
+  energyCost: 0
+  image: {fileID: 0}
+  cardEffects:
+  - StatusAmount: 0
+    damageType: 7
+    actionType: 0
+    targetingType: 0
+    isStatusEffect: 0
+    isPerishable: 0
+    isNegative: 0
+    turnsActive: 3
+    probability: 0
+    statusType: 0
+    summonsEnemies: 0
+    summonableEnemies: []
+    setsNextCard: 0
+    nextCard: {fileID: 0}
+    setsFieldCondition: 1
+    fieldCondition: {fileID: 11400000, guid: dd3ac2d87e68d2341890c33b73377167, type: 2}
+  particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -1435407506, guid: c6dc8d859716e6c479204fed36898402, type: 3}
+  displayName: Thunderstorm
+  description: Summons a Thunderstorm for 3 turns. While Thunderstorm is active,
+    a random target will be struck by lightning each turn, dealing medium Lightning
+    Damage.
+  tagLine: 
+  cardType: 0
+  VFXPrefab: {fileID: 0}
+  cardSound: {fileID: 8300000, guid: 393efc92af72fcc43ac3d249ad1ba0a1, type: 3}
+  uiShakeMagnitude: 12
+  damageType: 0

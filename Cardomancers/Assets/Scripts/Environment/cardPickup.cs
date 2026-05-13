@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+
 public class cardPickup : MonoBehaviour
 {
      public InventoryCard card;

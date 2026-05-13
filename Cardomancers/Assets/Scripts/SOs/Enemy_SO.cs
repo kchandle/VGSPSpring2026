@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEditor.Animations;
+
 [CreateAssetMenu(fileName = "Enemy_SO", menuName = "Scriptable Objects/Enemy_SO")]
 public class Enemy_SO : ScriptableObject
 {
@@ -14,13 +16,15 @@ public class Enemy_SO : ScriptableObject
     // public float xpDrops;  //The base amount of XP the enemy drops when defeated
     public int timer; // turns until enemy acts
     public int energy; //energy it can use on cards
-
+    public Sprite enemyImage;
+    public AnimatorController enemyAttkAnim;
     public GameObject enemyPrefab; //Prefab of the enemy to be spawned in battle.
 
     public List<DamageType> resistances; //List of damage types the enemy is resistant to.
     public List<DamageType> weaknesses; //List of damage types the enemy is weak to.
 
     public List<Drop> drops; //List of all possible drops
+    
 }
 
 

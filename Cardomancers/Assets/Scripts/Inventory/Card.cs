@@ -14,7 +14,7 @@ public class Card : PlayItem
 
     private Card_SO cardSO;
 
-    public InventoryCard inventoryCard; // reference to it's own inventory card
+    public InventoryCard inventoryCard; // reference to its own inventory card
     public GameObject backHack;
     public GameObject frontHack;
     // property for the cardSO. When the cardSO is set, also change the text and images on the card to match the data in the cardSO
@@ -37,9 +37,9 @@ public class Card : PlayItem
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
 
     [SerializeField] public Image cardImage; // set in editor
-    [SerializeField] public Image damageImage; // set in editor
+    [SerializeField] public Image attackElementImage; // set in editor
 
-    [SerializeField] public Image battleImage; // set in editor
+    [SerializeField] public Image actionTypeImage; // set in editor
 
     #region Sprites
     private Sprite cardSprite; 
@@ -53,25 +53,25 @@ public class Card : PlayItem
         }
     }
 
-    private Sprite damageTypeSprite; // sprite for displaying the DamageType of the card
+    private Sprite attackElementSprite; // sprite for displaying the Element of the card
 
-    public Sprite DamageTypeSprite
+    public Sprite AttackElementSprite
     {
-        get{return damageTypeSprite;}
+        get{return attackElementSprite;}
         set // when CardSprite is changed, also change it in the UI Image
         {
-            damageTypeSprite = value;
-            damageImage.sprite = value;
+            attackElementSprite = value;
+            attackElementImage.sprite = value;
         }
     }
-    private Sprite battleEffectSprite; // sprite for displaying the type of BattleEffect the card is (ex. single hit, DOT)
-    public Sprite BattleEffectSprite
+    private Sprite actionTypeSprite; // sprite for displaying the type of action the card is (ex. Attack, Defense, Heal, Status Effect)
+    public Sprite ActionTypeSprite
     {
-        get{return battleEffectSprite;}
+        get{return actionTypeSprite;}
         set // when CardSprite is changed, also change it in the UI Image
         {
-            battleEffectSprite = value;
-            battleImage.sprite = value;
+            actionTypeSprite = value;
+            actionTypeImage.sprite = value;
         }
     }
     #endregion
@@ -80,6 +80,7 @@ public class Card : PlayItem
 
     void Start()
     {
+        cardSO = inventoryCard.cardSO;
         if (hacks == null)
         {
             hacks = new Hack_SO[maxHacks];
@@ -89,6 +90,8 @@ public class Card : PlayItem
         cardNameDisplay.text = cardSO.displayName;
         frontHack = transform.GetChild(2).gameObject;
         backHack = transform.GetChild(0).gameObject;
+        ActionTypeSprite = cardSO.damageTypeIcon;
+        AttackElementSprite = cardSO.elementIcon;
         if (hacks.Length > 0 && hacks[0])
         {
             backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
@@ -112,12 +115,39 @@ public class Card : PlayItem
         {
             if(hack) effects.AddRange(hack.hackEffects.ToList());
         }
+
+        /*bool reflected = false; //track if the enemy countered a spell
         foreach (BattleEffect effect in effects)
         {
-            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true; continue;}
+            if(effect.actionType != BattleActionType.ATTACK){if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true;continue;}} 
             //Apply each effect to the target
-            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO)) returnVal = true;
+
+            if(effect.targetingType == TargetingType.SingleTarget)
+            {
+                if(enemy.counterSpellActive) //If the enemy has counterSpell, you take damage instead
+                {
+                    if(effect.TriggerEffect(player, player.gameObject.transform.position, null, player.attackMulti)){returnVal = true;}
+                    reflected = true;
+                }
+                else{if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO, player.attackMulti)){returnVal = true;}}
+            }
         }
+        //If it was triggered, disable the enemy's counterspell
+        if(reflected){enemy.counterSpellActive = false;}*/
+
+
+        //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything.
+        //Ask Joshua if you have any concerns
+        if(cardSO.CardType == CardType.ATK)
+        {
+            BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO);
+            BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
+            BattleManager.instance.PlayerAttackSelf(effects, cardSO);
+            returnVal = true;
+
+            SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform, .65f);
+        }
+
         return returnVal;
     }
 
@@ -132,10 +162,25 @@ public class Card : PlayItem
         }
         foreach (BattleEffect effect in effects)
         {
-            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
+            if(cardSO.CardType != CardType.ATK)
+            {
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+                { 
+                    returnVal = true;
+                    //print("card played on self!");
+                    continue;
+                }
+            } 
             //Apply each effect to the target
-            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+            {
+                returnVal = true;
+            }
         }
+
+        if (returnVal) SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform);
+
+        //print("Playing card on self: " + returnVal);
         return returnVal;
     }
 
@@ -150,7 +195,7 @@ public class Card : PlayItem
                 hacks[1] = hack;
                 inventoryCard.hacks[1] = hack;
                 print("hack added");
-                frontHack.GetComponent<RawImage>().texture = hack.image.texture;
+                frontHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on top.");
                 frontHack.SetActive(true);
                 break;
@@ -161,7 +206,7 @@ public class Card : PlayItem
                 inventoryCard.hacks[0] = hack;
                 print("hack added");
                 print(hack.image.name);
-                backHack.GetComponent<RawImage>().texture = hack.image.texture;
+                backHack.GetComponent<Image>().sprite = hack.image;
                 print("Design on bottom.");
                 backHack.SetActive(true);
                 break;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
+using UnityEditor.ShaderGraph;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -19,7 +20,9 @@ public class PlayerCamera : MonoBehaviour
     private CinemachineCamera cam;
     // Orbital sphere object magical thing from player, see radius for stuff.
     private CinemachineOrbitalFollow orbital;
-    private CinemachineInputAxisController axisController;
+    // Decollider component on the Cinemachine camera, controls smoothing time
+    private CinemachineDecollider decollider;
+    private CinemachineInputAxisController input;
     // Scroll delta is just lerping holder.
     private float scrollDelta = 0f;
     // Scroll position, self explanatory.
@@ -31,14 +34,25 @@ public class PlayerCamera : MonoBehaviour
     // Current zoom, being lerped...
     private float currentZoom;
 
+    private CinemachineBrain brain;
+
     // setup the variables.
     void Start()
     {
         // get the cinemachine attached.
+        //*set the decollider smoothing time to 2 in the inspector
         cam = GetComponent<CinemachineCamera>();
         // get the orbital attached this is like the sphere around the player that looks at them in third person..
         orbital = cam.GetComponent<CinemachineOrbitalFollow>();
-        axisController = cam.GetComponent<CinemachineInputAxisController>();
+
+        //get the decollider attached
+        decollider = cam.GetComponent<CinemachineDecollider>();
+        input = cam.GetComponent<CinemachineInputAxisController>();
+        brain = FindFirstObjectByType<CinemachineBrain>();
+
+        //Optimal settings to reduce motion sickness
+        ZoomLerpSpeed = 5f;
+
         // This is just the player.
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -53,26 +67,24 @@ public class PlayerCamera : MonoBehaviour
         // gets the scroll input.
         scrollDelta += Input.GetAxisRaw("Mouse ScrollWheel");
     }
-
+    
     // update camera position...
     void Update()
     {
-        if (player == null) player = GameObject.FindGameObjectWithTag("Player");
+        // Contact Group-1 team lead for this they added it, and I dont know what it does.
+        input.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN ? true : false;
+        brain.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN ? true : false;
+        if (GameStateScript.CurrentState == GameStateScript.GameState.WALKING || GameStateScript.CurrentState == GameStateScript.GameState.LOADINGSCREEN) RotatePlayerModel();
+    }
 
-
-        // Doesnt already the camera to scroll when not in the walking state
-        axisController.enabled = GameStateScript.CurrentState == GameStateScript.GameState.WALKING;
-
-        if (GameStateScript.CurrentState != GameStateScript.GameState.WALKING)
-        {   return;
-        }
-
+    public void RotatePlayerModel()
+    {
         // Handles the scroll delta which is the just mouse scroll wheel input.
         HandleMouseScroll();
 
         // if we dont have a orbital well this doesnt work.
-        if(orbital != null)
-        {   
+        if (orbital != null)
+        {
             // Get the future zoom position that the player wants.
             // This is mosly just to lerp the camera...
             // Basically this just smooths the camera zoom in.
