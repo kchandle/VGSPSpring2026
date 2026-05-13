@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameStateScript.OnGameStateChanged += UpdateGameState;
+        GameStateScript.OnGameStateChanged -= UpdateGameState;
     }
 
     public void UpdateGameState(GameState newState)
@@ -188,6 +188,11 @@ public class PlayerController : MonoBehaviour
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         }
         
+    }
+
+    public void OnToggleQuest(InputAction.CallbackContext context)
+    {
+        if(GameStateScript.CurrentState == GameState.WALKING)
     }
 
 
