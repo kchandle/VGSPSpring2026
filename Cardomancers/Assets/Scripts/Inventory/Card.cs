@@ -37,9 +37,9 @@ public class Card : PlayItem
     [SerializeField] public TextMeshProUGUI cardNameDisplay; // displays the name of the card
 
     [SerializeField] public Image cardImage; // set in editor
-    [SerializeField] public Image damageImage; // set in editor
+    [SerializeField] public Image attackElementImage; // set in editor
 
-    [SerializeField] public Image battleImage; // set in editor
+    [SerializeField] public Image actionTypeImage; // set in editor
 
     #region Sprites
     private Sprite cardSprite; 
@@ -53,25 +53,25 @@ public class Card : PlayItem
         }
     }
 
-    private Sprite damageTypeSprite; // sprite for displaying the DamageType of the card
+    private Sprite attackElementSprite; // sprite for displaying the Element of the card
 
-    public Sprite DamageTypeSprite
+    public Sprite AttackElementSprite
     {
-        get{return damageTypeSprite;}
+        get{return attackElementSprite;}
         set // when CardSprite is changed, also change it in the UI Image
         {
-            damageTypeSprite = value;
-            damageImage.sprite = value;
+            attackElementSprite = value;
+            attackElementImage.sprite = value;
         }
     }
-    private Sprite battleEffectSprite; // sprite for displaying the type of BattleEffect the card is (ex. single hit, DOT)
-    public Sprite BattleEffectSprite
+    private Sprite actionTypeSprite; // sprite for displaying the type of action the card is (ex. Attack, Defense, Heal, Status Effect)
+    public Sprite ActionTypeSprite
     {
-        get{return battleEffectSprite;}
+        get{return actionTypeSprite;}
         set // when CardSprite is changed, also change it in the UI Image
         {
-            battleEffectSprite = value;
-            battleImage.sprite = value;
+            actionTypeSprite = value;
+            actionTypeImage.sprite = value;
         }
     }
     #endregion
@@ -90,6 +90,8 @@ public class Card : PlayItem
         cardNameDisplay.text = cardSO.displayName;
         frontHack = transform.GetChild(2).gameObject;
         backHack = transform.GetChild(0).gameObject;
+        ActionTypeSprite = cardSO.damageTypeIcon;
+        AttackElementSprite = cardSO.elementIcon;
         if (hacks.Length > 0 && hacks[0])
         {
             backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
@@ -142,6 +144,8 @@ public class Card : PlayItem
             BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
             BattleManager.instance.PlayerAttackSelf(effects, cardSO);
             returnVal = true;
+
+            SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform, .65f);
         }
 
         return returnVal;
