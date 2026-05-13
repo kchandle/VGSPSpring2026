@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 183195972659693757}
   - component: {fileID: 657056005772569043}
   - component: {fileID: 7637187234934058225}
+  - component: {fileID: 953603063835877626}
   m_Layer: 0
   m_Name: Youngster2
   m_TagString: Youngster
@@ -84,6 +85,18 @@ MonoBehaviour:
           m_StringArgument: Battle
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 953603063835877626}
+        m_TargetAssemblyTypeName: RandomBattleMusic, Assembly-CSharp
+        m_MethodName: PlayWhenBattling
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Battle
+          m_BoolArgument: 1
+        m_CallState: 2
   highlightables: []
 --- !u!114 &7637187234934058225
 MonoBehaviour:
@@ -105,6 +118,21 @@ MonoBehaviour:
   battleManagerPrefab: {fileID: 2964704237051563936, guid: 6c45ef9cfe798144993bbc367a831ea7, type: 3}
   battleStarted: 0
   altText: {fileID: 0}
+--- !u!114 &953603063835877626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6325943818239239212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0463eb6023006a4ab64081c55895824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomBattleMusic
+  battleThemes:
+  - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
+  - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
 --- !u!1001 &6225199944727028555
 PrefabInstance:
   m_ObjectHideFlags: 0
