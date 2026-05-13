@@ -7,12 +7,16 @@ public class BattleTutorial : MonoBehaviour
     public GameObject attackIcons;
     public void ShowTutorial()
     {
-        if (i == 0) tabIcons.SetActive(true);
-        else
+        if (GameObject.FindWithTag("BattleManager") != null)
         {
-            attackIcons.SetActive(true);
+            if (i == 0) tabIcons.SetActive(true);
+            else
+            {
+                attackIcons.SetActive(true);
+            }
+            i++;
         }
-        i++;
+        
 
     }
 }
