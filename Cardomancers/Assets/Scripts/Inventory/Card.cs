@@ -60,7 +60,7 @@ public class Card : PlayItem
         get{return damageTypeSprite;}
         set // when CardSprite is changed, also change it in the UI Image
         {
-            damageTypeSprite = value;
+            Sprite DamageTypeSprite = CardSO.elementIcon;
             damageImage.sprite = value;
         }
     }
@@ -92,13 +92,13 @@ public class Card : PlayItem
         backHack = transform.GetChild(0).gameObject;
         if (hacks.Length > 0 && hacks[0])
         {
-            backHack.GetComponent<Image>().sprite = hacks[0].image;
+            backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
             backHack.SetActive(true);
         }
 
         if (hacks.Length > 1 && hacks[1])
         {
-            frontHack.GetComponent<Image>().sprite = hacks[1].image;
+            frontHack.GetComponent<RawImage>().texture = hacks[1].image.texture;
             frontHack.SetActive(true);
         }
     }
@@ -113,12 +113,37 @@ public class Card : PlayItem
         {
             if(hack) effects.AddRange(hack.hackEffects.ToList());
         }
+
+        /*bool reflected = false; //track if the enemy countered a spell
         foreach (BattleEffect effect in effects)
         {
-            if(effect.actionType != BattleActionType.ATTACK) if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true; continue;}
+            if(effect.actionType != BattleActionType.ATTACK){if(effect.TriggerEffect(player, player.gameObject.transform.position)) {returnVal = true;continue;}} 
             //Apply each effect to the target
-            if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO)) returnVal = true;
+
+            if(effect.targetingType == TargetingType.SingleTarget)
+            {
+                if(enemy.counterSpellActive) //If the enemy has counterSpell, you take damage instead
+                {
+                    if(effect.TriggerEffect(player, player.gameObject.transform.position, null, player.attackMulti)){returnVal = true;}
+                    reflected = true;
+                }
+                else{if(effect.TriggerEffect(enemy, enemy.gameObject.transform.position, cardSO, player.attackMulti)){returnVal = true;}}
+            }
         }
+        //If it was triggered, disable the enemy's counterspell
+        if(reflected){enemy.counterSpellActive = false;}*/
+
+
+        //If there are no singleTarget / AOE / Self targeting attacking effects, the corresponding methods won't do anything.
+        //Ask Joshua if you have any concerns
+        if(cardSO.CardType == CardType.ATK)
+        {
+            BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO);
+            BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
+            BattleManager.instance.PlayerAttackSelf(effects, cardSO);
+            returnVal = true;
+        }
+
         return returnVal;
     }
 
@@ -133,10 +158,25 @@ public class Card : PlayItem
         }
         foreach (BattleEffect effect in effects)
         {
-            if(cardSO.CardType != CardType.ATK) if(effect.TriggerEffect(player, player.gameObject.transform.position)){ returnVal = true; continue;}
+            if(cardSO.CardType != CardType.ATK)
+            {
+                if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+                { 
+                    returnVal = true;
+                    //print("card played on self!");
+                    continue;
+                }
+            } 
             //Apply each effect to the target
-            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO)) returnVal = true;
+            if(effect.TriggerEffect(player, player.gameObject.transform.position, cardSO))
+            {
+                returnVal = true;
+            }
         }
+
+        if (returnVal) SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform);
+
+        //print("Playing card on self: " + returnVal);
         return returnVal;
     }
 

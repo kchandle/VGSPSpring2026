@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static GameStateScript; 
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -12,14 +13,23 @@ public class PlayerInteract : MonoBehaviour
 
     public InteractableObject currentHighlight = null;
     public GameObject interactPrompt;
+    public GameStateScript.GameState state;
+    public BattleManager battleManager;
+    public bool battling;
+
+    public AudioClip interactSound;
+
+    public void Start()
+    {
+        GameStateScript.GameState state = GameStateScript.CurrentState;
+    }
 
     private void Update()
     {
         InteractHighlight();
-        if (interacting == false) interactPrompt.SetActive(inRange);
+        if (GameStateScript.CurrentState == GameState.WALKING) interactPrompt.SetActive(inRange);
         else interactPrompt.SetActive(false);
     }
-
 
     //if the interactkey is set to being interacted or whatever, basically if u press the key:
     public void OnInteract(InputAction.CallbackContext obj)
@@ -48,12 +58,12 @@ public class PlayerInteract : MonoBehaviour
                         minRange = range;
                     }
                 }
-
-                if (interactable != null)
-                {
-                    interacting = true;
-                    interactable.interactable.Invoke();
-                }
+            }
+            if (interactable != null)
+            {
+                interacting = true;
+                interactable.interactable.Invoke();
+                SoundEffectManager.Instance.PlaySoundFXClip(interactSound, transform, 0.5f);
             }
         }
     }
@@ -83,7 +93,7 @@ public class PlayerInteract : MonoBehaviour
                     }
 
                     ChangeAllChildrenLayer(interactable.gameObject, "Outline");
-                    if (inter.highlightables.Length > 0) foreach(GameObject g in inter.highlightables) ChangeAllChildrenLayer(g, "Outline");
+                    if (interactable.highlightables.Length > 0) foreach(GameObject g in interactable.highlightables) ChangeAllChildrenLayer(g, "Outline");
                     currentHighlight = interactable;
                     inRange = true;
                 }

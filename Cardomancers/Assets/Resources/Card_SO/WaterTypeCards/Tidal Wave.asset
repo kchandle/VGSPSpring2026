@@ -15,14 +15,18 @@ MonoBehaviour:
   sellValue: 30
   price: 150
   energyCost: 0
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 29ef257213ec0f8499563cc9597e3df9, type: 3}
   cardEffects:
-  - StatusAmount: 25
+  - StatusAmount: 10
     damageType: 3
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 0
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
@@ -30,6 +34,8 @@ MonoBehaviour:
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 1650510629, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Tidal Wave
   description: Deal medium water damage to one enemy.
   tagLine: '"Unfortunate" doesn''t begin to describe my series, this game rewards
@@ -61,4 +67,7 @@ MonoBehaviour:
     pain of a warm summer breeze. You are less than anything you can conceive, while
     I carry on, brimming with joy distilled from detachment.'
   cardType: 0
+  VFXPrefab: {fileID: 1023791361446778419, guid: d5bdf47812b171142ace711d14751dcc, type: 3}
+  cardSound: {fileID: 8300000, guid: 4b748bf60bc2dfd419d294e1e5189859, type: 3}
+  uiShakeMagnitude: 12
   damageType: 1

@@ -1,16 +1,24 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PutUpPostersQuestStep : QuestStep
 {
     private GameObject[] posterLocations;
     [SerializeField] private GameObject posterInteract;
+    // As of 5/5, I am using any sprites that are available as not enough of the posters are approved
+    [SerializeField] private Sprite[] posterImages;
     private int postersPutUp;
-    private int postersToPutUp;
+    private int postersToPutUp = 5;
     
     private void Awake()
     {
         posterLocations = GameObject.FindGameObjectsWithTag("PosterLocation");
+        foreach (GameObject go in posterLocations)
+        {
+            // Set the poster highlight to active
+            go.transform.GetChild(0).gameObject.SetActive(true);
+        }
         postersToPutUp = posterLocations.Length;
     }
 
@@ -53,5 +61,10 @@ public class PutUpPostersQuestStep : QuestStep
     public override string GetQuestStepState()
     {
         return $"{postersToPutUp - postersPutUp} posters left to put up.";
+    }
+
+    public Sprite GetPosterSprite()
+    {
+        return posterImages[postersPutUp];
     }
 }

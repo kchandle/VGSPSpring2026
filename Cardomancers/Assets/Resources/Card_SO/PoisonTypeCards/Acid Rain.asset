@@ -13,16 +13,20 @@ MonoBehaviour:
   m_Name: Acid Rain
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
   sellValue: 100
-  price: 500
+  price: 300
   energyCost: 0
   image: {fileID: 21300000, guid: c2a808a8700722c4696774c37a81928d, type: 3}
   cardEffects:
   - StatusAmount: 0
     damageType: 8
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 3
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
@@ -30,10 +34,14 @@ MonoBehaviour:
     setsFieldCondition: 1
     fieldCondition: {fileID: 11400000, guid: 57041abe50f28c942bfc9fdd1ed23f90, type: 2}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: 1588730026, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Acid Rain
   description: Summons Acid Rain for 3 turns. While Acid Rain is active, deals minor
     Poison Damage to Everyone.
-  tagLine: This will be a romantic 999+ errors like none that has come before. You
-    think so too, right?
+  tagLine: 
   cardType: 0
+  VFXPrefab: {fileID: 6544554410201100935, guid: e11f0d944dd86574fb7fa104f52fc5e0, type: 3}
+  cardSound: {fileID: 8300000, guid: eea8ecd28ae4f4043bba115d4ce35aa3, type: 3}
+  uiShakeMagnitude: 7
   damageType: 0

@@ -30,9 +30,9 @@ public static class Inventory
     #endregion
 
     #region Limiting Variables
-    private static int inventorySize = 10;
+    private static int inventorySize = 50;
     private static int deckSize = 5;
-    private static int hackInventorySize = 5;
+    private static int hackInventorySize = 50;
     #endregion
     
     /// <summary>
@@ -168,6 +168,15 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
         //AddCardToDeck(newCard);
         return true;
+    }
+
+    public static void DeleteNullInInventory()
+    {
+        InventoryList.RemoveAll(card => card.cardSO == null);
+        Debug.Log("Deleted null Cards. Remaining Cards: " + InventoryList.Count);
+
+        HackInventory.RemoveAll(hack => hack == null);
+        Debug.Log("Deleted null Hacls. Remaining Hacks: " + HackInventory.Count);
     }
 
     public static int Cardscount()
@@ -365,7 +374,6 @@ public static class Inventory
         inventoryChanged?.Invoke(null, EventArgs.Empty);
     }
 
-    private static readonly Random rng = new Random();
     /// <summary>
     ///  Randomizes the order of a list of inventory cards
     /// </summary>
@@ -373,17 +381,7 @@ public static class Inventory
     /// <returns>A list of inventory cards with random order</returns>
     public static List<InventoryCard> Shuffle(List<InventoryCard> input)
     {
-        List<InventoryCard> copyInput = new List<InventoryCard>(input);
-        int length = copyInput.Count;
-        while (length > 1)
-        {
-            length--;
-            int k = rng.Next(length + 1);
-            InventoryCard value = copyInput[k];
-            copyInput[k] = copyInput[length];
-            copyInput[length] = value;
-        }
-        return copyInput;
+        return ShuffleList.Shuffle(input);
     }
     #endregion
 

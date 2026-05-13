@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
   m_Name: Blizzard
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 100
-  price: 500
+  sellValue: 175
+  price: 350
   energyCost: 0
   image: {fileID: 21300000, guid: 6e2eed19dc3d0bb4d85d31b974afb29b, type: 3}
   cardEffects:
   - StatusAmount: 0
     damageType: 1
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
+    isNegative: 0
     turnsActive: 5
+    probability: 0
+    statusType: 0
     summonsEnemies: 0
     summonableEnemies: []
     setsNextCard: 0
@@ -30,9 +34,14 @@ MonoBehaviour:
     setsFieldCondition: 1
     fieldCondition: {fileID: 11400000, guid: 39572009e8442954baa664c24568da9e, type: 2}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1255159727, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -1846445739, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Blizzard
   description: Summons a Blizzard for five turns, inflicitng Frostbite on Everyone.
     During the Blizzard, Everyone takes 25% more Damage.
-  tagLine: 
+  tagLine: It snew
   cardType: 0
+  VFXPrefab: {fileID: 7577655892675903763, guid: b5194de9ced395f4f82173df377de447, type: 3}
+  cardSound: {fileID: 8300000, guid: fa2738e87bca26c4b878929a7b8d5474, type: 3}
+  uiShakeMagnitude: 12
   damageType: 0

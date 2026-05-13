@@ -44,6 +44,8 @@ public class QuestPoint : MonoBehaviour
         {
             QuestEvents.FinishQuest(questID);
         }
+
+        FindFirstObjectByType<PlayerInteract>().GetComponent<PlayerInteract>().interacting = false;
     }
 
     // Keeps the state synced with the quest state

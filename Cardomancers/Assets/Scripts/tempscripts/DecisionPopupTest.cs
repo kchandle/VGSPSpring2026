@@ -24,8 +24,8 @@ public class DecisionPopupTest : MonoBehaviour
         {
             if (PopUp.choice == 1)
             {
-                Debug.Log("Truth nuke");
-                objective.CompleteObjective();
+             //   Debug.Log("Truth nuke");
+//                objective.CompleteObjective();
             }
             else if (PopUp.choice == 2)
             {

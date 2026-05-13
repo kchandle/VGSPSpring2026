@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine.UI;
 
+
+
+
 public class ShopUI : MonoBehaviour
 {
     // ui elements
@@ -92,7 +95,7 @@ public class ShopUI : MonoBehaviour
     }
 
 
-
+    #region Buy menu
     //=====================Buying menu=====================//
     //Create list of shopSlotTemplates, This method should only be called at start
     public void CreateBuyMenu(List<ShopItem> exclude = null)
@@ -106,18 +109,20 @@ public class ShopUI : MonoBehaviour
             DestroyImmediate(content.transform.GetChild(0).gameObject);
         }
 
+
         int i = 1;
         foreach(ShopItem item in shop.stock)
         {
             // exclude any in the exclude list.
-            if(exclude != null && exclude.Any(exc => exc.SO == item.SO))
+            if( exclude != null && (exclude.Any(exc => exc.SO_cardSO == item.SO_cardSO)))// || exclude.Any(exc => exc.SO_hackSO == item.SO_hackSO)) )
             {   
                 continue;
             }
 
+
             GameObject cardSlot = Instantiate(shopSlotTemplate, new Vector3(0,0,0), Quaternion.identity);
             cardSlot.transform.SetParent(content.transform, false);
-            //cardSlot.GetComponent<ShopItem>().Init(item.SO);
+            //
             cardSlot.GetComponent<ShopSlot>().Init(item);
             cardSlot.SetActive(true);
             cardSlot.gameObject.name = "Buy " + (i);
@@ -148,7 +153,10 @@ public class ShopUI : MonoBehaviour
             content.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
             content.transform.GetChild(i).gameObject.SetActive(true);
         }
+
+        
     }
+    #endregion
     
 
     //Only called by the test button OnClick event, can be removed when no longer needed for testing.
@@ -157,16 +165,16 @@ public class ShopUI : MonoBehaviour
         Inventory.Money += 1000;
         playerMoneyText.text = "$" + Inventory.Money;
         int i = 0;
-        print("Cards in your inventory: ");
+        //print("Cards in your inventory: ");
         foreach(InventoryCard card in Inventory.InventoryList)
         {
             i++;
-            print($"Card {i}: {card.cardSO.displayName}");
+            //print($"Card {i}: {card.cardSO.displayName}");
         }
     }
     
 
-
+    #region Sell menu
     //=====================Selling menu=====================//
     //Gets cards from the Inventory and creates slots using the cardShopTemplate prefab to display them
     //Note: Hacked cards currently can't be sold.
@@ -181,9 +189,9 @@ public class ShopUI : MonoBehaviour
             DestroyImmediate(sellContent.transform.GetChild(0).gameObject);
         }
 
-        //Create enough shop slots in the sell menu for all cards in the player's inventory
+        //Create enough shop slots in the sell menu for all cards and hacks in the player's inventory
         int i = 0;
-        for(i = 0; i < Inventory.InventorySize; i++)
+        for(i = 0; i < Inventory.InventorySize + Inventory.HackInventorySize; i++)
         {
             GameObject cardSlot = Instantiate(shopSlotTemplate, new Vector3(0,0,0), Quaternion.identity);
             cardSlot.transform.SetParent(sellContent.transform, false);
@@ -206,31 +214,71 @@ public class ShopUI : MonoBehaviour
             sellContent.transform.GetChild(i).gameObject.SetActive(false);
         }
 
+        print("cards sell");
         //Set shop slots that contain player Inventory cards active, leave others inactive
-        for(i = 0; i < Inventory.InventoryList.Count; i++)
+        for(i = 0; i < Inventory.Cardscount(); i++)
         {
             InventoryCard invCard = Inventory.InventoryList[i];
 
             // exclude any in the exclude list.
-            if(exclude != null && exclude.Any(exc => exc.SO == invCard.cardSO))
+            if( exclude != null && exclude.Any(exc => exc.SO_cardSO == invCard.cardSO) )
             {   
                 continue;
             }
+
+
+
 
             //Every card made has a default hack length of 2. Assuming adding a hack increases the lenght to 3, hacked cards will not display
             if(invCard.hacks.Length <= 2)
             {
                 ShopItem item = new ShopItem();
-                item.Init(invCard.cardSO);
+                item.Init_cardSO(invCard.cardSO);
 
                 sellContent.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
                 sellContent.transform.GetChild(i).gameObject.SetActive(true);
             }
         }
+
+        
+
+        //Set shop slots that contain hacks active, leave others inactive
+        for(i = Inventory.Cardscount(); i < Inventory.Cardscount() + Inventory.HackInventory.Count; i++)
+        {
+            Hack_SO hack = Inventory.HackInventory[i - Inventory.InventoryList.Count];
+
+            // exclude any in the exclude list.
+            if( exclude != null && exclude.Any(exc => exc.SO_hackSO == hack) )
+            {   
+                continue;
+            }
+
+            ShopItem item = new ShopItem();
+            item.Init_hackSO(hack);
+        
+            sellContent.transform.GetChild(i).gameObject.GetComponent<ShopSlot>().Init(item);
+            sellContent.transform.GetChild(i).gameObject.SetActive(true);
+            
+        }
     }
+    #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
-
+    #region unused code graveyard
     //==================Code not currently in use==================//
 
     /*private GameObject scrollview;
@@ -407,4 +455,5 @@ public class ShopUI : MonoBehaviour
             }
         }
     }*/
+    #endregion
 }

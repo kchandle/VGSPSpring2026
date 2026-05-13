@@ -87,8 +87,7 @@ public class Playspace : MonoBehaviour
     public GameObject NewPlayItem(GameObject prefab, Card_SO cardSO) 
     {
         if(playItems.Count >= maxItems) return null;
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
+        GameObject newPlayItem = Instantiate(prefab, transform);
 
  
 
@@ -106,10 +105,7 @@ public class Playspace : MonoBehaviour
     {
         if (!cardSO) return null; 
         if(playItems.Count >= maxItems) return null;
-        print("Spawning this Card: " + cardSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
-
+        GameObject newPlayItem = Instantiate(prefab, transform);
  
 
         playItems.Add(newPlayItem.GetComponent<PlayItem>());
@@ -127,9 +123,7 @@ public class Playspace : MonoBehaviour
     {
         if(playItems.Count >= maxItems) return null;
         print("Spawning this Hack: " + hackSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
-
+        GameObject newPlayItem = Instantiate(prefab, transform);
  
 
         playItems.Add(newPlayItem.GetComponent<PlayItem>());
@@ -145,8 +139,7 @@ public class Playspace : MonoBehaviour
     {
         if(playItems.Count >= maxItems) return null;
         print("Spawning this Card: " + hackSO.name);
-        GameObject newPlayItem = Instantiate(prefab);
-        newPlayItem.transform.SetParent(transform);
+        GameObject newPlayItem = Instantiate(prefab, transform);
 
  
 
@@ -163,7 +156,6 @@ public class Playspace : MonoBehaviour
     // Destroys a specific PlayItem in this PlaySpace
     public void DestroyPlayItem(PlayItem playItem)
     {
-        print(gameObject.name);
         if (gameObject.name == "HackSlot")
         {
             Destroy(playItems[0].gameObject);

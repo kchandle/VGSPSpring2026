@@ -26,8 +26,8 @@ public class CardImageDictionary : MonoBehaviour
 
     #endregion
 
-    public Dictionary<DamageType, Sprite> cardElementImageDictionary = new Dictionary<DamageType, Sprite>();
-    public Dictionary<damageType, Sprite> cardAttackTypeDictionary = new Dictionary<damageType, Sprite>();
+    public static Dictionary<DamageType, Sprite> cardElementImageDictionary = new Dictionary<DamageType, Sprite>();
+    public static Dictionary<damageType, Sprite> cardAttackTypeDictionary = new Dictionary<damageType, Sprite>();
     public void Awake()
     {
 
@@ -43,7 +43,7 @@ public class CardImageDictionary : MonoBehaviour
         cardElementImageDictionary.Add(DamageType.Dark, imageDark);
         cardElementImageDictionary.Add(DamageType.DamageBlock, imageDamageBlock);
         cardElementImageDictionary.Add(DamageType.Psychic, imagePsychic);
-        cardElementImageDictionary.Add(DamageType.Stun, imageStun);
+        //cardElementImageDictionary.Add(DamageType.Stun, imageStun);
 
         // Additions to the cardAttackTypeDictionary dict
         cardAttackTypeDictionary.Add(damageType.damageInstant, imageDamageInst);
