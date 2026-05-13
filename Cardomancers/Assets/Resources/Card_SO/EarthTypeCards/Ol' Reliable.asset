@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Ol' Reliable
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
   sellValue: 15
-  price: 75
+  price: 100
   energyCost: 0
   image: {fileID: 21300000, guid: 251f887befee65542ab21b44e2de153f, type: 3}
   cardEffects:
   - StatusAmount: 3
     damageType: 4
     actionType: 0
+    targetingType: 0
     isStatusEffect: 0
     isPerishable: 0
     isNegative: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
   - StatusAmount: 0
     damageType: 4
     actionType: 0
+    targetingType: 0
     isStatusEffect: 1
     isPerishable: 1
     isNegative: 1
@@ -48,9 +50,14 @@ MonoBehaviour:
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -1335003187, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Ol' Reliable
   description: Deal minor Earth Damage by beaning the Target with a rock... with
     no additional effects...
   tagLine: 
   cardType: 0
+  VFXPrefab: {fileID: 3875396661595552711, guid: fa6975faa6b0bd848863834064697862, type: 3}
+  cardSound: {fileID: 8300000, guid: 0d03d6176c6148948820002c13c037cf, type: 3}
+  uiShakeMagnitude: 7
   damageType: 0

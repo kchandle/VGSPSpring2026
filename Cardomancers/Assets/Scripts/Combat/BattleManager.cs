@@ -41,6 +41,7 @@ public class BattleManager : MonoBehaviour
     public Canvas battleUI; // the canvas for battle UI elements
     public GameObject winScreen; // the canvas displayed when the player wins
     public GameObject loseScreen; // the canvas displayed when the player loses
+    public UIShake uiShake;
     #endregion
 
     [Tooltip("The current battle Scriptable Object, will be set by the object that calls on the battle script, only here for visibility")]
@@ -556,6 +557,9 @@ public class BattleManager : MonoBehaviour
                         else
                         {
                             effect.TriggerEffect(playerController, player.transform.position, card.cardSO, enemyScript.attackMulti);
+
+                            SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
+                            uiShake.Shake(0.2f, 1f);
                         }
                         break;
                     }
@@ -563,12 +567,16 @@ public class BattleManager : MonoBehaviour
                     {
                         print("Enemy defending themelves");
                         effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
+                        uiShake.Shake(0.2f, 1f);
                         break;
                     }
                     case(BattleActionType.HEAL):
                     {
                         print("Enemy healing themselves");
                         effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
+                        uiShake.Shake(0.2f, 1f);
                         break;
                     }
                     default:
@@ -862,19 +870,23 @@ public class BattleManager : MonoBehaviour
 
                         enemyScript.cSpellTriggered = true;
                         print("counterspell triggered");
+                        uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     }
                     else
                     {
                         effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
+                        uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     }
                     break;
                 }
                 case(BattleActionType.DEFEND):
                 {
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 case(BattleActionType.HEAL):
                 {
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 default:
@@ -916,20 +928,24 @@ public class BattleManager : MonoBehaviour
 
                             enemyScript.cSpellTriggered = true;
                             print("counterspell triggered");
+                            uiShake.Shake(0.2f, card.uiShakeMagnitude);
                         }
                         else
                         {
                             effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
+                            uiShake.Shake(0.2f, card.uiShakeMagnitude);
                         }
                     }
                     break;
                 }
                 case(BattleActionType.DEFEND):
                 {
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 case(BattleActionType.HEAL):
                 {
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 default:
@@ -968,14 +984,17 @@ public class BattleManager : MonoBehaviour
                 {
                     
                     effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 case(BattleActionType.DEFEND):
                 {
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 case(BattleActionType.HEAL):
                 {
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 default:

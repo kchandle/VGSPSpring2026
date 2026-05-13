@@ -1,12 +1,14 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
-using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using TMPro;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using System.Reflection;
+using UnityEngine.UIElements;
 
 
 
@@ -21,7 +23,7 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance; // singleton instance
     public Animator animator; // the current animator changing the talksprite
 
-
+    private GameStateScript.GameState initialState;
     [SerializeField]
     
     public float textDelay; // delay between characters
@@ -37,7 +39,7 @@ public class DialogueManager : MonoBehaviour
 
     public TextMeshProUGUI textElement; // the current text box the dialogue text is being loaded into
     public TextMeshProUGUI titleElement; // the current text box the dialogue speaker is being loaded into
-    public Image talkspriteImage; // the image element where the talksprite will be loaded
+    public UnityEngine.UI.Image talkspriteImage; // the image element where the talksprite will be loaded
 
     public InputActionAsset inputActions; //The set of actions the player can perform, reference used to react to player input
     public InputAction nextAction;
@@ -45,14 +47,24 @@ public class DialogueManager : MonoBehaviour
     public DialogueSO dialogue; // current dialogue SO
 
 
-    public Transform playerTransform; // Assign the player's transform in the Inspector
+    public Transform playerTransform;
+    public CinemachineOrbitalFollow camPosition;
+    public CinemachineRotationComposer camRotation;
+        public PlayerCamera cameraScript; 
+        public CinemachineCamera cam;
+        public CinemachineInputAxisController input;
+        CinemachineBrain brain;
+       
+        public Transform mainCam;
+    // Assign the player's transform in the Inspector
     public StartBattle reference;
+
+        public List<Transform> cameraMoveTransforms;
+        public List<Transform> playerMoveTransforms;
 
     //Gets player action map to react to player input
     private void Awake()
-    {
-        playerTransform = GameObject.FindWithTag("Player").transform;
-        nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");  
+    {  
         // Check if an instance already exists
         if (instance != null && instance != this)
         {
@@ -60,9 +72,18 @@ public class DialogueManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-
         // Otherwise, set the instance to this object
         instance = this;
+
+        playerTransform = GameObject.FindWithTag("Player").transform;
+        nextAction = inputActions.FindActionMap("MapWalking").FindAction("Interact");
+
+        brain = FindFirstObjectByType<CinemachineBrain>();
+            input = FindFirstObjectByType<CinemachineInputAxisController>();
+            cameraScript = FindFirstObjectByType<PlayerCamera>();
+           
+        mainCam = Camera.main.transform;
+
 
         // Optional: Keep the object alive when loading new scenes
         DontDestroyOnLoad(this.gameObject);
@@ -75,12 +96,14 @@ public class DialogueManager : MonoBehaviour
         print(reference.name);
     }
 
-    //void Start()
-    //{
-    //    StartDialogue(dialogue);
-    //}
+        //void Start()
+        //{
+        //    StartDialogue(dialogue);
+        //}
 
-    // Update is called once per frame
+        // Update is called once per frame
+
+        Coroutine cor;
     void Update()
     {
         if(canvas.activeInHierarchy)
@@ -94,7 +117,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-                    StopAllCoroutines();
+                    if (cor != null) StopCoroutine(cor);
                     textElement.text = dialogue.lines[index].text;
                 }
             }
@@ -119,12 +142,37 @@ public class DialogueManager : MonoBehaviour
 
         DialogueEvents.StartDialogue(newDialogue);
 
-        StartCoroutine(TypeLine());
+        initialState = GameStateScript.CurrentState;
+        GameStateScript.CurrentState = GameStateScript.GameState.SPEAKING;
+
+            
+        brain.enabled = false;
+            input.enabled = false;
+            cameraScript.enabled = false;
+        cor = StartCoroutine(TypeLine());
     }
 
     IEnumerator TypeLine()
     {
-        textElement.text = string.Empty;
+            if (playerMoveTransforms.Count > index)
+            {
+                if (playerMoveTransforms[index] != null)
+                {
+                    CharacterController cc = playerTransform.GetComponent<CharacterController>();
+                    cc.enabled = false;
+                    playerTransform.position = playerMoveTransforms[index].position;
+                    playerTransform.rotation = playerMoveTransforms[index].rotation;
+                    cc.enabled = true;
+                }
+            }
+
+            if (cameraMoveTransforms.Count > index)
+            {
+                if (camCor != null) StopCoroutine(camCor);
+                if (cameraMoveTransforms[index] != null) camCor = StartCoroutine(LerpCam(cameraMoveTransforms[index].transform.position, cameraMoveTransforms[index].transform.rotation));
+            }
+
+            textElement.text = string.Empty;
         titleElement.text = dialogue.lines[index].displayName;
         talkspriteImage.sprite = dialogue.lines[index].talksprite;
 
@@ -134,6 +182,8 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(dialogue.lines[index].textDelay);
         }
     }
+
+        private Coroutine camCor;
     void NextLine( )
     {
         if (index < dialogue.lines.Length - 1)
@@ -141,6 +191,7 @@ public class DialogueManager : MonoBehaviour
             index++;
             
             textElement.text = string.Empty;
+
             StartCoroutine(TypeLine());            
         }
         else
@@ -154,7 +205,13 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
+                brain.enabled = true;
+                input.enabled = true;
+                cameraScript.enabled = true;
+                playerMoveTransforms = new();
+                cameraMoveTransforms = new();
                 playerTransform.gameObject.GetComponent<PlayerInteract>().interacting = false;
+                GameStateScript.CurrentState = initialState;
             }
             //if (!reactive)
             //{
@@ -162,6 +219,21 @@ public class DialogueManager : MonoBehaviour
             //}
         }
 
+    }
+
+    public IEnumerator LerpCam(Vector3 newCamPosition, Quaternion newCamRotation)
+    {
+            Camera mainCam = Camera.main;
+            mainCam.transform.position = newCamPosition;
+            
+            while (Quaternion.Angle(newCamRotation, mainCam.transform.rotation) > 0.01)
+            {
+                mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, newCamRotation, Time.deltaTime * 3f);
+                yield return null;
+            }
+
+            mainCam.transform.rotation = newCamRotation;
+            camCor = null;
     }
 
     // Get closest object to player.

@@ -1082,6 +1082,7 @@ MonoBehaviour:
   battleUI: {fileID: 2787398504783767383}
   winScreen: {fileID: 2385186474803261252}
   loseScreen: {fileID: 2348843615193485533}
+  uiShake: {fileID: 2591637921066884215}
   startBattle: {fileID: 0}
   battle: {fileID: 0}
   fieldCondition: {fileID: 0}
@@ -1655,6 +1656,7 @@ GameObject:
   - component: {fileID: 669352583763260946}
   - component: {fileID: 5085139686918388015}
   - component: {fileID: 4122093879967743449}
+  - component: {fileID: 2591637921066884215}
   m_Layer: 5
   m_Name: Backround
   m_TagString: Untagged
@@ -1719,6 +1721,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2591637921066884215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5007279789062685883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc824745bfbaa149bb67de648bce2f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIShake
 --- !u!1 &5752563193326630341
 GameObject:
   m_ObjectHideFlags: 0

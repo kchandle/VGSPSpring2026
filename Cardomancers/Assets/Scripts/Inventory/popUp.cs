@@ -12,6 +12,7 @@ public class popUp : MonoBehaviour
     public GameObject canvas;
     public GameObject yes;
     public GameObject no;
+    public GameObject background; 
     // "Decision" if the pop up has a yes or no
     private bool decision = false;
     // choice depends on which button hit
@@ -58,6 +59,7 @@ public class popUp : MonoBehaviour
         {
             yes.SetActive(true);
             no.SetActive(true);
+            background.SetActive(true);
         }
         StartCoroutine(PopUpTimer(timer));
     }
@@ -83,6 +85,7 @@ public class popUp : MonoBehaviour
         popUpText.text = string.Empty;
         yes.SetActive(false);
         no.SetActive(false);
+        background.SetActive(false);
 
         // Sets canvas inactive and empties textbox for next use
     }

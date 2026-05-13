@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
   m_Name: CounterSpell
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 50
-  price: 250
+  sellValue: 75
+  price: 175
   energyCost: 0
   image: {fileID: 21300000, guid: 12047309896789043b70d8378277ef5b, type: 3}
   cardEffects:
@@ -34,9 +34,13 @@ MonoBehaviour:
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
   particleSystem: {fileID: 0}
+  damageTypeIcon: {fileID: 687604367, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
+  elementIcon: {fileID: -525451895, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Counter Spell
   description: Reverses the next spell cast on the user back at the attacker.
   tagLine: Predictable.
   cardType: 1
   VFXPrefab: {fileID: 4171230048125168988, guid: b4a56c3719950b7438bf970b70bf1120, type: 3}
+  cardSound: {fileID: 8300000, guid: 62a2599eed8bdf243b1d1a719ebc951d, type: 3}
+  uiShakeMagnitude: 7
   damageType: 1

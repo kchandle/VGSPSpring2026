@@ -15,6 +15,7 @@ public class GameStateScript
         PAUSE,
         INVENTORY,
         DEAD,
+        SHOPPING,
         LOADINGSCREEN,
         NULL
     }

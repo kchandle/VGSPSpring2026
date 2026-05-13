@@ -2,26 +2,26 @@ using UnityEngine;
 
 public class RandomBattleMusic : MonoBehaviour
 {
-    public AudioClip OneBattleTheme;
-    public AudioClip TwoBattleTheme;
-
-    ChangeMusic changeMusic;
-    public void Awake()
-    {
-        changeMusic = new ChangeMusic();
-    }
+    public AudioClip[] battleThemes;
 
     public void PlayWhenBattling()
     {
-        int randomInt = Random.Range(1, 3);
+        int randomInt = Random.Range(0, battleThemes.Length);
 
-        if (randomInt == 1)
+        this.ChangeMusicMethod(battleThemes[randomInt]);
+    }
+
+    protected private void ChangeMusicMethod(AudioClip clip)
+    {
+        MusicPlayer musicPlayer = FindFirstObjectByType<MusicPlayer>();
+        if (musicPlayer == null) return;
+        if (!musicPlayer.Clips.Contains(clip)) musicPlayer.Clips.Add(clip);
+        musicPlayer.Pause();
+
+        while (musicPlayer.AudioIndex != musicPlayer.Clips.IndexOf(clip))
         {
-            changeMusic.ChangeMusicMethod(OneBattleTheme);
+            musicPlayer.Next();
         }
-        else
-        {
-            changeMusic.ChangeMusicMethod(TwoBattleTheme);
-        }
+        musicPlayer.Play();
     }
 }

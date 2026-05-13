@@ -30,9 +30,9 @@ public static class Inventory
     #endregion
 
     #region Limiting Variables
-    private static int inventorySize = 10;
+    private static int inventorySize = 50;
     private static int deckSize = 5;
-    private static int hackInventorySize = 5;
+    private static int hackInventorySize = 50;
     #endregion
     
     /// <summary>

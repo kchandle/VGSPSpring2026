@@ -63,9 +63,10 @@ public class StartBattle : MonoBehaviour
 
     public  void SetObjectives(BattleManager battleManager)
     {
-        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Object"))
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Objective"))
         {
             o.GetComponent<Objective>().SetBattleManager(battleManager);
+            print("done");
         }
     }
 
@@ -111,6 +112,7 @@ public class StartBattle : MonoBehaviour
                 }
                 battleSystem.StartBattle(battleToStart);
                 battleStarted = true;
+        
 
                     
 
