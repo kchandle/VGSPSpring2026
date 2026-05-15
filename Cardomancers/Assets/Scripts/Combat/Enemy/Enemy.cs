@@ -107,6 +107,23 @@ public class Enemy : MonoBehaviour
     public bool weatherImmune = false; //Whether or not enemy is immune to weather
     public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
     public float fieldEndBoost = 1f; //current endurance multiplier as a result of a Field Effect
+
+    public float CurrentHealth
+    {//ensure health can't be increased while unhealable. does nothing otherwise.
+        get
+        {
+            return currentHealth;
+        }
+        set
+        {
+            if(value > currentHealth && !healable)
+            {
+                print("Player is currently unhealable");
+                return;
+            }
+            currentHealth = (int)value;
+        }   
+    }
     //---
 
     [Header(" ")]
@@ -334,6 +351,7 @@ public class Enemy : MonoBehaviour
     public IEnumerator StatusEffects()
     {
         //Any status added to enemy should be added to playercontroller and vice versa
+        print("--Enemy Status Effects--");
 
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
@@ -424,14 +442,14 @@ public class Enemy : MonoBehaviour
                 //---Stat boosts
                 case(StatusEffectType.AttackBoost):
                 {
-                    print("Attack Boost statusEffect of " + status.statusAmount + " at index " + i);
+                    print("Attack Boost. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Change the attack multiplier accordingly
                     attackMulti *= ((float)status.statusAmount/100);
                     break;
                 }
                 case(StatusEffectType.EnduranceBoost):
                 {
-                    print("Endurance Boost statusEffect of " + status.statusAmount + " at index " + i);
+                    print("Endurance Boost. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Change the endurance multiplier accordingly
                     enduranceMulti *= ((float)status.statusAmount/100);
                     break;
@@ -441,13 +459,13 @@ public class Enemy : MonoBehaviour
                 //---Cleanses
                 case(StatusEffectType.CleanseNegative):
                 {
-                    print("Cleanse negative statusEffects at index: " + i);
+                print("Cleanse Negative. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled above
                     break;
                 }
                 case(StatusEffectType.CleanseAll):
                 {
-                    print("Cleanse all statusEffects at index: " + i);
+                    print("Cleanse All. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled above
                     break;
                 }
@@ -456,49 +474,40 @@ public class Enemy : MonoBehaviour
                 //---Simple DOTs
                 case(StatusEffectType.Regeneration):
                 {
-                        Regen.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
-                        print("Regeneration statusEffect at index: " + i);
-
+                    Regen.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
+                    print("Regeneration. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do heal
-                    if(healable)
-                    {
-                        /*if( weaknesses.Contains(status.damageType) ){ currentHealth += Mathf.FloorToInt(status.statusAmount*DamageReduct);  }
-                        else if (resistances.Contains(status.damageType)){ currentHealth += Mathf.FloorToInt(status.statusAmount * DamageMult); }
-                        else{ currentHealth += status.statusAmount; }*/
-
-                        currentHealth += status.statusAmount; 
-                    }
+                    /*if( weaknesses.Contains(status.damageType) ){ currentHealth += Mathf.FloorToInt(status.statusAmount*DamageReduct);  }
+                    else if (resistances.Contains(status.damageType)){ currentHealth += Mathf.FloorToInt(status.statusAmount * DamageMult); }
+                    else{ currentHealth += status.statusAmount; }*/
+                    CurrentHealth += status.statusAmount; 
                     break;
                 }
                 case(StatusEffectType.OnFire):
                 {
                     OnFire.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
-                    print("OnFire statusEffect at index: " + i);
-
+                    print("OnFire. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do burn damage. Is Super effective if the enemy is weak to the damage type
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
                     enduranceMulti *= 0.75f;
-
                     break;
                 }
                 case(StatusEffectType.Poisoned):
                 {
-                        Poison.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
-                    print("Poisoned statusEffect at index: " + i);
-
+                    Poison.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
+                    print("Poisoned. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do poison damage. Is super effective if the enemy is weak to the damage type (poison)
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount*DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                     else{ currentHealth -= status.statusAmount; }
-
                     break;
                 }
                 case(StatusEffectType.Frostbite):
                 {
-                        Frostbite.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
-                    print("Frostbite statusEffect at index: " + i);
+                    Frostbite.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
+                    print("Frostbite. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do Frostbite damage. Is super effective if the enemy is weak to ice
                     if( weaknesses.Contains(status.damageType) ){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageMult);  }
                     else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
@@ -508,9 +517,8 @@ public class Enemy : MonoBehaviour
                 }
                 case(StatusEffectType.Awestruck):
                 {
-                        Awestruck.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
-                    print("Awestruck statusEffect at index: " + i);
-
+                    Awestruck.SetActive(statusEffects[i].turnsRemaining <= 1 ? false : true);
+                    print("Awestruck. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do Awestruck damage
                     //DOT that only triggers while stunned
                     if(isStunned)
@@ -519,7 +527,6 @@ public class Enemy : MonoBehaviour
                         else if (resistances.Contains(status.damageType)){ currentHealth -= Mathf.FloorToInt(status.statusAmount * DamageReduct); }
                         else{ currentHealth -= status.statusAmount; }
                     }
-
                     break;
                 }
                 //---
@@ -527,55 +534,44 @@ public class Enemy : MonoBehaviour
                 //---More complicated
                 case(StatusEffectType.Stun): //done
                 {
-                    print("Stun statusEffect at index: " + i);
-
+                    print("Stun. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled in the exceptions above
-
                     break;
                 }
                 case(StatusEffectType.CounterSpell): //*
                 {
-                    print("CounterSpell statusEffect at index: " + i);
-
+                    print("CounterSpell. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Set counterSpellActive to true, then immedieately remove this status effect.
                     //counterSpellActive will be set to false in Card, after a spell is reflected
                     counterSpellActive = true;
                     cSpellTriggered = false;
                     statusEffects[i].turnsRemaining = -1;
-
                     break;
                 }
                 case(StatusEffectType.EyeOfTheStorm):
                 {
-                    print("EyeOfTheStorm statusEffect at index: " + i);
-
+                    print("EyeOfTheStorm. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //When field effects act, they'll check if the target is weatherImmune first. See in BattleEffect and BattleManager
                     weatherImmune = true;
-
                     break;
                 }
                 case(StatusEffectType.AntiHeal): // done
                 {
-                    print("AntiHeal statusEffect at index: " + i);
-
+                    print("AntiHeal. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled in the exceptions above
-
                     break;
                 }
                 case(StatusEffectType.Evisceration): //done
                 {
-                    print("Evisceration statusEffect at index: " + i);
-
+                    print("Evisceration. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //
-                    currentHealth -= 200;
-
                     break;
                 }
                 //---
 
                 case(StatusEffectType.Random):
                 {
-                    print("Random statusEffect at index: " + i);
+                    print("Random. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //
                     break;
                 }
@@ -604,6 +600,39 @@ public class Enemy : MonoBehaviour
         //=====End Loop=====//
 
         yield return null;
+    }
+
+
+    public void AddStatusEffect(StatusEffectContainer newStatus)
+    {
+        if(newStatus.statusType == StatusEffectType.Evisceration)
+        {
+            currentHealth -= 200;
+            return;
+        }
+
+
+
+        if(newStatus.statusType == StatusEffectType.Stun)
+        {
+            isStunned = true;
+            return;
+        }
+        
+        foreach(StatusEffectContainer status in statusEffects)
+        {
+            //if the new status effect is equal to an old one in every important aspect and comes from the same card, just add duration to the old one and don't add the new one to the list.
+            //Ex: using Dagger of Shadow twice in a row will just decrease attack for a long time instead of a super large decrease
+            if(newStatus.statusSource == status.statusSource && newStatus.statusType == status.statusType)
+            {
+                status.turnsRemaining += newStatus.turnsRemaining;
+                return;
+            }
+        }
+
+        //if the status is unique instead, just add it to the list
+        statusEffects.Add(newStatus);
+        return;
     }
     #endregion
 

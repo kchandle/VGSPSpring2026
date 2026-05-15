@@ -24,6 +24,11 @@ public class PlayerInteract : MonoBehaviour
         GameStateScript.GameState state = GameStateScript.CurrentState;
     }
 
+    public void PrintFart()
+    {
+        print("Fart");
+    }
+
     private void Update()
     {
         InteractHighlight();
@@ -63,6 +68,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 interacting = true;
                 interactable.interactable.Invoke();
+            
                 SoundEffectManager.Instance.PlaySoundFXClip(interactSound, transform, 0.5f);
             }
         }

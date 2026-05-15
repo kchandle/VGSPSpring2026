@@ -91,9 +91,7 @@ public class DialogueManager : MonoBehaviour
 
     public void AssignStartBattle(StartBattle starter)
     {
-        print("assigned " + starter.name);
         reference = starter;
-        print(reference.name);
     }
 
         //void Start()
@@ -184,7 +182,7 @@ public class DialogueManager : MonoBehaviour
     }
 
         private Coroutine camCor;
-    void NextLine( )
+    void NextLine()
     {
         if (index < dialogue.lines.Length - 1)
         {
@@ -201,7 +199,12 @@ public class DialogueManager : MonoBehaviour
             canvas.SetActive(false);
             if(dialogue.startsBattle && Inventory.Deck.Count >= 2) 
             {
-                reference.StartBattleNow();
+                    GameStateScript.CurrentState = initialState;
+                    cameraMoveTransforms = new();
+                    playerMoveTransforms = new();
+                    cameraScript.enabled = true;
+                    reference.StartBattleNow();
+
             }
             else
             {

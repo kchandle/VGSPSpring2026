@@ -26,7 +26,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject shopSlotTemplate; //set in editor, is the lone cardShopTemplate object under IgnoreContent. This was more convenient than making a prefab.
     
     //Music Player
-    private MusicPlayer musicPlayer;
+    [SerializeField] private MusicPlayer musicPlayer;
 
     //Ref to shop script, which controls stock and the core functionality of buying and selling cards.
     [SerializeField] private Shop shop = new();
@@ -57,7 +57,7 @@ public class ShopUI : MonoBehaviour
 
         this.canvas = gameObject;
 
-        this.musicPlayer = gameObject.GetComponent<MusicPlayer>();
+        this.musicPlayer = FindAnyObjectByType<MusicPlayer>();
 
         this.musicPlayer.Play();
 
