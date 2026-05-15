@@ -32,7 +32,7 @@ public class QuestInfoSO : ScriptableObject
     private void OnValidate()
     {
         ID = this.name;
-        UnityEditor.EditorUtility.SetDirty(this);
+        // UnityEditor.EditorUtility.SetDirty(this);
     }
 
 }
