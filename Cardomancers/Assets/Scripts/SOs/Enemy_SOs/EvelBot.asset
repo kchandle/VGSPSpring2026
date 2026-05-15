@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 728b5e43d7f81ab43882e16ab5e09a08, type: 3}
+  m_Name: EvelBot
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy_SO
+  deck:
+  - cardSO: {fileID: 11400000, guid: 224325d008efdc64aa07c30491c462bb, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 7ea24cde69bdd094399e68c7887ad78b, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: d4c19f4b75c1a09408801462935deb85, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  - cardSO: {fileID: 11400000, guid: 42d839688b53c424f8f99eeeaba7e40a, type: 2}
+    hacks: []
+    length: 0
+    cardID: 
+  maxHealth: 65
+  displayName: EvelBot
+  timer: 0
+  energy: 4
+  enemyImage: {fileID: 1476469269, guid: a03f796505b535b43aa7a80b138b0f37, type: 3}
+  enemyAttkAnim: {fileID: 9100000, guid: 27f2e718517967443b65c49d0eab999b, type: 2}
+  enemyPrefab: {fileID: 1754986763223118875, guid: 179662ea861125748b22f197d73407d7, type: 3}
+  resistances: 020000000800000007000000
+  weaknesses: 0300000004000000
+  drops:
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 35
+    dropType: 2
+  - weight: -1
+    item: {fileID: 0}
+    quantity: 35
+    dropType: 3
+  - weight: 2
+    item: {fileID: 11400000, guid: 49a9969ccf5991c45ad7b2c64c604902, type: 2}
+    quantity: 35
+    dropType: 0
