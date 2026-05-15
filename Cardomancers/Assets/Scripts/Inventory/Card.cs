@@ -140,12 +140,9 @@ public class Card : PlayItem
         //Ask Joshua if you have any concerns
         if(cardSO.CardType == CardType.ATK)
         {
-            StartCoroutine(BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO));
-            print("************ 1");
-            StartCoroutine(BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO));
-            print("************ 2");
-            StartCoroutine(BattleManager.instance.PlayerAttackSelf(effects, cardSO));
-            print("************ 3");
+            BattleManager.instance.PlayerAttackOneEnemy(effects, enemy, cardSO);
+            BattleManager.instance.PlayerAttackAllEnemies(effects, cardSO);
+            BattleManager.instance.PlayerAttackSelf(effects, cardSO);
             returnVal = true;
 
             SoundEffectManager.Instance.PlaySoundFXClip(cardSO.cardSound, player.transform, .65f);

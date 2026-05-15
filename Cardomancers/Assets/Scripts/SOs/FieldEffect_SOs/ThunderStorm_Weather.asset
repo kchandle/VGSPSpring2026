@@ -17,14 +17,15 @@ MonoBehaviour:
   name: Thunderstorm
   description: Strikes a random enemy/player with lightning every turn while active
   active: 0
-  boostsTypeDamage: 0
+  hasStatChanges: 0
+  boostsTypeDamage: 1
   chipDamage: 1
   effects:
   - statChanges: 0
     attackBoost: 0
     enduranceBoost: 0
-    boostedTypes: 
-    boostAmount: 0
+    boostedTypes: 07000000
+    boostAmount: 1.5
     dealsChipDamage: 1
     chipIsRandom: 1
     chipDamageCard: {fileID: 11400000, guid: 53bbc42fc6990004ea6e035cbbf73fb7, type: 2}

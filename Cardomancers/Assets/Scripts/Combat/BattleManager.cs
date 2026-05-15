@@ -490,7 +490,7 @@ public class BattleManager : MonoBehaviour
         yield return StartCoroutine(playerController.StatusEffects());
 
         //Evaluate Field Conditions for the turn
-        StartCoroutine(TurnBasedFieldEffects());
+        yield return StartCoroutine(TurnBasedFieldEffects());
 
 
         yield return new WaitForSeconds(1f);
@@ -551,6 +551,8 @@ public class BattleManager : MonoBehaviour
                     hits = UnityEngine.Random.Range(effect.minHits, effect.maxHits + 1);
                 }
 
+                #region jfdsak.jkfdag
+                #endregion
                 for(int a = 0; a < hits; a++)
                 {
                     if(effect.summonsEnemies)
@@ -570,6 +572,7 @@ public class BattleManager : MonoBehaviour
                                 effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO, enemyScript.attackMulti);
                                 print("Spell countered");
                                 reflected = true;
+                                SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                             }
                             else
                             {
@@ -877,30 +880,26 @@ public class BattleManager : MonoBehaviour
 
 
     //Method for the player to attack one enemy. Done just to centralize the system and make universal changes easier
-    public IEnumerator PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript, Card_SO card)
+    public void PlayerAttackOneEnemy(List<BattleEffect> effects, Enemy enemyScript, Card_SO card)
     {
         foreach(BattleEffect effect in effects)
         {
-            print("----1");
             if(effect.targetingType != TargetingType.SingleTarget){continue;}
-            print("----2");
 
             switch(effect.actionType)
             {
                 //Outgoing attacks to be lauched on one enemy
                 case(BattleActionType.ATTACK):
                 {
-                    print("e:" + effect.isMultiHit);
                     //Multi Hit handling
                     int hits = 1;
                     if(effect.isMultiHit)
                     {
                         hits = UnityEngine.Random.Range(effect.minHits, effect.maxHits + 1);
-                        print(hits);
                     }
 
                     //If it isn't a multihit, the effect will only trigger once
-                    for(int a = 0; a < hits; a++)
+                    for(int i = 0; i < hits; i++)
                     {
                         //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
                         if(enemyScript.counterSpellActive)
@@ -917,8 +916,10 @@ public class BattleManager : MonoBehaviour
                             uiShake.Shake(0.2f, card.uiShakeMagnitude);
                         }
                         
-                        yield return new WaitForSeconds(0.4f);
-                        print("suspect");
+
+                        //Making this method a coroutine and using WaitForSeconds does not work, it terminates upon hitting the wait
+                        //yield return new WaitForSeconds(0.001f);
+                        //print("test");
                     }
                     break;
                 }
@@ -951,19 +952,16 @@ public class BattleManager : MonoBehaviour
             enemyScript.cSpellTriggered = false;
         }
 
-        yield return null;
-
+        //yield return null;
     }
 
     //Method for specifically the player to affect ALL enemies with a card and its hacks
-    public IEnumerator PlayerAttackAllEnemies(List<BattleEffect> effects, Card_SO card)
+    public void PlayerAttackAllEnemies(List<BattleEffect> effects, Card_SO card)
     {
         foreach(BattleEffect effect in effects)
         {
-            print("----3");
             if(effect.targetingType != TargetingType.AOETarget){continue;}
-            print("----4");
-
+  
             switch(effect.actionType)
             {
                 //Damaging attacks the player hits every other enemy with
@@ -1001,7 +999,7 @@ public class BattleManager : MonoBehaviour
                         
                         }
 
-                        yield return new WaitForSeconds(0.4f);
+                        //yield return new WaitForSeconds(0.01f);
                     }
                     break;
                 }
@@ -1038,11 +1036,11 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        yield return null;
+        //yield return null;
     }
 
     //Method for the player to attack themselves
-    public IEnumerator PlayerAttackSelf(List<BattleEffect> effects, Card_SO card)
+    public void PlayerAttackSelf(List<BattleEffect> effects, Card_SO card)
     {
         foreach(BattleEffect effect in effects)
         {
@@ -1068,7 +1066,7 @@ public class BattleManager : MonoBehaviour
                         effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
                         uiShake.Shake(0.2f, card.uiShakeMagnitude);
 
-                        yield return new WaitForSeconds(0.4f);
+                        //yield return new WaitForSeconds(0.4f);
                     }
                     break;
                 }
@@ -1092,7 +1090,7 @@ public class BattleManager : MonoBehaviour
 
         }
 
-        yield return null;
+        //yield return null;
     }
     #endregion
 
@@ -1120,7 +1118,7 @@ public class BattleManager : MonoBehaviour
             fieldCondition.active = false;
             yield break;
         }
-        print(fieldCondition.name + "field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
+        print(fieldCondition.name + " field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
 
 
 
