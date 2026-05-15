@@ -25,17 +25,6 @@ public class CardInfoPopUp : PlayItem
     [SerializeField] private Image damageImage;
     // the background
     [SerializeField] private Image backgroundImage;
-    
-    [Header("Card type images")]
-    [SerializeField] private Sprite ATKImage;
-    [SerializeField] private Sprite DEFImage;
-    [SerializeField] private Sprite RSTImage;
-    
-    [Header("Damage images")]
-    [SerializeField] private Sprite InstantDamageImage;
-    [SerializeField] private Sprite DamageOverTimeImage;
-    [SerializeField] private Sprite InstantHealImage;
-    [SerializeField] private Sprite HealOverTimeImage;
 
     [Tooltip("Distance from the center of the card the popup is giving info about")]
     [SerializeField] private float padding;
@@ -56,37 +45,10 @@ public class CardInfoPopUp : PlayItem
         cardImage.sprite = card.cardImage.sprite;
         description.text = card.inventoryCard.cardSO.description;
         cardType.text = card.inventoryCard.cardSO.CardType.ToString();
-        switch (card.inventoryCard.cardSO.CardType)
-        {
-            case global::CardType.ATK:
-                typeImage.sprite = ATKImage;
-                break;
-            case global::CardType.DEF:
-                typeImage.sprite = DEFImage;
-                break;
-            case global::CardType.RST:
-                typeImage.sprite = RSTImage;
-                break;
-        }
-        switch (card.inventoryCard.cardSO.damageType)
-        {
-            case global::damageType.damageInstant:
-                damageType.text = "Instant Damage";
-                damageImage.sprite = InstantDamageImage;
-                break;
-            case global::damageType.damageOverTime:
-                damageType.text = "Damage Over Time";
-                damageImage.sprite = DamageOverTimeImage;
-                break;
-            case global::damageType.healInstant:
-                damageType.text = "Instant Heal";
-                damageImage.sprite = InstantHealImage;
-                break;
-            case global::damageType.healOverTime:
-                damageType.text = "Heal Over Time";
-                damageImage.sprite = HealOverTimeImage;
-                break;
-        }
+        typeImage.sprite = card.actionTypeImage.sprite;
+        cardType.text = card.actionTypeImage.sprite.name;
+        damageImage.sprite = card.attackElementImage.sprite;
+        damageType.text = card.attackElementImage.sprite.name;
         tagLine.text = card.inventoryCard.cardSO.tagLine;
     }
 
