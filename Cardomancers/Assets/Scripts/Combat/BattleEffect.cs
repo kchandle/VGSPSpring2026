@@ -48,12 +48,11 @@ public enum StatusEffectType
 {
     None,
 
-    //---Implemented---//
+    //---Implemented Status Effects---//
     //-Stat boosts
     AttackBoost, // outgoing damage * (AttackMulti/100). Ex: an Attackboost with a statusAmount of 125 gives a 1.25x attack boost
     EnduranceBoost, // incoming damage/(EunduranceMulti/100)
     //-
-
 
     //-Statuses that cleanse other statuses. For a one time cleanse, just use a turn count of 0 or 1.
     CleanseNegative,
@@ -67,15 +66,14 @@ public enum StatusEffectType
     Frostbite,
     Awestruck,
     //-
-    //--- ---//
 
-
-    //---Not Yet Implemented---//
-    Stun, //done
-    CounterSpell, //done
-    EyeOfTheStorm, //done
-    AntiHeal, //done
-    Evisceration, //ignore
+    //-
+    Stun, 
+    CounterSpell, 
+    EyeOfTheStorm, 
+    AntiHeal, 
+    Evisceration,
+    //-
     //--- ---//
 
     
@@ -84,16 +82,12 @@ public enum StatusEffectType
 }
 #endregion
 
-//Not used just yettttttt
+
 public enum TargetingType
 {
     SingleTarget,
     AOETarget,
     SelfTarget, //Only to be used with attacking cards that damage the caster. Use the HEAL or DEF action type for cards with positive effects on the user
-
-
-
-    //AOE_And_SelfTarget
 
     //BlastTarget, //Main and adjacent enemies with lower output
 }
@@ -103,13 +97,16 @@ public enum TargetingType
 public struct BattleEffect 
 {
     #region VARIABLES
-    [Header("Basic Card Info")]
+    [Header("Basic Card Attributes")]
     // The amount of damage/heal/damage per turn/whatever the BattleEffect inflicts on the target
     public int StatusAmount;
     //The damage type of the BattleEffect (used for determining weakness/resistance in enemies/player)
     public DamageType damageType;
     public BattleActionType actionType;
-    public TargetingType targetingType;
+
+    [Tooltip("Mainly applied to ATK type cards.")]public TargetingType targetingType; //Check methods in BattleManager for clarification
+    //To inflict effects on the player while using an ATK type card, use the self targeting CardType
+    //to inflict statuses on enemies, just the ATTACK BattleActionType
 
 
     [Header("Status Effects")]
@@ -195,6 +192,13 @@ public struct BattleEffect
     //The function that is called when the card is played: Change into Overload function for player and enemy respectively
     public bool TriggerEffect(PlayerController target, Vector3 pos, Card_SO card = null, float incomingAttackBoost = 1f)
     {
+        if(!card)
+        {
+            Debug.Log("Card argument is null");
+            return false;
+        }
+
+
         //Debug.Log("test helooooooooo test");
         PlayerController player = target.GetComponent<PlayerController>();
         if(card != null && card.VFXPrefab)
@@ -226,6 +230,28 @@ public struct BattleEffect
                 float dmgToDo = (float)StatusAmount;
                 int shieldAmount = player.Shield;
 
+
+
+                //---Account for Application of status Effects
+                if (isStatusEffect)
+                {
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
+                    //Debug.Log("STATUS ROLLLLLLLLLLLLLLLLL " + statusRoll);
+
+                    if(statusRoll < probability)
+                    {
+                        player.AddStatusEffect(new StatusEffectContainer(damageType, Mathf.RoundToInt(dmgToDo), isPerishable, isNegative, turnsActive, particles, actionType, statusType, card.displayName));
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on player");
+                    }
+                    return true;
+                }
+                //---
+
+
+
                 //---Account for stat boosts
                 //Debug.Log("Player dmgToDo: " + dmgToDo);
                 dmgToDo *= incomingAttackBoost;
@@ -233,6 +259,7 @@ public struct BattleEffect
                 dmgToDo /= player.enduranceMulti;
                 //Debug.Log("dmgToDo after player endurance: " + dmgToDo);
                 //---
+
 
 
                 //---Account for Field Effects on damage and application of Field Effects
@@ -267,30 +294,6 @@ public struct BattleEffect
                 //---
 
 
-                //---Account for Application of status Effects
-                if (isStatusEffect)
-                {
-                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
-                    //Debug.Log("STATUS ROLLLLLLLLLLLLLLLLL " + statusRoll);
-
-                    if(statusRoll < probability)
-                    {
-                        player.statusEffects.Add(new StatusEffectContainer(damageType, Mathf.RoundToInt(dmgToDo), isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                        if (statusType == StatusEffectType.Stun) 
-                        {
-                            //Trigger stun immediately, since status effects are normally evaluated at the end of the turn
-                            target.isStunned = true;
-                        }
-
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.Log("Status missed the roll to trigger on player");
-                    }
-                }
-                //---
-
 
                 //---Actually do damage to player
                 int intDmgToDo = Mathf.RoundToInt(dmgToDo);
@@ -303,7 +306,7 @@ public struct BattleEffect
                 if(intDmgToDo > 0)
                     player.currentHealth -= intDmgToDo;
                 //PlayParticles(pos);
-                player.UpdateHealthbar();
+                player.UpdateHealthBar();
                 return true;
                 //---
             }
@@ -319,13 +322,14 @@ public struct BattleEffect
 
                     if(statusRoll <= probability)
                     {
-                        player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                        return true;
+                        Debug.Log("ADDING");
+                        player.AddStatusEffect(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType, card.displayName));
                     }
                     else
                     {
                         Debug.Log("Status missed the roll to trigger on player");
                     }
+                    return true;
                 }
 
                 player.Shield += StatusAmount;
@@ -344,20 +348,19 @@ public struct BattleEffect
 
                     if(statusRoll <= probability)
                     {
-                        player.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                        return true;
+                        player.AddStatusEffect(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType, card.displayName));
                     }
                     else
                     {
                         Debug.Log("Status missed the roll to trigger on player");
                     }
+                    return true;
                 }
 
-                player.currentHealth += StatusAmount;
+                player.CurrentHealth += StatusAmount;
+                player.UpdateHealthBar();
                 return true;
             }
-
-
             default:
             {
                 return false;
@@ -372,9 +375,16 @@ public struct BattleEffect
     #region TriggerEffects - Enemy
     public bool TriggerEffect(Enemy target, Vector3 pos, Card_SO card = null, float incomingAttackBoost = 1f)
     {
+        if(!card)
+        {
+            Debug.Log("Card argument is null");
+            return false;
+        }
+
+
         if(card)
         {
-            Debug.Log(card.name + " on enemy");
+            //Debug.Log(card.name + " on enemy");
             GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
             vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
             /*if (card.CardType == CardType.DEF)
@@ -407,10 +417,30 @@ public struct BattleEffect
                 }
                 //---
 
+                float DamageDealt = (float)StatusAmount;
+
+                //---Add Status Effects
+                if (isStatusEffect)
+                {
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
+                    //Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        enemy.AddStatusEffect(new StatusEffectContainer(damageType, Mathf.RoundToInt(DamageDealt), isPerishable, isNegative, turnsActive, particles, actionType, statusType, card.displayName));
+                        enemy.UpdateHealthBar();
+                    }
+                    else
+                    {
+                        Debug.Log("Unlucky womp womp");
+                    }
+                    return true;
+                }
+                //---
+
 
 
                 //---Account for player stat boosts
-                float DamageDealt = (float)StatusAmount;
                 //Debug.Log("Enemy damage to receive: " + DamageDealt);
                 DamageDealt *= incomingAttackBoost;
                 //Debug.Log("dmg to recieve after the player's attack boost: " + DamageDealt);
@@ -453,34 +483,6 @@ public struct BattleEffect
 
 
 
-                //---Add Status Effects
-                if (isStatusEffect)
-                {
-                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
-                    //Debug.Log(statusRoll);
-
-                    if(statusRoll <= probability)
-                    {
-                        enemy.statusEffects.Add(new StatusEffectContainer(damageType, Mathf.RoundToInt(DamageDealt), isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                        if (statusType == StatusEffectType.Stun) 
-                        {
-                            //Trigger stun immediately, since status effects are normally evaluated at the end of the turn
-                            target.isStunned = true;
-                            target.attackAnim.SetBool("Stunned", true);
-                        }
-                        enemy.UpdateHealthBar();
-                    }
-                    else
-                    {
-                        Debug.Log("Unlucky womp womp");
-                    }
-                    return true;
-                    
-                }
-                //---
-
-
-
                 //---Actually damage the thing
                 float dmgToDeal = DamageDealt;
                 int shieldAmount = enemy.CurrentShield;
@@ -514,33 +516,6 @@ public struct BattleEffect
                 break;
                 //---
             }
-
-
-            case (BattleActionType.HEAL):
-            {
-                //For friendly status effects to be applied on self
-                if (isStatusEffect)
-                {
-                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
-                    //Debug.Log(statusRoll);
-
-                    if(statusRoll <= probability)
-                    {
-                        enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
-                    }
-                    else
-                    {
-                        Debug.Log("Status missed the roll to trigger on Enemy");
-                    }
-                    return true;
-                }
-
-                enemy.currentHealth += StatusAmount;
-                enemy.UpdateHealthBar();
-                break;
-            }
-
-
             case (BattleActionType.DEFEND):
             {
                 //For friendly status effects to be applied on self
@@ -552,7 +527,7 @@ public struct BattleEffect
                     if(statusRoll <= probability)
                     {
                         //Debug.Log(statusType + " WHY WHY WHY WHY");
-                        enemy.statusEffects.Add(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType));
+                        enemy.AddStatusEffect(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType, card.displayName));
                     }
                     else
                     {
@@ -562,6 +537,30 @@ public struct BattleEffect
                 }
 
                 enemy.CurrentShield += StatusAmount;
+                break;
+            }
+
+            case (BattleActionType.HEAL):
+            {
+                //For friendly status effects to be applied on self
+                if (isStatusEffect)
+                {
+                    float statusRoll = UnityEngine.Random.Range(0f, 1f);
+                    //Debug.Log(statusRoll);
+
+                    if(statusRoll <= probability)
+                    {
+                        enemy.AddStatusEffect(new StatusEffectContainer(damageType, StatusAmount, isPerishable, isNegative, turnsActive, particles, actionType, statusType, card.displayName));
+                    }
+                    else
+                    {
+                        Debug.Log("Status missed the roll to trigger on Enemy");
+                    }
+                    return true;
+                }
+
+                enemy.CurrentHealth += StatusAmount;
+                enemy.UpdateHealthBar();
                 break;
             }
         }
