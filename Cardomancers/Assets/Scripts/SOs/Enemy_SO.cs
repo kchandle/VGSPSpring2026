@@ -1,7 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using static UnityEngine.Animator;
+using static UnityEngine.Animation;
+
+[Serializable]
 
 [CreateAssetMenu(fileName = "Enemy_SO", menuName = "Scriptable Objects/Enemy_SO")]
 public class Enemy_SO : ScriptableObject
