@@ -4079,6 +4079,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
+--- !u!114 &1664440652 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2107310746191959000, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
+  m_PrefabInstance: {fileID: 1664440651}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09202fb77f37e5e48a73eb6d4f5d1fd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopUI
 --- !u!1 &1726849417 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4475787774003867922, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
@@ -4956,6 +4967,34 @@ PrefabInstance:
     - target: {fileID: 4096083543398119074, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
       propertyPath: m_Name
       value: Shopkeeper
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1664440652}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: UpdatePlayerMoney
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ShopUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7685885086919491453, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
       propertyPath: m_Size.x
