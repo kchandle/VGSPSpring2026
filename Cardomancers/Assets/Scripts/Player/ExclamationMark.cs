@@ -57,6 +57,14 @@ public class ExclamationMark : MonoBehaviour
         parent = transform?.parent?.gameObject;
         parentInteractable = parent?.GetComponent<InteractableObject>();
 
+        if(parentInteractable == null || parent == null)
+        {   Debug.LogWarning("Parent of ExclamationMark does not have an InteractableObject Component. ExclamationMark will not be able to detect interactions.");
+        }
+
+        if(parent && parent.GetComponent<Collider>() == null)
+        {   Debug.LogWarning("Parent of ExclamationMark does not have a Collider Component. Please add a Collider to the parent so that the ExclamationMark can detect interactions.");
+        }
+
         initialOffset = rectTransform.anchoredPosition.y;
     }
 
@@ -112,7 +120,7 @@ public class ExclamationMark : MonoBehaviour
             {   
                 image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
             }
-            else if(parentInteractable == null && playerInteract.InRange)
+            else if(parentInteractable == null && playerInteract.inRange)
             {   
                 image.color = Color.Lerp(image.color, InRangeColor, InRangeColorChangeSpeed * Time.deltaTime);
             }
