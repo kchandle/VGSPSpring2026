@@ -179,11 +179,14 @@ public class DialogueManager : MonoBehaviour
             textElement.text += c;
             yield return new WaitForSeconds(dialogue.lines[index].textDelay);
         }
+
+            cor = null;
     }
 
         private Coroutine camCor;
     void NextLine()
     {
+
         if (index < dialogue.lines.Length - 1)
         {
             index++;
