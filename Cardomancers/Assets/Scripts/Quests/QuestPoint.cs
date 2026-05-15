@@ -1,4 +1,5 @@
 using UnityEngine;
+using DialogueScripts;
 
 [RequireComponent(typeof(Collider))]
 public class QuestPoint : MonoBehaviour
@@ -11,6 +12,10 @@ public class QuestPoint : MonoBehaviour
     [Header("Config")] 
     [SerializeField] private bool startPoint = true;
     [SerializeField] private bool endPoint = true;
+    [SerializeField] private bool shopkeeper = false;
+    [SerializeField] private bool startsBattleOnEnd = false;
+    [SerializeField] private DialogueSO altDialogue;
+    [SerializeField] private DialogueSO defaultDialogue;
 
     private void Awake()
     {
@@ -37,12 +42,29 @@ public class QuestPoint : MonoBehaviour
         if (currentQuestState == QuestState.CAN_START && startPoint)
         {
             QuestEvents.StartQuest(questID);
-            Debug.Log("Starting Quest");
+            DialogueManager.instance.StartDialogue(defaultDialogue);
         }
         // If you can finish the quest and theis is where you end it, end the quest
         else if (currentQuestState == QuestState.CAN_FINISH && endPoint)
         {
             QuestEvents.FinishQuest(questID);
+            DialogueManager.instance.StartDialogue(defaultDialogue);
+            if (startsBattleOnEnd)
+            {
+                if (GetComponent<DialogueOnBattleEnd>() != null)
+                {
+                    GetComponent<DialogueOnBattleEnd>().enabled = true;
+                }
+                GetComponent<StartBattle>().StartBattleNow();
+            }
+        }
+        else if (shopkeeper)
+        {
+            GetComponent<ShopkeeperInteract>().OnInteract();
+        }
+        else
+        {
+            DialogueManager.instance.StartDialogue(altDialogue);
         }
 
         FindFirstObjectByType<PlayerInteract>().GetComponent<PlayerInteract>().interacting = false;
