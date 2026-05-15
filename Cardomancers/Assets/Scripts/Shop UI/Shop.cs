@@ -292,9 +292,10 @@ public class Shop : MonoBehaviour
     //Gets the cardSos from the folder they are stored in path, which is where the programmers put the cardSOs
     private List<UnityEngine.Object> GetObjectsInPath(string path)
     {
-        List<UnityEngine.Object> assets = new();
 
-        string []guids = AssetDatabase.FindAssets("", new[] { path });
+        List<UnityEngine.Object> assets = new();
+#if UNITY_EDITOR
+        string[]guids = AssetDatabase.FindAssets("", new[] { path });
 
         foreach (string guid in guids)
         {
@@ -305,8 +306,10 @@ public class Shop : MonoBehaviour
             {   assets.Add(asset);
             }
         }
-
+#endif  
         return assets;
+
+        return null;
     }
 
     //Generates a new random shop stock, ignores the cards in the exclude list
