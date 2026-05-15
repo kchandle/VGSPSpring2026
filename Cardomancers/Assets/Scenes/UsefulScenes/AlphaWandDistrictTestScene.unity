@@ -2727,6 +2727,17 @@ MonoBehaviour:
   battleThemes:
   - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
   - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+--- !u!114 &570437507 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2107310746191959000, guid: 3368c411c6565744484edfd8ac4e5655, type: 3}
+  m_PrefabInstance: {fileID: 1664440651}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09202fb77f37e5e48a73eb6d4f5d1fd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopUI
 --- !u!1 &578739874
 GameObject:
   m_ObjectHideFlags: 0
@@ -6377,67 +6388,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1985752974
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 114602632793466605, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_Name
-      value: MoneyPickup (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3649766479533097046, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: moneyAmount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -270.17874
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.62096
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -204.02704
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3674954756965255216, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7e3099566c0db8641a767cc5cd7bc7a6, type: 3}
 --- !u!1 &2035871908 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7341970556645217637, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
@@ -6818,6 +6768,34 @@ PrefabInstance:
     - target: {fileID: 4096083543398119074, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
       propertyPath: m_Name
       value: Shopkeeper
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 570437507}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: UpdatePlayerMoney
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ShopUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766570277918535277, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7685885086919491453, guid: 06a2bf426a5ab794b91cb3b22fe52660, type: 3}
       propertyPath: m_Size.x
@@ -7906,6 +7884,5 @@ SceneRoots:
   - {fileID: 200539960}
   - {fileID: 468548577}
   - {fileID: 94351069}
-  - {fileID: 1985752974}
   - {fileID: 1951417017}
   - {fileID: 1032393394}

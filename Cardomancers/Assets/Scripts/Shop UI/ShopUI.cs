@@ -67,6 +67,12 @@ public class ShopUI : MonoBehaviour
         CreateSellMenu();
     }
 
+    public void UpdatePlayerMoney()
+    {
+        playerMoneyText.text = "$" + Inventory.Money;
+        print("Run");
+    }
+
     
     //Updates musicPlayer to make the volume go down and up
     void Update()

@@ -199,7 +199,7 @@ public class DialogueManager : MonoBehaviour
             
             textElement.text = string.Empty;
             canvas.SetActive(false);
-            if(dialogue.startsBattle && Inventory.Deck.Count == 2) 
+            if(dialogue.startsBattle && Inventory.Deck.Count >= 2) 
             {
                 reference.StartBattleNow();
             }
