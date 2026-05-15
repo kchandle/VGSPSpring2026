@@ -700,7 +700,8 @@ public class BattleManager : MonoBehaviour
         cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        Destroy(this.gameObject);
+        SceneManager.LoadScene("NewMainMenu", LoadSceneMode.Single);
     }
 
     public void Retry()
@@ -710,7 +711,7 @@ public class BattleManager : MonoBehaviour
         cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        Destroy(this.gameObject);
     }
 
     public void Continue()
