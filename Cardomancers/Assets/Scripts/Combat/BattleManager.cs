@@ -700,7 +700,7 @@ public class BattleManager : MonoBehaviour
         cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        SceneManager.LoadScene("NewMainMenu", LoadSceneMode.Single);
     }
 
     public void Retry()
