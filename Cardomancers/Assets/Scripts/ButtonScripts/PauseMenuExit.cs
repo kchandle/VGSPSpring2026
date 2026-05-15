@@ -21,7 +21,8 @@ public class PauseMenuExit : MonoBehaviour
 
     public void OnActivate()
     {
-        PopUpActive.Activate();
+        SceneManager.LoadScene(0);
+        //PopUpActive.Activate();
     }
 
     void Update()
