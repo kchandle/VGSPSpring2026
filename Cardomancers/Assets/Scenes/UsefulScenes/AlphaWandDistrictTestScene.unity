@@ -427,6 +427,10 @@ PrefabInstance:
       propertyPath: videoPlayer
       value: 
       objectReference: {fileID: 1038267440}
+    - target: {fileID: 3843507722267470760, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 29.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5628113340359492775, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -470,20 +474,55 @@ PrefabInstance:
     - target: {fileID: 8023573433186942990, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
       propertyPath: exclamationMark
       value: 
-      objectReference: {fileID: 2035871908}
+      objectReference: {fileID: 94351072}
     - target: {fileID: 8230303919798805763, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
       propertyPath: exclamationMark
       value: 
-      objectReference: {fileID: 2035871908}
+      objectReference: {fileID: 94351071}
+    - target: {fileID: 8533265469926206338, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533265469926206338, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533265469926206338, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533265469926206338, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8533265469926206338, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 8898725414712658191, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
       propertyPath: exclamationMark
       value: 
-      objectReference: {fileID: 2035871908}
+      objectReference: {fileID: 94351070}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+--- !u!1 &94351070 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6387717249835535393, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+  m_PrefabInstance: {fileID: 94351069}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &94351071 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4476352137099352158, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+  m_PrefabInstance: {fileID: 94351069}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &94351072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5334533669573233292, guid: 7aa954cbb648a5343937149d5c7778bb, type: 3}
+  m_PrefabInstance: {fileID: 94351069}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &191879232
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,6 +2596,10 @@ MonoBehaviour:
   questInfo: {fileID: 11400000, guid: e0b32dd14317a4d4cb66c9ac3ab8ec4d, type: 2}
   startPoint: 1
   endPoint: 1
+  shopkeeper: 0
+  startsBattleOnEnd: 0
+  altDialogue: {fileID: 0}
+  defaultDialogue: {fileID: 0}
 --- !u!65 &578739876
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3140,6 +3183,10 @@ MonoBehaviour:
   questInfo: {fileID: 11400000, guid: 9b0325c643c03f343a491c0701ca1222, type: 2}
   startPoint: 1
   endPoint: 1
+  shopkeeper: 0
+  startsBattleOnEnd: 0
+  altDialogue: {fileID: 0}
+  defaultDialogue: {fileID: 0}
 --- !u!1 &792239738 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8282848640817842334, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
@@ -5161,11 +5208,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2035871908 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7341970556645217637, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
-  m_PrefabInstance: {fileID: 200539960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &115371791360404333
 Transform:
   m_ObjectHideFlags: 0
