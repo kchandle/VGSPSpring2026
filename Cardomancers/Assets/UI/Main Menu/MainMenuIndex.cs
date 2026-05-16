@@ -72,29 +72,13 @@ public class MainMenuIndex : MonoBehaviour
     private void OnCreditsClick(ClickEvent clickEvent)
     {
         // Load credits scene
-        if (SceneManager.GetSceneAt(creditsIndex).IsValid())
-        {
-            SceneManager.LoadScene(creditsIndex);
-        }
-        else
-        {
-            Debug.Log("Credits scene build index is incorrect or the scene is not in scene list.");
-        }
-        Debug.Log("Credits");
+        SceneManager.LoadScene(creditsIndex);
     }
 
     private void OnSettingsClick(ClickEvent clickEvent)
     {
         // Load settings scene
-        if (SceneManager.GetSceneAt(settingsIndex).IsValid())
-        {
-            SceneManager.LoadScene(settingsIndex);
-        }
-        else
-        {
-            Debug.Log("Settings scene build index is incorrect or the scene is not in the scene list.");
-        }
-        Debug.Log("Settings");
+        SceneManager.LoadScene(settingsIndex);
     }
     
 }
