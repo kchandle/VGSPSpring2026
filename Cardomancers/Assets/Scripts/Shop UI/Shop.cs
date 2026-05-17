@@ -294,6 +294,7 @@ public class Shop : MonoBehaviour
     {
         List<UnityEngine.Object> assets = new();
 
+        #if Unity_Editor
         string []guids = AssetDatabase.FindAssets("", new[] { path });
 
         foreach (string guid in guids)
@@ -305,6 +306,7 @@ public class Shop : MonoBehaviour
             {   assets.Add(asset);
             }
         }
+        #endif
 
         return assets;
     }
