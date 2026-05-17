@@ -1,9 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-#if UNITY_EDITOR
-using UnityEditor.Animations;
-#endif
+using static UnityEngine.Animation;
+
+[Serializable]
 
 [CreateAssetMenu(fileName = "Enemy_SO", menuName = "Scriptable Objects/Enemy_SO")]
 public class Enemy_SO : ScriptableObject
@@ -19,9 +19,7 @@ public class Enemy_SO : ScriptableObject
     public int timer; // turns until enemy acts
     public int energy; //energy it can use on cards
     public Sprite enemyImage;
-    #if UNITY_EDITOR
-    public AnimatorController enemyAttkAnim;
-    #endif
+    public RuntimeAnimatorController enemyAttkAnim;
     public GameObject enemyPrefab; //Prefab of the enemy to be spawned in battle.
 
     public List<DamageType> resistances; //List of damage types the enemy is resistant to.

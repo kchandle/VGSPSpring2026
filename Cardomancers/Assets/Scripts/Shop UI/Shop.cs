@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
+// using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using static GameStateScript;
@@ -294,19 +294,17 @@ public class Shop : MonoBehaviour
     {
         List<UnityEngine.Object> assets = new();
 
-        #if Unity_Editor
-        string []guids = AssetDatabase.FindAssets("", new[] { path });
-
-        foreach (string guid in guids)
-        {
-            path = AssetDatabase.GUIDToAssetPath(guid);
-            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
-
-            if (asset != null)
-            {   assets.Add(asset);
-            }
-        }
-        #endif
+        // string []guids = AssetDatabase.FindAssets("", new[] { path });
+        //
+        // foreach (string guid in guids)
+        // {
+        //     path = AssetDatabase.GUIDToAssetPath(guid);
+        //     UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+        //
+        //     if (asset != null)
+        //     {   assets.Add(asset);
+        //     }
+        // }
 
         return assets;
     }

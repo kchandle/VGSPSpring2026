@@ -11,14 +11,17 @@ using static UnityEngine.ParticleSystem;
 public class PlayerController : MonoBehaviour
 {
     #region Variables
-	public float maxPlayerHealth = 100f;
-    public float currentHealth;
+    private GameState initialState;
     public Image healthbar;
     public TMP_Text currentHealthText;
-
+    public float maxPlayerHealth = 100f;
+    public float currentHealth;
 
     //---Variables affected by status effects
     [Header("Status Effect Variables")]
+    public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
+    
+
     public float attackMulti = 1f; //Multiplier for outgoing damage if the player has an attack boost
     public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
 
@@ -31,8 +34,23 @@ public class PlayerController : MonoBehaviour
     public bool weatherImmune = false; //Whether or not player has the Eye Of The Storm status effect
     public float fieldAtkBoost = 1f; //current attack multiplier as a result of a Field Effect
     public float fieldEndBoost = 1f; //current endurance multiplier as a result of a Field Effect
-    
-    private GameState initialState;
+
+    public float CurrentHealth
+    {//ensure health can't be increased while unhealable. does nothing otherwise.
+        get
+        {
+            return currentHealth;
+        }
+        set
+        {
+            if(value > currentHealth && !healable)
+            {
+                print("Player is currently unhealable");
+                return;
+            }
+            currentHealth = value;
+        }   
+    }
     //--
 
     [Header(" ")]
@@ -64,7 +82,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public List<StatusEffectContainer> statusEffects = new List<StatusEffectContainer>();
 
     public bool isShielded = false; //If the player is shielded, they take no damage this turn.
     #endregion
@@ -199,6 +216,8 @@ public class PlayerController : MonoBehaviour
     #region Status Effects
     public IEnumerator StatusEffects()
     {
+        print("--Player Status Effects--");
+
         //---Exceptions that need to be evaluated before other status effects (Ex: Cleanses)
         bool cleanseNeg = false;
         healable = true;
@@ -290,14 +309,14 @@ public class PlayerController : MonoBehaviour
                 //---Stat boosts
                 case(StatusEffectType.AttackBoost):
                 {
-                    print("Attack Boost statusEffect of " + status.statusAmount + " at index " + i);
+                    print("Attack Boost. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Change the attack multiplier accordingly
                     attackMulti *= ((float)status.statusAmount/100);
                     break;
                 }
                 case(StatusEffectType.EnduranceBoost):
                 {
-                    print("Endurance Boost statusEffect of " + status.statusAmount + " at index " + i);
+                    print("Endurance Boost. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Change the endurance multiplier accordingly
                     enduranceMulti *= ((float)status.statusAmount/100);
                     break;
@@ -307,13 +326,13 @@ public class PlayerController : MonoBehaviour
                 //---Cleanses
                 case(StatusEffectType.CleanseNegative):
                 {
-                    print("Cleanse negative statusEffects at index: " + i);
+                    print("Cleanse Negative. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled above
                     break;
                 }
                 case(StatusEffectType.CleanseAll):
                 {
-                    print("Cleanse all statusEffects at index: " + i);
+                    print("Cleanse All. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled above
                     break;
                 }
@@ -322,15 +341,15 @@ public class PlayerController : MonoBehaviour
                 //---Simple DOTs
                 case(StatusEffectType.Regeneration):
                 {
-                    print("Regeneration statusEffect at index: " + i);
+                    print("Regeneration. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do heal
-                    currentHealth += status.statusAmount;
+                    CurrentHealth += status.statusAmount;
                     print("Regeneration Status Effect healed the Player for " + status.statusAmount + " hp");
                     break;
                 }
                 case(StatusEffectType.OnFire):
                 {
-                    print("OnFire statusEffect at index: " + i);
+                    print("OnFire. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do burn damage
                     currentHealth -= status.statusAmount;
                     print("OnFire Status Effect did " + status.statusAmount + " damage to the Player");
@@ -339,7 +358,7 @@ public class PlayerController : MonoBehaviour
                 }
                 case(StatusEffectType.Poisoned):
                 {
-                    print("Poisoned statusEffect at index: " + i);
+                    print("Poisoned. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do poison damage
                     currentHealth -= status.statusAmount; 
                     print("Poisoned Status Effect did " + status.statusAmount + " damage to the Player");
@@ -347,7 +366,7 @@ public class PlayerController : MonoBehaviour
                 }
                 case(StatusEffectType.Frostbite):
                 {
-                    print("Frostbite statusEffect at index: " + i);
+                    print("Frostbite. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Do frostbite damage
                     currentHealth -= status.statusAmount;
                     print("Frostbite Status Effect did " + status.statusAmount + " damage to the Player");
@@ -356,7 +375,7 @@ public class PlayerController : MonoBehaviour
                 }
                 case(StatusEffectType.Awestruck)://*
                 {
-                    print("Awestruck statusEffect at index: " + i);
+                    print("Awestruck. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //damage only triggers when stunned
                     if(isStunned)
                     {
@@ -370,13 +389,13 @@ public class PlayerController : MonoBehaviour
                 //---Other types of status effects
                 case(StatusEffectType.Stun):
                 {
-                    print("Stun statusEffect at index: " + i);
+                    print("Stun. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled in the exceptions above
                     break;
                 }
                 case(StatusEffectType.CounterSpell):
                 {
-                    print("CounterSpell statusEffect at index: " + i);
+                    print("CounterSpell. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Set counterSpellActive to true, then immedieately remove this status effect.
                     //counterSpellActive will be set to false in the BattleManager, after a spell is reflected
                     counterSpellActive = true;
@@ -386,29 +405,28 @@ public class PlayerController : MonoBehaviour
                 }
                 case(StatusEffectType.EyeOfTheStorm):
                 {
-                    print("EyeOfTheStorm statusEffect at index: " + i);
+                    print("EyeOfTheStorm. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //When field effects act, they'll check if the target is weatherImmune first. See in BattleEffect and BattleManager
                     weatherImmune = true;
                     break;
                 }
                 case(StatusEffectType.AntiHeal): //AntiHeal is completely unused
                 {
-                    print("AntiHeal statusEffect at index: " + i);
+                    print("AntiHeal. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //Handled in the exceptions above
                     break;
                 }
                 case(StatusEffectType.Evisceration): //done
                 {
-                    print("Evisceration statusEffect at index: " + i);
-                    //fun
-                    currentHealth -= 200;
+                    print("Evisceration. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
+                    //
                     break;
                 }
                 //---
 
                 case(StatusEffectType.Random):
                 {
-                    print("Random statusEffect at index: " + i);
+                    print("Random. Index: " + i + ". Amount: " + status.statusAmount + ". Duration: " + status.turnsRemaining + ". Source: " + status.statusSource);
                     //
                     break;
                 }
@@ -421,7 +439,7 @@ public class PlayerController : MonoBehaviour
             //==End of big switch statement to handle EVERY status effect==//
             
 
-            UpdateHealthbar();
+            UpdateHealthBar();
             if (statusEffects[i].DecrementTurn() <= 0)
             {
                 // Remove the status effect if it has expired
@@ -439,13 +457,48 @@ public class PlayerController : MonoBehaviour
 
         yield return null;
     }
+
+
+    public void AddStatusEffect(StatusEffectContainer newStatus)
+    {
+        if(newStatus.statusType == StatusEffectType.Evisceration)
+        {
+            currentHealth -= 200;
+            return;
+        }
+
+
+
+        if(newStatus.statusType == StatusEffectType.Stun)
+        {
+            isStunned = true;
+            return;
+        }
+
+        foreach(StatusEffectContainer status in statusEffects)
+        {
+            //if the new status effect is equal to an old one in every important aspect and comes from the same card, just add duration to the old one and don't add the new one to the list.
+            //Ex: using Dagger of Shadow twice in a row will just decrease attack for a long time instead of a super large decrease
+            if(newStatus.statusSource == status.statusSource && newStatus.statusType == status.statusType)
+            {
+                status.turnsRemaining += newStatus.turnsRemaining;
+                return;
+            }
+        }
+
+        //if the status is unique instead, just add it to the list
+        statusEffects.Add(newStatus);
+        return;
+    }
     #endregion
 
-    public void UpdateHealthbar()
+
+    public void UpdateHealthBar()
     {
         healthbar.fillAmount = currentHealth / maxPlayerHealth;
         currentHealthText.text = currentHealth + "/" + maxPlayerHealth;
     }
+
 
     public void UpdateShield()
     {

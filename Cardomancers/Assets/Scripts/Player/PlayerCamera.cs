@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
-
 public class PlayerCamera : MonoBehaviour
 {
     [Tooltip("How fast the zoom speed is?")]

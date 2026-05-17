@@ -475,7 +475,7 @@ public class BattleManager : MonoBehaviour
         //Display cards
 
         // Start Player turn coroutine to handle playing cards 
-        if(playerController.isStunned)
+        if(playerController.isStunned) 
         {
             print("Player is stunned");
             yield return new WaitForSeconds(0.5f);
@@ -700,7 +700,8 @@ public class BattleManager : MonoBehaviour
         cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        Destroy(this.gameObject);
+        SceneManager.LoadScene("NewMainMenu", LoadSceneMode.Single);
     }
 
     public void Retry()
@@ -710,7 +711,7 @@ public class BattleManager : MonoBehaviour
         cameraScript.enabled = true;
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        Destroy(this.gameObject);
     }
 
     public void Continue()
@@ -871,6 +872,7 @@ public class BattleManager : MonoBehaviour
 
             switch(effect.actionType)
             {
+                //Outgoing attacks to be lauched on one enemy
                 case(BattleActionType.ATTACK):
                 {
                     //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
@@ -889,14 +891,18 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 }
+
+                
                 case(BattleActionType.DEFEND):
                 {
-                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                    /*effect.TriggerEffect(playerController, playerController.transform.position, card);
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);*/
                     break;
                 }
                 case(BattleActionType.HEAL):
                 {
-                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                    /*effect.TriggerEffect(playerController, playerController.transform.position, card);
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);*/
                     break;
                 }
                 default:
@@ -925,6 +931,7 @@ public class BattleManager : MonoBehaviour
 
             switch(effect.actionType)
             {
+                //Damaging attacks the player hits themself with
                 case(BattleActionType.ATTACK):
                 {
                     //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
@@ -948,14 +955,18 @@ public class BattleManager : MonoBehaviour
                     }
                     break;
                 }
+
+                
                 case(BattleActionType.DEFEND):
                 {
-                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                    /*effect.TriggerEffect(playerController, playerController.transform.position, card);
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);*/
                     break;
                 }
                 case(BattleActionType.HEAL):
                 {
-                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                    /*effect.TriggerEffect(playerController, playerController.transform.position, card);
+                    uiShake.Shake(0.2f, card.uiShakeMagnitude);*/
                     break;
                 }
                 default:
@@ -990,6 +1001,7 @@ public class BattleManager : MonoBehaviour
 
             switch(effect.actionType)
             {
+                //effects the player inflicts on themselves that DO consider their attack boosts
                 case(BattleActionType.ATTACK):
                 {
                     
@@ -999,11 +1011,13 @@ public class BattleManager : MonoBehaviour
                 }
                 case(BattleActionType.DEFEND):
                 {
+                    effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
                     uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
                 case(BattleActionType.HEAL):
                 {
+                    effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
                     uiShake.Shake(0.2f, card.uiShakeMagnitude);
                     break;
                 }
