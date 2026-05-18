@@ -59,7 +59,7 @@ public class MainMenuIndex : MonoBehaviour
 
     private void OnStartGameClick(ClickEvent clickEvent)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
         Debug.Log("Start Game");
     }
 
@@ -72,13 +72,13 @@ public class MainMenuIndex : MonoBehaviour
     private void OnCreditsClick(ClickEvent clickEvent)
     {
         // Load credits scene
-        SceneManager.LoadScene(creditsIndex);
+        SceneManager.LoadScene(4);
     }
 
     private void OnSettingsClick(ClickEvent clickEvent)
     {
         // Load settings scene
-        SceneManager.LoadScene(settingsIndex);
+        SceneManager.LoadScene(3);
     }
     
 }
