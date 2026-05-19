@@ -20,6 +20,7 @@ public class KeybindSwapper : MonoBehaviour
     {
         if (state == GameStateScript.GameState.WALKING)
         {
+            if (questUI == null || moneyUI == null) return;
             questUI.SetActive(true);
             moneyUI.SetActive(true);
         }
@@ -27,6 +28,7 @@ public class KeybindSwapper : MonoBehaviour
 
         if (state == GameStateScript.GameState.INVENTORY)
         {
+            if (questUI == null || moneyUI == null) return;
             questUI.SetActive(false);
             moneyUI.SetActive(false);
 
@@ -34,6 +36,7 @@ public class KeybindSwapper : MonoBehaviour
 
         if (state == GameStateScript.GameState.BATTLE)
         {
+            if (questUI == null || moneyUI == null) return;
             questUI.SetActive(false);
             moneyUI.SetActive(false);
         }

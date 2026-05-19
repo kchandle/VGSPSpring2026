@@ -91,6 +91,11 @@ public class PlayerController : MonoBehaviour
         GameStateScript.OnGameStateChanged += UpdateGameState;
     }
 
+    private void Start()
+    {
+        GameStateScript.CurrentState = GameState.WALKING;
+    }
+
     private void OnDisable()
     {
         GameStateScript.OnGameStateChanged += UpdateGameState;
@@ -144,6 +149,8 @@ public class PlayerController : MonoBehaviour
     
     public void OnEscape(InputAction.CallbackContext context)
     {
+        if (!context.started) return; 
+
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         if (pauseMenu.activeSelf)
         {

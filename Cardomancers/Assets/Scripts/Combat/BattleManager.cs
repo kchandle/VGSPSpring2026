@@ -719,6 +719,8 @@ public class BattleManager : MonoBehaviour
         battleCamera.enabled = false;
         startBattle.battleStarted = false;
         Destroy(this.gameObject);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         SceneManager.LoadScene("NewMainMenu", LoadSceneMode.Single);
     }
 

@@ -21,7 +21,7 @@ public class CreditsManager : MonoBehaviour
     {
         while (Mathf.Abs(1f - logoAlpha.alpha) > 0.1f)
         {
-            logoAlpha.alpha += 0.15f * Time.deltaTime;
+            logoAlpha.alpha += 0.2f * Time.deltaTime;
             yield return null;
         }
 
