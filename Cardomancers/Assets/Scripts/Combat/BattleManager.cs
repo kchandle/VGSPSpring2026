@@ -490,7 +490,7 @@ public class BattleManager : MonoBehaviour
         yield return StartCoroutine(playerController.StatusEffects());
 
         //Evaluate Field Conditions for the turn
-        StartCoroutine(TurnBasedFieldEffects());
+        yield return StartCoroutine(TurnBasedFieldEffects());
 
 
         yield return new WaitForSeconds(1f);
@@ -535,64 +535,80 @@ public class BattleManager : MonoBehaviour
             enemyScript.currentTimer--;
             enemyScript.UpdateTimer();
 
+            //---Effect evualation
             bool reflected = false; //track if player counterspell has been triggered
-
             foreach (BattleEffect effect in card.cardSO.cardEffects)
             {
                 if (enemy.GetComponent<Enemy>().isStunned) continue;
                 if (enemyScript.currentTimer > 0) continue;
 
-                if(effect.summonsEnemies)
+                if(enemyScript.currentActionType == CardType.ATK) enemyScript.attackAnim.SetTrigger("Attack");
+
+                //If the card is a multi-hit, it will do it's thing multiple times. Otherwise, it 
+                int hits = 1;
+                if(effect.isMultiHit)
                 {
-                    TrySummonEnemy(effect);
+                    hits = UnityEngine.Random.Range(effect.minHits, effect.maxHits + 1);
                 }
 
-                switch(effect.actionType)
+                #region jfdsak.jkfdag
+                #endregion
+                for(int a = 0; a < hits; a++)
                 {
-                    case(BattleActionType.ATTACK):
+                    if(effect.summonsEnemies)
                     {
-                        //print("Enemy attacking opponent. Attack multi: " + enemyScript.attackMulti);
+                        TrySummonEnemy(effect);
+                    }
 
-                        //If the player has counterSpell, launch the attack on the enemy instead
-                        if(playerController.counterSpellActive)
+                    switch(effect.actionType)
+                    {
+                        case(BattleActionType.ATTACK):
                         {
-                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO, enemyScript.attackMulti);
-                            print("Spell countered");
-                            reflected = true;
+                            //print("Enemy attacking opponent. Attack multi: " + enemyScript.attackMulti);
+
+                            //If the player has counterSpell, launch the attack on the enemy instead
+                            if(playerController.counterSpellActive)
+                            {
+                                effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO, enemyScript.attackMulti);
+                                print("Spell countered");
+                                reflected = true;
+                                SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
+                            }
+                            else
+                            {
+                                effect.TriggerEffect(playerController, player.transform.position, card.cardSO, enemyScript.attackMulti);
+
+                                SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
+                                uiShake.Shake(0.2f, 1f);
+                            }
+                            break;
                         }
-                        else
+                        case(BattleActionType.DEFEND):
                         {
-                            effect.TriggerEffect(playerController, player.transform.position, card.cardSO, enemyScript.attackMulti);
-
+                            print("Enemy defending themelves");
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
                             SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
                             uiShake.Shake(0.2f, 1f);
+                            break;
                         }
-                        break;
+                        case(BattleActionType.HEAL):
+                        {
+                            print("Enemy healing themselves");
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
+                            SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
+                            uiShake.Shake(0.2f, 1f);
+                            break;
+                        }
+                        default:
+                        {
+                            print("Enemy doing some other option");
+                            break;
+                        }
                     }
-                    case(BattleActionType.DEFEND):
-                    {
-                        print("Enemy defending themelves");
-                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
-                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
-                        uiShake.Shake(0.2f, 1f);
-                        break;
-                    }
-                    case(BattleActionType.HEAL):
-                    {
-                        print("Enemy healing themselves");
-                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, card.cardSO);
-                        SoundEffectManager.Instance.PlaySoundFXClip(card.cardSO.cardSound, player.transform);
-                        uiShake.Shake(0.2f, 1f);
-                        break;
-                    }
-                    default:
-                    {
-                        print("Enemy doing some other option");
-                        break;
-                    }
+                    yield return new WaitForSeconds(0.4f);
                 }
 
-            }
+            }//--End of effect evulation
 
             if(reflected) //disable player counterSpell
             {
@@ -633,6 +649,8 @@ public class BattleManager : MonoBehaviour
                 enemyScript.currentTimer = 3;
                 enemyScript.UpdateTimer();
             }
+
+
 
             yield return new WaitForSeconds(1f);
         }
@@ -869,25 +887,40 @@ public class BattleManager : MonoBehaviour
         {
             if(effect.targetingType != TargetingType.SingleTarget){continue;}
 
-
             switch(effect.actionType)
             {
                 //Outgoing attacks to be lauched on one enemy
                 case(BattleActionType.ATTACK):
                 {
-                    //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
-                    if(enemyScript.counterSpellActive)
+                    //Multi Hit handling
+                    int hits = 1;
+                    if(effect.isMultiHit)
                     {
-                        effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
-
-                        enemyScript.cSpellTriggered = true;
-                        print("counterspell triggered");
-                        uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                        hits = UnityEngine.Random.Range(effect.minHits, effect.maxHits + 1);
                     }
-                    else
+
+                    //If it isn't a multihit, the effect will only trigger once
+                    for(int i = 0; i < hits; i++)
                     {
-                        effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
-                        uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                        //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
+                        if(enemyScript.counterSpellActive)
+                        {
+                            effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
+
+                            enemyScript.cSpellTriggered = true;
+                            print("counterspell triggered");
+                            uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                        }
+                        else
+                        {
+                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
+                            uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                        }
+                        
+
+                        //Making this method a coroutine and using WaitForSeconds does not work, it terminates upon hitting the wait
+                        //yield return new WaitForSeconds(0.001f);
+                        //print("test");
                     }
                     break;
                 }
@@ -920,6 +953,7 @@ public class BattleManager : MonoBehaviour
             enemyScript.cSpellTriggered = false;
         }
 
+        //yield return null;
     }
 
     //Method for specifically the player to affect ALL enemies with a card and its hacks
@@ -928,35 +962,50 @@ public class BattleManager : MonoBehaviour
         foreach(BattleEffect effect in effects)
         {
             if(effect.targetingType != TargetingType.AOETarget){continue;}
-
+  
             switch(effect.actionType)
             {
-                //Damaging attacks the player hits themself with
+                //Damaging attacks the player hits every other enemy with
                 case(BattleActionType.ATTACK):
                 {
-                    //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
-                    foreach(GameObject e in currentEnemies)
+                    //Multi Hit handling
+                    int hits = 1;
+                    if(effect.isMultiHit)
                     {
-                        Enemy enemyScript = e.GetComponent<Enemy>();
+                        hits = UnityEngine.Random.Range(effect.minHits, effect.maxHits + 1);
+                    }
 
-                        if(enemyScript.counterSpellActive)
-                        {
-                            effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
+                    //If it isn't a multihit, the effect will only trigger once
+                    for(int a = 0; a < hits; a++)
+                    {
 
-                            enemyScript.cSpellTriggered = true;
-                            print("counterspell triggered");
-                            uiShake.Shake(0.2f, card.uiShakeMagnitude);
-                        }
-                        else
+                        //If enemy has counterSpell, hit the player with the effect. Else, hit the enemy as usual
+                        foreach(GameObject e in currentEnemies)
                         {
-                            effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
-                            uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                            Enemy enemyScript = e.GetComponent<Enemy>();
+
+                            if(enemyScript.counterSpellActive)
+                            {
+                                effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
+
+                                enemyScript.cSpellTriggered = true;
+                                print("counterspell triggered");
+                                uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                            }
+                            else
+                            {
+                                effect.TriggerEffect(enemyScript, enemyScript.transform.position, card, playerController.attackMulti);
+                                uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                            }
+                        
                         }
+
+                        //yield return new WaitForSeconds(0.01f);
                     }
                     break;
                 }
 
-                
+                 
                 case(BattleActionType.DEFEND):
                 {
                     /*effect.TriggerEffect(playerController, playerController.transform.position, card);
@@ -988,6 +1037,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
+        //yield return null;
     }
 
     //Method for the player to attack themselves
@@ -1004,9 +1054,21 @@ public class BattleManager : MonoBehaviour
                 //effects the player inflicts on themselves that DO consider their attack boosts
                 case(BattleActionType.ATTACK):
                 {
-                    
-                    effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
-                    uiShake.Shake(0.2f, card.uiShakeMagnitude);
+                    //Multi Hit handling
+                    int hits = 1;
+                    if(effect.isMultiHit)
+                    {
+                        hits = UnityEngine.Random.Range(effect.minHits, effect.maxHits + 1);
+                    }
+
+                    //If it isn't a multihit, the effect will only trigger once
+                    for(int a = 0; a < hits; a++)
+                    {
+                        effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
+                        uiShake.Shake(0.2f, card.uiShakeMagnitude);
+
+                        //yield return new WaitForSeconds(0.4f);
+                    }
                     break;
                 }
                 case(BattleActionType.DEFEND):
@@ -1029,6 +1091,7 @@ public class BattleManager : MonoBehaviour
 
         }
 
+        //yield return null;
     }
     #endregion
 
@@ -1056,7 +1119,7 @@ public class BattleManager : MonoBehaviour
             fieldCondition.active = false;
             yield break;
         }
-        print(fieldCondition.name + "field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
+        print(fieldCondition.name + " field condition Is active! " + fieldCondition.turnsRemaining + " turns remaining." );
 
 
 

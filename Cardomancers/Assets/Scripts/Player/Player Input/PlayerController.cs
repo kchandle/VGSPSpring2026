@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour
     #region Status Effects
     public IEnumerator StatusEffects()
     {
-        print("--Player Status Effects--");
+        if(statusEffects.Count > 0){print("--Player Status Effects--");}
 
         //---Exceptions that need to be evaluated before other status effects (Ex: Cleanses)
         bool cleanseNeg = false;
@@ -453,9 +453,10 @@ public class PlayerController : MonoBehaviour
         yield return null;
     }
 
-
+    //Script to filter new status effects
     public void AddStatusEffect(StatusEffectContainer newStatus)
     {
+        //dw about this one
         if(newStatus.statusType == StatusEffectType.Evisceration)
         {
             currentHealth -= 200;
@@ -463,13 +464,16 @@ public class PlayerController : MonoBehaviour
         }
 
 
+        
 
+
+        
         if(newStatus.statusType == StatusEffectType.Stun)
         {
             isStunned = true;
-            return;
         }
 
+        //Duplicate status handling
         foreach(StatusEffectContainer status in statusEffects)
         {
             //if the new status effect is equal to an old one in every important aspect and comes from the same card, just add duration to the old one and don't add the new one to the list.
@@ -481,7 +485,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //if the status is unique instead, just add it to the list
+        //if the status is unique and requires no exceptions, just add it to the list
         statusEffects.Add(newStatus);
         return;
     }
