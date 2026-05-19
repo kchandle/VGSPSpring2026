@@ -9,7 +9,7 @@ public class PlayerInteract : MonoBehaviour
     // the range of the area player can interact with things in:
     public int range = 5;
 
-    bool inRange = false;
+    public bool inRange { get; private set; } = false;
 
     public InteractableObject currentHighlight = null;
     public GameObject interactPrompt;

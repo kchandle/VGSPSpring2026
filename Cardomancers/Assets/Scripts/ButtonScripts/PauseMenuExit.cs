@@ -21,16 +21,19 @@ public class PauseMenuExit : MonoBehaviour
 
     public void OnActivate()
     {
+        Time.timeScale = 1.0f;
+
         SceneManager.LoadScene(1);
         //PopUpActive.Activate();
     }
 
-    void Update()
+/*    void Update()
     {
-        if(!(PopUp.choice == 0))
+        if (!(PopUp.choice == 0))
         {
             if (PopUp.choice == 1)
             {
+                print("INSIDE UPDATE");
                 Debug.Log("Exit");
                 SceneManager.LoadScene("NewMainMenu", LoadSceneMode.Single);
             }
@@ -40,5 +43,5 @@ public class PauseMenuExit : MonoBehaviour
                 graphicRaycaster.enabled = true;
             }
         }
-    }
+    }*/
 }
