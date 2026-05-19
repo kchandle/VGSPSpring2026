@@ -26,7 +26,18 @@ public class PlayerController : MonoBehaviour
     public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
 
     public bool healable = true; //Whether or not player can be healed. 
-    public bool isStunned = false; //player doesn't have stun handling yet
+    public bool isStunned
+    {
+        get => IsStunned;
+        set
+        {
+            IsStunned = value;
+            BattleManager battleManager = FindFirstObjectByType<BattleManager>();
+            if (battleManager != null) battleManager.playerStunIcon.SetActive(value);
+                
+        }
+    }//player doesn't have stun handling yet
+    private bool IsStunned = false;
 
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
     public bool cSpellTriggered = false; //Whether or not counterSpell had been triggered, used as a signal to disable counterSpellActive

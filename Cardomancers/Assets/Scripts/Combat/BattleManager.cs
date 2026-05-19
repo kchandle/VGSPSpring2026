@@ -51,6 +51,8 @@ public class BattleManager : MonoBehaviour
     public BattleState battleState; // current state of the battle
     public EndState endState;
 
+    public GameObject playerStunIcon;
+
     #region All the player scripts
     [SerializeField]private GameObject player; // reference to the player game object
     [SerializeField]private PlayerController playerController; // reference to the player controller
@@ -157,8 +159,6 @@ public class BattleManager : MonoBehaviour
         cameraScript.enabled = true;
         GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         player.GetComponent<PlayerInteract>().interacting = false;
-
-        
     }
     #endregion
 
