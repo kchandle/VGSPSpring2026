@@ -25,6 +25,7 @@ public class QuestPoint : MonoBehaviour
     private void OnEnable()
     {
         QuestEvents.OnQuestStateChanged += QuestStateChange;
+        currentQuestState = FindFirstObjectByType<QuestManager>().GetQuestByID(questID).state;
     }
 
     private void OnDisable()
@@ -34,10 +35,12 @@ public class QuestPoint : MonoBehaviour
     
     public void StartOrFinishQuest()
     {
+        Debug.Log(currentQuestState);
         // If you can start the quest and this is where you start it, start the quest
         if (currentQuestState == QuestState.CAN_START && startPoint)
         {
             QuestEvents.StartQuest(questID);
+            Debug.Log("Starting Quest: " +  questID);
             if (defaultDialogue && !playDialogueOnFinishOnly)
             {
                 Debug.Log(defaultDialogue.name);
@@ -47,6 +50,7 @@ public class QuestPoint : MonoBehaviour
         // If you can finish the quest and theis is where you end it, end the quest
         else if (currentQuestState == QuestState.CAN_FINISH && endPoint)
         {
+            Debug.Log("Ending Quest: " +  questID);
             QuestEvents.FinishQuest(questID);
             foreach (GameObject setActive in setActiveOnFinish)
             {
@@ -65,10 +69,12 @@ public class QuestPoint : MonoBehaviour
         }
         else if (shopkeeper)
         {
+            Debug.Log("Shopkeeper");
             GetComponent<ShopkeeperInteract>().OnInteract();
         }
         else if (altDialogue)
         {
+            Debug.Log("AltDialogue");
             DialogueManager.instance.StartDialogue(altDialogue);
         }
 
