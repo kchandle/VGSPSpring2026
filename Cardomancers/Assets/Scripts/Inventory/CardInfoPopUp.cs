@@ -45,10 +45,16 @@ public class CardInfoPopUp : PlayItem
         cardImage.sprite = card.cardImage.sprite;
         description.text = card.inventoryCard.cardSO.description;
         cardType.text = card.inventoryCard.cardSO.CardType.ToString();
-        typeImage.sprite = card.actionTypeImage.sprite;
-        cardType.text = card.actionTypeImage.sprite.name;
-        damageImage.sprite = card.attackElementImage.sprite;
-        damageType.text = card.attackElementImage.sprite.name;
+        if(card.actionTypeImage.sprite)
+        {
+            typeImage.sprite = card.actionTypeImage.sprite;
+            cardType.text = card.actionTypeImage.sprite.name;
+        }
+        if(card.attackElementImage.sprite)
+        {
+            damageImage.sprite = card.attackElementImage.sprite;
+            damageType.text = card.attackElementImage.sprite.name;
+        }
         tagLine.text = card.inventoryCard.cardSO.tagLine;
     }
 

@@ -304,7 +304,8 @@ public struct BattleEffect
                     fieldCondition.turnsActive = turnsActive;
                     fieldCondition.turnsRemaining = turnsActive;
                     BattleManager.instance.fieldCondition = fieldCondition;
-                    //Debug.Log("set field condition to: " + fieldCondition.name);       
+                    //Debug.Log("set field condition to: " + fieldCondition.name);  
+                    return true;       
                 } 
                 //---
 
@@ -329,6 +330,18 @@ public struct BattleEffect
 
             case (BattleActionType.DEFEND):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name);   
+                    return true;      
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
@@ -355,6 +368,18 @@ public struct BattleEffect
 
             case (BattleActionType.HEAL):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name); 
+                    return true;    
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
@@ -489,7 +514,8 @@ public struct BattleEffect
                     fieldCondition.turnsActive = turnsActive;
                     fieldCondition.turnsRemaining = turnsActive;
                     BattleManager.instance.fieldCondition = fieldCondition;
-                    //Debug.Log("set field condition to: " + fieldCondition.name);       
+                    //Debug.Log("set field condition to: " + fieldCondition.name);  
+                    return true;       
                 } 
                 //---
 
@@ -530,6 +556,18 @@ public struct BattleEffect
             }
             case (BattleActionType.DEFEND):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name); 
+                    return true;       
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
@@ -554,6 +592,18 @@ public struct BattleEffect
 
             case (BattleActionType.HEAL):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name); 
+                    return true;       
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
