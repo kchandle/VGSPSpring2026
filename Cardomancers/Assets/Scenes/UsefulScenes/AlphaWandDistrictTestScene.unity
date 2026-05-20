@@ -875,7 +875,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &117571555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1605,6 +1605,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3724237792139652563, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
+    - {fileID: 2705279669558030209, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8532466911037381320, guid: e41ec73ca77590a4a89043026fd980eb, type: 3}
       insertIndex: 3
@@ -1703,6 +1704,10 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7481824699386042607, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      propertyPath: m_ActionEvents.Array.data[23].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnToggleQuest
+      objectReference: {fileID: 0}
     - target: {fileID: 7833135755326040512, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -261.5
@@ -1751,6 +1756,10 @@ PrefabInstance:
       propertyPath: questMenu
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
+      propertyPath: QuestLogUI
+      value: 
+      objectReference: {fileID: 117571554}
     - target: {fileID: 8277037704298673333, guid: 8ba9c008d4390c946b57d13ed66a970b, type: 3}
       propertyPath: inventoryUI
       value: 
@@ -4011,6 +4020,14 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6501967342219177714, guid: 580fd2b09f39d0b47978e4cdfa839413, type: 3}
+      propertyPath: endPoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6501967342219177714, guid: 580fd2b09f39d0b47978e4cdfa839413, type: 3}
+      propertyPath: startPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7376268024293969925, guid: 580fd2b09f39d0b47978e4cdfa839413, type: 3}
       propertyPath: UI
       value: 
@@ -4019,6 +4036,14 @@ PrefabInstance:
       propertyPath: UI
       value: 
       objectReference: {fileID: 1664440652}
+    - target: {fileID: 7691269293111801566, guid: 580fd2b09f39d0b47978e4cdfa839413, type: 3}
+      propertyPath: endPoint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7691269293111801566, guid: 580fd2b09f39d0b47978e4cdfa839413, type: 3}
+      propertyPath: startPoint
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8530887045883933818, guid: 580fd2b09f39d0b47978e4cdfa839413, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -6135,15 +6160,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1149346385039029205, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1149346385039029205, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1149346385039029205, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1641953745458156800, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_Pivot.x
@@ -6227,15 +6252,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2504974920800003018, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2504974920800003018, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4697929240296101710, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
+      propertyPath: questManager
+      value: 
+      objectReference: {fileID: 698480831}
     - target: {fileID: 8236787006480274172, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8579688642542069036, guid: 3a408ea04e3eebbbbac46e9d3cdebfdc, type: 3}
       propertyPath: m_Name
@@ -8527,7 +8556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6394504587602541739, guid: 3d1525dcb2c66b1429880cf83d57de34, type: 3}
       propertyPath: m_TagString
-      value: Apartment
+      value: StoreLocation
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
