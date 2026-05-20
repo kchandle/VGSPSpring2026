@@ -21,18 +21,16 @@ public class StartBattleOnTrigger : MonoBehaviour
         if (other.tag == "Player")
         {
             DialogueManager.instance.StartDialogue(dialogue);
-            startBattle.StartBattleNow();
+            DialogueEvents.OnEndDialogue += StartBattleAfterDialogue;
         }
     }
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    { 
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void StartBattleAfterDialogue(DialogueSO dialogue)
     {
-        
+        if (dialogue == this.dialogue)
+        {
+            startBattle.StartBattleNow();
+            DialogueEvents.OnEndDialogue -=  StartBattleAfterDialogue;
+        }
     }
 }
