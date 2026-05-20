@@ -25,7 +25,7 @@ public class ShopkeeperInteract : MonoBehaviour
             shop.OpenShop();
             oldState = GameStateScript.CurrentState;
             GameStateScript.CurrentState = GameState.SHOPPING;
-            UI.SetActive(false);
+            UI.SetActive(true);
 
         }
     }
