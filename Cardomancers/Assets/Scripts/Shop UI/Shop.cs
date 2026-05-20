@@ -215,7 +215,9 @@ public class Shop : MonoBehaviour
             print("error, one of the buyable items isn't a card or hack so");
             return false;
         }
-        SaveSystem.Save(player);
+
+        
+        SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
         Shop.PurchaseEvent?.Invoke();
 
         
@@ -253,7 +255,7 @@ public class Shop : MonoBehaviour
                     Inventory.RemoveCardFromInventory(c);
                     Inventory.Money += (int)item.SellPrice;
                     Shop.SellEvent?.Invoke();
-                    SaveSystem.Save(player);
+                    SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
                     return true;
                 }
                 
@@ -265,7 +267,7 @@ public class Shop : MonoBehaviour
             Inventory.RemoveHackFromInventory(item.SO_hackSO);
             Inventory.Money += (int)item.SellPrice;
             Shop.SellEvent?.Invoke();
-            SaveSystem.Save(player);
+            SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
             return true;
         }
         //

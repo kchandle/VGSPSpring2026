@@ -4,10 +4,12 @@ using UnityEngine;
 [Serializable]
 public class GameObjectSaveData
 {
-    private bool enabled;
+    public bool enabled;
+    public string name;
     
-    public GameObjectSaveData(bool enabled)
+    public GameObjectSaveData(bool enabled, string name)
     {
         this.enabled = enabled;
+        this.name = name;
     }
 }
