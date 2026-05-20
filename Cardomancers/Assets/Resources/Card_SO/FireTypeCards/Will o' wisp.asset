@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
   m_Name: Will o' wisp
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 40
+  sellValue: 75
   price: 150
   energyCost: 4
   image: {fileID: 21300000, guid: 5f2b6e8975a96cd429d2b3665bc69fe4, type: 3}
@@ -33,6 +33,9 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 0
+    minHits: 0
+    maxHits: 0
   - StatusAmount: 3
     damageType: 2
     actionType: 2
@@ -49,6 +52,9 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 0
+    minHits: 0
+    maxHits: 0
   particleSystem: {fileID: 0}
   damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
   elementIcon: {fileID: 898927699, guid: c6dc8d859716e6c479204fed36898402, type: 3}
