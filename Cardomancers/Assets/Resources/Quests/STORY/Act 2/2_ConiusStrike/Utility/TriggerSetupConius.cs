@@ -16,7 +16,7 @@ public class TriggerSetupConius : MonoBehaviour
     void Start()
     {
         //TODO: Create ConiusApartment tag and apply it to the model for conius' apartment
-        transform.SetParent(GameObject.FindGameObjectWithTag("ConiusApartment").transform);
+        transform.SetParent(GameObject.FindGameObjectWithTag("Apartment").transform);
         transform.localPosition = Vector3.zero;
     }
 }

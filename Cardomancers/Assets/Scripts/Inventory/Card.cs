@@ -94,13 +94,13 @@ public class Card : PlayItem
         AttackElementSprite = cardSO.elementIcon;
         if (hacks.Length > 0 && hacks[0])
         {
-            backHack.GetComponent<RawImage>().texture = hacks[0].image.texture;
+            backHack.GetComponent<Image>().sprite = hacks[0].image;
             backHack.SetActive(true);
         }
 
         if (hacks.Length > 1 && hacks[1])
         {
-            frontHack.GetComponent<RawImage>().texture = hacks[1].image.texture;
+            frontHack.GetComponent<Image>().sprite = hacks[1].image;
             frontHack.SetActive(true);
         }
     }

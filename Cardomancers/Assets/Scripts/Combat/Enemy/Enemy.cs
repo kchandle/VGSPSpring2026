@@ -165,7 +165,7 @@ public class Enemy : MonoBehaviour
     {
         battleManager = transform.parent.parent.gameObject.GetComponent<BattleManager>();
         // sets Max Health from the SO and sets the current health to max health
-        enemySO = enemy_SO;
+        this.enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
         currentHealth = maxHealth;
         currentTimer = Random.Range(1, 4);
