@@ -35,26 +35,10 @@ public class QuestLogUI : MonoBehaviour
     private void OnEnable()
     {
         QuestEvents.OnQuestStateChanged += QuestStateChange;
-        // Update buttons based on state changes when the game object is inactive
-        foreach (QuestLogButton questLogButton in scrollingList.IDToButtonMap.Values)
+
+        foreach (Quest quest in FindFirstObjectByType<QuestManager>().QuestMap.Values)
         {
-            switch (questManager.GetQuestByID(questLogButton.QuestID).state)
-            {
-                case QuestState.CAN_START:
-                    questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.yellowNice;
-                    break;
-                case QuestState.IN_PROGRESS:
-                    questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.blue;
-                    break;
-                case QuestState.CAN_FINISH:
-                    questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.chartreuse;
-                    break;
-                default:
-                    // if the state isn't one of the above ones, the button should be destroyed
-                    Debug.Log(questLogButton.name);
-                    Destroy(questLogButton.gameObject);
-                    break;
-            }
+            QuestStateChange(quest);
         }
     }
 

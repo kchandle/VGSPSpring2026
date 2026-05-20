@@ -21,6 +21,8 @@ public class PauseMenuExit : MonoBehaviour
 
     public void OnActivate()
     {
+        SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
+        
         Time.timeScale = 1.0f;
 
         SceneManager.LoadScene(1);
