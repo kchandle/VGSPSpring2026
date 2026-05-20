@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class QuestLogUI : MonoBehaviour
 {
@@ -18,40 +19,26 @@ public class QuestLogUI : MonoBehaviour
     
     private Button firstSelectedButton;
 
-    private void Awake()
-    {
-        transform.parent.gameObject.SetActive(true);
-        gameObject.SetActive(true);
-    }
 
     private void Start()
     {
-        transform.parent.gameObject.SetActive(false);
-        gameObject.SetActive(false);
+        StartCoroutine(SetParentFalseAfterShortTime());
     }
+
+    IEnumerator SetParentFalseAfterShortTime()
+    {
+        yield return new WaitForSeconds(0.001f);
+        transform.parent.gameObject.SetActive(false);
+    }
+
 
     private void OnEnable()
     {
         QuestEvents.OnQuestStateChanged += QuestStateChange;
-        // Update buttons based on state changes when the game object is inactive
-        foreach (QuestLogButton questLogButton in scrollingList.IDToButtonMap.Values)
+
+        foreach (Quest quest in FindFirstObjectByType<QuestManager>().QuestMap.Values)
         {
-            switch (questManager.GetQuestByID(questLogButton.QuestID).state)
-            {
-                case QuestState.CAN_START:
-                    questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.yellowNice;
-                    break;
-                case QuestState.IN_PROGRESS:
-                    questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.blue;
-                    break;
-                case QuestState.CAN_FINISH:
-                    questLogButton.GetComponentInChildren<TextMeshProUGUI>().color = Color.chartreuse;
-                    break;
-                default:
-                    // if the state isn't one of the above ones, the button should be destroyed
-                    Destroy(questLogButton.gameObject);
-                    break;
-            }
+            QuestStateChange(quest);
         }
     }
 

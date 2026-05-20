@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56839f9ac5b90f42a03522c876d29dd, type: 3}
   m_Name: Barrier
   m_EditorClassIdentifier: Assembly-CSharp::Card_SO
-  sellValue: 30
+  sellValue: 75
   price: 150
   energyCost: 2
   image: {fileID: 21300000, guid: 64f99ec28e7e7384c83a283b474e57cb, type: 3}
@@ -33,6 +33,9 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 0
+    minHits: 0
+    maxHits: 0
   particleSystem: {fileID: 0}
   damageTypeIcon: {fileID: 687604367, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
   elementIcon: {fileID: 1856503353, guid: c6dc8d859716e6c479204fed36898402, type: 3}

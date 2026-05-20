@@ -74,10 +74,10 @@ public enum StatusEffectType
     AntiHeal, 
     Evisceration,
     //-
-    //--- ---//
-
     
     Random, //For the aura of minor chaos hack
+    //--- ---//
+
     Other
 }
 #endregion
@@ -142,6 +142,13 @@ public struct BattleEffect
     public FieldEffect_SO fieldCondition;
 
 
+    [Header("Multi-hits")]
+    //Varibles for multi-hit cards (magic missile)
+    public bool isMultiHit;
+    public int minHits;
+    public int maxHits;
+
+
     [Header("Particle Effects")]
     //A list of particle effects to happen when the BattleEffect is played
     ParticleSystem[] particles;
@@ -155,7 +162,7 @@ public struct BattleEffect
     //}
 
 
-    public BattleEffect(int statusAmount, DamageType damageType, TargetingType targetingType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, ParticleSystem[] particles, BattleActionType actionType)
+    public BattleEffect(int statusAmount, DamageType damageType, TargetingType targetingType, bool isStatusEffect, bool isPerishable, bool isNegative, int turnsActive, float probability, StatusEffectType statusType, bool summonsEnemies, Enemy_SO[] summonableEnemies, bool setsNextCard, Card_SO nextCard, bool setsFieldCondition, FieldEffect_SO fieldCondition, bool isMultiHit, int minHits, int maxHits, ParticleSystem[] particles, BattleActionType actionType)
     {
         //Basic attributes. Applies to cards that just do damage and cards with status effects
         this.StatusAmount = statusAmount;
@@ -180,6 +187,11 @@ public struct BattleEffect
         this.setsFieldCondition = setsFieldCondition;
         this.fieldCondition = fieldCondition;
 
+        //Multi hit variables. These only work for attacks, heals and defensive cards won't hit multiple times
+        this.isMultiHit = isMultiHit;
+        this.minHits = minHits;
+        this.maxHits = maxHits;
+
         //other
         this.particles = particles;
         this.actionType = actionType;
@@ -199,18 +211,21 @@ public struct BattleEffect
         }
 
 
-        //Debug.Log("test helooooooooo test");
         PlayerController player = target.GetComponent<PlayerController>();
-        if(card != null && card.VFXPrefab)
+        //vfx handling
+        if(card.VFXPrefab)
         {
             Debug.Log(card.name + " on player");
 
-            GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
-            vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
-            /*if (card.CardType != CardType.DEF)
-            {
-                return false;
-            }*/
+            //GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
+            //vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
+
+            Transform battleCanvasTransform = GameObject.FindGameObjectWithTag("BattleCanvas").transform;
+            Transform playerPlaySpace = battleCanvasTransform.Find("PlayerPlayspacePrefab(Clone)").transform;
+
+            GameObject vfx = GameObject.Instantiate(card.VFXPrefab, battleCanvasTransform.Find("PlayerPlayspacePrefab(Clone)").transform);
+            vfx.transform.position = new Vector3(playerPlaySpace.position.x, playerPlaySpace.position.y, 0f);
+            vfx.transform.localScale = new Vector3(vfx.transform.localScale.x * 0.9f, vfx.transform.localScale.y * 0.9f, vfx.transform.localScale.z * 0.9f);
         }
 
         //---Applying the Random status effect chooses a random status effect from the enum to hit the opponent with.
@@ -289,7 +304,8 @@ public struct BattleEffect
                     fieldCondition.turnsActive = turnsActive;
                     fieldCondition.turnsRemaining = turnsActive;
                     BattleManager.instance.fieldCondition = fieldCondition;
-                    //Debug.Log("set field condition to: " + fieldCondition.name);       
+                    //Debug.Log("set field condition to: " + fieldCondition.name);  
+                    return true;       
                 } 
                 //---
 
@@ -314,6 +330,18 @@ public struct BattleEffect
 
             case (BattleActionType.DEFEND):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name);   
+                    return true;      
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
@@ -340,6 +368,18 @@ public struct BattleEffect
 
             case (BattleActionType.HEAL):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name); 
+                    return true;    
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
@@ -381,17 +421,14 @@ public struct BattleEffect
             return false;
         }
 
-
         if(card)
         {
             //Debug.Log(card.name + " on enemy");
             GameObject vfx = GameObject.Instantiate(card.VFXPrefab, GameObject.FindGameObjectWithTag("BattleCanvas").transform);
-            vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
-            /*if (card.CardType == CardType.DEF)
-            {
-                Debug.Log("a card with only def played on enemy");
-                return false;
-            }*/
+            //vfx.transform.position = new Vector3(GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.x, GameObject.FindGameObjectWithTag("BattleCanvas").transform.position.y, 0f);
+            
+            vfx.transform.position = new Vector3(target.gameObject.transform.position.x, target.gameObject.transform.position.y, 0f);
+            vfx.transform.localScale = new Vector3(vfx.transform.localScale.x * 0.5f, vfx.transform.localScale.y * 0.5f, vfx.transform.localScale.z * 0.5f);
         }
         
         //---Applying random status effects
@@ -477,7 +514,8 @@ public struct BattleEffect
                     fieldCondition.turnsActive = turnsActive;
                     fieldCondition.turnsRemaining = turnsActive;
                     BattleManager.instance.fieldCondition = fieldCondition;
-                    //Debug.Log("set field condition to: " + fieldCondition.name);       
+                    //Debug.Log("set field condition to: " + fieldCondition.name);  
+                    return true;       
                 } 
                 //---
 
@@ -518,6 +556,18 @@ public struct BattleEffect
             }
             case (BattleActionType.DEFEND):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name); 
+                    return true;       
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {
@@ -542,6 +592,18 @@ public struct BattleEffect
 
             case (BattleActionType.HEAL):
             {
+                //If the played card sets a new field condition.
+                if(setsFieldCondition)
+                {
+                    fieldCondition.active = true;
+                    fieldCondition.turnsActive = turnsActive;
+                    fieldCondition.turnsRemaining = turnsActive;
+                    BattleManager.instance.fieldCondition = fieldCondition;
+                    //Debug.Log("set field condition to: " + fieldCondition.name); 
+                    return true;       
+                } 
+                //---
+
                 //For friendly status effects to be applied on self
                 if (isStatusEffect)
                 {

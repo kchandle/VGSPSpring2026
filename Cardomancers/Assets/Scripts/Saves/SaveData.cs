@@ -29,8 +29,10 @@ public class SaveData
     #region Quests
     public List<QuestData> questData = new List<QuestData>();
     #endregion
+
+    public List<GameObjectSaveData> gameObjectSaveDatas;
     
-    public  SaveData(GameObject player)
+    public  SaveData(GameObject player, GameObject[] enabledDataPersistence)
     {
        inventory = Inventory.InventoryList;
        deck = Inventory.Deck;
@@ -44,6 +46,14 @@ public class SaveData
        expToNextLevel = ExpLevels.CurrentLevel * 50;
        currentExp = ExpLevels.CurrentExp;
        skillPoints = ExpLevels.CurrentLevel * 5;
+       
+       gameObjectSaveDatas = new List<GameObjectSaveData>();
+
+       foreach (GameObject gameObject in enabledDataPersistence)
+       {
+           Debug.Log(gameObject.name);
+           gameObjectSaveDatas.Add(new GameObjectSaveData(gameObject.activeSelf, gameObject.name));
+       }
 
        QuestManager questManager = Object.FindFirstObjectByType<QuestManager>();
        if (questManager != null)

@@ -17,7 +17,7 @@ MonoBehaviour:
   energyCost: 2
   image: {fileID: 21300000, guid: 809a2db6f76487f44940f05ca441297c, type: 3}
   cardEffects:
-  - StatusAmount: 12
+  - StatusAmount: 10
     damageType: 7
     actionType: 0
     targetingType: 1
@@ -33,6 +33,9 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 0
+    minHits: 0
+    maxHits: 0
   - StatusAmount: 0
     damageType: 7
     actionType: 0
@@ -40,7 +43,7 @@ MonoBehaviour:
     isStatusEffect: 1
     isPerishable: 1
     isNegative: 1
-    turnsActive: 3
+    turnsActive: 1
     probability: 1
     statusType: 10
     summonsEnemies: 0
@@ -49,6 +52,9 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 0
+    minHits: 0
+    maxHits: 0
   - StatusAmount: 0
     damageType: 7
     actionType: 0
@@ -56,7 +62,7 @@ MonoBehaviour:
     isStatusEffect: 1
     isPerishable: 1
     isNegative: 1
-    turnsActive: 3
+    turnsActive: 1
     probability: 1
     statusType: 10
     summonsEnemies: 0
@@ -65,12 +71,15 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 0
+    minHits: 0
+    maxHits: 0
   particleSystem: {fileID: 0}
   damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
   elementIcon: {fileID: -1435407506, guid: c6dc8d859716e6c479204fed36898402, type: 3}
   displayName: Shockwave
   description: Deal medium Lightning Damage to all Enemies. This card stuns Enemies
-    and the User
+    and the User for one turn
   tagLine: 
   cardType: 0
   VFXPrefab: {fileID: 872052743411855336, guid: b8a2c1e2912d3b441ae013622b1c6d83, type: 3}

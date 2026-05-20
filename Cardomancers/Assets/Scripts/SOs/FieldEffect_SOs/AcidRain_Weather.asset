@@ -17,11 +17,17 @@ MonoBehaviour:
   name: Acid Rain
   description: hurts people
   active: 1
-  boostsDamage: 0
+  vfxPrefab: {fileID: 6544554410201100935, guid: e11f0d944dd86574fb7fa104f52fc5e0, type: 3}
+  hasStatChanges: 0
+  boostsTypeDamage: 0
   chipDamage: 1
   effects:
-  - boostedTypes: 
+  - statChanges: 0
+    attackBoost: 0
+    enduranceBoost: 0
+    boostedTypes: 
     boostAmount: 0
     dealsChipDamage: 1
+    chipIsRandom: 0
     chipDamageCard: {fileID: 11400000, guid: a4e77c5047db1e7489e858c363165589, type: 2}
   fieldType: 0

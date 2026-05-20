@@ -74,7 +74,7 @@ public class popUp : MonoBehaviour
             yield return new WaitForSeconds(timer); 
             // Counts down time until popup ends. Not ran if decision is active
         }
-
+        
         if(decision)
         {
             yield return new WaitUntil(() => responseMade);

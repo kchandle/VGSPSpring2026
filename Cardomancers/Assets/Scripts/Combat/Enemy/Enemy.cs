@@ -165,7 +165,7 @@ public class Enemy : MonoBehaviour
     {
         battleManager = transform.parent.parent.gameObject.GetComponent<BattleManager>();
         // sets Max Health from the SO and sets the current health to max health
-        enemySO = enemy_SO;
+        this.enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
         currentHealth = maxHealth;
         currentTimer = Random.Range(1, 4);
@@ -351,7 +351,7 @@ public class Enemy : MonoBehaviour
     public IEnumerator StatusEffects()
     {
         //Any status added to enemy should be added to playercontroller and vice versa
-        print("--Enemy Status Effects--");
+        if(statusEffects.Count > 0){print("--Enemy Status Effects--");}
 
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
@@ -595,7 +595,6 @@ public class Enemy : MonoBehaviour
             UpdateHealthBar();
             yield return new WaitForSeconds(0.1f);
 
-            //print(attackMulti);
         }
         //=====End Loop=====//
 
@@ -616,7 +615,6 @@ public class Enemy : MonoBehaviour
         if(newStatus.statusType == StatusEffectType.Stun)
         {
             isStunned = true;
-            return;
         }
         
         foreach(StatusEffectContainer status in statusEffects)
