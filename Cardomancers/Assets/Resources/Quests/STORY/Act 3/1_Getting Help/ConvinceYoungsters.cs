@@ -48,6 +48,8 @@ public class ConvinceYoungsters : QuestStep
     public void FinishMe(DialogueSO dialogue)
     {
         if (dialogue != finishDialogue) return;
+        // if no youngsters have been defeated, do not finish the quest step.
+        if (!youngsters.ContainsValue(true)) return;
         FinishQuestStep();
     }
     

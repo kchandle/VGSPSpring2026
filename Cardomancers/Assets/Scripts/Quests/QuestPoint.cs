@@ -1,7 +1,6 @@
 using UnityEngine;
 using DialogueScripts;
 
-[RequireComponent(typeof(Collider))]
 public class QuestPoint : MonoBehaviour
 {
     private bool playerInRange;
@@ -12,15 +11,16 @@ public class QuestPoint : MonoBehaviour
     [Header("Config")] 
     [SerializeField] private bool startPoint = true;
     [SerializeField] private bool endPoint = true;
+    [SerializeField] private GameObject[] setActiveOnFinish;
     [SerializeField] private bool shopkeeper = false;
     [SerializeField] private bool startsBattleOnEnd = false;
+    [SerializeField] private bool playDialogueOnFinishOnly;
     [SerializeField] private DialogueSO altDialogue;
     [SerializeField] private DialogueSO defaultDialogue;
 
     private void Awake()
     {
         questID = questInfo.ID;
-        GetComponent<Collider>().isTrigger = true;
     }
 
     private void OnEnable()
@@ -42,12 +42,20 @@ public class QuestPoint : MonoBehaviour
         if (currentQuestState == QuestState.CAN_START && startPoint)
         {
             QuestEvents.StartQuest(questID);
-            DialogueManager.instance.StartDialogue(defaultDialogue);
+            if (defaultDialogue && !playDialogueOnFinishOnly)
+            {
+                DialogueManager.instance.StartDialogue(defaultDialogue);
+            }
         }
         // If you can finish the quest and theis is where you end it, end the quest
         else if (currentQuestState == QuestState.CAN_FINISH && endPoint)
         {
             QuestEvents.FinishQuest(questID);
+            foreach (GameObject setActive in setActiveOnFinish)
+            {
+                setActive.SetActive(true);
+            }
+            gameObject.SetActive(false);
             DialogueManager.instance.StartDialogue(defaultDialogue);
             if (startsBattleOnEnd)
             {
@@ -62,7 +70,7 @@ public class QuestPoint : MonoBehaviour
         {
             GetComponent<ShopkeeperInteract>().OnInteract();
         }
-        else
+        else if (altDialogue)
         {
             DialogueManager.instance.StartDialogue(altDialogue);
         }
@@ -76,22 +84,6 @@ public class QuestPoint : MonoBehaviour
         if (quest.info.ID == questInfo.ID)
         {
             currentQuestState = quest.state;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
         }
     }
 }
