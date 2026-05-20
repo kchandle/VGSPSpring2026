@@ -1,43 +1,28 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using Random = UnityEngine.Random;
+using DialogueScripts;
 
 public class TalkToPeople : QuestStep
 {
-    [Tooltip("The NPCs to be instantiated when the quest starts.")]
-    [SerializeField] private GameObject[] people;
-    [Tooltip("The amount of NPCs the player must talk to.")]
     [SerializeField] private int NPCsToTalkTo;
+    [SerializeField] private DialogueSO dialogue;
 
-    [Tooltip("Possible locations NPCs can spawn")]
-    [SerializeField] private List<Transform> NPCLocations;
     private int NPCsTalkedTo;
 
-    private void Awake()
+    private void OnEnable()
     {
-        if (NPCLocations.Count > people.Length)
-        {
-            Debug.LogError("NPCLocations count is greater than people length. This will cause NPCs to be spawned at the same location. The quest step for this has been destroyed.");
-            Destroy(gameObject);
-        }
+        BattleManager.instance.OnWin.AddListener(TalkToNPC);
     }
-    
-    private void Start()
+
+    private void OnDisable()
     {
-        List<int> possibleIndices = Enumerable.Range(0, NPCLocations.Count).ToList();
-        foreach (GameObject go in people)
-        {
-            int i = Random.Range(0, possibleIndices.Count);
-            Instantiate(go, NPCLocations[i].position, Quaternion.identity, NPCLocations[i]);
-            possibleIndices.Remove(i);
-        }
+        BattleManager.instance.OnWin.RemoveListener(TalkToNPC);
     }
 
     public void TalkToNPC()
     {
         NPCsTalkedTo++;
+        DialogueManager.instance.StartDialogue(dialogue);
         this.ChangeState(NPCsTalkedTo.ToString());
         if (NPCsTalkedTo >= NPCsToTalkTo)
         {
