@@ -22,7 +22,7 @@ public class SavePoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             //Debug.Log("Saving");
-            SaveSystem.Save(GameObject.FindWithTag("Player"), questManager, FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
+            SaveSystem.Save(GameObject.FindWithTag("Player"), questManager, FindObjectsByType<PersistEnabledData>(FindObjectsInactive.Include, FindObjectsSortMode.None));
         }
     }
 }

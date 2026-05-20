@@ -217,7 +217,7 @@ public class Shop : MonoBehaviour
         }
 
         
-        SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
+        SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<PersistEnabledData>(FindObjectsInactive.Include, FindObjectsSortMode.None));
         Shop.PurchaseEvent?.Invoke();
 
         
@@ -255,7 +255,7 @@ public class Shop : MonoBehaviour
                     Inventory.RemoveCardFromInventory(c);
                     Inventory.Money += (int)item.SellPrice;
                     Shop.SellEvent?.Invoke();
-                    SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
+                    SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<PersistEnabledData>(FindObjectsInactive.Include, FindObjectsSortMode.None));
                     return true;
                 }
                 
@@ -267,7 +267,7 @@ public class Shop : MonoBehaviour
             Inventory.RemoveHackFromInventory(item.SO_hackSO);
             Inventory.Money += (int)item.SellPrice;
             Shop.SellEvent?.Invoke();
-            SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None));
+            SaveSystem.Save(GameObject.FindWithTag("Player"), FindFirstObjectByType<QuestManager>().GetComponent<QuestManager>(), FindObjectsByType<PersistEnabledData>(FindObjectsInactive.Include, FindObjectsSortMode.None));
             return true;
         }
         //

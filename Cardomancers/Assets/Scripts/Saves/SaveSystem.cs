@@ -20,7 +20,7 @@ public static class SaveSystem
     private static readonly EncryptionService encryption = new EncryptionService(key);
 
 
-    public static void Save(GameObject player, QuestManager questManager, GameObject[] enabledDataPersistence)
+    public static void Save(GameObject player, QuestManager questManager, PersistEnabledData[] enabledDataPersistence)
     {
         //Debug.Log("Saving");
         // Creates an instance of the InventoryData class using the input
@@ -76,13 +76,6 @@ public static class SaveSystem
         ExpLevels.UpdateExpData(data.currentLevel, data.expToNextLevel, data.currentExp, data.skillPoints);
         
         Debug.Log(data.gameObjectSaveDatas.Count);
-        
-
-        foreach (GameObjectSaveData saveData in data.gameObjectSaveDatas)
-        {
-            Debug.Log(FindIncludingInactive(saveData.name).name);
-            FindIncludingInactive(saveData.name).SetActive(saveData.enabled);
-        }
     }
 
     public static QuestData LoadQuestData(string ID)
@@ -95,6 +88,13 @@ public static class SaveSystem
 
         return data;
 
+    }
+
+    public static GameObjectSaveData[] GetEnabledData()
+    {
+        if(!File.Exists(DataPath)) return null;
+        SaveData data =  JsonUtility.FromJson<SaveData>(encryption.Decrypt(File.ReadAllText(DataPath)));
+        return data.gameObjectSaveDatas.ToArray();
     }
     
     public static bool QuestDataExists(string ID)
@@ -129,8 +129,7 @@ public static class SaveSystem
             return null;
         }
 
-        var game_objects = new List<GameObject>();
-        scene.GetRootGameObjects(game_objects);
+        var game_objects = scene.GetRootGameObjects();
 
         foreach (GameObject obj in game_objects)
         {

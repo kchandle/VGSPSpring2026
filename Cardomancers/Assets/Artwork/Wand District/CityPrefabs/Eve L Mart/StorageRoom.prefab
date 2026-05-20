@@ -3318,7 +3318,7 @@ GameObject:
   - component: {fileID: 1461953926173160375}
   m_Layer: 0
   m_Name: StorageRoom
-  m_TagString: Untagged
+  m_TagString: StorageRoom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3331,7 +3331,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6829101252299726003}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.42943117, y: 0.42943117, z: 0.561773, w: 0.561773}
+  m_LocalRotation: {x: -0.42943054, y: 0.42943054, z: 0.5617735, w: 0.5617735}
   m_LocalPosition: {x: 150.9982, y: -0.13866115, z: 69.79881}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3366,7 +3366,7 @@ Transform:
   - {fileID: 1505874684712095989}
   - {fileID: 5423228566872198166}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -74.79, y: 0, z: 90}
 --- !u!1 &7591133986065719167
 GameObject:
   m_ObjectHideFlags: 0
@@ -3523,6 +3523,7 @@ GameObject:
   - component: {fileID: 5770126490922989705}
   - component: {fileID: 6959104182947404156}
   - component: {fileID: 7423989578167189046}
+  - component: {fileID: 8608962457321046028}
   m_Layer: 0
   m_Name: BackroomDoor (1)
   m_TagString: Untagged
@@ -3624,6 +3625,23 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4493585093827132993, guid: 0abd5d07dcaa9b245b7f043caba59cf1, type: 3}
+--- !u!114 &8608962457321046028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7678844465570442200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136d45e620239de4ebc3a42bbbbaa5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  name: 
+  interactable:
+    m_PersistentCalls:
+      m_Calls: []
+  highlightables: []
 --- !u!1 &7692544884152794919
 GameObject:
   m_ObjectHideFlags: 0
