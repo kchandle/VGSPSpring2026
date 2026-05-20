@@ -32,7 +32,7 @@ public class SaveData
 
     public List<GameObjectSaveData> gameObjectSaveDatas;
     
-    public  SaveData(GameObject player, GameObject[] enabledDataPersistence)
+    public  SaveData(GameObject player, PersistEnabledData[] enabledDataPersistence)
     {
        inventory = Inventory.InventoryList;
        deck = Inventory.Deck;
@@ -49,10 +49,10 @@ public class SaveData
        
        gameObjectSaveDatas = new List<GameObjectSaveData>();
 
-       foreach (GameObject gameObject in enabledDataPersistence)
+       foreach (PersistEnabledData data in enabledDataPersistence)
        {
-           Debug.Log(gameObject.name);
-           gameObjectSaveDatas.Add(new GameObjectSaveData(gameObject.activeSelf, gameObject.name));
+           Debug.Log(data.name);
+           gameObjectSaveDatas.Add(new GameObjectSaveData(data.gameObject.activeSelf, data.gameObject.name));
        }
 
        QuestManager questManager = Object.FindFirstObjectByType<QuestManager>();
