@@ -70,7 +70,6 @@ public class ShopUI : MonoBehaviour
     public void UpdatePlayerMoney()
     {
         playerMoneyText.text = "$" + Inventory.Money;
-        print("Run");
     }
 
     

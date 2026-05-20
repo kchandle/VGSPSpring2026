@@ -59,7 +59,7 @@ public class MainMenuIndex : MonoBehaviour
 
     private void OnStartGameClick(ClickEvent clickEvent)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
         Debug.Log("Start Game");
     }
 
@@ -72,29 +72,13 @@ public class MainMenuIndex : MonoBehaviour
     private void OnCreditsClick(ClickEvent clickEvent)
     {
         // Load credits scene
-        if (SceneManager.GetSceneAt(creditsIndex).IsValid())
-        {
-            SceneManager.LoadScene(creditsIndex);
-        }
-        else
-        {
-            Debug.Log("Credits scene build index is incorrect or the scene is not in scene list.");
-        }
-        Debug.Log("Credits");
+        SceneManager.LoadScene(4);
     }
 
     private void OnSettingsClick(ClickEvent clickEvent)
     {
         // Load settings scene
-        if (SceneManager.GetSceneAt(settingsIndex).IsValid())
-        {
-            SceneManager.LoadScene(settingsIndex);
-        }
-        else
-        {
-            Debug.Log("Settings scene build index is incorrect or the scene is not in the scene list.");
-        }
-        Debug.Log("Settings");
+        SceneManager.LoadScene(3);
     }
     
 }
