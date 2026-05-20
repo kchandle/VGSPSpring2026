@@ -14,6 +14,7 @@ public class GameStateScript
         MENU,
         PAUSE,
         INVENTORY,
+        QUESTUI,
         DEAD,
         SHOPPING,
         LOADINGSCREEN,

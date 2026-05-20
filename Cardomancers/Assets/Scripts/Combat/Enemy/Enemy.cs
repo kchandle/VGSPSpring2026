@@ -173,7 +173,9 @@ public class Enemy : MonoBehaviour
         UpdateShield();
         UpdateHealthBar();
         currentMana = 5;
+        #if Unity_Editor
         attackAnim.runtimeAnimatorController = enemy_SO.enemyAttkAnim;
+        #endif
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
@@ -351,7 +353,7 @@ public class Enemy : MonoBehaviour
     public IEnumerator StatusEffects()
     {
         //Any status added to enemy should be added to playercontroller and vice versa
-        print("--Enemy Status Effects--");
+        if(statusEffects.Count > 0){print("--Enemy Status Effects--");}
 
         //---Exceptions that need to be evaluated before other status effects (Cleanses)
         bool cleanseNeg = false;
@@ -595,7 +597,6 @@ public class Enemy : MonoBehaviour
             UpdateHealthBar();
             yield return new WaitForSeconds(0.1f);
 
-            //print(attackMulti);
         }
         //=====End Loop=====//
 
@@ -616,7 +617,6 @@ public class Enemy : MonoBehaviour
         if(newStatus.statusType == StatusEffectType.Stun)
         {
             isStunned = true;
-            return;
         }
         
         foreach(StatusEffectContainer status in statusEffects)
