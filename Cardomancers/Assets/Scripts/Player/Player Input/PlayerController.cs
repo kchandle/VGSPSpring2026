@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     public TMP_Text shieldText;
 
     public InventoryUIHandler inventoryUIHandler;
+    public GameObject QuestLogUI;
     [SerializeField] private int shield = 0;
 
     public GameObject pauseMenu;
@@ -109,7 +110,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameStateScript.OnGameStateChanged += UpdateGameState;
+        GameStateScript.OnGameStateChanged -= UpdateGameState;
     }
 
     public void UpdateGameState(GameState newState)
@@ -223,6 +224,20 @@ public class PlayerController : MonoBehaviour
             GameStateScript.CurrentState = GameStateScript.GameState.WALKING;
         }
         
+    }
+
+    public void OnToggleQuest(InputAction.CallbackContext context)
+    {
+        if (GameStateScript.CurrentState == GameState.WALKING && QuestLogUI.activeSelf == false)
+        {
+            QuestLogUI.SetActive(true);
+            GameStateScript.CurrentState = GameStateScript.GameState.QUESTUI;
+        }
+        else if (GameStateScript.CurrentState == GameState.QUESTUI)
+        {
+            QuestLogUI.SetActive(false);
+            GameStateScript.CurrentState = GameState.WALKING;
+        }
     }
 
 

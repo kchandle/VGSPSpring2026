@@ -173,7 +173,9 @@ public class Enemy : MonoBehaviour
         UpdateShield();
         UpdateHealthBar();
         currentMana = 5;
+        #if Unity_Editor
         attackAnim.runtimeAnimatorController = enemy_SO.enemyAttkAnim;
+        #endif
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
