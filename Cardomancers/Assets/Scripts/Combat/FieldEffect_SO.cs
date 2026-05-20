@@ -34,6 +34,9 @@ public class FieldEffect_SO : ScriptableObject
     //Whether or not the effect is active
     public bool active; 
 
+    //Effect the field will play at the end of each turn, just uses the same vfx as the weather cards for now
+    public GameObject vfxPrefab;
+
 
 
     [Header("Check the following according to what the field does.")] //This makes checking in the code faster

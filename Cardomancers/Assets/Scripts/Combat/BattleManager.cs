@@ -490,8 +490,12 @@ public class BattleManager : MonoBehaviour
         yield return StartCoroutine(playerController.StatusEffects());
 
         //Evaluate Field Conditions for the turn
-        yield return StartCoroutine(TurnBasedFieldEffects());
-
+        if(fieldCondition)
+        {
+            yield return new WaitForSeconds(1f);
+            yield return StartCoroutine(TurnBasedFieldEffects());
+        }
+        
 
         yield return new WaitForSeconds(1f);
         yield return null;
@@ -605,10 +609,15 @@ public class BattleManager : MonoBehaviour
                             break;
                         }
                     }
-                    yield return new WaitForSeconds(0.4f);
+
+                    /*if(hits > 1)
+                    {
+                        yield return new WaitForSeconds(0.4f);
+                    }*/
+                    
                 }
 
-            }//--End of effect evulation
+            }//--End of effect evalution
 
             if(reflected) //disable player counterSpell
             {
@@ -652,7 +661,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.6f);
         }
 
         //Status Effects get activated, seperate foreach to ensure all enemies get status effects applied after all cards are played
@@ -921,8 +930,12 @@ public class BattleManager : MonoBehaviour
                         
 
                         //Making this method a coroutine and using WaitForSeconds does not work, it terminates upon hitting the wait
-                        //yield return new WaitForSeconds(0.001f);
-                        //print("test");
+                        if(hits > 1)
+                        {
+                            //yield return new WaitForSeconds(0.001f);
+                            //print("test");
+                        }
+                        
                     }
                     break;
                 }
@@ -1002,7 +1015,11 @@ public class BattleManager : MonoBehaviour
                         
                         }
 
-                        //yield return new WaitForSeconds(0.01f);
+                        if(hits > 1)
+                        {
+                            //yield return new WaitForSeconds(0.001f);
+                            //print("test");
+                        }
                     }
                     break;
                 }
@@ -1069,7 +1086,11 @@ public class BattleManager : MonoBehaviour
                         effect.TriggerEffect(playerController, playerController.transform.position, card, playerController.attackMulti);
                         uiShake.Shake(0.2f, card.uiShakeMagnitude);
 
-                        //yield return new WaitForSeconds(0.4f);
+                        if(hits > 1)
+                        {
+                            //yield return new WaitForSeconds(0.001f);
+                            //print("test");
+                        }
                     }
                     break;
                 }
@@ -1280,6 +1301,17 @@ public class BattleManager : MonoBehaviour
             {
                 e.GetComponent<Enemy>().fieldAtkBoost = 1f;
                 e.GetComponent<Enemy>().fieldEndBoost = 1f;
+            }
+        }
+        else
+        {
+            if(fieldCondition.vfxPrefab)
+            {
+                Transform battleCanvasTransform = GameObject.FindGameObjectWithTag("BattleCanvas").transform;
+                Transform playerPlaySpace = battleCanvasTransform.Find("PlayerPlayspacePrefab(Clone)").transform;
+
+                GameObject vfx = GameObject.Instantiate(fieldCondition.vfxPrefab, battleCanvasTransform.Find("PlayerPlayspacePrefab(Clone)").transform);
+                vfx.transform.position = new Vector3(playerPlaySpace.position.x, playerPlaySpace.position.y, 0f);
             }
         }
         //---
