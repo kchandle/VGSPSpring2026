@@ -146,7 +146,8 @@ public class QuestManager : MonoBehaviour
     private bool CheckRequirementsMet(Quest quest)
     {
         // Check level requirements
-        bool meetsRequirements = !(ExpLevels.CurrentLevel < quest.info.levelRequirement);
+        bool meetsRequirements = (ExpLevels.CurrentLevel > quest.info.levelRequirement);
+        Debug.Log(meetsRequirements + " " + quest.info.name);
 
         // Check prerequisite quests
         foreach (QuestInfoSO info in quest.info.prerequisiteQuests)
@@ -156,6 +157,8 @@ public class QuestManager : MonoBehaviour
                 meetsRequirements = false;
             }
         }
+        
+        Debug.Log(meetsRequirements + " " + quest.info.name);
         return meetsRequirements;
     }
 
