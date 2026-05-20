@@ -3,7 +3,6 @@ using DialogueScripts;
 
 public class QuestPoint : MonoBehaviour
 {
-    private bool playerInRange;
     private string questID;
     private QuestState currentQuestState;
     [SerializeField] private QuestInfoSO questInfo;
@@ -35,15 +34,13 @@ public class QuestPoint : MonoBehaviour
     
     public void StartOrFinishQuest()
     {
-        if (!playerInRange) return;
-        Debug.Log(questID);
-
         // If you can start the quest and this is where you start it, start the quest
         if (currentQuestState == QuestState.CAN_START && startPoint)
         {
             QuestEvents.StartQuest(questID);
             if (defaultDialogue && !playDialogueOnFinishOnly)
             {
+                Debug.Log(defaultDialogue.name);
                 DialogueManager.instance.StartDialogue(defaultDialogue);
             }
         }
