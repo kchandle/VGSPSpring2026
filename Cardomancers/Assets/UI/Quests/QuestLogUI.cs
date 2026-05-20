@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class QuestLogUI : MonoBehaviour
 {
@@ -19,6 +20,16 @@ public class QuestLogUI : MonoBehaviour
     private Button firstSelectedButton;
 
 
+    private void Start()
+    {
+        StartCoroutine(SetParentFalseAfterShortTime());
+    }
+
+    IEnumerator SetParentFalseAfterShortTime()
+    {
+        yield return new WaitForSeconds(0.001f);
+        transform.parent.gameObject.SetActive(false);
+    }
 
 
     private void OnEnable()
@@ -40,6 +51,7 @@ public class QuestLogUI : MonoBehaviour
                     break;
                 default:
                     // if the state isn't one of the above ones, the button should be destroyed
+                    Debug.Log(questLogButton.name);
                     Destroy(questLogButton.gameObject);
                     break;
             }

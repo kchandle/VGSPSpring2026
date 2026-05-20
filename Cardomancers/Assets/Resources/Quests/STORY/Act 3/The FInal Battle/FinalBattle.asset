@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e321ed277a0e0410cbcbcec6ecbece41, type: 3}
   m_Name: FinalBattle
   m_EditorClassIdentifier: Assembly-CSharp::QuestInfoSO
-  displayName: 
+  displayName: Traffic Extraction
   levelRequirement: 0
-  prerequisiteQuests: []
-  questSteps: []
+  prerequisiteQuests:
+  - {fileID: 11400000, guid: 0d6a1e627f0c5468086090df01fee9ce, type: 2}
+  - {fileID: 11400000, guid: e23a6aef31df236c0b7e98eb1a5e3f7e, type: 2}
+  questSteps:
+  - {fileID: 2018609646955424330, guid: 826695113182368e2a3ff7e22ff26389, type: 3}
+  - {fileID: 4308048147432789508, guid: 1c61b43048d55f2c7934421328339eed, type: 3}
   moneyReward: 0
   expReward: 0
   cardRewards:

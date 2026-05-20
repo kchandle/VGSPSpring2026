@@ -41,6 +41,7 @@ public class ConvinceYoungsters : QuestStep
             return;
         }
         youngsters[youngster] = true;
+        Inventory.youngstersConvinced++;
         ChangeState(JsonUtility.ToJson(youngsters));
     }
 

@@ -45,6 +45,8 @@ public static class Inventory
     /// </summary>
     private static int money;
 
+    public static int youngstersConvinced = 0;
+
     #region Properties
     /// <summary>
     /// Database of all available cards, keyed by their name.
