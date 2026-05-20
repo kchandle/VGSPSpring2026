@@ -26,7 +26,18 @@ public class PlayerController : MonoBehaviour
     public float enduranceMulti = 1f; //Multiplier for incoming damage if the player has an endurance boost
 
     public bool healable = true; //Whether or not player can be healed. 
-    public bool isStunned = false; //player doesn't have stun handling yet
+    public bool isStunned
+    {
+        get => IsStunned;
+        set
+        {
+            IsStunned = value;
+            BattleManager battleManager = FindFirstObjectByType<BattleManager>();
+            if (battleManager != null) battleManager.playerStunIcon.SetActive(value);
+                
+        }
+    }//player doesn't have stun handling yet
+    private bool IsStunned = false;
 
     public bool counterSpellActive = false; //Whether or not the player will counter the next damaging spell
     public bool cSpellTriggered = false; //Whether or not counterSpell had been triggered, used as a signal to disable counterSpellActive
@@ -92,6 +103,11 @@ public class PlayerController : MonoBehaviour
         GameStateScript.OnGameStateChanged += UpdateGameState;
     }
 
+    private void Start()
+    {
+        GameStateScript.CurrentState = GameState.WALKING;
+    }
+
     private void OnDisable()
     {
         GameStateScript.OnGameStateChanged -= UpdateGameState;
@@ -145,6 +161,8 @@ public class PlayerController : MonoBehaviour
     
     public void OnEscape(InputAction.CallbackContext context)
     {
+        if (!context.started) return; 
+
         pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
         if (pauseMenu.activeSelf)
         {
@@ -226,7 +244,7 @@ public class PlayerController : MonoBehaviour
     #region Status Effects
     public IEnumerator StatusEffects()
     {
-        print("--Player Status Effects--");
+        if(statusEffects.Count > 0){print("--Player Status Effects--");}
 
         //---Exceptions that need to be evaluated before other status effects (Ex: Cleanses)
         bool cleanseNeg = false;
@@ -468,9 +486,10 @@ public class PlayerController : MonoBehaviour
         yield return null;
     }
 
-
+    //Script to filter new status effects
     public void AddStatusEffect(StatusEffectContainer newStatus)
     {
+        //dw about this one
         if(newStatus.statusType == StatusEffectType.Evisceration)
         {
             currentHealth -= 200;
@@ -478,13 +497,16 @@ public class PlayerController : MonoBehaviour
         }
 
 
+        
 
+
+        
         if(newStatus.statusType == StatusEffectType.Stun)
         {
             isStunned = true;
-            return;
         }
 
+        //Duplicate status handling
         foreach(StatusEffectContainer status in statusEffects)
         {
             //if the new status effect is equal to an old one in every important aspect and comes from the same card, just add duration to the old one and don't add the new one to the list.
@@ -496,7 +518,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //if the status is unique instead, just add it to the list
+        //if the status is unique and requires no exceptions, just add it to the list
         statusEffects.Add(newStatus);
         return;
     }
