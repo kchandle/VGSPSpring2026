@@ -17,7 +17,7 @@ MonoBehaviour:
   energyCost: 3
   image: {fileID: 21300000, guid: 4c6f5998219fa264f979e51020cd7cec, type: 3}
   cardEffects:
-  - StatusAmount: 15
+  - StatusAmount: 2
     damageType: 0
     actionType: 0
     targetingType: 0
@@ -33,6 +33,9 @@ MonoBehaviour:
     nextCard: {fileID: 0}
     setsFieldCondition: 0
     fieldCondition: {fileID: 0}
+    isMultiHit: 1
+    minHits: 5
+    maxHits: 8
   particleSystem: {fileID: 0}
   damageTypeIcon: {fileID: 1420137734, guid: 05811c580f4905f40b2d506aea7ec680, type: 3}
   elementIcon: {fileID: -525451895, guid: c6dc8d859716e6c479204fed36898402, type: 3}
