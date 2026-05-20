@@ -165,7 +165,7 @@ public class Enemy : MonoBehaviour
     {
         battleManager = transform.parent.parent.gameObject.GetComponent<BattleManager>();
         // sets Max Health from the SO and sets the current health to max health
-        enemySO = enemy_SO;
+        this.enemySO = enemy_SO;
         maxHealth = enemySO.maxHealth;
         currentHealth = maxHealth;
         currentTimer = Random.Range(1, 4);
@@ -173,9 +173,7 @@ public class Enemy : MonoBehaviour
         UpdateShield();
         UpdateHealthBar();
         currentMana = 5;
-        #if Unity_Editor
         attackAnim.runtimeAnimatorController = enemy_SO.enemyAttkAnim;
-        #endif
         deck = new List<InventoryCard>(enemySO.deck);
         resistances = new List<DamageType>(enemySO.resistances);
         weaknesses = new List<DamageType>(enemySO.weaknesses);
