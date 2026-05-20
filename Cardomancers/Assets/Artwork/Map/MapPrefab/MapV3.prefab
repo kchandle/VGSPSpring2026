@@ -9361,9 +9361,77 @@ PrefabInstance:
     m_TransformParent: {fileID: 5628113340359492775}
     m_Modifications:
     - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8898725414712658191}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 9045067773907028320}
+      objectReference: {fileID: 8898725414712658191}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 2072375323936194522}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AssignStartBattle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: BeginDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: PlayWhenBattling
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: StartDialogue, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: StartDialogue, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: RandomBattleMusic, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2892369642948671655}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
+      value: Battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: StartBattle, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736336020768095010, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2456982591604974796, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -9433,6 +9501,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4888452682891874522, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9045067773907028320}
+    - targetCorrespondingSourceObject: {fileID: 4888452682891874522, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2072375323936194522}
   m_SourcePrefab: {fileID: 100100000, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
 --- !u!1 &849947670152114937 stripped
 GameObject:
@@ -9483,6 +9554,32 @@ MonoBehaviour:
   battleThemes:
   - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
   - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+--- !u!114 &2072375323936194522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849947670152114937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0463eb6023006a4ab64081c55895824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomBattleMusic
+  battleThemes:
+  - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
+  - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+--- !u!114 &2892369642948671655 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6935290444441000580, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
+  m_PrefabInstance: {fileID: 5196269102502847011}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849947670152114937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0054cff2bc23d9d45ac7569ab0353caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartBattle
 --- !u!4 &7639283169957234415 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2456982591604974796, guid: 8d4b0f0477566b847852347ab8523ecb, type: 3}
@@ -16376,6 +16473,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -16386,22 +16487,22 @@ PrefabInstance:
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1928926460375433760}
+      objectReference: {fileID: 8230303919798805763}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 2853289442799149899}
+      objectReference: {fileID: 6438484117339744009}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BeginDialogue
+      value: AssignStartBattle
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: StartBattleNow
+      value: BeginDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
@@ -16413,7 +16514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: StartBattle, Assembly-CSharp
+      value: StartDialogue, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -16424,8 +16525,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1928926460375433760}
+    - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: Battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: StartBattle, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8571233973771732275, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -16448,6 +16557,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9113952012057321091, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2853289442799149899}
+    - targetCorrespondingSourceObject: {fileID: 9113952012057321091, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6438484117339744009}
   m_SourcePrefab: {fileID: 100100000, guid: 43bd1dda67c46794fa094ae6f99a6860, type: 3}
 --- !u!1 &817315817629595600 stripped
 GameObject:
@@ -16484,6 +16596,21 @@ MonoBehaviour:
   exclamationMark: {fileID: 0}
   isShowingExclamation: 0
 --- !u!114 &2853289442799149899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817315817629595600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0463eb6023006a4ab64081c55895824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomBattleMusic
+  battleThemes:
+  - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
+  - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+--- !u!114 &6438484117339744009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18277,6 +18404,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -18291,11 +18422,11 @@ PrefabInstance:
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1597555637987989538}
+      objectReference: {fileID: 8023573433186942990}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 1455467085664772845}
+      objectReference: {fileID: 8000693586207890574}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -18306,11 +18437,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: BeginDialogue
+      value: AssignStartBattle
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: StartBattleNow
+      value: BeginDialogue
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
@@ -18322,7 +18453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: StartBattle, Assembly-CSharp
+      value: StartDialogue, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -18337,12 +18468,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1597555637987989538}
+    - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
       value: Battle
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: Battle
+      objectReference: {fileID: 0}
+    - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
+      propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: StartBattle, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 657056005772569043, guid: 41b9293480433204f933101e791277af, type: 3}
       propertyPath: interactable.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -18421,6 +18560,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6325943818239239212, guid: 41b9293480433204f933101e791277af, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1455467085664772845}
+    - targetCorrespondingSourceObject: {fileID: 6325943818239239212, guid: 41b9293480433204f933101e791277af, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8000693586207890574}
   m_SourcePrefab: {fileID: 100100000, guid: 41b9293480433204f933101e791277af, type: 3}
 --- !u!114 &1597555637987989538 stripped
 MonoBehaviour:
@@ -18468,6 +18610,21 @@ MonoBehaviour:
   cutsceneCameraMoveTransforms: []
   cutscenePlayerMoveTransforms: []
 --- !u!114 &1455467085664772845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890555948494770431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0463eb6023006a4ab64081c55895824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomBattleMusic
+  battleThemes:
+  - {fileID: 8300000, guid: d959eaf1f01b9c546924239f1b565ca5, type: 3}
+  - {fileID: 8300000, guid: d52454097d0680544acfe6a566dc6504, type: 3}
+--- !u!114 &8000693586207890574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
